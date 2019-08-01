@@ -1,0 +1,40 @@
+.theme-btn,
+.theme-btn-no-border,
+.theme-btn-filled {
+  border-radius: 9999px;
+  transition: background-color 0.2s;
+}
+
+.theme-btn {
+  color: #a60000;
+  background-color: white;
+
+  border: 1px solid #a60000;
+}
+
+.theme-btn:hover {
+  background-color: #faefef;
+}
+
+.theme-btn-no-border {
+  color: #a60000;
+}
+
+.theme-btn-filled:hover,
+.theme-btn-no-border:hover {
+  background-color: #a6000010;
+}
+
+.theme-btn-filled {
+  color: white;
+  background-color: #a60000;
+
+  border: 1px solid #a60000;
+
+  text-align: center;
+  font-weight: bold;
+}
+
+.theme-btn-filled:hover {
+  background-color: #890000;
+}

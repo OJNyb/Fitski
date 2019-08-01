@@ -1,0 +1,50 @@
+.plan-week-container {
+  position: relative;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  color: rgba(0, 0, 0, 0.748);
+}
+
+.plan-week-container h1 {
+  margin: 0;
+}
+
+.plan-days-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.plan-day-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.plan-day-container h2 {
+  margin: 0;
+}
+
+.plan-day-container h3 {
+  margin: 0;
+  margin-bottom: 2px;
+}
+
+.plan-exercise-container {
+  margin: 4px;
+  width: 350px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.plan-exercise-container div {
+  width: 120px;
+  display: flex;
+  justify-content: space-between;
+}

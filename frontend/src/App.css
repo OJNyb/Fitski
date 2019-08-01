@@ -1,0 +1,31 @@
+main {
+  width: 100%;
+  margin-left: 250px;
+  height: 300vh;
+  margin-top: 60px;
+}
+
+a {
+  outline-style: none;
+  text-decoration: none;
+}
+
+button {
+  display: flex;
+  justify-content: center;
+  background-color: inherit;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield; /* Firefox */
+}

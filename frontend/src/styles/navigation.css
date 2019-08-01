@@ -1,0 +1,240 @@
+/** NAV HEADER **/
+
+.header {
+  top: 0px;
+  height: 60px;
+  width: 100%;
+  position: fixed;
+
+  display: flex;
+  justify-content: space-between;
+
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: inset -7px 0 20px -7px rgba(0, 0, 0, 0.11);
+  background-color: white;
+  z-index: 9;
+}
+.header-logo-container {
+  min-width: 250px;
+  border-right: 1px solid rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  color: rgba(0, 0, 0, 0.74);
+  font-size: 28px;
+}
+
+.header-logo-container i {
+  margin-right: 5px;
+}
+.header-logo {
+  font-size: inherit;
+}
+.header-user {
+  width: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-left: 1px solid rgba(0, 0, 0, 0.1);
+}
+.header-name {
+  font-size: 14px;
+  margin-left: 10px;
+  color: rgba(0, 0, 0, 0.75);
+  font-weight: 400;
+}
+
+.header-avatar {
+  border-radius: 50%;
+  width: 30px;
+}
+
+/** Sidebar **/
+
+nav {
+  width: 221px;
+  height: 100vh;
+  margin-top: 60px;
+  padding-top: 30px;
+  position: fixed;
+
+  /* background-color: #ffffff00; */
+  /* background-color: #a600000c; */
+  box-shadow: inset -7px 0 20px -7px rgba(0, 0, 0, 0.11);
+  padding-left: 30px;
+}
+
+nav section {
+  padding: 0;
+  display: flex;
+
+  -webkit-box-flex: 1;
+  flex-grow: 1;
+  -webkit-box-direction: normal;
+  -webkit-box-orient: vertical;
+  flex-direction: column;
+  -webkit-box-align: start;
+  align-items: flex-start;
+}
+
+.nav-account-container {
+  margin-top: 60px;
+}
+
+.nav-header {
+  margin: 0;
+  color: #a60000;
+  font-weight: 500;
+  font-size: 16px;
+  margin-bottom: 10px;
+  padding-left: 10px;
+}
+
+.nav-item {
+  padding: 8px 20px 8px 10px;
+  margin-top: 0;
+  border-radius: 9999px;
+  display: flex;
+
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.5);
+
+  transition-property: background-color;
+  transition-duration: 0.2s;
+}
+
+.nav-item:hover {
+  color: #a60000;
+  background-color: #a6000010;
+}
+
+.nav-icon {
+  margin-right: 10px;
+  font-size: 19px;
+}
+
+.nav-sidebar-avatar {
+  height: 21px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.active i {
+  color: #a60000;
+}
+
+.active span {
+  color: rgba(0, 0, 0, 0.69);
+
+  font-weight: 500;
+}
+
+/* Mid header */
+
+.nav-mid-header-container {
+  display: flex;
+  align-content: center;
+  justify-content: space-between;
+
+  position: fixed;
+  height: 60px;
+  width: calc(100% - 200px - 250px - 30px);
+
+  margin-top: -60px;
+  z-index: 10;
+  padding: 0 15px;
+}
+
+.nav-mid-header-item {
+  display: flex;
+  align-items: center;
+}
+
+.nav-mid-header-container h2 {
+  font-size: 23px;
+  font-weight: 500;
+  margin-left: 8px;
+  color: rgba(0, 0, 0, 0.85);
+}
+
+.nav-mid-header-container-back-btn {
+  padding: 5px;
+}
+
+.nav-mid-header-button-container button {
+  font-weight: 500;
+}
+
+.nav-mid-header-more-btn {
+  padding: 2px;
+  margin-right: 10px;
+}
+
+.nav-mid-header-text-btn {
+  padding: 6px 15px;
+  line-height: 1;
+}
+
+.nav-mid-header-activated-btn {
+  font-size: 14px;
+  padding: 6px 12px;
+  max-width: 85px;
+  min-width: 85px;
+}
+
+.nav-mid-header-activated-btn:hover {
+  padding: 6px 8px;
+}
+
+.nav-mid-header-activated-btn:before {
+  content: "Activated";
+}
+
+.nav-mid-header-activated-btn:hover:before {
+  content: "Deactivate";
+}
+
+.nav-action-menu-container {
+  width: 215px;
+  position: fixed;
+
+  z-index: 999;
+  overflow: hidden;
+
+  background-color: white;
+  border-radius: 5px;
+  box-shadow: rgba(101, 119, 134, 0.2) 0px 0px 15px,
+    rgba(101, 119, 134, 0.15) 0px 0px 3px 1px;
+}
+
+.nav-action-menu-inner-container {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.nav-action-menu-item {
+  width: 100%;
+  padding: 14px;
+  display: flex;
+  align-items: center;
+
+  box-sizing: border-box;
+
+  font-size: 15px;
+  font-weight: 400;
+
+  color: rgba(0, 0, 0, 0.755);
+
+  transition: background-color 0.2s;
+  cursor: pointer;
+}
+
+.nav-action-menu-item:hover {
+  background-color: rgb(245, 248, 250);
+}
+
+.nav-action-menu-icon {
+  margin-right: 10px;
+}
