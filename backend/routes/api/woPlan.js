@@ -1,11 +1,13 @@
 const express = require("express");
 const router = express.Router();
-const Joi = require("joi");
+const createErrorObject = require("../../utils/createErrorObject");
+const { Types } = require("mongoose");
 
 const objectId = require("../../schemas/utils");
 
 const SchemaValidator = require("../../middlewares/SchemaValidator");
 const validateRequest = SchemaValidator(true);
+const validateWOPlan = require("../../middlewares/validateWOPlan");
 
 // TODOS:
 // Error handling, scaling,  validation
@@ -20,46 +22,6 @@ const { ensureSignedIn } = require("../../middlewares/auth");
 // Load workout plan model
 const WOPlan = require("../../models/WOPlan");
 
-function validateWOPlan(userId, weekId, dayId, woPlan) {
-  let errors = {};
-
-  const { user, weeks } = woPlan;
-
-  if (user.toString() !== userId) {
-    errors.notauthorized =
-      "You do not have permission to make changes to this workout plan";
-    return errors;
-  }
-
-  const weekIndex = weeks.map(x => x.id).indexOf(weekId);
-  if (weekIndex === -1) {
-    errors.noweek = "No day with this ID in workout plan";
-    return errors;
-  }
-
-  const { days } = weeks[weekIndex];
-  const dayIndex = days.map(x => x.id).indexOf(dayId);
-  if (dayIndex === -1) {
-    errors.noday = "No day with this ID in workout plan";
-    return errors;
-  }
-
-  const weekIndex = weeks.map(x => x.id).indexOf(weekId);
-  if (weekIndex === -1) {
-    errors.noweek = "No day with this ID in workout plan";
-    return errors;
-  }
-
-  const { days } = weeks[weekIndex];
-  const dayIndex = days.map(x => x.id).indexOf(dayId);
-  if (dayIndex === -1) {
-    errors.noday = "No day with this ID in workout plan";
-    return errors;
-  }
-
-  return { weekIndex, dayIndex };
-}
-
 // @route GET api/plan
 // @desc Get current users workout plans
 // @access Private
@@ -68,26 +30,24 @@ router.get("/", ensureSignedIn, (req, res) => {
   WOPlan.find({ user: userId }).then(woPlans => res.json(woPlans));
 });
 
-// @route GET api/plan/:id
+// @route GET api/plan/:plan_id
 // @desc Get workout plan by id
 // @access Private
 // TODO: Extend to allow users who bought access/everyone if author wants
-router.get("/plan/:id", ensureSignedIn, (req, res) => {
-  const { params, session } = req;
-  const { id } = params;
-  const { userId } = session;
+router.get(
+  "/:plan_id",
+  ensureSignedIn,
+  validateRequest,
+  validateWOPlan,
+  (req, res) => {
+    const { body } = req;
+    const { woPlan } = body;
 
-  WOPlan.findById(id)
-    .populate("weeks.days.exercises.exercise")
-    .then(woPlan => {
-      if (woPlan.user.toString() !== userId) {
-        errors.notauthorized =
-          "You do not have permission to view this workout plan.";
-        return res.status(403).json(errors);
-      }
-      res.json(woPlan);
-    });
-});
+    woPlan.populate("weeks.days.exercises.exercise");
+
+    res.json(woPlan);
+  }
+);
 
 // @route POST api/plan
 // @desc Create workout plan
@@ -95,116 +55,99 @@ router.get("/plan/:id", ensureSignedIn, (req, res) => {
 router.post("/", ensureSignedIn, validateRequest, async (req, res) => {
   const { body, session } = req;
 
-  const { name, description, categories } = body;
-
   const newWOPlan = new WOPlan({
     user: session.userId,
-    name,
-    categories,
-    description
+    ...body
   });
 
   newWOPlan.save().then(woPlan => res.json(woPlan));
 });
 
-// @route POST api/plan/:id
+// @route POST api/plan/:plan_id
 // @desc Edit workout plan
 // @access Private
 // Validation. How to check optional fields in joi?
-router.post("/:id", ensureSignedIn, validateRequest, async (req, res) => {
-  const { body, params } = req;
+router.post(
+  "/:plan_id",
+  ensureSignedIn,
+  validateRequest,
+  validateWOPlan,
+  async (req, res, next) => {
+    const { body } = req;
 
-  const { id: planId } = params;
-  const { name, description, categories } = body;
+    const { name, description, categories, woPlan } = body;
 
-  const woPlan = await WOPlan.findById(planId);
+    let field;
+    let patch;
 
-  // check if owner
+    if (name) {
+      field = "name";
+      patch = name;
+    } else if (description) {
+      field = "description";
+      patch = description;
+    } else if (categories) {
+      field = "categories";
+      patch = categories;
+    }
 
-  let field;
-  let patch;
-
-  if (name) {
-    field = "name";
-    patch = name;
-  } else if (description) {
-    field = "description";
-    patch = description;
-  } else if (categories) {
-    field = "categories";
-    patch = categories;
+    woPlan
+      .updateOne({
+        $set: { [`${field}`]: patch }
+      })
+      .then(reski => {
+        if (reski.nModified) {
+          res.json({ message: "success" });
+        } else {
+          res.status(404).json(createErrorObject(["Couldn't apply update"]));
+        }
+      })
+      .catch(next);
   }
+);
 
-  WOPlan.findByIdAndUpdate(planId, {
-    $set: { [`${field}`]: patch }
-  })
-    .then(() => res.json({ msg: "Success" }))
-    .catch(err => console.log(err));
-});
-
-// @route DELETE api/plan/:id
+// @route DELETE api/plan/:plan_id
 // @desc Delete workout plan
 // @access Private
-router.delete("/:id", ensureSignedIn, async (req, res) => {
-  const { params, session } = req;
 
-  const { id } = params;
+// TODO: Ensure id is objectId
+router.delete(
+  "/:plan_id",
+  ensureSignedIn,
+  validateRequest,
+  validateWOPlan,
+  async (req, res, next) => {
+    const { body } = req;
+    const { woPlan } = body;
 
-  WOPlan.findById(id)
-    .then(woPlan => {
-      if (!woPlan) {
-        errors.nowoplan = "No workout plan with this ID";
-        return res.status(404).json(errors);
-      }
+    woPlan
+      .remove()
+      .then(() => res.json({ message: "success" }))
+      .catch(next);
+  }
+);
 
-      const { user } = woPlan;
-      const { userId } = session;
-
-      if (user.toString() !== userId) {
-        errors.notauthorized =
-          "You do not have permission to make changes to this workout plan";
-        return res.status(403).json(errors);
-      }
-
-      WOPlan.findByIdAndDelete(id)
-        .then(() => res.json({ msg: "Success" }))
-        .catch(() =>
-          res.status(500).json({ servererror: "Internal server error" })
-        );
-    })
-    .catch(err => res.status(500).json(err));
-});
-
-// @route POST api/plan/week/:id
+// @route POST api/plan/week/:plan_id
 // @desc Add week
 // @access Private
-router.post("/week/:id/", ensureSignedIn, validateRequest, async (req, res) => {
-  const { body, params, session } = req;
+router.post(
+  "/week/:plan_id/",
+  ensureSignedIn,
+  validateRequest,
+  validateWOPlan,
+  async (req, res, next) => {
+    const { body } = req;
 
-  const { id: planId } = params;
+    const { weekNumber, woPlan } = body;
 
-  WOPlan.findById(planId).then(woPlan => {
-    if (!woPlan) {
-      return res.status(404).json({ noplan: "No workout plan with this ID" });
-    }
-
-    const { user, weeks } = woPlan;
-    const { userId } = session;
-
-    if (user.toString() !== userId) {
-      return res.status(403).json({
-        notauthorized: "You do not have permission to make changes to this plan"
-      });
-    }
-
-    const { weekNumber } = body;
+    const { weeks } = woPlan;
 
     const weekNumbers = weeks.map(x => x.week);
 
-    if (weekNumber in weekNumbers) {
-      return res.status(400).json({
-        duplicate: "This week already exists"
-      });
+    if (weekNumbers.indexOf(weekNumber) !== -1) {
+      return res
+        .status(400)
+        .json(createErrorObject(["This week already exists"]));
     }
 
     const days = [];
@@ -212,68 +155,53 @@ router.post("/week/:id/", ensureSignedIn, validateRequest, async (req, res) => {
     for (let i = 0; i < 7; i++) {
       days.push({ restDay: false });
     }
-    const newWeek = { week: weekNumber, days };
 
-    WOPlan.findOneAndUpdate(
-      {
-        _id: id
-      },
-      {
+    const _id = Types.ObjectId();
+
+    const newWeek = { _id, week: weekNumber, days };
+
+    woPlan
+      .updateOne({
         $push: { weeks: newWeek }
-      },
-      {
-        new: true,
-        lean: true
-      }
-    ).then(woPlan => {
-      let id = woPlan.weeks.find(x => x.week === weekNumber)._id;
-      res.json({ msg: "Success", id });
-    });
-  });
-});
+      })
+      .then(reski => {
+        if (reski.nModified) {
+          res.json({ message: "success", _id });
+        } else {
+          res.status(404).json(createErrorObject(["Couldn't apply update"]));
+        }
+      })
+      .catch(next);
+  }
+);
 
-// @route DELETE api/plan/:plan_id/:week_id
+// @route DELETE api/plan/week/:plan_id/:week_id
 // @desc Delete week
 // @access Private
 router.delete(
   "/week/:plan_id/:week_id/",
-  validateRequest,
   ensureSignedIn,
-  async (req, res) => {
-    const { params, session } = req;
+  validateRequest,
+  validateWOPlan,
+  async (req, res, next) => {
+    const { params } = req;
 
-    const { plan_id: planId, week_id: weekId } = params;
+    const { week_id: weekId } = params;
 
-    WOPlan.findById(planId).then(woPlan => {
-      if (!woPlan) {
-        return res.status(404).json({ noplan: "No workout plan with this ID" });
-      }
+    const { woPlan } = body;
 
-      const { user } = woPlan;
-      const { userId } = session;
-
-      if (user.toString() !== userId) {
-        return res.status(403).json({
-          notauthorized:
-            "You do not have permission to make changes to this plan"
-        });
-      }
-
-      WOPlan.findOneAndUpdate(
-        {
-          _id: planId
-        },
-        {
-          $pull: { weeks: { _id: weekId } }
-        },
-        {
-          new: true,
-          lean: true
+    woPlan
+      .updateOne({
+        $pull: { weeks: { _id: weekId } }
+      })
+      .then(reski => {
+        if (reski.nModified) {
+          res.json({ message: "success" });
+        } else {
+          res.status(404).json(createErrorObject(["Couldn't apply update"]));
         }
-      ).then(() => {
-        res.json({ msg: "Success" });
-      });
-    });
+      })
+      .catch(next);
   }
 );
 
@@ -286,64 +214,30 @@ router.post(
   "/exercise/:plan_id/:week_id/:day_id",
   ensureSignedIn,
   validateRequest,
-  async (req, res) => {
-    const { body, params, session } = req;
+  validateWOPlan,
+  async (req, res, next) => {
+    const { body, params } = req;
 
-    const { plan_id: planId, week_id: weekId, day_id: dayId } = params;
+    const { week_id: weekId, day_id: dayId } = params;
+    const { woPlan } = body;
 
-    WOPlan.findById(planId)
-      .then(woPlan => {
-        if (!woPlan) {
-          errors.nowoplan = "No workout plan with this ID";
-          return res.status(404).json(errors);
+    const _id = Types.ObjectId();
+
+    woPlan
+      .updateOne(
+        { $push: { "weeks.$[w].days.$[d].exercises": { ...body, _id } } },
+        {
+          arrayFilters: [{ "w._id": weekId }, { "d._id": dayId }]
         }
-
-        // const { user, weeks } = woPlan;
-        const { userId } = session;
-
-        const { errors, weekIndex, dayIndex } = validateWOPlan(
-          userId,
-          weekId,
-          dayId,
-          woPlan
-        );
-
-        if (errors) {
-          if (errors.notauthorized) {
-            return res.status(403).json(errors);
-          } else {
-            return res.status(404).json(errors);
-          }
+      )
+      .then(reski => {
+        if (reski.nModified) {
+          res.json({ message: "success", _id });
+        } else {
+          res.status(500).json(createErrorObject(["Couldn't apply update"]));
         }
-
-        const { exercise, sets, reps, rest } = body;
-        let newExercise = {
-          exercise,
-          sets,
-          reps,
-          rest
-        };
-
-        WOPlan.findOneAndUpdate(
-          { _id: planId },
-          { $push: { "weeks.$[w].days.$[d].exercises": newExercise } },
-          {
-            arrayFilters: [{ "w._id": weekId }, { "d._id": dayId }],
-            new: true,
-            lean: true
-          }
-        )
-
-          .then(woPlan => {
-            const { _id: id } = woPlan.weeks[weekIndex].days[
-              dayIndex
-            ].exercises[exercises.length - 1];
-
-            return res.json({ msg: "Success", id });
-          })
-          .catch(err => console.log(err));
       })
-      .catch(err => res.status(500).json(err));
+      .catch(next);
   }
 );
 
@@ -354,77 +248,55 @@ router.post(
   "/exercise/:plan_id/:week_id/:day_id/:exercise_id",
   ensureSignedIn,
   validateRequest,
-  async (req, res) => {
-    const { body, params, session } = req;
+  validateWOPlan,
 
-    const {
-      plan_id: planId,
-      week_id: weekId,
-      day_id: dayId,
-      exercise_id: exerciseId
-    } = params;
+  async (req, res, next) => {
+    const { body, params } = req;
 
-    WOPlan.findById(planId)
-      .then(woPlan => {
-        if (!woPlan) {
-          errors.nowoplan = "No workout plan with this ID";
-          return res.status(404).json(errors);
-        }
+    const { week_id: weekId, day_id: dayId, exercise_id: exerciseId } = params;
 
-        // const { user, weeks } = woPlan;
-        const { userId } = session;
+    const { sets, reps, rest, woPlan } = body;
 
-        const { errors } = validateWOPlan(userId, weekId, dayId, woPlan);
+    let patch;
 
-        if (errors) {
-          if (errors.notauthorized) {
-            return res.status(403).json(errors);
-          } else {
-            return res.status(404).json(errors);
+    let field;
+
+    if (sets) {
+      patch = sets;
+      field = "sets";
+    } else if (reps) {
+      patch = reps;
+      field = "reps";
+    } else if (rest) {
+      patch = rest;
+      field = "sets";
+    }
+
+    woPlan
+      .updateOne(
+        {
+          $set: {
+            [`weeks.$[w].days.$[d].exercises.$[e].${field}`]: patch
           }
+        },
+        {
+          arrayFilters: [
+            { "w._id": weekId },
+            { "d._id": dayId },
+            { "e._id": exerciseId }
+          ],
+          new: true,
+          lean: true
         }
-
-        const { sets, reps, rest } = body;
-
-        let patch;
-
-        let field;
-
-        if (sets) {
-          patch = sets;
-          field = "sets";
-        } else if (reps) {
-          patch = reps;
-          field = "reps";
-        } else if (rest) {
-          patch = rest;
-          field = "sets";
+      )
+      .then(reski => {
+        if (reski.nModified) {
+          res.json({ message: "success" });
+        } else {
+          res.status(500).json(createErrorObject(["Couldn't apply update"]));
         }
-
-        WOPlan.findOneAndUpdate(
-          { _id: planId },
-          {
-            $set: {
-              [`weeks.$[w].days.$[d].exercises.$[e].${field}`]: patch
-            }
-          },
-          {
-            arrayFilters: [
-              { "w._id": weekId },
-              { "d._id": dayId },
-              { "e._id": exerciseId }
-            ],
-            new: true,
-            lean: true
-          }
-        )
-
-          .then(() => {
-            return res.json({ msg: "Success" });
-          })
-          .catch(err => console.log(err));
       })
-      .catch(err => res.status(500).json(err));
+      .catch(next);
   }
 );
 
@@ -435,8 +307,9 @@ router.delete(
   "/exercise/:plan_id/:week_id/:day_id/:exercise_id",
   ensureSignedIn,
   validateRequest,
-  async (req, res) => {
-    const { params, session } = req;
+  validateWOPlan,
+  async (req, res, next) => {
+    const { body, params } = req;
 
     const {
       plan_id: planId,
@@ -445,48 +318,31 @@ router.delete(
       exercise_id: exerciseId
     } = params;
 
-    WOPlan.findById(planId)
-      .then(woPlan => {
-        if (!woPlan) {
-          errors.nowoplan = "No workout plan with this ID";
-          return res.status(404).json(errors);
-        }
+    const { woPlan } = body;
 
-        // const { user, weeks } = woPlan;
-        const { userId } = session;
-
-        const { errors } = validateWOPlan(userId, weekId, dayId, woPlan);
-
-        if (errors) {
-          if (errors.notauthorized) {
-            return res.status(403).json(errors);
-          } else {
-            return res.status(404).json(errors);
-          }
-        }
-
-        WOPlan.findOneAndUpdate(
-          { _id: planId },
-          {
-            $pull: {
-              "weeks.$[w].days.$[d].exercises": {
-                _id: exerciseId
-              }
+    woPlan
+      .updateOne(
+        {
+          $pull: {
+            "weeks.$[w].days.$[d].exercises": {
+              _id: exerciseId
             }
-          },
-          {
-            arrayFilters: [{ "w._id": weekId }, { "d._id": dayId }],
-            new: true,
-            lean: true
           }
-        )
-
-          .then(() => {
-            return res.json({ msg: "Success" });
-          })
-          .catch(err => console.log(err));
+        },
+        {
+          arrayFilters: [{ "w._id": weekId }, { "d._id": dayId }],
+          new: true,
+          lean: true
+        }
+      )
+      .then(reski => {
+        if (reski.nModified) {
+          res.json({ message: "success" });
+        } else {
+          res.status(500).json(createErrorObject(["Couldn't apply update"]));
+        }
       })
-      .catch(err => res.status(500).json(err));
+      .catch(next);
   }
 );
 
@@ -497,7 +353,7 @@ router.post(
   "/plan/activate",
   ensureSignedIn,
   validateRequest,
-  async (req, res) => {
+  async (req, res, next) => {
     const { body, session } = req;
 
     const { planId, startDate, endDate } = body;
@@ -517,8 +373,8 @@ router.post(
         lean: true
       }
     )
-      .then(() => res.json({ msg: "Success" }))
-      .catch(err => console.log(err));
+      .then(() => res.json({ message: "success" }))
+      .catch(err => next(err));
   }
 );
 

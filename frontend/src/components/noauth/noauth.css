@@ -1,0 +1,326 @@
+.landing-container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  overflow: hidden;
+}
+
+.landing-inner-container {
+  display: flex;
+  position: relative;
+  left: -30vw;
+
+  transition: left 0.5s;
+}
+
+.landing-left {
+  left: 0;
+}
+
+.landing-wrapper {
+  height: 100vh;
+  position: relative;
+
+  display: flex;
+}
+
+.landing-right-width {
+  width: 50vw;
+
+  align-items: center;
+  justify-content: center;
+}
+
+.landing-input {
+  width: auto;
+  margin: 0;
+  background-color: #fff;
+  border: 1px solid #d4dce2;
+  border-radius: 3px;
+
+  font-weight: 400;
+}
+
+.landing-input:focus {
+  border: 1px solid rgb(169, 169, 169);
+}
+
+/* ICON */
+
+.landing-icon-conatiner {
+  position: relative;
+  top: -92vh;
+  left: 0vw;
+}
+
+.landing-icon {
+  font-size: 1400px;
+  color: #a60000;
+  z-index: 0;
+  position: absolute;
+  top: 40vh;
+}
+
+/* LEFT SIDE */
+.landing-image-container {
+  overflow: hidden;
+  background-color: #a60000db;
+
+  transition: width 0.5s;
+}
+
+.landing-img-text-container {
+  color: white;
+}
+
+.landing-img-text-item {
+  display: flex;
+  align-items: center;
+  margin: 30px;
+  font-weight: 500;
+  font-size: 18px;
+}
+
+.landing-img-text-item i {
+  margin-right: 20px;
+}
+
+.landing-image-transition {
+  width: 70vw;
+}
+
+/* RIGHT SIDE */
+.landing-overview-container {
+  background-color: white;
+}
+
+.landing-login-container {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  top: 20px;
+}
+
+.landing-login-form {
+  margin: 0 auto;
+  padding: 12px 20px 0;
+
+  max-width: 600px;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.landing-login-input-container {
+  margin-right: 12px;
+}
+
+.landing-login-input {
+  padding: 12px;
+}
+
+.landing-login-button {
+  padding: 0 12px;
+
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.landing-signup-container {
+  max-width: 340px;
+}
+
+.landing-signup-container i {
+  color: #a60000;
+  font-size: 42px;
+}
+
+.landing-signup-container h1 {
+  margin: 0;
+  font-size: 24px;
+  line-height: 32px;
+  width: 300px;
+}
+
+.landing-signup-container h2 {
+  margin: 48px auto 16px;
+
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 24px;
+  width: 300px;
+}
+
+.landing-signup-container button {
+  padding: 6px 16px;
+  display: block;
+
+  font-size: 14px;
+
+  font-weight: bold;
+
+  margin-bottom: 16px;
+}
+
+.landing-signup-container button {
+  padding: 6px 16px;
+  display: block;
+
+  font-size: 14px;
+
+  margin-bottom: 16px;
+  width: 100%;
+}
+
+/* SIGN X */
+
+.sign-x-container {
+  width: 30vw;
+  background-color: rgba(255, 255, 255, 0.9);
+  justify-content: center;
+  color: rgba(0, 0, 0, 0.8);
+
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding-top: 40px;
+}
+
+.landing-sign-x-form {
+  justify-content: flex-start;
+}
+
+.landing-sign-x-form input {
+  margin: 5px;
+  margin-top: 15px;
+
+  padding: 8px;
+  width: 200px;
+}
+
+.landing-sign-x-form button {
+  padding: 10px;
+  margin-top: 14px;
+  width: 95%;
+  font-size: 14px;
+  border-radius: 3px;
+}
+
+.landing-log-in-existing-btn-container {
+  position: absolute;
+  bottom: 80px;
+}
+
+.landing-log-in-existing-btn-container button {
+  padding: 8px;
+  border-radius: 3px;
+
+  font-size: 14px;
+}
+
+/* LOGIN ERROR */
+
+.form-error-container {
+  width: 206px;
+  margin-bottom: 5px;
+  padding: 4px 5px;
+
+  color: #86181d;
+  background-color: #ffdce0;
+  border: 1px solid rgba(27, 31, 35, 0.15);
+  border-radius: 0px;
+
+  font-size: 13px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.form-error-clear-btn {
+  color: rgb(172, 44, 65);
+  padding: 0;
+  display: flex;
+}
+
+.form-error-clear-btn:hover {
+  color: rgb(123, 18, 18);
+}
+
+.form-error-clear {
+  font-size: 18px;
+  font-weight: bold;
+  color: inherit;
+}
+
+.error-input-icon {
+  position: absolute;
+  top: 19px;
+  right: 10px;
+  color: rgb(243, 55, 55);
+}
+
+.error-input-border {
+  border-color: rgb(243, 55, 55);
+}
+
+.landing-signup-error {
+  margin: 0;
+  font-size: 12px;
+  align-self: flex-start;
+  margin-left: 10px;
+  color: rgb(140, 130, 130);
+  width: 220px;
+}
+
+.landing-sign-x-form div {
+  position: relative;
+}
+
+.sign-x-alert-message {
+  position: absolute;
+  top: -180px;
+  left: 0;
+  right: 0;
+  z-index: 999;
+  transition: top 0.3s;
+}
+
+.sign-x-alert-show {
+  top: -3px;
+}
+
+.sign-x-message {
+  position: relative;
+  width: 200px;
+  padding: 20px;
+  margin: 0 auto;
+  background-color: #fff;
+  border-radius: 0 0 6px 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+}
+
+.sign-x-message p {
+  color: gray;
+  font-size: 13px;
+}
+
+.sign-x-error-close {
+  position: absolute;
+  top: 8px;
+  right: 2px;
+  line-height: 10px;
+
+  color: rgb(148, 148, 148);
+
+  font-size: 18px;
+  font-weight: 600;
+  font-family: serif;
+
+  cursor: pointer;
+}
+
+.sign-x-error-close:hover {
+  color: black;
+}

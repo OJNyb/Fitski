@@ -1,27 +1,30 @@
 import React from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
-
-import CreatePlan from "./components/CreatePlan/CreatePlan.js";
-import Navigation from "./components/Navigation";
-import Overview from "./components/Plan/Overview";
-import EditWeek from "./components/EditWeek/EditWeek";
-
+import { BrowserRouter as Router } from "react-router-dom";
+import { useUser } from "./context/userContext";
+import ScrollToTop from "./utils/ScrollToTop";
 import "./App.css";
+
 import "./styles/common.css";
 
-function App() {
+const loadAuthenticatedApp = () => import("./AuthenticatedApp");
+const AuthenticatedApp = React.lazy(loadAuthenticatedApp);
+const UnauthenticatedApp = React.lazy(() => import("./UnauthenticatedApp"));
+
+const App = () => {
+  const user = useUser();
+
+  React.useEffect(() => {
+    loadAuthenticatedApp();
+  }, []);
   return (
-    <>
+    <React.Suspense fallback={<p>Loading...</p>}>
       <Router>
-        <Navigation />
-        <main>
-          <Route path="/create-plan" component={CreatePlan} />
-          <Route exact path="/plans/:plan_id" component={Overview} />
-          <Route exact path="/plans/:plan_id/:week_id" component={EditWeek} />
-        </main>
+        <ScrollToTop>
+          {user ? <AuthenticatedApp /> : <UnauthenticatedApp />}
+        </ScrollToTop>
       </Router>
-    </>
+    </React.Suspense>
   );
-}
+};
 
 export default App;

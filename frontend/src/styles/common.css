@@ -30,11 +30,19 @@
   background-color: #a60000;
 
   border: 1px solid #a60000;
-
-  text-align: center;
-  font-weight: bold;
 }
 
 .theme-btn-filled:hover {
   background-color: #890000;
+}
+
+.flex-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.flex-center {
+  align-content: center;
+  align-items: center;
+  justify-content: center;
 }

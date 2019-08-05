@@ -26,6 +26,9 @@ module.exports = (useJoiError = false) => {
 
     if (path.length > 1) {
       pathKey += path;
+      if (pathKey[pathKey.length - 1] === "/") {
+        pathKey = pathKey.slice(0, pathKey.length - 1);
+      }
     }
 
     if (_.has(Schemas, pathKey)) {

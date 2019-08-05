@@ -3,40 +3,36 @@ const { ObjectId } = mongoose.Schema.Types;
 
 const WOPlanSchema = new mongoose.Schema(
   {
-    name: {
-      type: String
-    },
+    name: String,
     user: {
       type: ObjectId,
       ref: "user"
     },
-    description: {
-      type: String
-    },
+    description: String,
     categories: [
       {
-        category: { type: ObjectId }
+        category: ObjectId
       }
     ],
     weeks: [
       {
-        week: { type: Number },
-        repeat: {
-          type: Number
-        },
+        _id: ObjectId,
+        week: Number,
+        repeat: Number,
         days: [
           {
             restDay: {
               type: Boolean,
               default: false
             },
-            muscleGroup: { type: String },
+            muscleGroup: String,
             exercises: [
               {
-                exercise: { type: ObjectId },
-                sets: { type: Number },
-                reps: { type: Number },
-                rest: { type: Number }
+                _id: ObjectId,
+                exercise: { type: ObjectId, ref: "exercise" },
+                sets: Number,
+                reps: Number,
+                rest: Number
               }
             ]
           }
@@ -47,9 +43,9 @@ const WOPlanSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-WOPlanSchema.pre("save", async function() {
-  console.log(this);
-});
+WOPlanSchema.methods.isOwner = function(userId) {
+  return userId === this.user.toString();
+};
 
 const WOPlan = mongoose.model("woPlan", WOPlanSchema);
 
