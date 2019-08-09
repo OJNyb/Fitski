@@ -1,20 +1,18 @@
 import { useEffect, useReducer } from "react";
 import axios from "axios";
 
-import planReducer from "../reducers/planReducer";
-import { SET_PLAN, IS_PENDING, IS_REJECTED } from "../reducers/planTypes";
-
-// TODO: If !week/day/woplan
+import plansReducer from "../reducers/plansReducer";
+import { SET_PLANS, IS_PENDING, IS_REJECTED } from "../reducers/plansTypes";
 
 const initialState = {
-  woPlan: null,
+  woPlans: null,
   isPending: false,
   isRejected: false,
   error: null
 };
 
-const usePlan = planId => {
-  const [state, dispatch] = useReducer(planReducer, initialState);
+const usePlans = () => {
+  const [state, dispatch] = useReducer(plansReducer, initialState);
 
   useEffect(() => {
     let isCancelled = false;
@@ -22,10 +20,10 @@ const usePlan = planId => {
     function fetchData() {
       dispatch({ type: IS_PENDING });
       axios
-        .get(`/plan/${planId}`)
+        .get("/plan")
         .then(res => {
           if (!isCancelled) {
-            dispatch({ type: SET_PLAN, payload: { woPlan: res.data } });
+            dispatch({ type: SET_PLANS, payload: { woPlans: res.data } });
           }
         })
         .catch(err => {
@@ -43,7 +41,7 @@ const usePlan = planId => {
     return () => {
       isCancelled = true;
     };
-  }, [planId]);
+  }, []);
 
   return {
     state,
@@ -51,4 +49,4 @@ const usePlan = planId => {
   };
 };
 
-export default usePlan;
+export default usePlans;

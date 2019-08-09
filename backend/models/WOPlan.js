@@ -3,6 +3,7 @@ const { ObjectId } = mongoose.Schema.Types;
 
 const WOPlanSchema = new mongoose.Schema(
   {
+    _id: ObjectId,
     name: String,
     user: {
       type: ObjectId,
@@ -17,10 +18,17 @@ const WOPlanSchema = new mongoose.Schema(
     weeks: [
       {
         _id: ObjectId,
-        week: Number,
-        repeat: Number,
+        repeat: {
+          type: Number,
+          default: 0
+        },
+        restWeek: {
+          type: Boolean,
+          default: false
+        },
         days: [
           {
+            _id: ObjectId,
             restDay: {
               type: Boolean,
               default: false

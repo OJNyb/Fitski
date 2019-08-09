@@ -4,6 +4,22 @@ const Joi = require("./joi");
 
 // AD
 
+const planId = Joi.string()
+  .objectId()
+  .label("Workout plan ID");
+
+const weekId = Joi.string()
+  .objectId()
+  .label("Week ID");
+
+const dayId = Joi.string()
+  .objectId()
+  .label("Day ID");
+
+const exerciseId = Joi.string()
+  .objectId()
+  .label("Exercise ID");
+
 const name = Joi.string()
   .min(1)
   .max(30)
@@ -21,22 +37,6 @@ const categories = Joi.array()
       .label("Category")
   )
   .label("Categories");
-
-const planId = Joi.string()
-  .objectId()
-  .label("Workout plan ID");
-
-const weekId = Joi.string()
-  .objectId()
-  .label("Week ID");
-
-const dayId = Joi.string()
-  .objectId()
-  .label("Day ID");
-
-const exerciseId = Joi.string()
-  .objectId()
-  .label("Exercise ID");
 
 const sets = Joi.number()
   .min(1)
@@ -77,16 +77,36 @@ const deleteWorkoutPlan = Joi.object().keys({
 
 const addWeek = Joi.object().keys({
   plan_id: planId,
-  weekNumber: Joi.number()
+  numberOfWeeks: Joi.number()
     .min(1)
-    .max(52)
-    .required()
-    .label("Week number")
+    .max(999)
+    .label("Number of weeks")
 });
+
+const editWeek = Joi.object()
+  .keys({
+    plan_id: planId,
+    week_id: weekId,
+    repeat: Joi.number()
+      .min(1)
+      .max(100)
+      .label("Repeat"),
+    copyWeekId: Joi.string()
+      .objectId()
+      .not(Joi.ref("week_id"))
+      .label("Copy week ID")
+  })
+  .or("repeat", "copyWeekId");
 
 const deleteWeek = Joi.object().keys({
   plan_id: planId,
   weed_id: weekId
+});
+
+const clearDay = Joi.object().keys({
+  plan_id: planId,
+  week_id: weekId,
+  day_id: dayId
 });
 
 const addExercise = Joi.object().keys({
@@ -136,7 +156,9 @@ module.exports = {
   "delete/plan/:plan_id": deleteWorkoutPlan,
   "post/plan/:plan_id": editWorkoutPlan,
   "post/plan/week/:plan_id": addWeek,
+  "post/plan/week/:plan_id/:week_id": editWeek,
   "delete/plan/:plan_id/:week_id": deleteWeek,
+  "delete/day/:plan_id/:week_id/:day_id": clearDay,
   "post/plan/exercise/:plan_id/:week_id/:day_id": addExercise,
   "post/plan/exercise/:plan_id/:week_id/:day_id/:exercise_id": editExercise,
   "delete/plan/exercise/:plan_id/:week_id/:day_id/:exercise_id": deleteExercise,

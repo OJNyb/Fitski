@@ -7,6 +7,7 @@ const bodyParser = require("body-parser");
 const user = require("./routes/api/user");
 const woPlan = require("./routes/api/woPlan");
 const history = require("./routes/api/history");
+const exercise = require("./routes/api/exercise");
 
 const {
   APP_PORT,
@@ -66,6 +67,7 @@ const {
     app.use("/api/user", user);
     app.use("/api/plan", woPlan);
     app.use("/api/history", history);
+    app.use("/api/exercise", exercise);
 
     app.use(function(err, req, res, next) {
       console.error(err.stack);

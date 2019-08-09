@@ -1,0 +1,28 @@
+.add-plan-form {
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.add-plan-form div {
+  display: flex;
+  justify-content: space-between;
+}
+
+.add-plan-form input {
+  width: 90%;
+}
+
+.add-plan-form textarea {
+  resize: none;
+  width: 90%;
+  height: 70px;
+  border-radius: 3px;
+  font-family: inherit;
+}
+
+.add-plan-form button {
+  margin-top: 10px;
+  padding: 2px 8px;
+}

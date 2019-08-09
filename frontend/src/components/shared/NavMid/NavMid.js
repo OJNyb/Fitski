@@ -11,18 +11,26 @@ const NavMid = ({
 }) => {
   const [showActionMenu, setShowActionMenu] = useState(false);
 
+  function hideActionMenu() {
+    setTimeout(() => {
+      setShowActionMenu(false);
+    }, 200);
+  }
+
   return (
     <>
       <div className="nav-mid-header-container">
-        <div className="nav-mid-header-item">
-          <button
-            className="nav-mid-header-container-back-btn theme-btn-no-border"
-            onClick={backAction}
-          >
-            <i className="material-icons">arrow_back</i>
-          </button>
-          <h2>{backText}</h2>
-        </div>
+        {backText && (
+          <div className="nav-mid-header-item">
+            <button
+              className="nav-mid-header-container-back-btn theme-btn-no-border"
+              onClick={backAction}
+            >
+              <i className="material-icons">arrow_back</i>
+            </button>
+            <h2>{backText}</h2>
+          </div>
+        )}
 
         {midContent && <div className="nav-mid-header-item">{midContent}</div>}
 
@@ -30,7 +38,7 @@ const NavMid = ({
           <button
             className="nav-mid-header-more-btn theme-btn"
             onFocus={() => setShowActionMenu(true)}
-            onBlur={() => setShowActionMenu(false)}
+            onBlur={hideActionMenu}
           >
             <i className="material-icons">more_horiz</i>
           </button>

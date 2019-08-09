@@ -34,7 +34,7 @@ const NavActionMenu = ({ children, hideActionMenu }) => {
   }
 
   let items = children.map(x => (
-    <NavMidActionMenuItem icon={x.icon} text={x.text} action={x.action} />
+    <NavMidActionMenuItem element={x} key={x.action} />
   ));
 
   return (
@@ -48,10 +48,17 @@ const NavActionMenu = ({ children, hideActionMenu }) => {
   );
 };
 
-const NavMidActionMenuItem = ({ icon, text, action }) => {
+const NavMidActionMenuItem = ({ element }) => {
+  const { icon, text, action, outlined, customClass } = element;
+
+  const classki =
+    "nav-action-menu-icon material-icons" +
+    (outlined ? "-outlined" : "") +
+    (customClass ? `${customClass}` : "");
+
   return (
     <div className="nav-action-menu-item" onClick={action}>
-      <i className="material-icons nav-action-menu-icon">{icon}</i>
+      <i className={classki}>{icon}</i>
       <span>{text}</span>
     </div>
   );

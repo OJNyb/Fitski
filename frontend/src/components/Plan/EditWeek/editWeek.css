@@ -69,6 +69,7 @@
 
 .edit-week-add-container p {
   font-size: 12px;
+  width: 402px;
 }
 
 .edit-week-add-header {
@@ -84,8 +85,7 @@
 }
 
 .edit-week-sets-row,
-.edit-week-reps-row,
-.edit-week-rest-row {
+.edit-week-reps-row {
   display: flex;
   justify-content: center;
 }
@@ -93,14 +93,6 @@
 .edit-week-sets-row,
 .edit-week-reps-row {
   width: 60px;
-}
-
-.edit-week-rest-row {
-  width: 120px;
-}
-
-.edit-week-rest-row select {
-  border-left: 0;
 }
 
 .edit-week-add-column {
@@ -193,6 +185,11 @@
 .edit-week-exercise-item {
   padding: 5px 10px;
   border-bottom: 1px solid silver;
+  cursor: pointer;
+}
+
+.edit-week-exercise-item:hover {
+  background-color: rgb(250, 241, 241);
 }
 
 /* TEST */
@@ -213,4 +210,44 @@
 
 .edit-week-exercise-search-container {
   border-bottom: 1px solid #a60000;
+}
+
+/* ACTION MODALS */
+
+/* Copy week */
+.copy-week-weeks-container {
+  margin-bottom: 30px;
+  min-height: 100px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.copy-week-item {
+  margin: 2px;
+  padding: 2px;
+  cursor: pointer;
+}
+
+.copy-week-item-active {
+  font-weight: 500;
+}
+
+.copy-week-confirm-btn {
+  padding: 3px 8px;
+
+  right: 10px;
+  bottom: 10px;
+  position: absolute;
+}
+
+/* Delete week */
+.delete-week-btn-container {
+  width: 60%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.delete-week-btn-container button {
+  padding: 3px 8px;
+  border-radius: 99px;
 }

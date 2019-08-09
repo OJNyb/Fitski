@@ -1,104 +1,55 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 import "./planText.css";
 
-const PlanText = () => {
+const PlanText = ({ week, planId }) => {
+  const { week: weekNumber, days, _id: weekId } = week;
+
+  const daysDisplay = days.map((day, index) => (
+    <Day day={day} index={index} key={day._id} />
+  ));
+
   return (
     <div className="plan-week-container">
-      <h1>Week 1</h1>
-      <div className="plan-days-container">
-        <div className="plan-day-container">
-          <h2>Day 1</h2>
-          <h3>Chest</h3>
-          <div className="plan-exercise-container">
-            Flat Barbell Bench Press
-            <span>3 x 5</span>
-          </div>
-          <div className="plan-exercise-container">
-            Incline Barbell Bench Press
-            <span>3 x 5</span>
-          </div>
-          <div className="plan-exercise-container">
-            Flat Dumbell Bench Press
-            <span>3 x 5</span>
-          </div>
-          <div className="plan-exercise-container">
-            Incline Dumbell Bench Press
-            <span>3 x 5</span>
-          </div>
-        </div>
-      </div>
-
-      <div className="plan-days-container">
-        <div className="plan-day-container">
-          <h2>Day 1</h2>
-          <h3>Chest</h3>
-          <div className="plan-exercise-container">
-            Flat Barbell Bench Press
-            <span>3 x 5</span>
-          </div>
-          <div className="plan-exercise-container">
-            Incline Barbell Bench Press
-            <span>3 x 5</span>
-          </div>
-          <div className="plan-exercise-container">
-            Flat Dumbell Bench Press
-            <span>3 x 5</span>
-          </div>
-          <div className="plan-exercise-container">
-            Incline Dumbell Bench Press
-            <span>3 x 5</span>
-          </div>
-        </div>
-      </div>
-
-      <div className="plan-days-container">
-        <div className="plan-day-container">
-          <h2>Day 1</h2>
-          <h3>Chest</h3>
-          <div className="plan-exercise-container">
-            Flat Barbell Bench Press
-            <span>3 x 5</span>
-          </div>
-          <div className="plan-exercise-container">
-            Incline Barbell Bench Press
-            <span>3 x 5</span>
-          </div>
-          <div className="plan-exercise-container">
-            Flat Dumbell Bench Press
-            <span>3 x 5</span>
-          </div>
-          <div className="plan-exercise-container">
-            Incline Dumbell Bench Press
-            <span>3 x 5</span>
-          </div>
-        </div>
-      </div>
-
-      <div className="plan-days-container">
-        <div className="plan-day-container">
-          <h2>Day 1</h2>
-          <h3>Chest</h3>
-          <div className="plan-exercise-container">
-            Flat Barbell Bench Press
-            <span>3 x 5</span>
-          </div>
-          <div className="plan-exercise-container">
-            Incline Barbell Bench Press
-            <span>3 x 5</span>
-          </div>
-          <div className="plan-exercise-container">
-            Flat Dumbell Bench Press
-            <span>3 x 5</span>
-          </div>
-          <div className="plan-exercise-container">
-            Incline Dumbell Bench Press
-            <span>3 x 5</span>
-          </div>
-        </div>
-      </div>
+      <h1>Week {weekNumber}</h1>
+      <Link to={`/plans/${planId}/${weekId}`}>Edit</Link>
+      <div className="plan-days-container">{daysDisplay}</div>
     </div>
   );
 };
 
+const Day = ({ day, index }) => {
+  const { exercises, muscleGroup } = day;
+
+  if (!exercises.length) return null;
+  const exerciseDisplay = exercises.map(exercise => (
+    <Exercise exercise={exercise} key={exercise._id} />
+  ));
+  return (
+    <div className="plan-day-container">
+      <h2>Day {index + 1}</h2>
+      <h3>{muscleGroup}</h3>
+
+      {exerciseDisplay}
+    </div>
+  );
+};
+
+const Exercise = ({ exercise }) => {
+  const {
+    exercise: { name },
+    sets,
+    reps
+  } = exercise;
+
+  return (
+    <div className="plan-exercise-container">
+      {name}
+      <span>
+        {sets} x {reps}
+      </span>
+    </div>
+  );
+};
 export default PlanText;
