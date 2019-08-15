@@ -8,7 +8,7 @@ const Navigation = () => {
       <div className="header">
         <div className="header-logo-container">
           <i className="material-icons">fitness_center</i>
-          <h1 className="header-logo">Bitness</h1>
+          <h1 className="header-logo">Fitnal</h1>
         </div>
         <div className="header-user">
           <img

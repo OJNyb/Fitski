@@ -6,9 +6,11 @@ const RepeatModal = ({ onSubmit, hideModal }) => {
     onSubmit("post", e.target.values);
   }
   let children = (
-    <form onSubmit={onRepeatSubmit}>
+    <form className="repeat-week-form" onSubmit={onRepeatSubmit}>
       <input type="number" name="repeat" />
-      <button type="submit">Confirm</button>
+      <button className="theme-btn" type="submit">
+        Confirm
+      </button>
     </form>
   );
 

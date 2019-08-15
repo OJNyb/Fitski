@@ -122,6 +122,8 @@ const EditWeekNav = ({
         <i className="material-icons">arrow_back</i>
       </button>
     );
+  } else {
+    prevBtn = <div className="edit-week-nav-filler" />;
   }
 
   if (nextWeek) {
@@ -133,6 +135,8 @@ const EditWeekNav = ({
         <i className="material-icons">arrow_forward</i>
       </button>
     );
+  } else {
+    nextBtn = <div className="edit-week-nav-filler" />;
   }
 
   const navMidContent = (

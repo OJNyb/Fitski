@@ -23,11 +23,14 @@ const EditWeek = ({
   if (weekIndex === -1) {
     return <p>No week with this ID</p>;
   }
+
   let currentWeek = weeks[weekIndex];
   const { days } = currentWeek;
   const currentDay = days[currentDayIndex];
 
   const { _id: dayId } = currentDay;
+
+  console.log(currentDay);
 
   let dayBtns = days.map((day, index) => (
     <button

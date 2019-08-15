@@ -1,4 +1,5 @@
 /* NAV */
+
 .edit-week-nav-arrow-btn {
   padding: 5px;
 }
@@ -16,6 +17,12 @@
 .edit-week-nav-week-btn:hover {
   background-color: #a6000010;
 }
+
+.edit-week-nav-filler {
+  width: 34px;
+}
+
+/* OVERVIEW */
 
 .edit-week-container {
   display: flex;
@@ -139,18 +146,15 @@
 }
 
 .edit-week-exercise-head input {
+  width: 140px;
   padding: 0;
   border: 0;
-  /* outline-color: #a60000; */
   outline: none;
   font-size: 14px;
 
   border-right: 1px solid #a60000;
 }
-.edit-week-exercise-head select {
-  border: 1px solid #a60000;
-  border-bottom: 0;
-}
+
 .edit-week-exercise-head button {
   padding: 0;
   margin-left: 5px;
@@ -195,10 +199,7 @@
 /* TEST */
 .edit-week-exercise-filter-container {
   display: flex;
-  margin-top: 5px;
-}
-
-.edit-week-exercise-filter-container div {
+  margin: 0 15px;
   display: flex;
   flex-direction: column;
   font-size: 12px;
@@ -206,6 +207,11 @@
 
 .edit-week-exercise-filter-container span {
   text-align: center;
+}
+
+.edit-week-exercise-filter-container select {
+  border-radius: 3px;
+  outline: none;
 }
 
 .edit-week-exercise-search-container {
@@ -250,4 +256,24 @@
 .delete-week-btn-container button {
   padding: 3px 8px;
   border-radius: 99px;
+}
+
+/* Repeat week */
+.repeat-week-form {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+.repeat-week-form input {
+  width: 30px;
+  text-align: center;
+  border-radius: 3px;
+  border: 1px solid silver;
+  outline: none;
+}
+.repeat-week-form input:focus {
+  border-color: gray;
+}
+.repeat-week-form button {
+  margin-top: 20px;
 }

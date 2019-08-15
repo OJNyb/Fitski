@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import NavMidActionMenu from "./NavMidActionMenu";
 
 const NavMid = ({
@@ -11,10 +11,22 @@ const NavMid = ({
 }) => {
   const [showActionMenu, setShowActionMenu] = useState(false);
 
-  function hideActionMenu() {
-    setTimeout(() => {
-      setShowActionMenu(false);
-    }, 200);
+  function handleMoreActionClick(e) {
+    e.preventDefault();
+    setShowActionMenu(true);
+    window.addEventListener("click", onWindowClick);
+  }
+
+  function onWindowClick(e) {
+    const { classList } = e.target;
+    if (
+      classList.contains("nav-mid-header-more-btn") ||
+      classList.contains("nav-mid-header-more-icon")
+    ) {
+      return;
+    }
+    setShowActionMenu(false);
+    window.removeEventListener("click", onWindowClick);
   }
 
   return (
@@ -37,11 +49,13 @@ const NavMid = ({
         <div className="nav-mid-header-item nav-mid-header-button-container ">
           <button
             className="nav-mid-header-more-btn theme-btn"
-            onFocus={() => setShowActionMenu(true)}
-            onBlur={hideActionMenu}
+            onClick={handleMoreActionClick}
           >
-            <i className="material-icons">more_horiz</i>
+            <i className="material-icons nav-mid-header-more-icon">
+              more_horiz
+            </i>
           </button>
+
           <button
             className="nav-mid-header-text-btn theme-btn"
             onClick={rightBtnAction}
@@ -49,8 +63,9 @@ const NavMid = ({
             {rightBtnText}
           </button>
         </div>
+
+        {showActionMenu && <NavMidActionMenu children={actionMenuChildren} />}
       </div>
-      {showActionMenu && <NavMidActionMenu children={actionMenuChildren} />}
     </>
   );
 };
