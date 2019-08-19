@@ -2,6 +2,7 @@
 
 # dependencies
 node_modules
+package-lock.json
 # keys
 backend/config/keys.js
 
@@ -9,6 +10,7 @@ backend/config/keys.js
 # frontend #
 
 frontend/node_modules
+frontend/package-lock.json
 frontend/.pnp
 frontend.pnp.js
 
