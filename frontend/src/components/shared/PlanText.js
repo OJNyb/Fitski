@@ -1,10 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { displayMuscleGroups } from "../../utils/displayMuscleGroups";
 
 import "./planText.css";
 
-const PlanText = ({ week, planId }) => {
-  const { week: weekNumber, days, _id: weekId } = week;
+const PlanText = ({ week, index, planId }) => {
+  const { days, _id: weekId } = week;
 
   const daysDisplay = days.map((day, index) => (
     <Day day={day} index={index} key={day._id} />
@@ -12,7 +13,7 @@ const PlanText = ({ week, planId }) => {
 
   return (
     <div className="plan-week-container">
-      <h1>Week {weekNumber}</h1>
+      <h1>Week {index + 1}</h1>
       <Link to={`/plans/${planId}/${weekId}`}>Edit</Link>
       <div className="plan-days-container">{daysDisplay}</div>
     </div>
@@ -20,7 +21,9 @@ const PlanText = ({ week, planId }) => {
 };
 
 const Day = ({ day, index }) => {
-  const { exercises, muscleGroup } = day;
+  const { exercises } = day;
+
+  const muscleGroup = displayMuscleGroups(exercises);
 
   if (!exercises.length) return null;
   const exerciseDisplay = exercises.map(exercise => (
@@ -30,14 +33,13 @@ const Day = ({ day, index }) => {
     <div className="plan-day-container">
       <h2>Day {index + 1}</h2>
       <h3>{muscleGroup}</h3>
-
       {exerciseDisplay}
     </div>
   );
 };
 
 const Exercise = ({ exercise }) => {
-  const {
+  let {
     exercise: { name },
     sets,
     reps
@@ -46,8 +48,9 @@ const Exercise = ({ exercise }) => {
   return (
     <div className="plan-exercise-container">
       {name}
+
       <span>
-        {sets} x {reps}
+        {sets || 0} x {reps || 0}
       </span>
     </div>
   );

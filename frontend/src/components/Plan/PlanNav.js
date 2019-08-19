@@ -16,7 +16,7 @@ const PlanNav = ({
     params: { plan_id: planId, week_id: weekId }
   }
 }) => {
-  const [showModal, setShowModal] = useState("addWeeks");
+  const [showModal, setShowModal] = useState(false);
 
   function redirect(weekId) {
     push(`/plans/${planId}/${weekId}`);

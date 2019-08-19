@@ -103,6 +103,14 @@ const deleteWeek = Joi.object().keys({
   weed_id: weekId
 });
 
+const editDay = Joi.object().keys({
+  muscleGroup: Joi.string()
+    .min(1)
+    .max(30)
+    .required()
+    .label("Muscle group")
+});
+
 const clearDay = Joi.object().keys({
   plan_id: planId,
   week_id: weekId,
@@ -126,10 +134,9 @@ const editExercise = Joi.object()
     day_id: dayId,
     exercise_id: exerciseId,
     sets,
-    reps,
-    rest
+    reps
   })
-  .or("sets", "reps", "rest");
+  .or("sets", "reps");
 
 const deleteExercise = Joi.object().keys({
   plan_id: planId,
@@ -144,12 +151,6 @@ const activatePlan = Joi.object().keys({
   startDate: Joi.string()
 });
 
-// module.exports = {
-//   '/people': personDataSchema,
-//   '/auth/edit': authDataSchema,
-//   '/fees/pay': feesDataSchema
-// }
-
 module.exports = {
   "get/plan/:plan_id": getWorkoutPlan,
   "post/plan": createWorkoutPlan,
@@ -158,7 +159,9 @@ module.exports = {
   "post/plan/week/:plan_id": addWeek,
   "post/plan/week/:plan_id/:week_id": editWeek,
   "delete/plan/:plan_id/:week_id": deleteWeek,
-  "delete/day/:plan_id/:week_id/:day_id": clearDay,
+  "post/plan/day/:plan_id/:week_id/:day_id": editDay,
+  "delete/plan/day/:plan_id/:week_id/:day_id": clearDay,
+  "delete/plan/day/clear/:plan_id/:week_id/:day_id": clearDay,
   "post/plan/exercise/:plan_id/:week_id/:day_id": addExercise,
   "post/plan/exercise/:plan_id/:week_id/:day_id/:exercise_id": editExercise,
   "delete/plan/exercise/:plan_id/:week_id/:day_id/:exercise_id": deleteExercise,

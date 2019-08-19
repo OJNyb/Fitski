@@ -1,8 +1,9 @@
 import React, { useContext } from "react";
+import axios from "axios";
 import { Formik, Form, Field } from "formik";
 import { withRouter } from "react-router-dom";
 import { PlanContext } from "../../../context/planContext";
-import axios from "axios";
+import { displayMuscleGroups } from "../../../utils/displayMuscleGroups";
 import { EDIT_EXERCISE, DELETE_EXERCISE } from "../../../reducers/planTypes";
 
 // TODO: When to submit?
@@ -23,7 +24,6 @@ const Day = ({ day, match: { params } }) => {
         const { data } = res;
         const { message } = data;
         if (message === "success") {
-          console.log("gay2");
           dispatch({
             type: EDIT_EXERCISE,
             payload: { weekId, dayId, exerciseId, values }
@@ -57,11 +57,13 @@ const Day = ({ day, match: { params } }) => {
       onExerciseDelete={handleExerciseDelete}
     />
   ));
+
+  let muscleGroup = displayMuscleGroups(exercises);
   return (
     <>
       <div className="edit-week-add-muscle-group-container">
         <p className="edit-week-muscle-group-label">Muscle group</p>
-        <h3 className="edit-week-muscle-group">Chest</h3>
+        <h3 className="edit-week-muscle-group">{muscleGroup}</h3>
       </div>
 
       <div className="edit-week-add-header">
@@ -89,6 +91,20 @@ const Exercise = ({ exercise, onExerciseEdit, onExerciseDelete }) => {
         initialValues={{ sets: sets || "", reps: reps || "" }}
         onSubmit={(values, { setSubmitting }) => {
           setSubmitting(true);
+
+          console.log(values);
+
+          const { sets: vSets, reps: vReps } = values;
+
+          if (vSets === sets || vSets === "") {
+            delete values.sets;
+          }
+          if (vReps === reps || vReps === "") {
+            delete values.reps;
+          }
+
+          if (!Object.keys(values).length) return;
+
           onExerciseEdit(values, exerciseId);
         }}
       >
@@ -100,6 +116,8 @@ const Exercise = ({ exercise, onExerciseEdit, onExerciseDelete }) => {
             <div className="edit-week-reps-row">
               <Field name="reps" type="number" />
             </div>
+            {console.log(values.sets, "+", sets)}
+
             {(values.reps !== reps || values.sets !== sets) && (
               <button type="submit">
                 <i className="material-icons">check_circle_outline</i>

@@ -1,11 +1,17 @@
 const express = require("express");
 const router = express.Router();
-const createErrorObject = require("../../utils/createErrorObject");
 const { Types } = require("mongoose");
 
+// Model
+const WOPlan = require("../../models/WOPlan");
+
+// Validation
+const { ensureSignedIn } = require("../../middlewares/auth");
+const validateWOPlan = require("../../middlewares/validateWOPlan");
 const SchemaValidator = require("../../middlewares/SchemaValidator");
 const validateRequest = SchemaValidator(true);
-const validateWOPlan = require("../../middlewares/validateWOPlan");
+
+const createErrorObject = require("../../utils/createErrorObject");
 
 function createDays() {
   let days = [];
@@ -27,16 +33,6 @@ function createWeek() {
 
 // TODOS:
 // Error handling, scaling,  validation
-// What validations can I do on mongoose?
-// Week increment route + insert mid route??
-// How to handle joi errors
-// CATCH
-// ObjectId has String as base, remove from places where I validate object??
-
-const { ensureSignedIn } = require("../../middlewares/auth");
-
-// Load workout plan model
-const WOPlan = require("../../models/WOPlan");
 
 // @route GET api/plan
 // @desc Get current users workout plans
@@ -279,6 +275,70 @@ router.delete(
   }
 );
 
+// @route POST api/plan/day/:plan_id/:week_id/:day_id
+// @desc Add muscle group
+// @access Private
+router.post(
+  "/day/:plan_id/:week_id/:day_id",
+  ensureSignedIn,
+  validateRequest,
+  validateWOPlan,
+  async (req, res, next) => {
+    const { body, params } = req;
+
+    const { week_id: weekId, day_id: dayId } = params;
+    const { woPlan, muscleGroup } = body;
+
+    woPlan
+      .updateOne(
+        { $push: { "weeks.$[w].days.$[d].muscleGroup": muscleGroup } },
+        {
+          arrayFilters: [{ "w._id": weekId }, { "d._id": dayId }]
+        }
+      )
+      .then(reski => {
+        if (reski.nModified) {
+          res.json({ message: "success" });
+        } else {
+          res.status(500).json(createErrorObject(["Couldn't apply update"]));
+        }
+      })
+      .catch(next);
+  }
+);
+
+// @route DELETE api/plan/day/:plan_id/:week_id/:day_id
+// @desc Remove muscle group
+// @access Private
+router.delete(
+  "/day/:plan_id/:week_id/:day_id",
+  ensureSignedIn,
+  validateRequest,
+  validateWOPlan,
+  async (req, res, next) => {
+    const { body, params } = req;
+
+    const { week_id: weekId, day_id: dayId } = params;
+    const { woPlan, muscleGroup } = body;
+
+    woPlan
+      .updateOne(
+        { $pull: { "weeks.$[w].days.$[d].muscleGroup": muscleGroup } },
+        {
+          arrayFilters: [{ "w._id": weekId }, { "d._id": dayId }]
+        }
+      )
+      .then(reski => {
+        if (reski.nModified) {
+          res.json({ message: "success", _id });
+        } else {
+          res.status(500).json(createErrorObject(["Couldn't apply update"]));
+        }
+      })
+      .catch(next);
+  }
+);
+
 // @route POST api/plan/exercise/:plan_id/:week_id/:day_id
 // @desc Add exercise to workout plan
 // @access Private
@@ -407,31 +467,6 @@ router.delete(
         }
       })
       .catch(next);
-  }
-);
-
-// @route POST api/plan/activate
-// @desc Activate a workout plan
-// @access Private
-router.post(
-  "/plan/activate",
-  ensureSignedIn,
-  validateRequest,
-  async (req, res, next) => {
-    const { body, session } = req;
-
-    const { planId, startDate, endDate } = body;
-    const { userId } = session;
-
-    const activeWOPlan = {
-      woPlan: planId,
-      startDate,
-      endDate
-    };
-
-    User.findOneAndUpdate({ _id: userId }, { $set: { activeWOPlan } }, {})
-      .then(() => res.json({ message: "success" }))
-      .catch(err => next(err));
   }
 );
 

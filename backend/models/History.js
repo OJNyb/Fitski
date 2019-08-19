@@ -4,23 +4,20 @@ const { ObjectId } = Schema.Types;
 
 const HistorySchema = new Schema(
   {
-    user: { type: ObjectId },
-    woPlan: { type: ObjectId },
+    user: ObjectId,
     days: [
       {
-        date: {
-          type: Date
-        },
-        notes: {
-          type: String
-        },
+        date: Number,
+        notes: String,
+        woPlan: ObjectId,
         exercises: [
           {
-            exercise: { type: ObjectId },
-            sets: { type: Number },
-            reps: { type: Number },
-            rest: { type: Number },
-            weight: { type: Number }
+            _id: ObjectId,
+            exercise: ObjectId,
+            sets: Number,
+            reps: Number,
+            weight: Number,
+            unit: String
           }
         ]
       }

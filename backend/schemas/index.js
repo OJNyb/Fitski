@@ -1,6 +1,6 @@
 const user = require("./user");
 const woPlan = require("./woPlan");
-const history = {}; //  require("./history");
+const history = require("./history");
 
 module.exports = {
   ...user,

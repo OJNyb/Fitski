@@ -1,17 +1,13 @@
 import React, { useState, useEffect, useContext } from "react";
 import { withRouter } from "react-router-dom";
-import axios from "axios";
-import { PlanContext } from "../../../context/planContext";
 import { ExerciseContext } from "../../../context/exerciseContext";
 import { GET_EXERCISES } from "../../../reducers/exerciseTypes";
 
-const Exercises = ({ dayId, match: { params } }) => {
+const Exercises = ({ onAddExercise }) => {
   const { exerciseState, exerciseDispatch } = useContext(ExerciseContext);
-  const { dispatch } = useContext(PlanContext);
   const [search, setSearch] = useState("");
   const [muscleGroup, setMuscleGroup] = useState("All");
 
-  const { plan_id: planId, week_id: weekId } = params;
   const { exercises, error, isPending, isRejected } = exerciseState;
 
   useEffect(() => {
@@ -30,24 +26,6 @@ const Exercises = ({ dayId, match: { params } }) => {
   function handleSelectChange(e) {
     const { value } = e.target;
     setMuscleGroup(value);
-  }
-
-  function onAddExercise(exercise) {
-    axios
-      .post(`/plan/exercise/${planId}/${weekId}/${dayId}`, {
-        exercise: exercise._id
-      })
-      .then(res => {
-        const { data } = res;
-        const { _id } = data;
-        if (_id) {
-          dispatch({
-            type: "ADD_EXERCISE",
-            payload: { _id, weekId, dayId, exercise }
-          });
-        }
-      })
-      .catch(console.error);
   }
 
   if (isRejected) {
@@ -103,8 +81,8 @@ const Exercises = ({ dayId, match: { params } }) => {
             <option>Back</option>
             <option>Legs</option>
             <option>Chest</option>
-            <option>Bicep</option>
-            <option>Tricep</option>
+            <option>Biceps</option>
+            <option>Triceps</option>
             <option>Shoulders</option>
           </select>
         </div>

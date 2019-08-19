@@ -9,6 +9,9 @@ const woPlan = require("./routes/api/woPlan");
 const history = require("./routes/api/history");
 const exercise = require("./routes/api/exercise");
 
+const createErrorObject = require("./utils/createErrorObject");
+``;
+
 const {
   APP_PORT,
   NODE_ENV,
@@ -70,8 +73,11 @@ const {
     app.use("/api/exercise", exercise);
 
     app.use(function(err, req, res, next) {
+      console.log(err);
       console.error(err.stack);
-      res.status(500).json({ message: "Something gnarly happened" });
+      if (err.noRes) return;
+
+      res.status(500).json(createErrorObject(["Something gnarly happened"]));
     });
 
     app.listen(APP_PORT, () => {

@@ -9,7 +9,15 @@
 }
 
 .plan-week-container h1 {
+  font-size: 30px;
   margin: 0;
+}
+
+.plan-week-container a {
+  position: absolute;
+  margin-top: 13px;
+  right: calc(50% - 30px - 50px);
+  color: black;
 }
 
 .plan-days-container {

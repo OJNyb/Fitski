@@ -14,11 +14,10 @@
   width: 25%;
   min-width: 224px;
   max-width: 244px;
-
   position: relative;
 
   margin: 15% auto;
-  padding: 0 10px 10px;
+  padding: 0 10px 15px;
 
   border: 1px solid #888;
   background-color: #fefefe;
@@ -30,10 +29,10 @@
 }
 
 .modal-content h2 {
-  margin-top: 10px;
+  margin-top: 15px;
   color: rgba(0, 0, 0, 0.8);
   font-weight: 500;
-  font-size: 22px;
+  font-size: 24px;
 }
 
 .close-modal-btn {

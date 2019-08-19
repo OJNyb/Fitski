@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
 const { ObjectId } = mongoose.Schema.Types;
 
+// access = owner/all/private
+
 const WOPlanSchema = new mongoose.Schema(
   {
     _id: ObjectId,
@@ -15,6 +17,10 @@ const WOPlanSchema = new mongoose.Schema(
         category: ObjectId
       }
     ],
+    access: {
+      type: String,
+      default: "owner"
+    },
     weeks: [
       {
         _id: ObjectId,
@@ -33,7 +39,7 @@ const WOPlanSchema = new mongoose.Schema(
               type: Boolean,
               default: false
             },
-            muscleGroup: String,
+            muscleGroup: Array,
             exercises: [
               {
                 _id: ObjectId,

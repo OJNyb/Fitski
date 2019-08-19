@@ -5,6 +5,9 @@ const { hash, compare } = require("bcryptjs");
 const UserSchema = new mongoose.Schema(
   {
     name: String,
+    avatar: String,
+    password: String,
+    defaultUnit: String,
     email: {
       type: String,
       validate: {
@@ -19,10 +22,6 @@ const UserSchema = new mongoose.Schema(
         message: () => "Username has already been taken."
       }
     },
-    password: String,
-
-    avatar: String,
-
     activeWOPlan: {
       woPlan: {
         type: ObjectId,

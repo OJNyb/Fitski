@@ -27,14 +27,14 @@ const password = Joi.string()
     }
   });
 
-const confirmPassword = Joi.ref("password");
+const confirmPassword = Joi.valid(Joi.ref("password"));
 
 const signUp = Joi.object().keys({
   name,
   email: email.required(),
   username: username.required(),
   password: password.required(),
-  confirmPassword
+  confirmPassword: confirmPassword.required()
 });
 
 const signIn = Joi.object().keys({
@@ -47,10 +47,13 @@ const editUser = Joi.object()
     name,
     email,
     username,
+    defaultUnit: Joi.string()
+      .min(0)
+      .max(30),
     password,
     confirmPassword
   })
-  .or("name", "email", "username", "password")
+  .or("name", "defaultUnit", "email", "username", "password")
   .and("password", "confirmPassword")
   .options({
     language: {
