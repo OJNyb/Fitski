@@ -29,3 +29,8 @@ input::-webkit-inner-spin-button {
 input[type="number"] {
   -moz-appearance: textfield; /* Firefox */
 }
+
+input {
+  border: 1px solid silver;
+  border-radius: 3px;
+}

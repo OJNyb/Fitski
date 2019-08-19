@@ -34,6 +34,7 @@ const Login = () => {
     >
       {({ errors, handleSubmit, isSubmitting }) => (
         <>
+          {errors && !setLoginErr && setLoginErr(true)}
           <div
             className={
               "sign-x-alert-message" + (loginErr ? " sign-x-alert-show" : "")
@@ -56,7 +57,6 @@ const Login = () => {
             onSubmit={e => {
               e.preventDefault();
               handleSubmit();
-              if (errors) setLoginErr(true);
             }}
             className="landing-sign-x-form flex-col flex-center"
           >

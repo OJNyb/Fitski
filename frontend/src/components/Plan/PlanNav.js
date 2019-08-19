@@ -11,7 +11,7 @@ import { ADD_WEEK } from "../../reducers/planTypes";
 
 const PlanNav = ({
   planName,
-  history: { push },
+  history,
   match: {
     params: { plan_id: planId, week_id: weekId }
   }
@@ -19,7 +19,7 @@ const PlanNav = ({
   const [showModal, setShowModal] = useState(false);
 
   function redirect(weekId) {
-    push(`/plans/${planId}/${weekId}`);
+    history.push(`/plans/${planId}/${weekId}`);
   }
 
   function hideModal() {
@@ -60,7 +60,7 @@ const PlanNav = ({
       modal = (
         <DeletePlanModal
           planId={planId}
-          redirect={push}
+          redirect={history.push}
           hideModal={hideModal}
         />
       );

@@ -148,7 +148,9 @@ router.post("/login", ensureSignedOut, validateRequest, async (req, res) => {
   if (!user || !(await user.matchesPassword(password))) {
     return res
       .status(404)
-      .json(createErrorObject("Incorrect email or password. Please try again"));
+      .json(
+        createErrorObject(["Incorrect email or password. Please try again"])
+      );
   }
 
   session.userId = user.id;
@@ -159,15 +161,16 @@ router.post("/login", ensureSignedOut, validateRequest, async (req, res) => {
 // @route POST api/user/logout
 // @desc Logout User
 // @access Private
-router.post("/logout", ensureSignedIn, (req, res, next) => {
+router.get("/logout", ensureSignedIn, (req, res, next) => {
+  // return res.json({ msg: "gay" });
   req.session.destroy(err => {
     if (err) {
       next(err);
     }
 
     return res
-      .clearCookie(SESS_NAME)
       .status(200)
+      .clearCookie(SESS_NAME)
       .json({ message: "success" });
   });
 });
