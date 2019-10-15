@@ -1,0 +1,206 @@
+/* NAV */
+
+.edit-week-nav-arrow-btn {
+  padding: 5px;
+}
+
+.edit-week-nav-arrow-btn i {
+  font-size: 16px;
+}
+
+.edit-week-nav-week-btn {
+  padding: 4px 10px;
+  color: rgba(0, 0, 0, 0.9);
+  font-size: 20px;
+  font-weight: 500;
+
+  border-radius: 9999px;
+
+  transition: all 0.2s;
+}
+
+.edit-week-nav-week-btn:hover {
+  color: #a60000;
+  background-color: #a6000010;
+}
+
+.edit-week-nav-filler {
+  width: 26px;
+}
+
+/* OVERVIEW */
+
+.edit-week-container {
+  display: flex;
+  justify-content: space-around;
+
+  color: rgba(0, 0, 0, 0.75);
+}
+
+.edit-week-header {
+  text-align: center;
+}
+
+/* DAY CONTENT */
+.edit-week-add-container {
+  width: 400px;
+  margin-top: 10px;
+  position: relative;
+}
+
+.edit-week-add-days-container {
+  display: flex;
+}
+.edit-week-add-days-container button {
+  width: 100%;
+  padding: 2px;
+
+  color: #a60000;
+  background-color: white;
+  border: 1px solid #a60000;
+  border-left: 0;
+
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.edit-week-add-days-container button:first-child {
+  border-left: 1px solid #a60000;
+}
+
+.edit-week-add-days-container .edit-week-day-active {
+  color: white !important;
+  background-color: #a60000;
+}
+
+.edit-week-add-container p,
+.edit-week-add-container h3 {
+  text-align: center;
+  margin: 0;
+}
+
+.edit-week-add-container p {
+  font-size: 12px;
+}
+
+.edit-week-add-header {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0px 15px;
+  margin-top: 10px;
+}
+
+.edit-week-add-header span {
+  margin: 0 8px;
+  font-size: 12px;
+}
+
+/* EXERCISE CARD */
+.edit-week-add-muscle-group-container {
+  margin: 20px 0 0;
+}
+
+.edit-week-add-card {
+  display: flex;
+  padding: 6px 15px;
+  justify-content: space-between;
+}
+
+.edit-week-exercise-name {
+  font-size: 15px;
+}
+
+.edit-week-add-card form {
+  display: flex;
+}
+
+.edit-week-add-card form input {
+  margin: 0 5px;
+  width: 30px;
+  text-align: center;
+  color: rgba(0, 0, 0, 0.75);
+}
+
+.edit-week-add-card button {
+  color: transparent;
+  position: absolute;
+  padding: 3px;
+  margin-top: -3px;
+}
+
+.edit-week-add-card button i {
+  font-size: 19px;
+}
+
+.edit-week-add-card:hover button {
+  color: gray;
+}
+
+/* EXERCISE SIDE */
+.edit-week-exercise-container {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ACTION MODALS */
+
+/* Copy week */
+.copy-week-weeks-container {
+  margin-bottom: 30px;
+  min-height: 100px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.copy-week-item {
+  margin: 2px;
+  padding: 2px;
+  cursor: pointer;
+}
+
+.copy-week-item-active {
+  font-weight: 500;
+}
+
+.copy-week-confirm-btn {
+  padding: 3px 8px;
+
+  right: 10px;
+  bottom: 10px;
+  position: absolute;
+}
+
+/* Delete week */
+.delete-week-btn-container {
+  width: 60%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.delete-week-btn-container button {
+  padding: 4px 10px;
+  font-weight: 700;
+  border-radius: 99px;
+}
+
+/* Repeat week */
+.repeat-week-form {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+.repeat-week-form input {
+  width: 30px;
+  text-align: center;
+  border-radius: 3px;
+  border: 1px solid silver;
+  outline: none;
+}
+.repeat-week-form input:focus {
+  border-color: gray;
+}
+.repeat-week-form button {
+  margin-top: 20px;
+}

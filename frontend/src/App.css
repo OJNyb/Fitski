@@ -2,7 +2,8 @@ main {
   width: 100%;
   margin-left: 250px;
   height: 300vh;
-  margin-top: 60px;
+  margin-top: 66px;
+  background-color: rgb(247, 245, 245);
 }
 
 a {

@@ -1,15 +1,15 @@
 import React, { useState, useContext } from "react";
 import { withRouter } from "react-router-dom";
 import axios from "axios";
-import { PlanContext } from "../../../context/planContext";
+import { PlanContext } from "../../context/planContext";
 
 import CopyModal from "./CopyModal";
 import DeleteModal from "./DeleteModal";
 import RepeatModal from "./RepeatModal";
 
-import { EDIT_WEEK, DELETE_WEEK } from "../../../reducers/planTypes";
+import { EDIT_WEEK, DELETE_WEEK } from "../../reducers/planTypes";
 
-import NavMid from "../../shared/NavMid/NavMid";
+import NavMid from "../shared/NavMid/NavMid";
 
 const EditWeekNav = ({
   weeks,
@@ -119,7 +119,7 @@ const EditWeekNav = ({
         className="edit-week-nav-arrow-btn theme-btn-no-border"
         onClick={() => redirect(prevWeek)}
       >
-        <i className="material-icons">arrow_back</i>
+        <i className="material-icons reversed-icon">arrow_forward_ios</i>
       </button>
     );
   } else {
@@ -132,7 +132,7 @@ const EditWeekNav = ({
         className="edit-week-nav-arrow-btn theme-btn-no-border"
         onClick={() => redirect(nextWeek)}
       >
-        <i className="material-icons">arrow_forward</i>
+        <i className="material-icons">arrow_forward_ios</i>
       </button>
     );
   } else {
@@ -170,7 +170,8 @@ const EditWeekNav = ({
           {
             icon: "delete_outline",
             text: "Delete week",
-            action: handleDeleteClick
+            action: handleDeleteClick,
+            customClass: " delete-color"
           }
         ]}
         midContent={navMidContent}

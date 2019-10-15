@@ -1,70 +1,13 @@
 import React, { useState, useContext } from "react";
-import { withRouter } from "react-router-dom";
-import axios from "axios";
-import { PlanContext } from "./../../context/planContext";
+import { Redirect, withRouter } from "react-router-dom";
 
 import NavMid from "../shared/NavMid/NavMid";
-import AddWeeksModal from "./AddWeeksModal";
-import DeletePlanModal from "./DeletePlanModal";
 
-import { ADD_WEEK } from "../../reducers/planTypes";
+const PlanNav = ({ planName, setShowModal }) => {
+  const [redirect, setRedirect] = useState(false);
 
-const PlanNav = ({
-  planName,
-  history,
-  match: {
-    params: { plan_id: planId, week_id: weekId }
-  }
-}) => {
-  const [showModal, setShowModal] = useState(false);
-
-  function redirect(weekId) {
-    history.push(`/plans/${planId}/${weekId}`);
-  }
-
-  function hideModal() {
-    setShowModal(false);
-  }
-
-  // function handleSubmit(method, data) {
-  //   let request = {
-  //     url: `/plan/week/${planId}/${weekId}`,
-  //     method
-  //   };
-
-  //   if (data) request.data = data;
-
-  //   axios(request)
-  //     .then(res => {
-  //       const { data: resData } = res;
-  //       const { message } = resData;
-  //       if (message === "success") {
-  //         setShowModal(false);
-  //         if (method === "delete") {
-  //           // TODO: go to prev week
-  //           dispatch({ type: DELETE_WEEK, payload: { weekId } });
-  //         } else {
-  //           dispatch({ type: EDIT_WEEK, payload: { data, weekId } });
-  //         }
-  //       }
-  //     })
-  //     .catch(err => console.log(err.response));
-  // }
-
-  let modal;
-  if (showModal) {
-    if (showModal === "addWeeks") {
-      modal = <AddWeeksModal planId={planId} hideModal={hideModal} />;
-    }
-    if (showModal === "delete") {
-      modal = (
-        <DeletePlanModal
-          planId={planId}
-          redirect={history.push}
-          hideModal={hideModal}
-        />
-      );
-    }
+  if (redirect) {
+    return <Redirect to="/plans" />;
   }
 
   // TODO:
@@ -74,6 +17,7 @@ const PlanNav = ({
     <>
       <NavMid
         backText={planName}
+        backAction={() => setRedirect(true)}
         rightBtnText={rightBtnText}
         actionMenuChildren={[
           {
@@ -92,11 +36,11 @@ const PlanNav = ({
           {
             icon: "delete_outline",
             text: "Delete plan",
-            action: () => setShowModal("delete")
+            action: () => setShowModal("delete"),
+            customClass: " delete-color"
           }
         ]}
       />
-      {modal}
     </>
   );
 };

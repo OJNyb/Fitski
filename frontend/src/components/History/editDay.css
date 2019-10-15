@@ -1,0 +1,87 @@
+.history-exercise-name {
+  padding: 8px 10px 6px;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #a60000;
+}
+
+.history-exercise-name span {
+  width: calc(100% - 180px);
+  color: #472828;
+  font-size: 15px;
+}
+
+.add-card-btn-container {
+  display: flex;
+}
+
+.add-card-btn-container button {
+  padding: 0;
+  margin: 0 5px;
+}
+
+.add-card-remove-btn i {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.add-card-remove-btn i {
+  width: 24px;
+  height: 24px;
+  font-size: 20px;
+}
+
+.add-card-body {
+  padding: 4px 0;
+}
+
+.history-row span {
+  margin-left: 3px;
+}
+
+.history-add-column {
+  margin: 10px;
+  background-color: white;
+  border-radius: 5px;
+}
+
+.add-card-column {
+  display: flex;
+  justify-content: space-between;
+  padding: 4px 20px 4px 4px;
+}
+
+.add-card-column button {
+  color: transparent;
+  padding: 0;
+}
+
+.add-card-column:hover button {
+  color: #a60000c0;
+}
+
+.add-card-column form {
+  display: flex;
+  width: 50%;
+  justify-content: space-between;
+}
+
+.add-card-column form span {
+  font-size: 12px;
+  color: gray;
+}
+
+.history-add-column select,
+.history-add-column input {
+  border: 1px solid silver;
+  border-radius: 2px;
+}
+
+.history-add-column input {
+  width: 25px;
+  height: 15px;
+  text-align: center;
+  font-weight: 700;
+  color: rgba(0, 0, 0, 0.7);
+}

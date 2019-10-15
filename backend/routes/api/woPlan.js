@@ -39,7 +39,9 @@ function createWeek() {
 // @access Private
 router.get("/", ensureSignedIn, (req, res) => {
   const { userId } = req.session;
-  WOPlan.find({ user: userId }).then(woPlans => res.json(woPlans));
+  WOPlan.find({ user: userId })
+    .populate("user")
+    .then(woPlans => res.json(woPlans));
 });
 
 // @route GET api/plan/:plan_id
@@ -55,7 +57,7 @@ router.get(
     //  const { woPlan } = body;
     const { plan_id } = req.params;
     const woPlan = await WOPlan.findById(plan_id).populate(
-      "weeks.days.exercises.exercise"
+      "weeks.days.exercises.exercise user"
     );
 
     res.json(woPlan);
@@ -355,18 +357,18 @@ router.post(
     const { week_id: weekId, day_id: dayId } = params;
     const { woPlan } = body;
 
-    const _id = Types.ObjectId();
+    // const _id = Types.ObjectId();
 
     woPlan
       .updateOne(
-        { $push: { "weeks.$[w].days.$[d].exercises": { ...body, _id } } },
+        { $push: { "weeks.$[w].days.$[d].exercises": { ...body } } },
         {
           arrayFilters: [{ "w._id": weekId }, { "d._id": dayId }]
         }
       )
       .then(reski => {
         if (reski.nModified) {
-          res.json({ message: "success", _id });
+          res.json({ message: "success" });
         } else {
           res.status(500).json(createErrorObject(["Couldn't apply update"]));
         }
@@ -393,10 +395,11 @@ router.post(
 
     let update = {};
 
-    if (sets) {
+    if (sets || sets === 0) {
       update["weeks.$[w].days.$[d].exercises.$[e].sets"] = sets;
     }
-    if (reps) {
+
+    if (reps || reps === 0) {
       update["weeks.$[w].days.$[d].exercises.$[e].reps"] = reps;
     }
 

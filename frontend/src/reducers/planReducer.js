@@ -155,12 +155,11 @@ function planReducer(state, action) {
 
       let day = week.days.find(x => x._id === dayId);
 
-      let exercise = day.exercises.find(x => x._id === exerciseId);
+      let { exercises } = day;
 
-      exercise = {
-        ...exercise,
-        ...values
-      };
+      let exerciseIndex = exercises.map(x => x._id).indexOf(exerciseId);
+
+      exercises[exerciseIndex] = { ...exercises[exerciseIndex], ...values };
 
       return {
         ...state,

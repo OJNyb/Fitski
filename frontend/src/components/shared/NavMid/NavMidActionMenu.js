@@ -10,8 +10,8 @@ const NavActionMenu = ({ children, hideActionMenu }) => {
     )[0];
 
     function handleWindowResize() {
-      setOffsetLeft(moreBtn.offsetLeft + 251 - 215 + 30 - 2);
-      setOffsetTop(moreBtn.offsetTop + 2);
+      setOffsetLeft(moreBtn.offsetLeft + 251 - 180 + 30 - 2);
+      setOffsetTop(moreBtn.offsetTop + 6);
     }
 
     handleWindowResize();
@@ -51,14 +51,15 @@ const NavActionMenu = ({ children, hideActionMenu }) => {
 const NavMidActionMenuItem = ({ element }) => {
   const { icon, text, action, outlined, customClass } = element;
 
-  const classki =
-    "nav-action-menu-icon material-icons" +
-    (outlined ? "-outlined" : "") +
-    (customClass ? `${customClass}` : "");
+  const divClass =
+    "nav-action-menu-item" + (customClass ? `${customClass}` : "");
+
+  const iconClass =
+    "nav-action-menu-icon material-icons" + (outlined ? "-outlined" : "");
 
   return (
-    <div className="nav-action-menu-item" onClick={action}>
-      <i className={classki}>{icon}</i>
+    <div className={divClass} onClick={action}>
+      <i className={iconClass}>{icon}</i>
       <span>{text}</span>
     </div>
   );

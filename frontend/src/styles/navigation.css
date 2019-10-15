@@ -10,10 +10,12 @@
   justify-content: space-between;
 
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  border-top: 5px solid #a60000;
   box-shadow: inset -7px 0 20px -7px rgba(0, 0, 0, 0.11);
   background-color: white;
   z-index: 9;
 }
+
 .header-logo-container {
   min-width: 250px;
   border-right: 1px solid rgba(0, 0, 0, 0.1);
@@ -21,7 +23,7 @@
   justify-content: center;
   align-items: center;
 
-  color: rgba(0, 0, 0, 0.74);
+  color: #392828;
   font-size: 28px;
 }
 
@@ -98,7 +100,7 @@ nav section {
   display: flex;
 
   font-weight: 400;
-  color: rgba(0, 0, 0, 0.5);
+  color: #846262;
 
   transition-property: background-color;
   transition-duration: 0.2s;
@@ -120,14 +122,8 @@ nav section {
   margin-right: 10px;
 }
 
-.active i {
+.active {
   color: #a60000;
-}
-
-.active span {
-  color: rgba(0, 0, 0, 0.69);
-
-  font-weight: 500;
 }
 
 /* Mid header */
@@ -141,7 +137,7 @@ nav section {
   height: 60px;
   width: calc(100% - 200px - 250px - 30px);
 
-  margin-top: -60px;
+  margin-top: -55px;
   z-index: 10;
   padding: 0 15px;
 }
@@ -196,7 +192,7 @@ nav section {
 }
 
 .nav-action-menu-container {
-  width: 215px;
+  width: 180px;
   position: fixed;
 
   z-index: 999;
@@ -216,19 +212,24 @@ nav section {
 
 .nav-action-menu-item {
   width: 100%;
-  padding: 14px;
+  padding: 10px;
   display: flex;
   align-items: center;
 
   box-sizing: border-box;
 
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 400;
 
   color: rgba(0, 0, 0, 0.755);
 
   transition: background-color 0.2s;
   cursor: pointer;
+}
+
+.nav-action-menu-item i {
+  color: rgba(0, 0, 0, 0.5);
+  font-size: 19px;
 }
 
 .nav-action-menu-item:hover {
@@ -239,8 +240,8 @@ nav section {
   margin-right: 10px;
 }
 
-.nav-minified-icon {
-  font-size: 20px;
+.nav-minified-icon i {
+  font-size: 16px;
   margin-left: 2px;
   margin-right: 12px;
 }

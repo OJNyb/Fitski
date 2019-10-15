@@ -1,6 +1,6 @@
 .plan-week-container {
+  margin-top: 20px;
   position: relative;
-  margin: auto;
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -11,13 +11,14 @@
 .plan-week-container h1 {
   font-size: 30px;
   margin: 0;
+  color: rgba(0, 0, 0, 0.75);
+  transition: color 0.15s;
 }
 
-.plan-week-container a {
-  position: absolute;
-  margin-top: 13px;
-  right: calc(50% - 30px - 50px);
-  color: black;
+.plan-week-container h1:hover {
+  font-size: 30px;
+  margin: 0;
+  color: #a60000;
 }
 
 .plan-days-container {
@@ -25,6 +26,10 @@
   align-items: center;
   justify-content: center;
   flex-direction: column;
+}
+
+.plan-days-container div:first-child {
+  margin-top: 5px;
 }
 
 .plan-day-container {
@@ -45,14 +50,23 @@
 }
 
 .plan-exercise-container {
+  position: relative;
+  width: 300px;
   margin: 4px;
-  width: 350px;
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
-.plan-exercise-container div {
-  width: 120px;
-  display: flex;
-  justify-content: space-between;
+
+.empty-week-text {
+  margin: 0;
+}
+
+.empty-week-text span {
+  color: #a60000;
+  cursor: pointer;
+}
+
+.empty-week-text span:hover {
+  text-decoration: underline;
 }

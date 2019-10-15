@@ -1,14 +1,15 @@
 import React, { useState, useEffect, useContext } from "react";
-import { withRouter } from "react-router-dom";
-import { ExerciseContext } from "../../../context/exerciseContext";
 import { GET_EXERCISES } from "../../../reducers/exerciseTypes";
+import { ExerciseContext } from "../../../context/exerciseContext";
+
+import "./exerciseTable.css";
 
 const Exercises = ({ onAddExercise }) => {
   const { exerciseState, exerciseDispatch } = useContext(ExerciseContext);
   const [search, setSearch] = useState("");
   const [muscleGroup, setMuscleGroup] = useState("All");
 
-  const { exercises, error, isPending, isRejected } = exerciseState;
+  const { exercises, isPending, isRejected } = exerciseState;
 
   useEffect(() => {
     function getExercises() {
@@ -16,7 +17,7 @@ const Exercises = ({ onAddExercise }) => {
     }
 
     getExercises();
-  }, []);
+  }, [exerciseDispatch]);
 
   function handleSearchChange(e) {
     const { value } = e.target;
@@ -54,7 +55,7 @@ const Exercises = ({ onAddExercise }) => {
 
     exercisesDisplay = exercisesToShow.map(x => (
       <div
-        className="edit-week-exercise-item"
+        className="exercises-item"
         key={x._id}
         onClick={() => onAddExercise(x)}
       >
@@ -64,16 +65,15 @@ const Exercises = ({ onAddExercise }) => {
   }
 
   return (
-    <div className="edit-week-exercise-container">
-      <h2>Exercises</h2>
-      <div className="edit-week-exercise-head">
+    <div className="exercises-container">
+      <div className="exercises-head">
         <input
           placeholder="Search..."
           value={search}
           onChange={handleSearchChange}
         />
 
-        <div className="edit-week-exercise-filter-container">
+        <div className="exercises-filter-container">
           <span>Muscle group</span>
           <select onChange={handleSelectChange} selected={muscleGroup}>
             <option>All</option>
@@ -87,9 +87,9 @@ const Exercises = ({ onAddExercise }) => {
           </select>
         </div>
       </div>
-      <div className="edit-week-exercise-body">{exercisesDisplay}</div>
+      <div className="exercises-body">{exercisesDisplay}</div>
     </div>
   );
 };
 
-export default withRouter(Exercises);
+export default Exercises;

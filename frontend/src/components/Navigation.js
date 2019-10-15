@@ -22,22 +22,22 @@ const Navigation = () => {
       <nav>
         <section>
           <h3 className="nav-header">DASHBOARD</h3>
-          <NavLink to="/active" className="nav-item red-hover">
+          {/* <NavLink to="/active" className="nav-item red-hover">
             <i className="material-icons nav-icon">play_arrow</i>
             <span className="nav-span">Active plan</span>
-          </NavLink>
+          </NavLink> */}
           <NavLink to="/plans" className="nav-item red-hover">
             <i className="material-icons nav-icon">view_list</i>
-            <span className="nav-span">My plans</span>
+            <span className="nav-span">Plans</span>
           </NavLink>
 
           <NavLink to="/history" className="nav-item red-hover">
             <i className="material-icons nav-icon">bar_chart</i>
-            <span className="nav-span">Progress</span>
+            <span className="nav-span">History</span>
           </NavLink>
-          <NavLink to="/recipes" className="nav-item red-hover">
+          <NavLink to="/browse" className="nav-item red-hover">
             <i className="material-icons nav-icon">supervised_user_circle</i>
-            <span className="nav-span">Marketplace</span>
+            <span className="nav-span">Browse</span>
           </NavLink>
           <NavLink to="/create-plan" className="nav-item red-hover">
             <i className="material-icons nav-icon">library_add</i>
@@ -57,7 +57,7 @@ const Navigation = () => {
           </NavLink>
           <NavLink to="/settings" className="nav-item red-hover">
             <i className="material-icons nav-icon ">settings</i>
-            <span className="nav-span">Account settings</span>
+            <span className="nav-span">Settings</span>
           </NavLink>
           {/* <NavLink to="/reset" className="nav-item red-hover">
     <i className="material-icons nav-icon">replay</i>

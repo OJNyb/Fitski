@@ -35,7 +35,9 @@ router.get("/", ensureSignedIn, (req, res) => {
   const { session } = req;
   const { userId } = session;
 
-  History.findOne({ user: userId }).then(history => res.json(history));
+  History.findOne({ user: userId })
+    .populate("days.exercises.exercise")
+    .then(history => res.json(history));
 });
 
 // @route POST api/history/activate/:plan_id
@@ -79,8 +81,12 @@ router.post(
         let exercises = [];
         dayExercises.forEach(exercise => {
           const { exercise: exerciseId, sets, reps } = exercise;
+          let setski = [];
+          for (let i = 0; i < sets; i++) {
+            setski.push({ reps });
+          }
 
-          exercises.push({ exercise: exerciseId, sets, reps, unit });
+          exercises.push({ exercise: exerciseId, sets: setski, reps, unit });
         });
 
         const formattedDate = formatHistoryDate(date);
@@ -127,7 +133,7 @@ router.post(
 router.post("/", ensureSignedIn, validateRequest, async (req, res, next) => {
   const { body, session } = req;
   const { userId } = session;
-  const { unit = "kg", date, exerciseId, notes } = body;
+  const { dayId, exerId, date, exerciseId, notes, setId } = body;
 
   const history = await History.findOne({ user: userId });
 
@@ -150,10 +156,20 @@ router.post("/", ensureSignedIn, validateRequest, async (req, res, next) => {
     }
   }
 
-  let newDay = { date: formattedDate };
+  let newDay = { _id: dayId, date: formattedDate };
 
   if (exerciseId) {
-    newDay.exercises = [{ unit, exercise: exerciseId }];
+    newDay.exercises = [
+      {
+        _id: exerId,
+        exercise: exerciseId,
+        sets: [
+          {
+            _id: setId
+          }
+        ]
+      }
+    ];
   } else {
     newDay.notes = notes;
   }
@@ -195,7 +211,7 @@ router.delete(
     const { history } = body;
 
     history
-      .updateOne({ $pull: { days: dayId } })
+      .updateOne({ $pull: { days: { _id: dayId } } })
       .then(reski => {
         if (reski.nModified) {
           res.json({ message: "success" });
@@ -207,7 +223,7 @@ router.delete(
   }
 );
 
-// @route POST api/plan/exercise/:day_id
+// @route POST api/history/exercise/:day_id
 // @desc Add exercise
 // @access Private
 
@@ -221,14 +237,16 @@ router.post(
     const { body, params } = req;
     const { day_id: dayId } = params;
 
-    const { unit = "kg", history, exerciseId } = body;
-
-    const _id = Types.ObjectId();
+    const { history, exerId, exerciseId, setId } = body;
 
     const newExercise = {
-      _id,
-      unit,
-      exercise: exerciseId
+      _id: exerId,
+      exercise: exerciseId,
+      sets: [
+        {
+          _id: setId
+        }
+      ]
     };
 
     history
@@ -236,65 +254,6 @@ router.post(
         { $push: { "days.$[d].exercises": newExercise } },
         {
           arrayFilters: [{ "d._id": dayId }]
-        }
-      )
-      .then(reski => {
-        if (reski.nModified) {
-          res.json({ message: "success", _id });
-        } else {
-          res.status(404).json(createErrorObject(["Couldn't apply update"]));
-        }
-      })
-      .catch(next);
-  }
-);
-
-// @route POST api/history/exercise/:day_id/:exercise_id
-// @desc Change weight/reps/sets
-// @access Private
-
-// TODO: Validation, replace dates if already in
-router.post(
-  "/exercise/:day_id/:exercise_id",
-  ensureSignedIn,
-  validateRequest,
-  validateHistory,
-  async (req, res, next) => {
-    const { body, params } = req;
-    console.log(req);
-
-    const { sets, reps, unit, weight, history } = body;
-    const { day_id: dayId, exercise_id: exerciseId } = params;
-
-    let patch;
-
-    let field;
-
-    if (sets) {
-      patch = sets;
-      field = "sets";
-    } else if (reps) {
-      patch = reps;
-      field = "reps";
-    } else if (weight) {
-      patch = weight;
-      field = "weight";
-    } else if (unit) {
-      patch = unit;
-      field = "unit";
-    }
-
-    console.log(patch);
-    console.log(field);
-    history
-      .updateOne(
-        {
-          $set: {
-            [`days.$[d].exercises.$[e].${field}`]: patch
-          }
-        },
-        {
-          arrayFilters: [{ "d._id": dayId }, { "e._id": exerciseId }]
         }
       )
       .then(reski => {
@@ -332,6 +291,135 @@ router.delete(
         },
         {
           arrayFilters: [{ "d._id": dayId }]
+        }
+      )
+      .then(() => {
+        return res.json({ message: "success" });
+      })
+
+      .catch(next);
+  }
+);
+
+// @route POST api/history/exercise/:day_id/:exercise_id
+// @desc Add set
+// @access Private
+
+// TODO: Better way to see if update failed?
+router.post(
+  "/exercise/:day_id/:exercise_id",
+  ensureSignedIn,
+  validateRequest,
+  validateHistory,
+  (req, res, next) => {
+    const { body, params } = req;
+    const { day_id: dayId, exercise_id: exerciseId } = params;
+
+    const { history, setId } = body;
+
+    const newSet = {
+      _id: setId
+    };
+
+    history
+      .updateOne(
+        { $push: { "days.$[d].exercises.$[e].sets": newSet } },
+        {
+          arrayFilters: [{ "d._id": dayId }, { "e._id": exerciseId }]
+        }
+      )
+      .then(reski => {
+        if (reski.nModified) {
+          res.json({ message: "success" });
+        } else {
+          res.status(404).json(createErrorObject(["Couldn't apply update"]));
+        }
+      })
+      .catch(next);
+  }
+);
+
+// @route POST api/history/exercise/:day_id/:exercise_id/:set_id
+// @desc Edit set
+// @access Private
+
+// TODO: Validation, replace dates if already in
+router.post(
+  "/exercise/:day_id/:exercise_id/:set_id",
+  ensureSignedIn,
+  validateRequest,
+  validateHistory,
+  async (req, res, next) => {
+    const { body, params } = req;
+
+    const { reps, unit, weight, history } = body;
+    const { day_id: dayId, exercise_id: exerciseId, set_id: setId } = params;
+
+    let patch;
+
+    let field;
+
+    if (reps) {
+      patch = reps;
+      field = "reps";
+    } else if (weight) {
+      patch = weight;
+      field = "weight";
+    } else if (unit) {
+      patch = unit;
+      field = "unit";
+    }
+
+    history
+      .updateOne(
+        {
+          $set: {
+            [`days.$[d].exercises.$[e].sets.$[s].${field}`]: patch
+          }
+        },
+        {
+          arrayFilters: [
+            { "d._id": dayId },
+            { "e._id": exerciseId },
+            { "s._id": setId }
+          ]
+        }
+      )
+      .then(reski => {
+        if (reski.nModified) {
+          res.json({ message: "success" });
+        } else {
+          res.status(404).json(createErrorObject(["Couldn't apply update"]));
+        }
+      })
+      .catch(next);
+  }
+);
+
+// @route DELETE api/history/exercise/:day_id/:exercise_id/:set_id
+// @desc Delete set
+// @access Private
+router.delete(
+  "/exercise/:day_id/:exercise_id/:set_id",
+  ensureSignedIn,
+  validateRequest,
+  validateHistory,
+  async (req, res, next) => {
+    const { body, params } = req;
+    const { history } = body;
+    const { day_id: dayId, exercise_id: exerciseId, set_id: setId } = params;
+
+    history
+      .updateOne(
+        {
+          $pull: {
+            "days.$[d].exercises.$[e].sets": {
+              _id: setId
+            }
+          }
+        },
+        {
+          arrayFilters: [{ "d._id": dayId }, { "e._id": exerciseId }]
         }
       )
       .then(() => {

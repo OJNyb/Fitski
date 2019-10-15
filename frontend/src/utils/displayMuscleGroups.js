@@ -1,5 +1,13 @@
 function displayMuscleGroups(exercises) {
-  let muscleGroup = exercises.map(x => x.exercise.muscleGroup);
+  let muscleGroup = exercises.map(x => {
+    if (x.exercise) {
+      return x.exercise.muscleGroup;
+    } else {
+      return "Error";
+    }
+  });
+
+  console.log(muscleGroup);
 
   if (muscleGroup.includes("Triceps") && muscleGroup.includes("Biceps")) {
     muscleGroup.push("Arms");

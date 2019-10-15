@@ -1,12 +1,17 @@
 import React, { useContext } from "react";
-import Modal from "./shared/Modal/Modal";
+import Modal from "../shared/Modal/Modal";
 import axios from "axios";
-import { ADD_PLAN } from "../reducers/plansTypes";
+import { ADD_PLAN } from "../../reducers/plansTypes";
+import { useUser } from "../../context/userContext";
+
 import { Formik, Form, Field } from "formik";
 
 // TOOD: Categories
+const CreatePlanModal = ({ dispatch, hideModal }) => {
+  const user = useUser();
 
-const AddWeeksModal = ({ dispatch, hideModal }) => {
+  console.log(user);
+
   let children = (
     <Formik
       initialValues={{ name: "", description: "", categories: [] }}
@@ -19,9 +24,9 @@ const AddWeeksModal = ({ dispatch, hideModal }) => {
             const { _id, message } = data;
             if (message === "success") {
               hideModal();
-              dispatch({ type: ADD_PLAN, payload: { values, _id } });
+              dispatch({ type: ADD_PLAN, payload: { _id, user, values } });
             } else {
-              console.log("err");
+              console.log("Message wasn't success");
             }
           })
           .catch(err => console.log(err.response));
@@ -38,7 +43,7 @@ const AddWeeksModal = ({ dispatch, hideModal }) => {
             onChange={handleChange}
           />
           <button type="submit" className="theme-btn" disabled={isSubmitting}>
-            Add
+            Create
           </button>
         </Form>
       )}
@@ -46,8 +51,8 @@ const AddWeeksModal = ({ dispatch, hideModal }) => {
   );
 
   return (
-    <Modal header={"Add plan"} children={children} toggleModal={hideModal} />
+    <Modal header={"Create plan"} children={children} toggleModal={hideModal} />
   );
 };
 
-export default AddWeeksModal;
+export default CreatePlanModal;

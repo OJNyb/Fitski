@@ -16,6 +16,10 @@ const exerciseId = Joi.string()
   .objectId()
   .label("Exercise ID");
 
+const setId = Joi.string()
+  .objectId()
+  .label("Set ID");
+
 const notes = Joi.string()
   .min(1)
   .max(9999)
@@ -56,10 +60,14 @@ const addDay = Joi.object()
     date,
     unit,
     notes,
+    dayId,
+    exerId: exerciseId,
     exerciseId,
+    setId,
     date: date.label("Date")
   })
-  .or("notes", "exerciseId");
+  .or("notes", "exerciseId")
+  .and("exerciseId", "setId");
 
 const deleteDay = Joi.object().keys({
   day_id: dayId
@@ -68,23 +76,39 @@ const deleteDay = Joi.object().keys({
 const addExercise = Joi.object().keys({
   unit,
   day_id: dayId,
-  exerciseId: exerciseId.required()
+  exerId: exerciseId,
+  exerciseId: exerciseId.required(),
+  setId: setId.required()
 });
 
-const editExercise = Joi.object()
+const deleteExercise = Joi.object().keys({
+  day_id: dayId,
+  exercise_id: exerciseId
+});
+
+const addSet = Joi.object().keys({
+  unit,
+  day_id: dayId,
+  exercise_id: exerciseId,
+  setId
+});
+
+const editSet = Joi.object()
   .keys({
     sets,
     reps,
     weight,
     unit,
     day_id: dayId,
-    exercise_id: exerciseId
+    exercise_id: exerciseId,
+    set_id: setId
   })
   .or("sets", "reps", "weight", "unit");
 
-const deleteExercise = Joi.object().keys({
+const deleteSet = Joi.object().keys({
   day_id: dayId,
-  exercise_id: exerciseId
+  exercise_id: exerciseId,
+  set_id: setId
 });
 
 module.exports = {
@@ -92,6 +116,8 @@ module.exports = {
   "post/history": addDay,
   "delete/history/:day_id": deleteDay,
   "post/history/exercise/:day_id": addExercise,
-  "post/history/exercise/:day_id/:exercise_id": editExercise,
-  "delete/history/exercise/:day_id/:exercise_id": deleteExercise
+  "delete/history/exercise/:day_id/:exercise_id": deleteExercise,
+  "post/history/exercise/:day_id/:exercise_id": addSet,
+  "post/history/exercise/:day_id/:exercise_id/:set_id": editSet,
+  "delete/history/exercise/:day_id/:exercise_id/:set_id": deleteSet
 };

@@ -8,7 +8,7 @@ const IS_REJECTED = "IS_REJECTED";
 const initialState = {
   data: null,
   error: null,
-  isPending: false,
+  isPending: true,
   isRejected: false
 };
 

@@ -1,10 +1,8 @@
 import React, { useState, useContext } from "react";
-import axios from "axios";
-import { PlanContext } from "../../../context/planContext";
-import { EDIT_EXERCISE } from "../../../reducers/planTypes";
+import { PlanContext } from "../../context/planContext";
 
-import Day from "./Day";
-import Exercises from "./Exercises";
+import DayHOC from "./DayHOC";
+import ExercisesHOC from "./ExercisesHOC";
 import EditWeekNav from "./EditWeekNav";
 
 import "./editWeek.css";
@@ -28,40 +26,6 @@ const EditWeek = ({ match: { params } }) => {
   const currentDay = days[currentDayIndex];
   const { _id: dayId } = currentDay;
 
-  function handleMuscleGroupSubmit(muscleGroup) {
-    axios
-      .post(`/plan/day/${planId}/${weekId}/${dayId}`, { muscleGroup })
-      .then(res => {
-        const { data } = res;
-        const { message } = data;
-        if (message === "success") {
-          dispatch({
-            type: EDIT_EXERCISE,
-            payload: { dayId, weekId, muscleGroup }
-          });
-        }
-      })
-      .catch(err => console.error(err.response));
-  }
-
-  function handleAddExercise(exercise) {
-    axios
-      .post(`/plan/exercise/${planId}/${weekId}/${dayId}`, {
-        exercise: exercise._id
-      })
-      .then(res => {
-        const { data } = res;
-        const { _id } = data;
-        if (_id) {
-          dispatch({
-            type: "ADD_EXERCISE",
-            payload: { _id, weekId, dayId, exercise }
-          });
-        }
-      })
-      .catch(console.error);
-  }
-
   let dayBtns = days.map((day, index) => (
     <button
       key={day._id}
@@ -80,9 +44,9 @@ const EditWeek = ({ match: { params } }) => {
           <h2 className="edit-week-header">Days</h2>
 
           <div className="edit-week-add-days-container">{dayBtns}</div>
-          <Day day={currentDay} />
+          <DayHOC day={currentDay} />
         </div>
-        <Exercises key={currentDay._id} onAddExercise={handleAddExercise} />
+        <ExercisesHOC dayId={currentDay._id} key={currentDay._id} />
       </div>
     </>
   );

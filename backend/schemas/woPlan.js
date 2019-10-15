@@ -4,21 +4,18 @@ const Joi = require("./joi");
 
 // AD
 
-const planId = Joi.string()
+const _id = Joi.string()
   .objectId()
-  .label("Workout plan ID");
+  .required()
+  .label("ID");
 
-const weekId = Joi.string()
-  .objectId()
-  .label("Week ID");
+const planId = _id.label("Workout plan ID");
 
-const dayId = Joi.string()
-  .objectId()
-  .label("Day ID");
+const weekId = _id.label("Week ID");
 
-const exerciseId = Joi.string()
-  .objectId()
-  .label("Exercise ID");
+const dayId = _id.label("Day ID");
+
+const exerciseId = _id.label("Exercise ID");
 
 const name = Joi.string()
   .min(1)
@@ -39,18 +36,14 @@ const categories = Joi.array()
   .label("Categories");
 
 const sets = Joi.number()
-  .min(1)
-  .max(50)
+  .min(0)
+  .max(999999)
   .label("Sets");
 
 const reps = Joi.number()
-  .min(1)
-  .max(1000)
-  .label("Reps");
-
-const rest = Joi.number()
   .min(0)
-  .max(99999);
+  .max(999999)
+  .label("Reps");
 
 const getWorkoutPlan = Joi.object().keys({
   plan_id: planId
@@ -100,7 +93,7 @@ const editWeek = Joi.object()
 
 const deleteWeek = Joi.object().keys({
   plan_id: planId,
-  weed_id: weekId
+  week_id: weekId
 });
 
 const editDay = Joi.object().keys({
@@ -119,18 +112,18 @@ const clearDay = Joi.object().keys({
 
 const addExercise = Joi.object().keys({
   plan_id: planId,
-  weed_id: weekId,
+  week_id: weekId,
   day_id: dayId,
   exercise: exerciseId.required(),
+  _id,
   sets,
-  reps,
-  rest
+  reps
 });
 
 const editExercise = Joi.object()
   .keys({
     plan_id: planId,
-    weed_id: weekId,
+    week_id: weekId,
     day_id: dayId,
     exercise_id: exerciseId,
     sets,
@@ -140,7 +133,7 @@ const editExercise = Joi.object()
 
 const deleteExercise = Joi.object().keys({
   plan_id: planId,
-  weed_id: weekId,
+  week_id: weekId,
   day_id: dayId,
   exercise_id: exerciseId
 });

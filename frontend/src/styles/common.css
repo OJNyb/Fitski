@@ -1,8 +1,9 @@
 .theme-btn,
+.theme-btn-filled,
 .theme-btn-no-border,
-.theme-btn-filled {
+.gray-btn {
   border-radius: 9999px;
-  transition: background-color 0.2s;
+  transition: background-color 0.2s, color 0.2s;
 }
 
 .theme-btn {
@@ -36,6 +37,14 @@
   background-color: #890000;
 }
 
+.gray-btn {
+  color: gray;
+}
+
+.gray-btn:hover {
+  background-color: rgb(228, 228, 228);
+}
+
 .flex-col {
   display: flex;
   flex-direction: column;
@@ -45,4 +54,29 @@
   align-content: center;
   align-items: center;
   justify-content: center;
+}
+
+.delete-color i {
+  color: #e0245ed8 !important;
+}
+.delete-color span {
+  color: #e0245e !important;
+}
+
+.reversed-icon {
+  transform: rotate(0.5turn);
+}
+
+/* SVGs */
+.trash-bin-min {
+  color: rgb(224, 36, 94);
+  height: 1.25em;
+  max-width: 100%;
+  position: relative;
+  fill: currentColor;
+  margin-right: 12px;
+}
+
+.trash-bin-min g {
+  font-size: 15px;
 }

@@ -15,6 +15,8 @@ async function validateWOPlan(req, res, next) {
 
   body.history = history;
 
+  console.log(dayId);
+
   const { days } = history;
   const dayIndex = days.map(x => x.id).indexOf(dayId);
   if (dayIndex === -1) {

@@ -47,14 +47,16 @@ const NavMid = ({
         {midContent && <div className="nav-mid-header-item">{midContent}</div>}
 
         <div className="nav-mid-header-item nav-mid-header-button-container ">
-          <button
-            className="nav-mid-header-more-btn theme-btn"
-            onClick={handleMoreActionClick}
-          >
-            <i className="material-icons nav-mid-header-more-icon">
-              more_horiz
-            </i>
-          </button>
+          {actionMenuChildren && (
+            <button
+              className="nav-mid-header-more-btn theme-btn"
+              onClick={handleMoreActionClick}
+            >
+              <i className="material-icons nav-mid-header-more-icon">
+                more_horiz
+              </i>
+            </button>
+          )}
 
           <button
             className="nav-mid-header-text-btn theme-btn"

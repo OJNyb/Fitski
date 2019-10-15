@@ -143,7 +143,7 @@ router.post("/login", ensureSignedOut, validateRequest, async (req, res) => {
   const { body, session } = req;
   const { email, password } = body;
 
-  const user = await User.findOne({ email });
+  const user = await User.findOne({ email }).select("_id password");
 
   if (!user || !(await user.matchesPassword(password))) {
     return res
@@ -162,7 +162,6 @@ router.post("/login", ensureSignedOut, validateRequest, async (req, res) => {
 // @desc Logout User
 // @access Private
 router.get("/logout", ensureSignedIn, (req, res, next) => {
-  // return res.json({ msg: "gay" });
   req.session.destroy(err => {
     if (err) {
       next(err);

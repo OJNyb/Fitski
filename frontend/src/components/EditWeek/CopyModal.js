@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import Modal from "../../shared/Modal/Modal";
-import axios from "axios";
+import Modal from "../shared/Modal/Modal";
 import { withRouter } from "react-router-dom";
 
 const CopyModal = ({

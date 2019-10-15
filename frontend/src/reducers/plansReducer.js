@@ -31,12 +31,14 @@ function planReducer(state, action) {
     }
 
     case ADD_PLAN: {
-      const { _id, values } = payload;
+      //
+      const { _id, values, user } = payload;
       const { woPlans } = state;
 
       const newPlan = {
         ...values,
         _id,
+        user,
         weeks: []
       };
 

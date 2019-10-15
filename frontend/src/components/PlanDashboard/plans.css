@@ -1,3 +1,30 @@
+.plans-table {
+  margin: 30px auto;
+  text-align: left;
+  width: 40%;
+  border-collapse: collapse;
+}
+
+.plans-table th {
+  color: #a60000;
+  border-bottom: 1px solid #a60000;
+}
+
+.plans-table tbody tr {
+  cursor: pointer;
+}
+
+.plans-table td {
+  color: rgba(0, 0, 0, 0.734);
+}
+
+.plans-table tbody tr:hover td {
+  color: black;
+}
+
+/* MODAL */
+
+/* Add plan */
 .add-plan-form {
   width: 90%;
   display: flex;
