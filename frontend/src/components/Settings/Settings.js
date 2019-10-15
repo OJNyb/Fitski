@@ -1,28 +1,16 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { useUser } from "../../context/userContext";
 
 const Settings = () => {
-  useEffect(() => {
-    let isCancelled = false;
-    function fetchTimezones() {
-      axios
-        .get(
-          "http://api.timezonedb.com/v2.1/list-time-zone?key=HQGW4Z25HG4O&format=json"
-        )
-        .then(res => {
-          if (!isCancelled) {
-            console.log(res);
-          }
-        })
-        .catch(err => console.error(err));
-    }
+  const user = useUser();
 
-    fetchTimezones();
-    return () => {
-      isCancelled = true;
-    };
-  }, []);
+  const { defaultUnit } = user;
+
+  console.log(user);
+
+  console.log(navigator.geolocation.getCurrentPosition(e => console.log(e)));
   return (
     <div className="settings-container">
       <div className="settings-menu">
@@ -37,6 +25,14 @@ const Settings = () => {
           <h6>Date & Time</h6>
         </section>
       </div>
+      <div>Timezones & weight unit & delete account for now</div>
+      <form>
+        Weight unit:
+        <select value={defaultUnit}>
+          <option value="kgs">kgs</option>
+          <option value="lbs">lbs</option>
+        </select>
+      </form>
     </div>
   );
 };
