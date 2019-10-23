@@ -1,12 +1,14 @@
 import React, { useRef, useState, useEffect } from "react";
 import { withRouter } from "react-router-dom";
 
+import TrashBin from "../shared/SVGs/TrashBin";
+
 const DayExercise = ({
   dayId,
   exercise,
-  showWeight,
   onAddSet,
   handleEditSet,
+  handleDeleteSet,
   onDeleteExercise
 }) => {
   const {
@@ -24,9 +26,9 @@ const DayExercise = ({
       set={set}
       dayId={dayId}
       exerId={exerId}
-      handleEditSet={handleEditSet}
-      showWeight={showWeight}
       key={set._id}
+      handleEditSet={handleEditSet}
+      onDeleteSet={handleDeleteSet}
     />
   ));
 
@@ -44,7 +46,7 @@ const DayExercise = ({
           </button>
           <button
             className="add-card-remove-btn theme-btn-no-border"
-            onClick={() => console.log("")}
+            onClick={() => onDeleteExercise(exerId)}
           >
             <i className="material-icons ">delete_outline</i>
           </button>
@@ -57,8 +59,8 @@ const DayExercise = ({
   );
 };
 
-const SetColumn = ({ set, dayId, exerId, showWeight, handleEditSet }) => {
-  const { _id, reps, weight } = set;
+const SetColumn = ({ set, exerId, handleEditSet, onDeleteSet }) => {
+  const { reps, weight, _id: setId } = set;
   const [inputReps, setInputReps] = useState(reps || "");
   const [inputWeight, setInputWeight] = useState(weight || "");
   const repsRef = useRef();
@@ -141,30 +143,29 @@ const SetColumn = ({ set, dayId, exerId, showWeight, handleEditSet }) => {
       lastRepsReqRef.current = vReps;
     }
 
-    handleEditSet(values, dayId, exerId, _id);
+    handleEditSet(values, exerId, setId);
   }
 
   return (
     <div className="add-card-column">
       <button
         className="add-card-remove-btn theme-btn-no-border"
-        onClick={() => console.log("")}
+        onClick={() => onDeleteSet(exerId, setId)}
+        tabIndex="-1"
       >
-        <i className="material-icons ">delete_outline</i>
+        <TrashBin />
       </button>
       <form className="history-set-row">
-        {showWeight && (
-          <div className="history-row">
-            <input
-              name="weight"
-              type="number"
-              value={inputWeight}
-              onChange={onChange}
-              onBlur={onInputBlur}
-            />
-            <span>kg</span>
-          </div>
-        )}
+        <div className="history-row">
+          <input
+            name="weight"
+            type="number"
+            value={inputWeight}
+            onChange={onChange}
+            onBlur={onInputBlur}
+          />
+          <span>kg</span>
+        </div>
 
         <div className="history-row">
           <input

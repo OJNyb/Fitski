@@ -21,8 +21,7 @@ const HistorySchema = new Schema(
               {
                 _id,
                 reps: Number,
-                weight: Number,
-                unit: String
+                weight: Number
               }
             ]
           }

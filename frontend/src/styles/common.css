@@ -13,7 +13,8 @@
   border: 1px solid #a60000;
 }
 
-.theme-btn:hover {
+.theme-btn:hover,
+.theme-btn:focus {
   background-color: #faefef;
 }
 
@@ -22,7 +23,9 @@
 }
 
 .theme-btn-filled:hover,
-.theme-btn-no-border:hover {
+.theme-btn-no-border:hover,
+.theme-btn-filled:focus,
+.theme-btn-no-border:focus {
   background-color: #a6000010;
 }
 
@@ -33,7 +36,8 @@
   border: 1px solid #a60000;
 }
 
-.theme-btn-filled:hover {
+.theme-btn-filled:hover,
+.theme-btn-filled:focus {
   background-color: #890000;
 }
 
@@ -74,9 +78,5 @@
   max-width: 100%;
   position: relative;
   fill: currentColor;
-  margin-right: 12px;
-}
-
-.trash-bin-min g {
-  font-size: 15px;
+  /* margin-right: 12px; */
 }

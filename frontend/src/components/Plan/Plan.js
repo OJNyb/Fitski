@@ -6,6 +6,7 @@ import PlanNav from "./PlanNav";
 import PlanText from "./PlanText";
 import AddWeeksModal from "./AddWeeksModal";
 import DeletePlanModal from "./DeletePlanModal";
+import ActivatePlanModal from "./ActivatePlanModal";
 
 import "./plan.css";
 
@@ -18,7 +19,7 @@ const PlanOverview = ({ history }) => {
   const [showModal, setShowModal] = useState(false);
   const { user, name, weeks, description, _id: planId } = woPlan;
 
-  const { username, avatar } = user;
+  // const { username, avatar } = user;
 
   console.log(user);
 
@@ -39,6 +40,10 @@ const PlanOverview = ({ history }) => {
           hideModal={hideModal}
         />
       );
+    }
+
+    if (showModal === "activate") {
+      modal = <ActivatePlanModal planId={planId} hideModal={hideModal} />;
     }
   }
 

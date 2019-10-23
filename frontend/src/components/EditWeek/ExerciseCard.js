@@ -123,7 +123,7 @@ const DayExercise = ({ dayId, exercise, onEditExercise, onDeleteExercise }) => {
   return (
     <div className="edit-week-add-card">
       <div>
-        <button className="gray-btn" onClick={onMoreClick}>
+        <button className="gray-btn" onClick={onMoreClick} tabIndex="-1">
           <i className="material-icons">more_vert</i>
         </button>
         {showMore && (

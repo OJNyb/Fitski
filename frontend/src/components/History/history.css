@@ -4,19 +4,36 @@
   margin-top: 20px;
 }
 
-.react-calendar {
+.calendar-circle {
+  margin: 1px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
 }
 
-.calendar-circle {
-  width: 5px;
-  height: 5px;
-
-  border-radius: 50%;
-  background-color: blue;
-
+.calendar-circle-container {
+  margin-top: 15px;
   position: absolute;
+  display: flex;
+}
 
-  margin-top: 20px;
+.log-group-red {
+  background-color: red;
+}
+.log-group-green {
+  background-color: green;
+}
+.log-group-purple {
+  background-color: purple;
+}
+.log-group-blue {
+  background-color: blue;
+}
+.log-group-light-blue {
+  background-color: skyblue;
+}
+.log-group-yellow {
+  background-color: yellow;
 }
 
 /* RIGHT SIDE */

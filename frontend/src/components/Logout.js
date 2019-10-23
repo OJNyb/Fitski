@@ -1,7 +1,7 @@
 import React from "react";
 import { useAxios } from "../hooks/useAxios";
-import { Redirect } from "react-router-dom";
-import Axios from "axios";
+
+import Loading from "./shared/SVGs/Loading";
 
 const Logout = () => {
   const { state } = useAxios("/user/logout");
@@ -13,7 +13,7 @@ const Logout = () => {
   console.log(state);
 
   if (isPending) {
-    return <p>Loading...</p>;
+    return <Loading />;
   }
 
   if (isRejected) {

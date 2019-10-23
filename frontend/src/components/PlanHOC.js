@@ -1,7 +1,7 @@
 import React from "react";
 import { Route, withRouter } from "react-router-dom";
 import { PlanContext } from "../context/planContext";
-import { ExerciseContext } from "../context/exerciseContext";
+import Loading from "./shared/SVGs/Loading";
 
 import usePlan from "../hooks/usePlan";
 import useExercises from "../hooks/useExercises";
@@ -21,7 +21,7 @@ const PlanHOC = props => {
   const { woPlan, isPending, isRejected } = state;
 
   if (isPending) {
-    return <p>Loading...</p>;
+    return <Loading />;
   }
 
   if (isRejected) {

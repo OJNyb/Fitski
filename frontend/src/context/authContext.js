@@ -2,9 +2,7 @@ import React from "react";
 import { useAsync } from "react-async";
 import axios from "axios";
 import * as authClient from "../utils/authClient";
-// import { bootstrapAppData } from "../utils/bootstrap";
-// import * as authClient from "../utils/auth-client";
-// import {FullPageSpinner} from '../components/lib'
+import Loading from "../components/shared/SVGs/Loading";
 
 const AuthContext = React.createContext();
 
@@ -51,7 +49,7 @@ function AuthProvider(props) {
 
   if (!firstAttemptFinished) {
     if (isPending) {
-      return <p>Loading...</p>;
+      return <Loading />;
     }
     if (isRejected) {
       return (

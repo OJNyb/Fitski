@@ -50,7 +50,7 @@ const Day = ({ day, index }) => {
     <div className="plan-day-container">
       <h2>Day {index + 1}</h2>
       {/* <h3>{muscleGroup}</h3> */}
-      {exerciseDisplay}
+      <div className="plan-exercises-container">{exerciseDisplay}</div>
     </div>
   );
 };
@@ -64,11 +64,13 @@ const Exercise = ({ exercise }) => {
 
   return (
     <div className="plan-exercise-container">
-      <span className="plan-exercise-name">{name}</span>
-
-      <span className="plan-exercise-volume">
-        {sets || 0} x {reps || 0}
+      <span className="plan-exercise-name">
+        {name} - {sets || 0} sets of {reps || 0} reps
       </span>
+
+      {/* <span className="plan-exercise-volume">
+        {sets || 0} x {reps || 0}
+      </span> */}
     </div>
   );
 };

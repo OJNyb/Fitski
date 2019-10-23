@@ -1,4 +1,4 @@
-function displayMuscleGroups(exercises) {
+function formatMuscleGroups(exercises) {
   let muscleGroup = exercises.map(x => {
     if (x.exercise) {
       return x.exercise.muscleGroup;
@@ -6,8 +6,6 @@ function displayMuscleGroups(exercises) {
       return "Error";
     }
   });
-
-  console.log(muscleGroup);
 
   if (muscleGroup.includes("Triceps") && muscleGroup.includes("Biceps")) {
     muscleGroup.push("Arms");
@@ -29,13 +27,16 @@ function displayMuscleGroups(exercises) {
       }
 
       return b.length - a.length;
-    })
-    .reduce((accu, curr) => {
-      if (accu.length) {
-        accu += "/";
-      }
-      return accu + `${curr}`;
-    }, "");
+    });
 }
 
-export { displayMuscleGroups };
+function displayMuscleGroups(exercises) {
+  return formatMuscleGroups(exercises).reduce((accu, curr) => {
+    if (accu.length) {
+      accu += "/";
+    }
+    return accu + `${curr}`;
+  }, "");
+}
+
+export { formatMuscleGroups, displayMuscleGroups };

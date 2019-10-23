@@ -175,8 +175,6 @@ function planReducer(state, action) {
         _id: setId
       };
 
-      console.log(dayId);
-      console.log(days);
       let day = days.find(x => x._id === dayId);
       let exercise = day.exercises.find(x => x._id === exerId);
       exercise.sets.push(newSet);
@@ -215,14 +213,12 @@ function planReducer(state, action) {
 
       let day = days.find(x => x._id === dayId);
 
-      const { exercises } = day;
+      let { exercises } = day;
       let exercise = exercises.find(x => x._id === exerId);
 
       let { sets } = exercise;
-
-      let newSets = sets.filter(x => x._id === setId);
-
-      sets = newSets;
+      let setIndex = sets.map(x => x._id).indexOf(setId);
+      sets.splice(setIndex, 1);
 
       return {
         ...state,

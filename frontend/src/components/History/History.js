@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import useHistory from "../../hooks/useHistory";
 import { addMGC, formatHistoryDate } from "../../utils/formatHistoryDate";
+import { formatMuscleGroups } from "../../utils/displayMuscleGroups";
 
 import Calendar from "react-calendar";
 import EditDayTable from "./EditDayTable";
 import Exercises from "../shared/Exercises/Exercises";
+import Loading from "../shared/SVGs/Loading";
 
 import "./history.css";
 import {
@@ -17,12 +19,6 @@ import {
   deleteSet
 } from "../../utils/historyClient";
 
-// function addDay(dispatch, date, Set) {
-// function addExercise(dispatch, dayId, exercise) {
-// function deleteDay(dayId) {
-// function editExercise(dispatch, values, dayId, exerId) {
-// function deleteExercise(dispatch, dayId, exerId) {
-
 const History = () => {
   const { state, dispatch } = useHistory("/history");
   const [date, setDate] = useState(new Date());
@@ -32,8 +28,6 @@ const History = () => {
   const [showExercises, setShowExercises] = useState(false);
 
   const { history, error, isPending, isRejected } = state;
-
-  console.log(history);
 
   function onDateChange(date) {
     setDate(date);
@@ -45,7 +39,7 @@ const History = () => {
   }
 
   if (isPending) {
-    return <p>Loading...</p>;
+    return <Loading />;
   }
 
   const historyDates = history.days.map(x => x.date);
@@ -80,12 +74,11 @@ const History = () => {
   }
 
   // get dayId
-  function handleEditSet(values, dayId, exerId, setId) {
-    console.log(dayId, exerId);
+  function handleEditSet(values, exerId, setId) {
     editSet(dispatch, values, dayId, exerId, setId);
   }
 
-  function handleDeleteExercise(_, exerId) {
+  function handleDeleteExercise(exerId) {
     const { notes, exercises } = currentDay;
     if (!notes && exercises.length === 1) {
       deleteDay(dispatch, dayId);
@@ -94,12 +87,28 @@ const History = () => {
     }
   }
 
-  if (isRejected) {
-    return <p>Error...</p>;
+  function handleDeleteSet(exerId, setId) {
+    deleteSet(dispatch, dayId, exerId, setId);
   }
 
-  if (isPending) {
-    return <p>Loading...</p>;
+  function displayGroupCircle(dateski, view) {
+    if (view === "month" && dateski !== date) {
+      dateski = formatHistoryDate(dateski);
+
+      if (dateski !== formattedDate) {
+        let index = historyDates.indexOf(dateski);
+        if (index !== -1) {
+          let muscleGroups = formatMuscleGroups(history.days[index].exercises);
+
+          let circles = muscleGroups.map(x => {
+            let color = addMGC(x);
+            return <div className={"calendar-circle " + color} key={x} />;
+          });
+
+          return <div className="calendar-circle-container">{circles}</div>;
+        }
+      }
+    }
   }
 
   let rightDisplay;
@@ -115,21 +124,6 @@ const History = () => {
     );
   }
 
-  function displayGroupCircle(date, view) {
-    if (view === "month") {
-      date = formatHistoryDate(date);
-      let index = historyDates.indexOf(date);
-      if (index !== -1) {
-        const { muscleGroup } = history.days[index];
-
-        muscleGroup.forEach(x => {
-          let color = addMGC(x);
-          return <div className={"calendar-circle" + color} />;
-        });
-      }
-    }
-  }
-
   let leftDisplay;
 
   if (dayIndex !== -1) {
@@ -141,6 +135,7 @@ const History = () => {
           showWeight={true}
           handleAddSet={handleAddSet}
           handleEditSet={handleEditSet}
+          handleDeleteSet={handleDeleteSet}
           handleDeleteExercise={handleDeleteExercise}
         />
       </div>

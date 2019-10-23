@@ -19,6 +19,7 @@ const PlanNav = ({ planName, setShowModal }) => {
         backText={planName}
         backAction={() => setRedirect(true)}
         rightBtnText={rightBtnText}
+        rightBtnAction={() => setShowModal("activate")}
         actionMenuChildren={[
           {
             icon: "edit",

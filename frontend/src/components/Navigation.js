@@ -35,10 +35,10 @@ const Navigation = () => {
             <i className="material-icons nav-icon">bar_chart</i>
             <span className="nav-span">History</span>
           </NavLink>
-          <NavLink to="/browse" className="nav-item red-hover">
+          {/* <NavLink to="/browse" className="nav-item red-hover">
             <i className="material-icons nav-icon">supervised_user_circle</i>
             <span className="nav-span">Browse</span>
-          </NavLink>
+          </NavLink> */}
           <NavLink to="/create-plan" className="nav-item red-hover">
             <i className="material-icons nav-icon">library_add</i>
             <span className="nav-span">Create plan</span>
@@ -47,14 +47,14 @@ const Navigation = () => {
 
         <section className="nav-account-container">
           <h3 className="nav-header">ACCOUNT</h3>
-          <NavLink to="/profile" className="nav-item red-hover">
+          {/* <NavLink to="/profile" className="nav-item red-hover">
             <img
               className="nav-sidebar-avatar"
               src="https://pbs.twimg.com/profile_images/971421611030171658/ldC9VK6w_400x400.jpg"
               alt="avatar"
             />
             <span className="nav-span">Profile</span>
-          </NavLink>
+          </NavLink> */}
           <NavLink to="/settings" className="nav-item red-hover">
             <i className="material-icons nav-icon ">settings</i>
             <span className="nav-span">Settings</span>

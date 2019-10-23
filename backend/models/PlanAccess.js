@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const { Schema } = mongoose;
 const { ObjectId } = Schema.Types;
 
-const HistorySchema = new Schema(
+const PlanAccess = new Schema(
   {
     woPlan: ObjectId,
     whitelist: [
@@ -14,4 +14,4 @@ const HistorySchema = new Schema(
   { timestamps: true }
 );
 
-module.exports = User = mongoose.model("history", HistorySchema);
+module.exports = User = mongoose.model("planAccess", PlanAccess);

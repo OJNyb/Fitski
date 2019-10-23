@@ -3,6 +3,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 import { useUser } from "./context/userContext";
 import ScrollToTop from "./utils/ScrollToTop";
 import "./App.css";
+import Loading from "./components/shared/SVGs/Loading";
 
 import "./styles/common.css";
 
@@ -17,7 +18,7 @@ const App = () => {
     loadAuthenticatedApp();
   }, []);
   return (
-    <React.Suspense fallback={<p>Loading...</p>}>
+    <React.Suspense fallback={<Loading />}>
       <Router>
         <ScrollToTop>
           {user ? <AuthenticatedApp /> : <UnauthenticatedApp />}

@@ -1,0 +1,10 @@
+.loading-container {
+  position: fixed;
+  margin: auto;
+  left: calc(50vw);
+  top: calc(30vh);
+}
+
+.loading-container svg {
+  stroke: #a60000;
+}

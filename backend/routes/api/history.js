@@ -1,12 +1,14 @@
 const express = require("express");
 const router = express.Router();
 const { Types } = require("mongoose");
+const { ObjectId } = Types;
 
-// TODO: Weights
+const { formatHistoryDate } = require("../../utils/formatHistoryDate");
 
 // Models
 const WOPlan = require("../../models/WOPlan");
 const History = require("../../models/History");
+const PlanAccess = require("../../models/PlanAccess");
 
 // Validation
 const { ensureSignedIn } = require("../../middlewares/auth");
@@ -17,14 +19,6 @@ const SchemaValidator = require("../../middlewares/SchemaValidator");
 const validateRequest = SchemaValidator(true);
 
 const createErrorObject = require("../../utils/createErrorObject");
-
-function formatHistoryDate(date) {
-  let year = date.getFullYear();
-  let month = date.getMonth();
-  let day = date.getDate();
-
-  return year * 10000 + month * 100 + day;
-}
 
 // TODO: Validatation, stadardize dates?
 
@@ -56,15 +50,27 @@ router.post(
     const { body, params, session } = req;
 
     const { userId } = session;
-    const { unit = "kg", startDate } = body;
+    const { startDate } = body;
     const { plan_id: planId } = params;
 
     let history = await History.findOne({ user: userId });
     let woPlan = await WOPlan.findById(planId);
 
-    let { days } = history;
+    const { user, weeks } = woPlan;
 
-    const { weeks } = woPlan;
+    if (user.toString() !== userId) {
+      let planAccess = await PlanAccess.findOne({ woPlan: planId });
+
+      let userIndex = planAccess.whitelist.map(x => x.user).indexOf(userId);
+
+      if (userIndex === -1) {
+        return res
+          .status(403)
+          .json(createErrorObject(["You do not have access to this plan"]));
+      }
+    }
+
+    let { days } = history;
 
     let newDays = [];
 
@@ -74,7 +80,7 @@ router.post(
       week.days.forEach(day => {
         const { restDay, exercises: dayExercises } = day;
         if (restDay || !dayExercises.length) {
-          date.setDate(myDate.getDate() + 1);
+          date.setDate(date.getDate() + 1);
           return;
         }
 
@@ -83,41 +89,48 @@ router.post(
           const { exercise: exerciseId, sets, reps } = exercise;
           let setski = [];
           for (let i = 0; i < sets; i++) {
-            setski.push({ reps });
+            let repId = new ObjectId();
+            setski.push({ _id: repId, reps });
           }
 
-          exercises.push({ exercise: exerciseId, sets: setski, reps, unit });
+          let exerId = new ObjectId();
+          exercises.push({ _id: exerId, exercise: exerciseId, sets: setski });
         });
+
+        let dayskiId = new ObjectId();
 
         const formattedDate = formatHistoryDate(date);
         newDays.push({
           exercises,
-          date: formattedDate,
-          woPlan: planId
+          _id: dayskiId,
+          woPlan: planId,
+          date: formattedDate
         });
 
-        date.setDate(myDate.getDate() + 1);
+        date.setDate(date.getDate() + 1);
       })
     );
 
-    let formattedStartDate = formatHistoryDate(startDate);
+    let formattedStartDate = formatHistoryDate(new Date(startDate));
 
     if (days[days.length - 1].date >= formattedStartDate) {
       let dates = days.map(x => x.date);
       for (let i = 0; i < dates.length; i++) {
-        if (date >= formattedCurrentDate) {
+        if (dates[i] >= formattedStartDate) {
           days = days.slice(0, i);
-          return;
+          break;
         }
       }
     }
 
-    days.push(newDays);
+    newDays.forEach(x => days.push(x));
 
+    // push each
+    //
     history
       .updateOne({
         $set: {
-          days
+          days: days
         }
       })
       .then(() => res.json({ message: "success" }))
@@ -145,7 +158,7 @@ router.post("/", ensureSignedIn, validateRequest, async (req, res, next) => {
 
   let dates = days.map(x => x.date);
 
-  let insertIndex;
+  let insertIndex = -1;
 
   for (let i = dates.length - 1; i >= 0; i--) {
     if (dates[i] === formattedDate) {
@@ -178,9 +191,11 @@ router.post("/", ensureSignedIn, validateRequest, async (req, res, next) => {
     $each: [newDay]
   };
 
-  if (insertIndex) {
+  if (insertIndex !== -1) {
     update.$position = insertIndex;
   }
+
+  console.log(update);
 
   history
     .updateOne({ $push: { days: update } })
@@ -352,7 +367,7 @@ router.post(
   async (req, res, next) => {
     const { body, params } = req;
 
-    const { reps, unit, weight, history } = body;
+    const { reps, weight, history } = body;
     const { day_id: dayId, exercise_id: exerciseId, set_id: setId } = params;
 
     let patch;
@@ -365,9 +380,6 @@ router.post(
     } else if (weight) {
       patch = weight;
       field = "weight";
-    } else if (unit) {
-      patch = unit;
-      field = "unit";
     }
 
     history

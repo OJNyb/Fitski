@@ -12,6 +12,21 @@ import {
 
 const { ObjectId } = Types;
 
+// @route POST api/history/activate/:plan_id
+// @desc Activate workout plan
+// @access Private
+
+// const { startDate } = body;
+// const { plan_id: planId } = params;
+
+function activatePlan(planId, startDate) {
+  console.log("gay");
+  axios
+    .post(`/history/activate/${planId}`, { startDate })
+    .then(res => console.log(res))
+    .catch(err => console.log(err));
+}
+
 // @route POST api/history
 // @desc  Add exercise/notes to new day
 // const { unit = "kg", date, exerciseId, notes } = body;
@@ -231,6 +246,7 @@ function deleteSet(dispatch, dayId, exerId, setId) {
 }
 
 export {
+  activatePlan,
   addDay,
   deleteDay,
   addExercise,
