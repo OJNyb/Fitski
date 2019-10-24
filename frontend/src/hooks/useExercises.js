@@ -2,11 +2,7 @@ import { useEffect, useReducer } from "react";
 import axios from "axios";
 
 import exerciseReducer from "../reducers/exerciseReducer";
-import {
-  IS_PENDING,
-  IS_REJECTED,
-  SET_EXERCISES
-} from "../reducers/exerciseTypes";
+import { IS_PENDING, IS_REJECTED, SET_EXERCISES } from "../types/exerciseTypes";
 
 const initialState = {
   error: null,

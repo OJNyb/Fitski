@@ -9,7 +9,7 @@ import {
   ADD_EXERCISE,
   EDIT_EXERCISE,
   DELETE_EXERCISE
-} from "./planTypes";
+} from "../types/planTypes";
 
 // TODO: If !week/day/woplan
 

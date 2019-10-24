@@ -1,0 +1,4 @@
+const SINGLE_NAV = "SINGLE_NAV";
+const DOUBLE_NAV = "DOUBLE_NAV";
+
+export { SINGLE_NAV, DOUBLE_NAV };

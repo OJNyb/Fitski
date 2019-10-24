@@ -18,7 +18,7 @@ const App = () => {
     loadAuthenticatedApp();
   }, []);
   return (
-    <React.Suspense fallback={<Loading />}>
+    <React.Suspense fallback={null}>
       <Router>
         <ScrollToTop>
           {user ? <AuthenticatedApp /> : <UnauthenticatedApp />}

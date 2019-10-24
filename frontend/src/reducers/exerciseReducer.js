@@ -3,7 +3,7 @@ import {
   IS_REJECTED,
   SET_EXERCISES,
   GET_EXERCISES
-} from "./exerciseTypes";
+} from "../types/exerciseTypes";
 
 // TODO: If !week/day/woplan
 

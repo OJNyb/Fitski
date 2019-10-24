@@ -1,4 +1,9 @@
-import { SET_PLANS, ADD_PLAN, IS_PENDING, IS_REJECTED } from "./plansTypes";
+import {
+  SET_PLANS,
+  ADD_PLAN,
+  IS_PENDING,
+  IS_REJECTED
+} from "../types/plansTypes";
 
 // TODO: If !week/day/woplan
 

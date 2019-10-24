@@ -1,0 +1,40 @@
+.mobile-exercises-container {
+  width: 100%;
+}
+
+.mobile-exercises-head {
+  display: flex;
+  padding: 10px;
+  background-color: rgb(252, 246, 246);
+}
+
+.mobile-exercises-head i {
+  color: gray;
+}
+
+.mobile-exercises-head input {
+  width: 100%;
+  margin: 0 0 0 10px;
+  padding-left: 7px;
+  padding-bottom: 4px;
+
+  font-size: 16px;
+
+  background-color: inherit;
+  outline: none;
+  border-top: 0;
+  border-left: 0;
+  border-right: 0;
+  border-bottom: 1px gray #a60000;
+}
+
+.mobile-exercises-head input:focus {
+  border-bottom: 1px solid #a60000;
+}
+
+.mobile-exercise-item {
+  padding: 10px;
+  border-bottom: 1px solid silver;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.8);
+}

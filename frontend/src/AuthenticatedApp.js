@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Route } from "react-router-dom";
 
 import CreatePlan from "./components/CreatePlan/CreatePlan.js";
@@ -9,19 +9,42 @@ import Logout from "./components/Logout";
 import History from "./components/History/History";
 import Settings from "./components/Settings/Settings";
 
+import { NavContext } from "./context/navContext";
+import useNav from "./hooks/useNav";
 import { ExerciseContext } from "./context/exerciseContext";
 import useExercises from "./hooks/useExercises";
+import useMobile from "./hooks/useMobile";
 
 import "./App.css";
 import "./styles/common.css";
 
 function App() {
   const { state: exerciseState, dispatch: exerciseDispatch } = useExercises();
+  const isMobile = useMobile();
+
+  const { state, dispatch } = useNav();
+
+  const { isDouble } = state;
+
+  let marginTop;
+
+  if (!isMobile) {
+    marginTop = "66px";
+  } else if (isMobile && !isDouble) {
+    marginTop = "calc(7vh + 4px)";
+  } else {
+    marginTop = "12vh";
+  }
 
   return (
-    <>
+    <NavContext.Provider value={{ state, dispatch }}>
       <Navigation />
-      <main>
+      <main
+        style={{
+          marginLeft: isMobile ? 0 : "252px",
+          marginTop
+        }}
+      >
         <Route exact path="/plans" component={Plans} />
         <Route exact path="/progress" component={CreatePlan} />
         <Route exact path="/create-plan" component={CreatePlan} />
@@ -34,7 +57,7 @@ function App() {
           <Route path="/plans/:plan_id" component={PlanHOC} />
         </ExerciseContext.Provider>
       </main>
-    </>
+    </NavContext.Provider>
   );
 }
 

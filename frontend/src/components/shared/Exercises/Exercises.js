@@ -1,13 +1,19 @@
 import React, { useState, useEffect, useContext } from "react";
-import { GET_EXERCISES } from "../../../reducers/exerciseTypes";
+import { GET_EXERCISES } from "../../../types/exerciseTypes";
 import { ExerciseContext } from "../../../context/exerciseContext";
+import useMobile from "../../../hooks/useMobile";
+
+import ExercisesBigView from "./ExercisesBigView";
+import MobileExerciseView from "./MobileExerciseView";
 
 import "./exerciseTable.css";
 
-const Exercises = ({ onAddExercise }) => {
+const Exercises = ({ handleAddExercise }) => {
   const { exerciseState, exerciseDispatch } = useContext(ExerciseContext);
   const [search, setSearch] = useState("");
   const [muscleGroup, setMuscleGroup] = useState("All");
+  const [exercisesToShow, setExercisesToShow] = useState(null);
+  const isMobile = useMobile();
 
   const { exercises, isPending, isRejected } = exerciseState;
 
@@ -18,6 +24,33 @@ const Exercises = ({ onAddExercise }) => {
 
     getExercises();
   }, [exerciseDispatch]);
+
+  useEffect(() => {
+    function filterExercises() {
+      if (!exercises) return;
+
+      let exercisesToShow;
+      if (search === "" && muscleGroup === "All" && isMobile) {
+        return null;
+      } else if (search === "" && muscleGroup === "All" && !isMobile) {
+        exercisesToShow = exercises;
+      } else if (search !== "" && muscleGroup === "All") {
+        let regex = RegExp(search, "i");
+        exercisesToShow = exercises.filter(x => regex.test(x.name));
+      } else if (search === "" && muscleGroup !== "All") {
+        exercisesToShow = exercises.filter(x => x.muscleGroup === muscleGroup);
+      } else {
+        let regex = RegExp(search, "i");
+        exercisesToShow = exercises.filter(x => {
+          return regex.test(x.name) && x.muscleGroup === muscleGroup;
+        });
+      }
+
+      setExercisesToShow(exercisesToShow);
+    }
+
+    filterExercises();
+  }, [search, muscleGroup, isMobile, exercises]);
 
   function handleSearchChange(e) {
     const { value } = e.target;
@@ -33,63 +66,36 @@ const Exercises = ({ onAddExercise }) => {
     return <p>Error...</p>;
   }
 
-  let exercisesDisplay;
-
-  if (isPending) exercisesDisplay = <p>Loading...</p>;
-
-  if (exercises) {
-    let exercisesToShow;
-    if (search === "" && muscleGroup === "All") {
-      exercisesToShow = exercises;
-    } else if (search !== "" && muscleGroup === "All") {
-      let regex = RegExp(search, "i");
-      exercisesToShow = exercises.filter(x => regex.test(x.name));
-    } else if (search === "" && muscleGroup !== "All") {
-      exercisesToShow = exercises.filter(x => x.muscleGroup === muscleGroup);
-    } else {
-      let regex = RegExp(search, "i");
-      exercisesToShow = exercises.filter(x => {
-        return regex.test(x.name) && x.muscleGroup === muscleGroup;
-      });
-    }
-
-    exercisesDisplay = exercisesToShow.map(x => (
-      <div
-        className="exercises-item"
-        key={x._id}
-        onClick={() => onAddExercise(x)}
-      >
-        {x.name}
-      </div>
-    ));
+  if (isPending) {
+    return <p>Loading..</p>;
   }
 
-  return (
-    <div className="exercises-container">
-      <div className="exercises-head">
-        <input
-          placeholder="Search..."
-          value={search}
-          onChange={handleSearchChange}
-        />
-
-        <div className="exercises-filter-container">
-          <span>Muscle group</span>
-          <select onChange={handleSelectChange} selected={muscleGroup}>
-            <option>All</option>
-            <option>Abs</option>
-            <option>Back</option>
-            <option>Legs</option>
-            <option>Chest</option>
-            <option>Biceps</option>
-            <option>Triceps</option>
-            <option>Shoulders</option>
-          </select>
-        </div>
-      </div>
-      <div className="exercises-body">{exercisesDisplay}</div>
-    </div>
+  let view = isMobile ? (
+    <MobileExerciseView
+      search={search}
+      isPending={isPending}
+      muscleGroup={muscleGroup}
+      onAddExercise={handleAddExercise}
+      setMuscleGroup={setMuscleGroup}
+      exercisesToShow={exercisesToShow}
+      exercisesToShow={exercisesToShow}
+      handleSearchChange={handleSearchChange}
+    />
+  ) : (
+    <ExercisesBigView
+      search={search}
+      isPending={isPending}
+      muscleGroup={muscleGroup}
+      onAddExercise={handleAddExercise}
+      setMuscleGroup={setMuscleGroup}
+      exercisesToShow={exercisesToShow}
+      exercisesToShow={exercisesToShow}
+      handleSearchChange={handleSearchChange}
+      handleSelectChange={handleSelectChange}
+    />
   );
+
+  return <>{view}</>;
 };
 
 export default Exercises;

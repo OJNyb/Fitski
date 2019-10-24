@@ -2,7 +2,7 @@ import { useEffect, useReducer } from "react";
 import axios from "axios";
 
 import historyReducer from "../reducers/historyReducer";
-import { SET_HISTORY, IS_PENDING, IS_REJECTED } from "../reducers/historyTypes";
+import { SET_HISTORY, IS_PENDING, IS_REJECTED } from "../types/historyTypes";
 
 // TODO: If !week/day/woplan
 

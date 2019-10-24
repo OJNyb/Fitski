@@ -4,7 +4,7 @@ import {
   ADD_EXERCISE,
   EDIT_EXERCISE,
   DELETE_EXERCISE
-} from "../reducers/planTypes";
+} from "../types/planTypes";
 
 const { ObjectId } = Types;
 

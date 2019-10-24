@@ -1,4 +1,4 @@
-.plans-table {
+/* .plans-table {
   margin: 30px auto;
   text-align: left;
   width: 40%;
@@ -15,12 +15,12 @@
 }
 
 .plans-table td {
-  color: rgba(0, 0, 0, 0.734);
+  color: rgba(0, 0, 0, 0.75);
 }
 
 .plans-table tbody tr:hover td {
   color: black;
-}
+} */
 
 /* MODAL */
 

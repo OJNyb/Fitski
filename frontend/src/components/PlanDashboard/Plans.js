@@ -1,12 +1,11 @@
 import React, { useState } from "react";
 import { Redirect } from "react-router-dom";
 import usePlans from "../../hooks/usePlans";
+import Loading from "../shared/SVGs/Loading";
 
 import PlansNav from "./PlansNav";
 
 import "./plans.css";
-
-// TODO: delete contenxt ?
 
 const Plans = () => {
   const { state, dispatch } = usePlans();
@@ -14,17 +13,13 @@ const Plans = () => {
 
   const { isPending, isRejected, woPlans } = state;
 
-  if (isPending) return <p>Loading...</p>;
+  if (isPending) return <Loading />;
 
   if (isRejected) return <p>Derp</p>;
 
   if (!woPlans) {
-    return <p>Loading...</p>;
+    return <Loading />;
   }
-
-  console.log(woPlans);
-
-  let modal;
 
   if (redirect) {
     return <Redirect to={`/plans/${redirect}`} />;
@@ -47,7 +42,6 @@ const Plans = () => {
         </thead>
         <tbody>{tbody}</tbody>
       </table>
-      {/* {woPlansTable} */}
     </>
   );
 };

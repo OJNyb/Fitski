@@ -7,7 +7,7 @@ import CopyModal from "./CopyModal";
 import DeleteModal from "./DeleteModal";
 import RepeatModal from "./RepeatModal";
 
-import { EDIT_WEEK, DELETE_WEEK } from "../../reducers/planTypes";
+import { EDIT_WEEK, DELETE_WEEK } from "../../types/planTypes";
 
 import NavMid from "../shared/NavMid/NavMid";
 
@@ -153,6 +153,7 @@ const EditWeekNav = ({
         backText={"Weeks"}
         backAction={() => redirect("")}
         rightBtnText={"Clear"}
+        rightBtnAction={() => console.log("gay")}
         actionMenuChildren={[
           {
             icon: "repeat",

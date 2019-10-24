@@ -45,6 +45,10 @@
   flex-direction: column;
 }
 
+.log-left-container {
+  margin-top: 30px;
+}
+
 .log-right-btn-container {
   display: flex;
   justify-content: center;
@@ -60,7 +64,34 @@
 }
 
 .history-empty-log-btn-container button {
+  font-size: 1em;
   margin: 10px auto;
-  padding: 2px 9px;
-  border-radius: 2px;
+  padding: 4px 9px;
+  border-radius: 3px;
+}
+
+/* MOBILE NAV */
+.mobile-double-nav-container {
+  display: flex;
+  height: 12vh;
+  flex-direction: column;
+}
+
+.mobile-double-nav-container div {
+  display: flex;
+  align-items: center;
+}
+
+.mobile-end-container {
+  justify-content: flex-end;
+  height: 7vh;
+}
+
+.mobile-nav-calendar-container {
+  width: calc(100vw - 20px);
+  height: 5vh;
+  margin-left: -84px;
+  justify-content: space-between;
+  background-color: rgb(255, 249, 249);
+  padding: 0 10px;
 }

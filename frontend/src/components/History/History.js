@@ -1,14 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useLayoutEffect } from "react";
 import useHistory from "../../hooks/useHistory";
 import { addMGC, formatHistoryDate } from "../../utils/formatHistoryDate";
 import { formatMuscleGroups } from "../../utils/displayMuscleGroups";
-
-import Calendar from "react-calendar";
-import EditDayTable from "./EditDayTable";
-import Exercises from "../shared/Exercises/Exercises";
-import Loading from "../shared/SVGs/Loading";
-
-import "./history.css";
+import useMobile from "../../hooks/useMobile";
+import useSetLoading from "../../hooks/useSetLoading";
 import {
   addDay,
   deleteDay,
@@ -19,17 +14,28 @@ import {
   deleteSet
 } from "../../utils/historyClient";
 
+import Calendar from "react-calendar";
+import Exercises from "../shared/Exercises/Exercises";
+import DayView from "./DayView";
+import MobileView from "./MobileView";
+
+import "./history.css";
+
 const History = () => {
   const { state, dispatch } = useHistory("/history");
+
   const [date, setDate] = useState(new Date());
   const [formattedDate, setFormattedDate] = useState(
     formatHistoryDate(new Date())
   );
   const [showExercises, setShowExercises] = useState(false);
-
   const { history, error, isPending, isRejected } = state;
+  const isMobile = useMobile();
+
+  useSetLoading(isPending);
 
   function onDateChange(date) {
+    date = new Date(date);
     setDate(date);
     setFormattedDate(formatHistoryDate(date));
   }
@@ -39,7 +45,7 @@ const History = () => {
   }
 
   if (isPending) {
-    return <Loading />;
+    return null;
   }
 
   const historyDates = history.days.map(x => x.date);
@@ -111,11 +117,96 @@ const History = () => {
     }
   }
 
-  let rightDisplay;
+  return (
+    <>
+      <div
+        className="log-container"
+        style={{
+          marginTop: isMobile ? "0" : "20px"
+        }}
+      >
+        {(isMobile && (
+          <MobileView
+            date={date}
+            dayIndex={dayIndex}
+            currentDay={currentDay}
+            handleAddSet={handleAddSet}
+            handleEditSet={handleEditSet}
+            handleDeleteSet={handleDeleteSet}
+            handleAddExercise={handleAddExercise}
+            onDateChange={onDateChange}
+            displayGroupCircle={displayGroupCircle}
+            handleDeleteExercise={handleDeleteExercise}
+          />
+        )) || (
+          <>
+            <BigScreenViewLeft
+              dayIndex={dayIndex}
+              currentDay={currentDay}
+              handleAddSet={handleAddSet}
+              handleEditSet={handleEditSet}
+              handleDeleteSet={handleDeleteSet}
+              setShowExercises={setShowExercises}
+              handleDeleteExercise={handleDeleteExercise}
+            />
+            <BigScreenViewRight
+              dayIndex={dayIndex}
+              currentDay={currentDay}
+              handleAddSet={handleAddSet}
+              handleEditSet={handleEditSet}
+              handleDeleteSet={handleDeleteSet}
+              showExercises={showExercises}
+              setShowExercises={setShowExercises}
+              displayGroupCircle={displayGroupCircle}
+              handleDeleteExercise={handleDeleteExercise}
+            />
+          </>
+        )}
+      </div>
+    </>
+  );
+};
+
+const BigScreenViewLeft = ({
+  dayIndex,
+  currentDay,
+  handleAddSet,
+  handleEditSet,
+  handleDeleteSet,
+  setShowExercises,
+  handleDeleteExercise
+}) => {
+  return (
+    <div className="log-left-container">
+      <div className="history-add-container ">
+        <DayView
+          dayIndex={dayIndex}
+          currentDay={currentDay}
+          handleAddSet={handleAddSet}
+          handleEditSet={handleEditSet}
+          handleDeleteSet={handleDeleteSet}
+          setShowExercises={setShowExercises}
+          handleDeleteExercise={handleDeleteExercise}
+        />
+      </div>
+    </div>
+  );
+};
+
+const BigScreenViewRight = ({
+  date,
+  onDateChange,
+  showExercises,
+  setShowExercises,
+  handleAddExercise,
+  displayGroupCircle
+}) => {
+  let calNExerDisplay;
+
   if (showExercises) {
-    rightDisplay = <Exercises onAddExercise={handleAddExercise} />;
+    calNExerDisplay = <Exercises onAddExercise={handleAddExercise} />;
   } else {
-    rightDisplay = (
+    calNExerDisplay = (
       <Calendar
         value={date}
         onChange={onDateChange}
@@ -124,60 +215,23 @@ const History = () => {
     );
   }
 
-  let leftDisplay;
-
-  if (dayIndex !== -1) {
-    leftDisplay = (
-      <div className="edit-week-add-container">
-        {/* <h3>{formatDate(date)}</h3> */}
-        <EditDayTable
-          day={currentDay}
-          showWeight={true}
-          handleAddSet={handleAddSet}
-          handleEditSet={handleEditSet}
-          handleDeleteSet={handleDeleteSet}
-          handleDeleteExercise={handleDeleteExercise}
-        />
-      </div>
-    );
-  } else {
-    leftDisplay = (
-      <div className="edit-week-add-container">
-        {/* <h3>{formatDate(date)}</h3> */}
-        <p>Workout Log Empty</p>
-        <div className="history-empty-log-btn-container">
-          <button
-            className="theme-btn-filled"
-            onClick={() => setShowExercises(true)}
-          >
-            {/* <i className="material-icons">add</i> */}
-            Add Exercise
-          </button>
-          <button className="theme-btn-filled">Copy Previous Workout</button>
-        </div>
-      </div>
-    );
-  }
   return (
-    <div className="log-container">
-      <div className="log-left-container">{leftDisplay}</div>
-      <div className="log-right-container">
-        <div className="log-right-btn-container">
-          <button
-            className={showExercises ? "theme-btn" : "theme-btn-filled"}
-            onClick={() => setShowExercises(false)}
-          >
-            Calendar
-          </button>
-          <button
-            className={showExercises ? "theme-btn-filled" : "theme-btn"}
-            onClick={() => setShowExercises(true)}
-          >
-            Exercises
-          </button>
-        </div>
-        {rightDisplay}
+    <div className="log-right-container">
+      <div className="log-right-btn-container">
+        <button
+          className={showExercises ? "theme-btn" : "theme-btn-filled"}
+          onClick={() => setShowExercises(false)}
+        >
+          Calendar
+        </button>
+        <button
+          className={showExercises ? "theme-btn-filled" : "theme-btn"}
+          onClick={() => setShowExercises(true)}
+        >
+          Exercises
+        </button>
       </div>
+      {calNExerDisplay}
     </div>
   );
 };

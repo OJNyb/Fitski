@@ -80,3 +80,14 @@
   fill: currentColor;
   /* margin-right: 12px; */
 }
+
+.material-icons-22 {
+  font-size: 22px;
+}
+.material-icons-30 {
+  font-size: 30px;
+}
+
+.font-16 {
+  font-size: 16px;
+}

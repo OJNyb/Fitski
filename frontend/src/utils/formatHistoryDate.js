@@ -32,4 +32,47 @@ function formatHistoryDate(date) {
   return year * 10000 + month * 100 + day;
 }
 
-export { addMGC, formatDate, formatHistoryDate };
+function decrementDate(date) {
+  return date.setDate(date.getDate() - 1);
+}
+
+function incrementDate(date) {
+  return date.setDate(date.getDate() + 1);
+}
+
+function displayDate(date) {
+  let fDate = formatHistoryDate(date);
+  let nDate = formatHistoryDate(new Date());
+
+  if (nDate === fDate) {
+    return "Today";
+  } else if (nDate === fDate + 1) {
+    return "Yestarday";
+  } else if (nDate === fDate - 1) {
+    return "Tomorrow";
+  }
+
+  fDate += "";
+  nDate += "";
+
+  let day = fDate.slice(6);
+  if (day < 10) {
+    day = day.slice(1);
+  }
+  const month = date.toLocaleString("default", { month: "long" });
+  if (nDate.slice(0, 4) === fDate.slice(0, 4)) {
+    return `${month} ${day}`;
+  } else {
+    const year = date.getFullYear();
+    return `${month} ${day}, ${year}`;
+  }
+}
+
+export {
+  addMGC,
+  formatDate,
+  displayDate,
+  decrementDate,
+  incrementDate,
+  formatHistoryDate
+};

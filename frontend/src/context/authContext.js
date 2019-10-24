@@ -1,10 +1,10 @@
-import React from "react";
+import React, { useState, createContext } from "react";
 import { useAsync } from "react-async";
 import axios from "axios";
 import * as authClient from "../utils/authClient";
 import Loading from "../components/shared/SVGs/Loading";
 
-const AuthContext = React.createContext();
+const AuthContext = createContext();
 
 function getUser() {
   return axios
@@ -29,7 +29,7 @@ async function bootstrapAppData() {
 }
 
 function AuthProvider(props) {
-  const [firstAttemptFinished, setFirstAttemptFinished] = React.useState(false);
+  const [firstAttemptFinished, setFirstAttemptFinished] = useState(false);
   const {
     data = { user: null },
     error,
@@ -49,7 +49,7 @@ function AuthProvider(props) {
 
   if (!firstAttemptFinished) {
     if (isPending) {
-      return <Loading />;
+      return null;
     }
     if (isRejected) {
       return (

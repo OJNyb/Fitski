@@ -1,12 +1,15 @@
 import React from "react";
 import { AuthProvider } from "./authContext";
 import { UserProvider } from "./userContext";
+import { LoadingProvider } from "./loadingContext";
 
 function AppProviders({ children }) {
   return (
-    <AuthProvider>
-      <UserProvider>{children}</UserProvider>
-    </AuthProvider>
+    <LoadingProvider>
+      <AuthProvider>
+        <UserProvider>{children}</UserProvider>
+      </AuthProvider>
+    </LoadingProvider>
   );
 }
 

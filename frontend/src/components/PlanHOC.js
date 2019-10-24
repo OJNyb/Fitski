@@ -4,7 +4,6 @@ import { PlanContext } from "../context/planContext";
 import Loading from "./shared/SVGs/Loading";
 
 import usePlan from "../hooks/usePlan";
-import useExercises from "../hooks/useExercises";
 
 import Plan from "./Plan/Plan";
 import EditWeek from "./EditWeek/EditWeek";
@@ -16,7 +15,6 @@ const PlanHOC = props => {
 
   let planId = pathname.split("/")[2];
   const { state, dispatch } = usePlan(planId);
-  const { state: exerciseState, dispatch: exerciseDispatch } = useExercises();
 
   const { woPlan, isPending, isRejected } = state;
 

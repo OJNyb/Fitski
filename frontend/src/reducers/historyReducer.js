@@ -9,7 +9,7 @@ import {
   ADD_SET,
   EDIT_SET,
   DELETE_SET
-} from "./historyTypes";
+} from "../types/historyTypes";
 
 import { formatHistoryDate } from "../utils/formatHistoryDate";
 

@@ -1,15 +1,19 @@
 import React, { useState, useEffect } from "react";
 import NavMidActionMenu from "./NavMidActionMenu";
+import useMobile from "../../../hooks/useMobile";
 
 const NavMid = ({
   backText,
-  actionMenuChildren,
+  customNav,
   midContent,
   backAction,
   rightBtnText,
-  rightBtnAction
+  rightBtnIcon,
+  rightBtnAction,
+  actionMenuChildren
 }) => {
   const [showActionMenu, setShowActionMenu] = useState(false);
+  const isMobile = useMobile();
 
   function handleMoreActionClick(e) {
     e.preventDefault();
@@ -29,9 +33,13 @@ const NavMid = ({
     window.removeEventListener("click", onWindowClick);
   }
 
-  return (
-    <>
-      <div className="nav-mid-header-container">
+  let view;
+
+  if (customNav) {
+    view = customNav;
+  } else {
+    view = (
+      <>
         {backText && (
           <div className="nav-mid-header-item">
             <button
@@ -46,7 +54,7 @@ const NavMid = ({
 
         {midContent && <div className="nav-mid-header-item">{midContent}</div>}
 
-        <div className="nav-mid-header-item nav-mid-header-button-container ">
+        <div className="nav-mid-header-item nav-mid-header-button-container">
           {actionMenuChildren && (
             <button
               className="nav-mid-header-more-btn theme-btn"
@@ -58,15 +66,38 @@ const NavMid = ({
             </button>
           )}
 
-          <button
-            className="nav-mid-header-text-btn theme-btn"
-            onClick={rightBtnAction}
-          >
-            {rightBtnText}
-          </button>
+          {(rightBtnAction || rightBtnIcon) && (
+            <button
+              className={
+                "nav-mid-header-text-btn " +
+                (rightBtnIcon ? "theme-btn-no-border" : "theme-btn")
+              }
+              onClick={rightBtnAction}
+            >
+              {rightBtnText || rightBtnIcon}
+            </button>
+          )}
         </div>
 
         {showActionMenu && <NavMidActionMenu children={actionMenuChildren} />}
+      </>
+    );
+  }
+
+  return (
+    <>
+      <div
+        className="nav-mid-header-container"
+        style={{
+          left: isMobile ? "68px" : "250px",
+          top: isMobile ? "0" : "6px",
+          width: isMobile
+            ? "calc(100vw - 98px)"
+            : "calc(100% - 200px - 250px - 30px)",
+          height: isMobile ? "7%" : "60px"
+        }}
+      >
+        {view}
       </div>
     </>
   );

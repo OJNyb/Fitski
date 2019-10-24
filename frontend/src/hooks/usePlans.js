@@ -2,7 +2,7 @@ import { useEffect, useReducer } from "react";
 import axios from "axios";
 
 import plansReducer from "../reducers/plansReducer";
-import { SET_PLANS, IS_PENDING, IS_REJECTED } from "../reducers/plansTypes";
+import { SET_PLANS, IS_PENDING, IS_REJECTED } from "../types/plansTypes";
 
 const initialState = {
   woPlans: null,

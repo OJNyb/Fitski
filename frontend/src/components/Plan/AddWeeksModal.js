@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import Modal from "../shared/Modal/Modal";
 import axios from "axios";
-import { ADD_WEEK } from "../../reducers/planTypes";
+import { ADD_WEEK } from "../../types/planTypes";
 import { PlanContext } from "../../context/planContext";
 import { Formik, Form, Field } from "formik";
 

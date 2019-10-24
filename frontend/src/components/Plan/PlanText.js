@@ -11,8 +11,6 @@ const PlanText = ({ week, index, planId }) => {
     .map(x => x.exercises)
     .reduce((accu, curr) => (accu += curr.length), 0);
 
-  console.log(exercises);
-
   let daysDisplay;
 
   if (exercises) {

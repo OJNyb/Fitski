@@ -34,19 +34,8 @@ const EditDayTable = ({
     }
   });
 
-  let muscleGroup = displayMuscleGroups(exercises);
-
   return (
     <>
-      <div className="history-add-muscle-group-container">
-        {muscleGroup.length !== 0 && (
-          <>
-            {/* <p className="history-muscle-group-label">Muscle group</p> */}
-            <h3 className="history-muscle-group">{muscleGroup}</h3>
-          </>
-        )}
-      </div>
-
       <div className="history-add-body">{exerciseDisplay}</div>
     </>
   );

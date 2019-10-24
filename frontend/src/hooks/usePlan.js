@@ -2,7 +2,7 @@ import { useEffect, useReducer } from "react";
 import axios from "axios";
 
 import planReducer from "../reducers/planReducer";
-import { SET_PLAN, IS_PENDING, IS_REJECTED } from "../reducers/planTypes";
+import { SET_PLAN, IS_PENDING, IS_REJECTED } from "../types/planTypes";
 
 // TODO: If !week/day/woplan
 

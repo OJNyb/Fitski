@@ -33,7 +33,7 @@ const DayExercise = ({
   ));
 
   return (
-    <div className="history-add-column">
+    <div className="history-add-card">
       <div className="history-exercise-name">
         <span className="">{name}</span>
 

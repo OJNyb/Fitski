@@ -8,7 +8,7 @@ import {
   ADD_SET,
   EDIT_SET,
   DELETE_SET
-} from "../reducers/historyTypes";
+} from "../types/historyTypes";
 
 const { ObjectId } = Types;
 
