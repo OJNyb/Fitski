@@ -27,15 +27,14 @@ const ExercisesBigView = ({
   return (
     <div className="exercises-container">
       <div className="exercises-head">
-        <input
-          placeholder="Search..."
-          value={search}
-          onChange={handleSearchChange}
-        />
+        <div className="exercise-search-container">
+          <i className="material-icons">search</i>
+          <input value={search} onChange={handleSearchChange} />
+        </div>
 
-        <div className="exercises-filter-container">
-          <span>Muscle group</span>
-          <select onChange={handleSelectChange} selected={muscleGroup}>
+        {/* <div className="exercises-filter-container">
+           <span>Muscle group</span>
+           <select onChange={handleSelectChange} selected={muscleGroup}>
             <option>All</option>
             <option>Abs</option>
             <option>Back</option>
@@ -44,10 +43,17 @@ const ExercisesBigView = ({
             <option>Biceps</option>
             <option>Triceps</option>
             <option>Shoulders</option>
-          </select>
+          </select> 
+        </div>*/}
+        <div className="exercise-muscle-group-button">
+          <i className="material-icons-round">arrow_back_ios</i>
+          <span>Muscle groups</span>
         </div>
       </div>
-      <div className="exercises-body">{exercisesDisplay}</div>
+      <div className="exercises-body">
+        <div></div>
+        <div>{exercisesDisplay}</div>
+      </div>
     </div>
   );
 };

@@ -28,14 +28,14 @@ const EditDay = ({ day, handleEditExercise, handleDeleteExercise }) => {
 
   return (
     <>
-      <div className="edit-week-add-muscle-group-container">
+      {/* <div className="edit-week-add-muscle-group-container">
         {muscleGroup.length !== 0 && (
           <>
             <p className="edit-week-muscle-group-label">Muscle group</p>
             <h3 className="edit-week-muscle-group">{muscleGroup}</h3>
           </>
         )}
-      </div>
+      </div> */}
 
       <div className="edit-week-add-header">
         <span>Sets</span>

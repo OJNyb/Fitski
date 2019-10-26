@@ -12,9 +12,9 @@ const WOPlanSchema = new mongoose.Schema(
       ref: "user"
     },
     description: String,
-    categories: [
+    goals: [
       {
-        category: ObjectId
+        goal: ObjectId
       }
     ],
     access: {

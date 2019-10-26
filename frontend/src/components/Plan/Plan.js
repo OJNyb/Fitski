@@ -12,16 +12,11 @@ import "./plan.css";
 
 const PlanOverview = ({ history }) => {
   const {
-    state: { woPlan },
-    dispatch
+    state: { woPlan }
   } = useContext(PlanContext);
 
   const [showModal, setShowModal] = useState(false);
   const { user, name, weeks, description, _id: planId } = woPlan;
-
-  // const { username, avatar } = user;
-
-  console.log(user);
 
   function hideModal() {
     setShowModal(false);
@@ -67,8 +62,6 @@ const PlanOverview = ({ history }) => {
       </div>
     );
   }
-
-  console.log(user);
 
   return (
     <>

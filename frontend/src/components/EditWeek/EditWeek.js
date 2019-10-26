@@ -1,9 +1,10 @@
 import React, { useState, useContext } from "react";
 import { PlanContext } from "../../context/planContext";
+import { addExercise } from "../../utils/planClient";
 
 import DayHOC from "./DayHOC";
-import ExercisesHOC from "./ExercisesHOC";
 import EditWeekNav from "./EditWeekNav";
+import Exercises from "../shared/Exercises/Exercises";
 
 import "./editWeek.css";
 
@@ -26,6 +27,10 @@ const EditWeek = ({ match: { params } }) => {
   const currentDay = days[currentDayIndex];
   const { _id: dayId } = currentDay;
 
+  function handleAddExercise(exercise) {
+    addExercise(dispatch, planId, weekId, dayId, exercise);
+  }
+
   let dayBtns = days.map((day, index) => (
     <button
       key={day._id}
@@ -46,7 +51,10 @@ const EditWeek = ({ match: { params } }) => {
           <div className="edit-week-add-days-container">{dayBtns}</div>
           <DayHOC day={currentDay} />
         </div>
-        <ExercisesHOC dayId={currentDay._id} key={currentDay._id} />
+        <div className="edit-week-exercise-container">
+          <h2 className="edit-week-header">Exercises</h2>
+          <Exercises handleAddExercise={handleAddExercise} />;
+        </div>
       </div>
     </>
   );

@@ -91,3 +91,64 @@
 .font-16 {
   font-size: 16px;
 }
+
+/* CUSTOM CHECKBOX */
+.custom-checkbox-container {
+  display: block;
+  position: relative;
+  padding-left: 20px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.custom-checkbox-container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.custom-checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 15px;
+  width: 15px;
+  background-color: #eee;
+  border-radius: 4px;
+}
+
+.custom-checkbox-container:hover input ~ .custom-checkmark {
+  background-color: #ccc;
+}
+
+.custom-checkbox-container input:checked ~ .custom-checkmark {
+  background-color: #a60000;
+}
+
+.custom-checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+.custom-checkbox-container input:checked ~ .custom-checkmark:after {
+  display: block;
+}
+
+.custom-checkbox-container .custom-checkmark:after {
+  left: 5px;
+  top: 3px;
+  width: 3px;
+  height: 6px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}

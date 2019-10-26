@@ -139,14 +139,18 @@ nav section {
 }
 
 .nav-mid-header-container h2 {
-  font-size: 23px;
+  font-size: 21px;
   font-weight: 500;
-  margin-left: 8px;
+  margin-left: 3px;
   color: rgba(0, 0, 0, 0.85);
 }
 
 .nav-mid-header-container-back-btn {
   padding: 5px;
+}
+
+.nav-mid-header-container-back-btn i {
+  font-size: 22px;
 }
 
 .nav-mid-header-button-container button {

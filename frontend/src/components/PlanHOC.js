@@ -4,6 +4,7 @@ import { PlanContext } from "../context/planContext";
 import Loading from "./shared/SVGs/Loading";
 
 import usePlan from "../hooks/usePlan";
+import useSetLoading from "../hooks/useSetLoading";
 
 import Plan from "./Plan/Plan";
 import EditWeek from "./EditWeek/EditWeek";
@@ -18,8 +19,10 @@ const PlanHOC = props => {
 
   const { woPlan, isPending, isRejected } = state;
 
+  useSetLoading(isPending);
+
   if (isPending) {
-    return <Loading />;
+    return null;
   }
 
   if (isRejected) {

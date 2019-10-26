@@ -46,7 +46,7 @@ const Navigation = () => {
       <div className="header">
         <div className="header-logo-container">
           <i className="material-icons">fitness_center</i>
-          <h1 className="header-logo">Fitnal</h1>
+          <h1 className="header-logo">Runski</h1>
         </div>
         <div className="header-user">
           <img
@@ -56,15 +56,15 @@ const Navigation = () => {
           />
           <p className="header-name">Guy Fieri</p>
         </div>
-        <NavigationMenu />
+        <NavigationMenu marginTop={true} />
       </div>
     </>
   );
 };
 
-const NavigationMenu = () => {
+const NavigationMenu = ({ marginTop }) => {
   return (
-    <nav>
+    <nav style={{ marginTop: marginTop && "61px" }}>
       <section>
         <h3 className="nav-header">DASHBOARD</h3>
         {/* <NavLink to="/active" className="nav-item red-hover">

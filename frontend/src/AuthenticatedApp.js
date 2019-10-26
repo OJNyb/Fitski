@@ -41,7 +41,7 @@ function App() {
       <Navigation />
       <main
         style={{
-          marginLeft: isMobile ? 0 : "252px",
+          marginLeft: isMobile ? 0 : "251px",
           marginTop
         }}
       >

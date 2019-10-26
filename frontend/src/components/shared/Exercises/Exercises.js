@@ -19,7 +19,9 @@ const Exercises = ({ handleAddExercise }) => {
 
   useEffect(() => {
     function getExercises() {
-      exerciseDispatch({ type: GET_EXERCISES });
+      if (!exercises) {
+        exerciseDispatch({ type: GET_EXERCISES });
+      }
     }
 
     getExercises();
