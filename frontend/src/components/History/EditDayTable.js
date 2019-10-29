@@ -7,10 +7,12 @@ import "./editDay.css";
 
 const EditDayTable = ({
   day,
+  isMobile,
   showWeight,
   handleAddSet,
   handleEditSet,
   handleDeleteSet,
+  setShowExercise,
   handleDeleteExercise
 }) => {
   const { exercises } = day;
@@ -23,11 +25,13 @@ const EditDayTable = ({
         <DayExercise
           dayId={day._id}
           key={exercise._id}
+          isMobile={isMobile}
           exercise={exercise}
           showWeight={showWeight}
           onAddSet={handleAddSet}
           handleEditSet={handleEditSet}
           handleDeleteSet={handleDeleteSet}
+          setShowExercise={setShowExercise}
           onDeleteExercise={handleDeleteExercise}
         />
       );

@@ -1,0 +1,166 @@
+.history-mobile-exercise-header {
+  display: flex;
+  color: rgb(99, 49, 49);
+  background-color: white;
+}
+
+.history-mobile-exercise-header-item {
+  display: flex;
+  flex: 1 100%;
+  justify-content: center;
+  align-items: center;
+  height: 40px;
+  border-bottom: 2px solid rgb(230, 186, 186);
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.history-mobile-exercise-header-active {
+  color: #a60000;
+  border-bottom: 2px solid #a60000;
+}
+
+.history-mobile-exercise-body {
+  display: flex;
+  flex-direction: column;
+  color: rgba(0, 0, 0, 0.6);
+  background-color: white;
+  height: 100vh;
+  padding: 0 15px;
+}
+
+.history-mobile-exercise-input-wrapper {
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+}
+
+.history-mobile-exercise-input-header {
+  border-bottom: 1.5px solid #a60000;
+  font-weight: 700;
+  font-size: 13px;
+  margin-bottom: 7px;
+}
+
+.history-mobile-exercise-input-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 24px;
+}
+
+.history-mobile-exercise-input-box button {
+  background-color: rgb(224, 215, 215);
+  height: 34px;
+  color: white;
+  font-size: 28px;
+  padding: 0 14px;
+  border-bottom: 0.5px solid gray;
+  font-weight: 300;
+  border-radius: 2px;
+}
+
+.history-mobile-exercise-input-box button span,
+.history-mobile-exercise-input-box button i {
+  width: 24px;
+}
+
+.history-mobile-exercise-input-shiizz {
+  position: relative;
+  width: 90px;
+  margin: 0 8px;
+}
+
+.history-mobile-exercise-input-shiizz:focus-within .border-with-sides {
+  border-width: 1.2px;
+  border-color: #a60000;
+}
+
+.history-mobile-exercise-input-box input {
+  border: none;
+  width: 100%;
+
+  font-family: "Barlow", sans-serif;
+  font-size: 26px;
+  font-weight: 800;
+  outline: none;
+  text-align: center;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.history-mobile-exercise-button-container {
+  display: flex;
+  justify-content: center;
+  color: white;
+  height: 5%;
+  margin-top: 20px;
+}
+
+.history-mobile-exercise-button-container button {
+  display: flex;
+  width: 45%;
+  height: 100%;
+  color: white;
+  border-radius: 3px;
+  font-weight: 500;
+  margin: 0 2%;
+}
+
+.history-mobile-exercise-button-container button:first-child {
+  background-color: rgba(31, 192, 103, 0.774);
+}
+
+.history-mobile-exercise-button-container button:last-child {
+  background-color: rgba(92, 119, 240, 0.842);
+}
+
+.history-mobile-exercise-list-container {
+  margin-top: 15px;
+}
+
+.history-mobile-exercise-list-item {
+  display: flex;
+  border-bottom: 1px solid rgb(224, 219, 219);
+  padding: 7px;
+}
+
+.history-mobile-exercise-list-item > div {
+  display: flex;
+  align-items: center;
+}
+
+.history-mobile-exercise-list-action-index {
+  flex: 0.42 42%;
+}
+
+.history-mobile-exercise-list-action-index i {
+  color: rgb(218, 208, 208);
+  font-size: 20px;
+  margin-top: 3px;
+  -moz-transform: scale(-1, 1);
+  -webkit-transform: scale(-1, 1);
+  -o-transform: scale(-1, 1);
+  -ms-transform: scale(-1, 1);
+  transform: scale(-1, 1);
+}
+
+.history-mobile-exercise-list-action-index span {
+  margin-left: 35%;
+}
+
+.history-mobile-exercise-list-kg-reps {
+  flex: 0.58 58%;
+  justify-content: space-between;
+}
+
+.history-mobile-exercise-list-bold-span {
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.history-mobile-exercise-list-small-span {
+  font-weight: 400;
+  font-size: 12px;
+  color: gray;
+  margin-left: 4px;
+}

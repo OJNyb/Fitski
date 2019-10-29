@@ -3,11 +3,14 @@ import { NavContext } from "../../context/navContext";
 import { SINGLE_NAV, DOUBLE_NAV } from "../../types/navTypes";
 
 import DayView from "./DayView";
-import Calendar from "react-calendar/dist/entry.nostyle";
+import ExerciseView from "./ExerciseView";
 import NavMid from "../shared/NavMid/NavMid";
 import Exercises from "../shared/Exercises/Exercises";
 import MobileDouble from "../shared/NavMid/MobileDouble";
+import Calendar from "react-calendar/dist/entry.nostyle";
 import EditHistoryDownNav from "../shared/NavMid/EditHistoryDownNav";
+
+import "./mobileView.css";
 
 import {
   displayDate,
@@ -19,16 +22,18 @@ const MobileView = ({
   date,
   dayIndex,
   currentDay,
-  onDateChange,
   handleAddSet,
   handleEditSet,
   handleDeleteSet,
+  onDateChange,
   handleAddExercise,
   displayGroupCircle,
   handleDeleteExercise
 }) => {
   const [showHistory, setShowHistory] = useState(false);
+  const [showExercise, setShowExercise] = useState(false);
   const [showExercises, setShowExercises] = useState(false);
+
   const { dispatch } = useContext(NavContext);
 
   useLayoutEffect(() => {
@@ -68,17 +73,23 @@ const MobileView = ({
     );
   } else if (showExercises) {
     view = <Exercises handleAddExercise={handleAddExerciseski} />;
+  } else if (showExercise) {
+    view = <ExerciseView />;
   } else {
     view = (
-      <DayView
-        dayIndex={dayIndex}
-        currentDay={currentDay}
-        handleAddSet={handleAddSet}
-        handleEditSet={handleEditSet}
-        handleDeleteSet={handleDeleteSet}
-        setShowExercises={setShowExercises}
-        handleDeleteExercise={handleDeleteExercise}
-      />
+      <div className="margin-top-20">
+        <DayView
+          isMobile={true}
+          dayIndex={dayIndex}
+          currentDay={currentDay}
+          handleAddSet={handleAddSet}
+          handleEditSet={handleEditSet}
+          handleDeleteSet={handleDeleteSet}
+          setShowExercise={setShowExercise}
+          setShowExercises={setShowExercises}
+          handleDeleteExercise={handleDeleteExercise}
+        />
+      </div>
     );
   }
 

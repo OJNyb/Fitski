@@ -1,0 +1,33 @@
+.DateInput_input__focused {
+  border-bottom-color: #a60000;
+}
+
+.CalendarDay__default {
+  position: relative;
+}
+
+.CalendarDay__selected_span {
+  background: #82e0aa;
+  color: white;
+  border: 1px solid red;
+}
+
+.CalendarDay__selected {
+  background: #a60000;
+  color: white;
+  border-color: #800909;
+}
+
+.CalendarDay__selected:hover {
+  background: #800909;
+  color: white;
+  border-color: #460707;
+}
+
+.DayPickerKeyboardShortcuts_show__bottomRight::before {
+  border-right-color: #a60000;
+}
+
+.DayPickerKeyboardShortcuts_show__bottomRight:hover::before {
+  border-right-color: #800909;
+}

@@ -6,16 +6,16 @@ import TrashBin from "../shared/SVGs/TrashBin";
 const DayExercise = ({
   dayId,
   exercise,
+  isMobile,
   onAddSet,
   handleEditSet,
   handleDeleteSet,
+  setShowExercise,
   onDeleteExercise
 }) => {
   const {
     exercise: { name },
     sets,
-    reps,
-    weight,
     _id: exerId
   } = exercise;
 
@@ -24,11 +24,13 @@ const DayExercise = ({
   let setDisplay = sets.map(set => (
     <SetColumn
       set={set}
+      key={set._id}
       dayId={dayId}
       exerId={exerId}
-      key={set._id}
+      isMobile={isMobile}
       handleEditSet={handleEditSet}
       onDeleteSet={handleDeleteSet}
+      setShowExercise={setShowExercise}
     />
   ));
 
@@ -59,7 +61,14 @@ const DayExercise = ({
   );
 };
 
-const SetColumn = ({ set, exerId, handleEditSet, onDeleteSet }) => {
+const SetColumn = ({
+  set,
+  exerId,
+  isMobile,
+  onDeleteSet,
+  handleEditSet,
+  setShowExercise
+}) => {
   const { reps, weight, _id: setId } = set;
   const [inputReps, setInputReps] = useState(reps || "");
   const [inputWeight, setInputWeight] = useState(weight || "");
@@ -148,37 +157,66 @@ const SetColumn = ({ set, exerId, handleEditSet, onDeleteSet }) => {
 
   return (
     <div className="add-card-column">
-      <button
-        className="add-card-remove-btn theme-btn-no-border"
-        onClick={() => onDeleteSet(exerId, setId)}
-        tabIndex="-1"
-      >
-        <TrashBin />
-      </button>
-      <form className="history-set-row">
-        <div className="history-row">
-          <input
-            name="weight"
-            type="number"
-            value={inputWeight}
-            onChange={onChange}
-            onBlur={onInputBlur}
-          />
-          <span>kg</span>
+      {!isMobile && (
+        <button
+          className="add-card-remove-btn theme-btn-no-border"
+          onClick={() => onDeleteSet(exerId, setId)}
+          tabIndex="-1"
+        >
+          <TrashBin />
+        </button>
+      )}
+      {(isMobile && (
+        <div
+          className="history-set-row"
+          onClick={() => setShowExercise(exerId)}
+        >
+          <div className="history-row">
+            {inputWeight || 0}
+            <span>kg</span>
+          </div>
+          <div className="history-row">
+            {inputReps || 0}
+            <span>reps</span>
+          </div>
         </div>
-
-        <div className="history-row">
-          <input
-            name="reps"
-            type="number"
-            value={inputReps}
-            onChange={onChange}
-            onBlur={onInputBlur}
-          />
-          <span>reps</span>
-        </div>
-      </form>
+      )) || (
+        <ExerciseForm
+          onChange={onChange}
+          inputReps={inputReps}
+          inputWeight={inputWeight}
+          onInputBlur={onInputBlur}
+        />
+      )}
     </div>
+  );
+};
+
+const ExerciseForm = ({ onChange, inputWeight, inputReps, onInputBlur }) => {
+  return (
+    <form className="history-set-row">
+      <div className="history-col">
+        <input
+          name="weight"
+          type="number"
+          value={inputWeight}
+          onChange={onChange}
+          onBlur={onInputBlur}
+        />
+        <span>kg</span>
+      </div>
+
+      <div className="history-col">
+        <input
+          name="reps"
+          type="number"
+          value={inputReps}
+          onChange={onChange}
+          onBlur={onInputBlur}
+        />
+        <span>reps</span>
+      </div>
+    </form>
   );
 };
 

@@ -11,7 +11,7 @@ import "./exerciseTable.css";
 const Exercises = ({ handleAddExercise }) => {
   const { exerciseState, exerciseDispatch } = useContext(ExerciseContext);
   const [search, setSearch] = useState("");
-  const [muscleGroup, setMuscleGroup] = useState("All");
+  const [muscleGroup, setMuscleGroup] = useState([]);
   const [exercisesToShow, setExercisesToShow] = useState(null);
   const isMobile = useMobile();
 
@@ -34,13 +34,15 @@ const Exercises = ({ handleAddExercise }) => {
       let exercisesToShow;
       if (search === "" && muscleGroup === "All" && isMobile) {
         return null;
-      } else if (search === "" && muscleGroup === "All" && !isMobile) {
+      } else if (search === "" && !muscleGroup.length && !isMobile) {
         exercisesToShow = exercises;
-      } else if (search !== "" && muscleGroup === "All") {
+      } else if (search !== "" && !muscleGroup.length) {
         let regex = RegExp(search, "i");
         exercisesToShow = exercises.filter(x => regex.test(x.name));
-      } else if (search === "" && muscleGroup !== "All") {
-        exercisesToShow = exercises.filter(x => x.muscleGroup === muscleGroup);
+      } else if (search === "" && muscleGroup.length) {
+        exercisesToShow = exercises.filter(
+          x => muscleGroup.indexOf(x.muscleGroup) !== -1
+        );
       } else {
         let regex = RegExp(search, "i");
         exercisesToShow = exercises.filter(x => {

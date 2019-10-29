@@ -1,14 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
+import "./bsExerciseView.css";
+
+const muscleGroupArray = [
+  "Back",
+  "Legs",
+  "Chest",
+  "Biceps",
+  "Triceps",
+  "Shoulders"
+];
 
 const ExercisesBigView = ({
   search,
   isPending,
   muscleGroup,
   onAddExercise,
+  setMuscleGroup,
   exercisesToShow,
-  handleSearchChange,
-  handleSelectChange
+  handleSearchChange
 }) => {
+  const [showFilter, setShowFilter] = useState(false);
   if (isPending) exercisesDisplay = <p>Loading...</p>;
 
   let exercisesDisplay;
@@ -24,6 +35,29 @@ const ExercisesBigView = ({
     ));
   }
 
+  function onMuscleGroupCheck(muscle) {
+    let index = muscleGroup.indexOf(muscle);
+    let newMuscleGroup = muscleGroup.concat();
+    if (index === -1) {
+      newMuscleGroup.push(muscle);
+    } else {
+      newMuscleGroup.splice(index, 1);
+    }
+
+    setMuscleGroup(newMuscleGroup);
+  }
+
+  let muscleGroupFilter = muscleGroupArray.map(x => {
+    return (
+      <MuscleGroupCheck
+        key={x}
+        muscle={x}
+        checked={muscleGroup.includes(x)}
+        onChange={onMuscleGroupCheck}
+      />
+    );
+  });
+
   return (
     <div className="exercises-container">
       <div className="exercises-head">
@@ -32,22 +66,27 @@ const ExercisesBigView = ({
           <input value={search} onChange={handleSearchChange} />
         </div>
 
-        {/* <div className="exercises-filter-container">
-           <span>Muscle group</span>
-           <select onChange={handleSelectChange} selected={muscleGroup}>
-            <option>All</option>
-            <option>Abs</option>
-            <option>Back</option>
-            <option>Legs</option>
-            <option>Chest</option>
-            <option>Biceps</option>
-            <option>Triceps</option>
-            <option>Shoulders</option>
-          </select> 
-        </div>*/}
         <div className="exercise-muscle-group-button">
-          <i className="material-icons-round">arrow_back_ios</i>
-          <span>Muscle groups</span>
+          {/* <i className="material-icons-round">arrow_back_ios</i> */}
+          <span
+            className="exercise-bs-show-filter-span"
+            onClick={() => setShowFilter(!showFilter)}
+          >
+            Filter
+          </span>
+
+          <div
+            onMouseLeave={() => setShowFilter(false)}
+            className={
+              "exercise-muscle-checkbox-container" +
+              (showFilter ? " exercise-muscle-checkbox-container-show" : "")
+            }
+          >
+            <div className="exercise-muscle-group-filter-wrapper">
+              {muscleGroupFilter}
+            </div>
+          </div>
+          <div></div>
         </div>
       </div>
       <div className="exercises-body">
@@ -55,6 +94,21 @@ const ExercisesBigView = ({
         <div>{exercisesDisplay}</div>
       </div>
     </div>
+  );
+};
+
+const MuscleGroupCheck = ({ muscle, checked, onChange }) => {
+  return (
+    <label className="custom-checkbox-container">
+      <input
+        type="checkbox"
+        name={muscle}
+        checked={checked}
+        onChange={() => onChange(muscle)}
+      />
+      {muscle}
+      <span className="custom-checkmark"></span>
+    </label>
   );
 };
 

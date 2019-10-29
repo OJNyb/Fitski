@@ -47,7 +47,7 @@ function displayDate(date) {
   if (nDate === fDate) {
     return "Today";
   } else if (nDate === fDate + 1) {
-    return "Yestarday";
+    return "Yesterday";
   } else if (nDate === fDate - 1) {
     return "Tomorrow";
   }

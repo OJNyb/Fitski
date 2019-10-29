@@ -78,7 +78,6 @@
   max-width: 100%;
   position: relative;
   fill: currentColor;
-  /* margin-right: 12px; */
 }
 
 .material-icons-22 {
@@ -88,8 +87,17 @@
   font-size: 30px;
 }
 
+.font-28 {
+  font-size: 28px;
+  line-height: 20px;
+}
+
 .font-16 {
   font-size: 16px;
+}
+
+.theme-faded {
+  color: rgb(153, 108, 108);
 }
 
 /* CUSTOM CHECKBOX */
@@ -151,4 +159,11 @@
   -webkit-transform: rotate(45deg);
   -ms-transform: rotate(45deg);
   transform: rotate(45deg);
+}
+
+.border-with-sides {
+  width: calc(100% - 2px);
+  height: 3px;
+  border: 1px solid rgb(192, 169, 169);
+  border-top: 0;
 }

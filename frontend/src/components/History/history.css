@@ -1,7 +1,6 @@
 .log-container {
   display: flex;
-  justify-content: space-around;
-  margin-top: 20px;
+  justify-content: center;
 }
 
 .calendar-circle {
@@ -12,22 +11,23 @@
 }
 
 .calendar-circle-container {
-  margin-top: 15px;
+  bottom: 0px;
+  right: 0;
   position: absolute;
   display: flex;
 }
 
 .log-group-red {
-  background-color: red;
+  background-color: rgb(255, 34, 34);
 }
 .log-group-green {
   background-color: green;
 }
 .log-group-purple {
-  background-color: purple;
+  background-color: rgb(196, 0, 196);
 }
 .log-group-blue {
-  background-color: blue;
+  background-color: rgb(22, 22, 218);
 }
 .log-group-light-blue {
   background-color: skyblue;
@@ -39,59 +39,9 @@
 /* RIGHT SIDE */
 .log-left-container,
 .log-right-container {
-  width: 50%;
+  width: 40%;
+  min-width: 400px;
   align-items: center;
   display: flex;
   flex-direction: column;
-}
-
-.log-left-container {
-  margin-top: 30px;
-}
-
-.log-right-btn-container {
-  display: flex;
-  justify-content: center;
-}
-
-.log-right-btn-container button {
-  margin: 10px 0;
-  border-radius: 0;
-}
-
-.history-empty-log-btn-container {
-  margin-top: 30px;
-}
-
-.history-empty-log-btn-container button {
-  font-size: 1em;
-  margin: 10px auto;
-  padding: 4px 9px;
-  border-radius: 3px;
-}
-
-/* MOBILE NAV */
-.mobile-double-nav-container {
-  display: flex;
-  height: 12vh;
-  flex-direction: column;
-}
-
-.mobile-double-nav-container div {
-  display: flex;
-  align-items: center;
-}
-
-.mobile-end-container {
-  justify-content: flex-end;
-  height: 7vh;
-}
-
-.mobile-nav-calendar-container {
-  width: calc(100vw - 20px);
-  height: 5vh;
-  margin-left: -84px;
-  justify-content: space-between;
-  background-color: rgb(255, 249, 249);
-  padding: 0 10px;
 }
