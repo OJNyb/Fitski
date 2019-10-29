@@ -1,5 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
 import { withRouter } from "react-router-dom";
+import { ensureDecimal } from "../../utils/ensureDecimal";
 
 import TrashBin from "../shared/SVGs/TrashBin";
 
@@ -172,7 +173,7 @@ const SetColumn = ({
           onClick={() => setShowExercise(exerId)}
         >
           <div className="history-row">
-            {inputWeight || 0}
+            {ensureDecimal(inputWeight) || 0.0}
             <span>kg</span>
           </div>
           <div className="history-row">
@@ -199,7 +200,7 @@ const ExerciseForm = ({ onChange, inputWeight, inputReps, onInputBlur }) => {
         <input
           name="weight"
           type="number"
-          value={inputWeight}
+          value={ensureDecimal(inputWeight)}
           onChange={onChange}
           onBlur={onInputBlur}
         />

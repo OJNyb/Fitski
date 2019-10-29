@@ -3,7 +3,7 @@ import { NavContext } from "../../context/navContext";
 import { SINGLE_NAV, DOUBLE_NAV } from "../../types/navTypes";
 
 import DayView from "./DayView";
-import ExerciseView from "./ExerciseView";
+import ExerciseView from "./MobileViews/ExerciseView";
 import NavMid from "../shared/NavMid/NavMid";
 import Exercises from "../shared/Exercises/Exercises";
 import MobileDouble from "../shared/NavMid/MobileDouble";
@@ -22,10 +22,11 @@ const MobileView = ({
   date,
   dayIndex,
   currentDay,
+  historyDays,
+  onDateChange,
   handleAddSet,
   handleEditSet,
   handleDeleteSet,
-  onDateChange,
   handleAddExercise,
   displayGroupCircle,
   handleDeleteExercise
@@ -33,6 +34,7 @@ const MobileView = ({
   const [showHistory, setShowHistory] = useState(false);
   const [showExercise, setShowExercise] = useState(false);
   const [showExercises, setShowExercises] = useState(false);
+  const [exerciseView, setExerciseView] = useState("track");
 
   const { dispatch } = useContext(NavContext);
 
@@ -63,6 +65,7 @@ const MobileView = ({
   }
 
   let view;
+  console.log(currentDay);
   if (showHistory) {
     view = (
       <Calendar
@@ -74,7 +77,17 @@ const MobileView = ({
   } else if (showExercises) {
     view = <Exercises handleAddExercise={handleAddExerciseski} />;
   } else if (showExercise) {
-    view = <ExerciseView />;
+    console.log(showExercise);
+    view = (
+      <ExerciseView
+        view={exerciseView}
+        exer={currentDay.exercises.filter(x => x._id === showExercise)[0]}
+        historyDays={historyDays}
+        handleAddSet={handleAddSet}
+        handleEditSet={handleEditSet}
+        handleDeleteSet={handleDeleteSet}
+      />
+    );
   } else {
     view = (
       <div className="margin-top-20">
@@ -93,11 +106,36 @@ const MobileView = ({
     );
   }
 
+  let topNavContent;
+  if (showExercise) {
+    topNavContent = (
+      <>
+        <button className="white-material-btn" onClick={onCalendarClick}>
+          <i className="material-icons material-icons-22">calendar_today</i>
+        </button>
+        <button className="white-material-btn" onClick={onExerciseClick}>
+          <i className="material-icons material-icons-30">add</i>
+        </button>
+      </>
+    );
+  } else {
+    topNavContent = (
+      <>
+        <button className="white-material-btn" onClick={onCalendarClick}>
+          <i className="material-icons material-icons-22">calendar_today</i>
+        </button>
+        <button className="white-material-btn" onClick={onExerciseClick}>
+          <i className="material-icons material-icons-30">add</i>
+        </button>
+      </>
+    );
+  }
+
   let bottomNavContent;
   if (showHistory) {
     bottomNavContent = (
       <button
-        className="theme-btn-no-border"
+        className="white-material-btn"
         onClick={() => setShowHistory(false)}
       >
         <i className="material-icons reversed-icon font-16">
@@ -108,13 +146,53 @@ const MobileView = ({
   } else if (showExercises) {
     bottomNavContent = (
       <button
-        className="theme-btn-no-border"
+        className="white-material-btn"
         onClick={() => setShowExercises(false)}
       >
         <i className="material-icons reversed-icon font-16">
           arrow_forward_ios
         </i>
       </button>
+    );
+  } else if (showExercise) {
+    bottomNavContent = (
+      // <div className="history-mobile-exercise-header">
+      <>
+        <div
+          className={
+            "history-mobile-exercise-header-item" +
+            (exerciseView === "track"
+              ? " history-mobile-exercise-header-active"
+              : "")
+          }
+          onClick={() => setExerciseView("track")}
+        >
+          Track
+        </div>
+        <div
+          className={
+            "history-mobile-exercise-header-item" +
+            (exerciseView === "history"
+              ? " history-mobile-exercise-header-active"
+              : "")
+          }
+          onClick={() => setExerciseView("history")}
+        >
+          History
+        </div>
+        <div
+          className={
+            "history-mobile-exercise-header-item" +
+            (exerciseView === "graph"
+              ? " history-mobile-exercise-header-active"
+              : "")
+          }
+          onClick={() => setExerciseView("graph")}
+        >
+          Graph
+        </div>
+      </>
+      // </div>
     );
   } else {
     bottomNavContent = (
@@ -131,24 +209,7 @@ const MobileView = ({
       <NavMid
         customNav={
           <MobileDouble
-            topContent={
-              <>
-                <button
-                  className="theme-btn-no-border"
-                  onClick={onCalendarClick}
-                >
-                  <i className="material-icons material-icons-22">
-                    calendar_today
-                  </i>
-                </button>
-                <button
-                  className="theme-btn-no-border"
-                  onClick={onExerciseClick}
-                >
-                  <i className="material-icons material-icons-30">add</i>
-                </button>
-              </>
-            }
+            topContent={topNavContent}
             bottomContent={bottomNavContent}
           />
         }

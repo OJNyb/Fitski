@@ -90,7 +90,9 @@ const addSet = Joi.object().keys({
   unit,
   day_id: dayId,
   exercise_id: exerciseId,
-  setId
+  setId,
+  reps,
+  weight
 });
 
 const editSet = Joi.object()

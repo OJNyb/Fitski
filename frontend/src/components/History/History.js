@@ -51,13 +51,14 @@ const History = () => {
     return null;
   }
 
-  const historyDates = history.days.map(x => x.date);
+  const { days } = history;
+  const historyDates = days.map(x => x.date);
   let dayIndex = historyDates.indexOf(formattedDate);
   let currentDay;
   let dayId;
 
   if (dayIndex !== -1) {
-    currentDay = history.days[dayIndex];
+    currentDay = days[dayIndex];
     dayId = currentDay._id;
   }
 
@@ -78,15 +79,6 @@ const History = () => {
     }
   }
 
-  function handleAddSet(exerId) {
-    addSet(dispatch, dayId, exerId);
-  }
-
-  // get dayId
-  function handleEditSet(values, exerId, setId) {
-    editSet(dispatch, values, dayId, exerId, setId);
-  }
-
   function handleDeleteExercise(exerId) {
     const { notes, exercises } = currentDay;
     if (!notes && exercises.length === 1) {
@@ -94,6 +86,14 @@ const History = () => {
     } else {
       deleteExercise(dispatch, dayId, exerId);
     }
+  }
+
+  function handleAddSet(exerId, values) {
+    addSet(dispatch, values, dayId, exerId);
+  }
+
+  function handleEditSet(values, exerId, setId) {
+    editSet(dispatch, values, dayId, exerId, setId);
   }
 
   function handleDeleteSet(exerId, setId) {
@@ -106,7 +106,7 @@ const History = () => {
     if (dateski !== formattedDate) {
       let index = historyDates.indexOf(dateski);
       if (index !== -1) {
-        let muscleGroups = formatMuscleGroups(history.days[index].exercises);
+        let muscleGroups = formatMuscleGroups(days[index].exercises);
 
         let circles = muscleGroups.map(x => {
           let color = addMGC(x);
@@ -131,6 +131,7 @@ const History = () => {
             date={date}
             dayIndex={dayIndex}
             currentDay={currentDay}
+            historyDays={days}
             handleAddSet={handleAddSet}
             handleEditSet={handleEditSet}
             handleDeleteSet={handleDeleteSet}

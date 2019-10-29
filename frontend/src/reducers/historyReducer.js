@@ -12,6 +12,7 @@ import {
 } from "../types/historyTypes";
 
 import { formatHistoryDate } from "../utils/formatHistoryDate";
+import { ensureDecimal } from "../utils/ensureDecimal";
 
 // TODO: If !DAY/day/woplan
 
@@ -167,12 +168,23 @@ function planReducer(state, action) {
     }
 
     case ADD_SET: {
-      const { exerId, dayId, setId } = payload;
+      const { exerId, dayId, setId, reps, weight } = payload;
       const { history } = state;
       const { days } = history;
 
+      let values = {};
+
+      if (reps) {
+        values.reps = reps;
+      }
+      if (weight) {
+        values.weight = ensureDecimal(weight);
+      }
+
       const newSet = {
-        _id: setId
+        reps,
+        _id: setId,
+        ...values
       };
 
       let day = days.find(x => x._id === dayId);
@@ -189,6 +201,11 @@ function planReducer(state, action) {
       const { values, dayId, exerId, setId } = payload;
       const { history } = state;
       const { days } = history;
+      const { reps, weight } = values;
+
+      if (weight) {
+        values.weight = ensureDecimal(weight);
+      }
 
       let day = days.find(x => x._id === dayId);
 
@@ -198,7 +215,10 @@ function planReducer(state, action) {
       let { sets } = exercise;
       let setIndex = sets.map(x => x._id).indexOf(setId);
 
-      sets[setIndex] = { ...sets[setIndex], ...values };
+      sets[setIndex] = {
+        ...sets[setIndex],
+        ...values
+      };
 
       return {
         ...state,

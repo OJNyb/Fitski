@@ -157,16 +157,16 @@ function deleteExercise(dispatch, dayId, exerId) {
 
 // add set
 // @route POST api/history/exercise/:day_id/:exercise_id
-function addSet(dispatch, dayId, exerId) {
+function addSet(dispatch, values, dayId, exerId) {
   const setId = new ObjectId().toHexString();
 
   dispatch({
     type: ADD_SET,
-    payload: { dayId, exerId, setId }
+    payload: { dayId, exerId, setId, ...values }
   });
 
   axios
-    .post(`/history/exercise/${dayId}/${exerId}`, { setId })
+    .post(`/history/exercise/${dayId}/${exerId}`, { setId, ...values })
     .then(res => {
       const { data } = res;
       const { message } = data;

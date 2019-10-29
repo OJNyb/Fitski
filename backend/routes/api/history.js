@@ -330,11 +330,14 @@ router.post(
     const { body, params } = req;
     const { day_id: dayId, exercise_id: exerciseId } = params;
 
-    const { history, setId } = body;
+    const { setId, reps, weight, history } = body;
 
     const newSet = {
       _id: setId
     };
+
+    newSet.weight = weight ? weight : 0;
+    newSet.reps = reps ? reps : 0;
 
     history
       .updateOne(
@@ -371,23 +374,36 @@ router.post(
     const { day_id: dayId, exercise_id: exerciseId, set_id: setId } = params;
 
     let patch;
+    let patch2;
 
     let field;
+    let field2;
 
-    if (reps) {
-      patch = reps;
-      field = "reps";
+    if (reps && weight) {
+      patch = weight;
+      field = "weight";
+      patch2 = reps;
+      field2 = "reps";
     } else if (weight) {
       patch = weight;
       field = "weight";
+    } else if (reps) {
+      patch = reps;
+      field = "reps";
+    }
+    let newField = {
+      [`days.$[d].exercises.$[e].sets.$[s].${field}`]: patch
+    };
+
+    if (patch2) {
+      newField[`days.$[d].exercises.$[e].sets.$[s].${field2}`] = patch2;
     }
 
+    console.log(newField);
     history
       .updateOne(
         {
-          $set: {
-            [`days.$[d].exercises.$[e].sets.$[s].${field}`]: patch
-          }
+          $set: { ...newField }
         },
         {
           arrayFilters: [

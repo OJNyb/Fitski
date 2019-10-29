@@ -32,6 +32,15 @@ function formatHistoryDate(date) {
   return year * 10000 + month * 100 + day;
 }
 
+function reverseHistoryDate(date) {
+  date += "";
+  let year = date.slice(0, 4);
+  let month = date.slice(4, 6);
+  let day = date.slice(6, 8);
+
+  return new Date(year, month, day);
+}
+
 function decrementDate(date) {
   return date.setDate(date.getDate() - 1);
 }
@@ -68,11 +77,44 @@ function displayDate(date) {
   }
 }
 
+function displayDateWeekday(date) {
+  let fDate = formatHistoryDate(date);
+  let nDate = formatHistoryDate(new Date());
+
+  if (nDate === fDate) {
+    return "Today";
+  } else if (nDate === fDate + 1) {
+    return "Yesterday";
+  } else if (nDate === fDate - 1) {
+    return "Tomorrow";
+  }
+
+  fDate += "";
+  nDate += "";
+
+  let day = fDate.slice(6);
+  if (day < 10) {
+    day = day.slice(1);
+  }
+
+  const month = date.toLocaleString("default", { month: "long" });
+  const weekday = date.toLocaleString("default", { weekday: "long" });
+
+  if (nDate.slice(0, 4) === fDate.slice(0, 4)) {
+    return `${weekday}, ${month} ${day}`;
+  } else {
+    const year = date.getFullYear();
+    return `${weekday}, ${month} ${day}, ${year}`;
+  }
+}
+
 export {
   addMGC,
   formatDate,
   displayDate,
   decrementDate,
   incrementDate,
-  formatHistoryDate
+  formatHistoryDate,
+  displayDateWeekday,
+  reverseHistoryDate
 };

@@ -7,17 +7,20 @@
 .history-mobile-exercise-header-item {
   display: flex;
   flex: 1 100%;
+
   justify-content: center;
   align-items: center;
-  height: 40px;
-  border-bottom: 2px solid rgb(230, 186, 186);
+  height: 100%;
+  border-bottom: 2px solid #d90000;
   font-weight: 500;
   font-size: 14px;
+  cursor: pointer;
 }
 
 .history-mobile-exercise-header-active {
-  color: #a60000;
-  border-bottom: 2px solid #a60000;
+  color: #d90000;
+  background-color: rgb(255, 245, 245);
+  border-bottom: 2px solid #d90000;
 }
 
 .history-mobile-exercise-body {
@@ -110,10 +113,6 @@
   background-color: rgba(31, 192, 103, 0.774);
 }
 
-.history-mobile-exercise-button-container button:last-child {
-  background-color: rgba(92, 119, 240, 0.842);
-}
-
 .history-mobile-exercise-list-container {
   margin-top: 15px;
 }
@@ -122,6 +121,14 @@
   display: flex;
   border-bottom: 1px solid rgb(224, 219, 219);
   padding: 7px;
+}
+
+.history-mobile-exercise-list-item-active {
+  background-color: #ffeaea;
+}
+
+.history-mobile-exercise-list-item-active i {
+  color: #a60000 !important;
 }
 
 .history-mobile-exercise-list-item > div {
@@ -163,4 +170,18 @@
   font-size: 12px;
   color: gray;
   margin-left: 4px;
+}
+
+/* EXERCISE HISTORY */
+.history-mobile-exercise-history-body {
+  padding-top: 10px;
+}
+.history-mobile-exercise-history-day-container {
+  margin-top: 10px;
+}
+
+.history-mobile-exercise-history-column {
+  display: flex;
+  padding: 0 8px 5px 45%;
+  justify-content: space-between;
 }

@@ -245,24 +245,26 @@ nav section {
 .mobile-nav {
   position: fixed;
   display: flex;
-  padding: 1px 1px 1px 15px;
+  padding: 0px 0px 0px 15px;
   height: 7%;
   width: 100%;
-  background-color: #fff;
-  border-top: 0px solid #a60000;
-  border-bottom: 2px solid #a60000;
-
+  background-color: #a60000;
   z-index: 999;
 }
 
-.mobile-nav-double {
-  height: 12% !important;
+.mobile-nav * {
+  color: white;
 }
+
+.mobile-nav-double {
+  height: 14vh !important;
+}
+
 .mobile-nav button {
   left: 10px;
   top: calc(3.5vh - 13px);
   position: absolute;
-  color: #a60000;
+  color: #fff;
 }
 
 .mobile-nav button i {

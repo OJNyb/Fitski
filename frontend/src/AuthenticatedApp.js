@@ -31,9 +31,9 @@ function App() {
   if (!isMobile) {
     marginTop = "66px";
   } else if (isMobile && !isDouble) {
-    marginTop = "calc(7vh + 4px)";
+    marginTop = "calc(7vh)";
   } else {
-    marginTop = "12vh";
+    marginTop = "14vh";
   }
 
   return (

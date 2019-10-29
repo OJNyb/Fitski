@@ -25,7 +25,7 @@ const Navigation = () => {
           className="mobile-nav-menu-container"
           onClick={() => setShowNavbar(false)}
           style={{
-            top: isDouble ? "12vh" : "7vh",
+            top: isDouble ? "14vh" : "7vh",
             left: showNavbar ? 0 : "-100%",
             backgroundColor: showNavbar
               ? "rgba(235, 209, 209, 0.5)"

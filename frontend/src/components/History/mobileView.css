@@ -1,27 +1,27 @@
 /* MOBILE NAV */
 .mobile-double-nav-container {
   display: flex;
-  height: 12vh;
+  height: 14vh;
   flex-direction: column;
 }
 
-.mobile-double-nav-container div {
+.mobile-double-nav-container > div {
   display: flex;
   align-items: center;
 }
 
 .mobile-end-container {
   justify-content: flex-end;
-  height: 7vh;
+  height: 7.5vh;
 }
 
 .mobile-nav-calendar-container {
-  width: calc(100vw - 20px);
-  height: 5vh;
+  width: 100vw;
+  height: 6.5vh;
   margin-left: -84px;
   justify-content: space-between;
-  background-color: rgb(255, 249, 249);
-  padding: 0 10px;
+  background-color: #d90000;
+  color: white;
 }
 
 /* VIEW */
