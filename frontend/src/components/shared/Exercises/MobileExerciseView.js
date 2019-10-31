@@ -5,6 +5,15 @@ import { ExerciseContext } from "../../../context/exerciseContext";
 import "./exerciseTable.css";
 import "./mobileExerciseView.css";
 
+const muscleGroupArray = [
+  "Shoulders",
+  "Triceps",
+  "Biceps",
+  "Chest",
+  "Legs",
+  "Back"
+];
+
 const MobileExerciseView = ({
   search,
   muscleGroup,
@@ -17,8 +26,8 @@ const MobileExerciseView = ({
 
   if (!exercisesToShow) exerciseDisplay = <p>No exercise with that name</p>;
 
-  console.log(search.length);
-  if ((search.length || muscleGroup !== "All") && exercisesToShow) {
+  console.log(muscleGroup);
+  if ((search.length || muscleGroup.length) && exercisesToShow) {
     exerciseDisplay = exercisesToShow.map(x => (
       <div
         className="mobile-exercise-item"
@@ -29,52 +38,9 @@ const MobileExerciseView = ({
       </div>
     ));
   } else {
-    exerciseDisplay = (
-      <>
-        {/* <div
-          className="mobile-exercise-item"
-          onClick={() => setMuscleGroup("Abs")}
-        >
-          Abs
-        </div> */}
-        <div
-          className="mobile-exercise-item"
-          onClick={() => setMuscleGroup("Back")}
-        >
-          Back
-        </div>
-        <div
-          className="mobile-exercise-item"
-          onClick={() => setMuscleGroup("Legs")}
-        >
-          Legs
-        </div>
-        <div
-          className="mobile-exercise-item"
-          onClick={() => setMuscleGroup("Chest")}
-        >
-          Chest
-        </div>
-        <div
-          className="mobile-exercise-item"
-          onClick={() => setMuscleGroup("Biceps")}
-        >
-          Biceps
-        </div>
-        <div
-          className="mobile-exercise-item"
-          onClick={() => setMuscleGroup("Triceps")}
-        >
-          Triceps
-        </div>
-        <div
-          className="mobile-exercise-item"
-          onClick={() => setMuscleGroup("Shoulders")}
-        >
-          Shoulders
-        </div>
-      </>
-    );
+    exerciseDisplay = muscleGroupArray.map(x => (
+      <MuscleGroupItem mg={x} onClick={() => setMuscleGroup(x)} />
+    ));
   }
 
   return (
@@ -84,6 +50,14 @@ const MobileExerciseView = ({
         <input value={search} onChange={handleSearchChange} />
       </div>
       <div className="mobile-exercises-body">{exerciseDisplay}</div>
+    </div>
+  );
+};
+
+const MuscleGroupItem = ({ mg, onClick }) => {
+  return (
+    <div className="mobile-exercise-item" onClick={onClick}>
+      {mg}
     </div>
   );
 };

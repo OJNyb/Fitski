@@ -1,8 +1,8 @@
 .loading-container {
   position: fixed;
   margin: auto;
-  left: calc(50vw);
-  top: calc(30vh);
+  left: calc(50vw - 26px);
+  top: calc(35vh);
 }
 
 .loading-container svg {

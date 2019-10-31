@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Range, getTrackBackground } from "react-range";
 
 const PlanFilter = ({
+  isMobile,
   nameFilter,
   goalFilter,
   weekFilter,
@@ -40,16 +41,19 @@ const PlanFilter = ({
     min: 0,
     max: 50,
     values: weekFilter,
-    colors: ["silver", "black", "silver"]
+    colors: ["rgb(201, 160, 160)", "rgb(129, 58, 58)", "rgb(201, 160, 160)"]
   });
 
   return (
     <>
       <button
-        className="theme-btn plans-filter-button"
+        className="plans-filter-button"
         onClick={() => setShowFilters(!showFilters)}
+        style={{
+          margin: isMobile ? "20px 0 15px 5%" : "20px auto 5px"
+        }}
       >
-        Filters
+        FILTER
       </button>
       <div
         className={
@@ -59,7 +63,6 @@ const PlanFilter = ({
       >
         <div>
           <div className="plans-name-filter-container">
-            <h6 className="plans-filter-category-header">Name</h6>
             <input
               placeholder={"Name"}
               value={nameFilter}
@@ -67,15 +70,15 @@ const PlanFilter = ({
             />
           </div>
           <div className="plans-author-filter-container">
-            <h6 className="plans-filter-category-header">Author</h6>
             <input
+              placeholder={"Author"}
               value={authorFilter}
               onChange={e => setAuthorFilter(e.target.value)}
             />
           </div>
         </div>
         <div className="plans-length-filter-container">
-          <h6 className="plans-filter-category-header">Weeks</h6>
+          <h6 className="plans-filter-category-header">Length</h6>
 
           <Range
             step={1}

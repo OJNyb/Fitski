@@ -6,6 +6,7 @@ import useMobile from "../../hooks/useMobile";
 import useSetLoading from "../../hooks/useSetLoading";
 import "react-dates/initialize";
 import moment from "moment";
+import { findLastOccurenceOfExercise } from "../../utils/findAllOccurencesOfExercise";
 
 import {
   addDay,
@@ -62,17 +63,23 @@ const History = () => {
     dayId = currentDay._id;
   }
 
-  // get dayId
   function handleAddExercise(exercise) {
+    const { _id: exerciseId } = exercise;
     if (dayIndex === -1) {
-      addDay(dispatch, date, exercise);
+      let x = findLastOccurenceOfExercise(days, exerciseId);
+      let values = {};
+      if (x) {
+        const { weight, reps } = x;
+        values = { reps, weight };
+      }
+      addDay(dispatch, date, exercise, values);
     } else {
       let exerciski = currentDay.exercises.filter(
-        x => x.exercise._id === exercise._id
+        x => x.exercise._id === exerciseId
       );
 
       if (exerciski.length) {
-        handleAddSet(exerciski[0]._id);
+        handleAddSet(exerciski[0]._id, exerciseId);
       } else {
         addExercise(dispatch, dayId, exercise);
       }
@@ -88,7 +95,14 @@ const History = () => {
     }
   }
 
-  function handleAddSet(exerId, values) {
+  function handleAddSet(exerId, exerciseId, values) {
+    if (!values) {
+      let x = findLastOccurenceOfExercise(days, exerciseId);
+      if (x) {
+        const { weight, reps } = x;
+        values = { reps, weight };
+      }
+    }
     addSet(dispatch, values, dayId, exerId);
   }
 
@@ -128,7 +142,7 @@ const History = () => {
       >
         {(isMobile && (
           <MobileView
-            date={date}
+            date={moment(date)}
             dayIndex={dayIndex}
             currentDay={currentDay}
             historyDays={days}

@@ -5,7 +5,8 @@ import navReducer from "../reducers/navReducer";
 // TODO: If !week/day/woplan
 
 const initialState = {
-  isDouble: false
+  isDouble: false,
+  isWhite: false
 };
 
 const useNav = () => {

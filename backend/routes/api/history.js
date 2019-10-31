@@ -146,7 +146,7 @@ router.post(
 router.post("/", ensureSignedIn, validateRequest, async (req, res, next) => {
   const { body, session } = req;
   const { userId } = session;
-  const { dayId, exerId, date, exerciseId, notes, setId } = body;
+  const { dayId, exerId, date, exerciseId, notes, setId, reps, weight } = body;
 
   const history = await History.findOne({ user: userId });
 
@@ -178,7 +178,9 @@ router.post("/", ensureSignedIn, validateRequest, async (req, res, next) => {
         exercise: exerciseId,
         sets: [
           {
-            _id: setId
+            _id: setId,
+            weight: weight ? weight : 0,
+            reps: reps ? reps : 0
           }
         ]
       }
@@ -252,14 +254,16 @@ router.post(
     const { body, params } = req;
     const { day_id: dayId } = params;
 
-    const { history, exerId, exerciseId, setId } = body;
+    const { history, exerId, exerciseId, setId, reps, weight } = body;
 
     const newExercise = {
       _id: exerId,
       exercise: exerciseId,
       sets: [
         {
-          _id: setId
+          _id: setId,
+          reps: reps ? reps : 0,
+          weight: weight ? weight : 0
         }
       ]
     };
@@ -338,6 +342,8 @@ router.post(
 
     newSet.weight = weight ? weight : 0;
     newSet.reps = reps ? reps : 0;
+
+    console.log(newSet);
 
     history
       .updateOne(

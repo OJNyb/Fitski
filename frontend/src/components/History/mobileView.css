@@ -24,12 +24,22 @@
   color: white;
 }
 
+.nav-track-back-btn span {
+  align-items: center;
+}
+.nav-track-back-btn span {
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 19px;
+}
+
 /* VIEW */
 .history-mobile-add-container {
   width: 100%;
   height: 100vh;
   position: relative;
   background-color: rgb(243, 234, 234);
+  overflow-y: scroll;
 }
 
 .history-mobile-add-container p {
@@ -48,4 +58,57 @@
 
 .margin-top-20 {
   margin-top: 20px;
+}
+
+/* HISTORY */
+.history-mobile-calendar-container {
+  height: 100vh;
+  position: relative;
+  overflow-y: scroll;
+}
+
+.history-mobile-calendar-container .CalendarDay__default {
+  border: none;
+  border-radius: 50%;
+  padding: 0;
+}
+
+.history-mobile-calendar-container .CalendarDay__default:hover {
+  border: none;
+  background-color: #fff;
+}
+
+.history-mobile-calendar-day {
+  width: 15px;
+  height: 15px;
+  padding: 8px;
+  margin: auto;
+  border-radius: 50%;
+  line-height: 15px;
+}
+
+.history-mobile-calendar-day-active {
+  background-color: #a60000;
+  color: white;
+}
+
+.DayPickerNavigation__verticalDefault_3 {
+  display: flex;
+}
+
+.DayPickerNavigation__verticalDefault_3 > div {
+  flex: 1 50%;
+}
+
+.history-mobile-cal-clear-btn {
+  position: absolute;
+  top: 5px;
+  right: 0;
+  z-index: 999;
+  color: #a60000;
+  font-size: 27px;
+}
+
+.history-mobile-cal-clear-btn i {
+  font-size: 27px;
 }

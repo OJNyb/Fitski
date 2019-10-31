@@ -11,7 +11,6 @@ const HistoryView = ({ exercise, historyDays }) => {
 
   let exerciseHistory = findAllOccurencesOfExercise(historyDays, exerciseId);
 
-  console.log(exerciseHistory);
   let dayView = exerciseHistory.map(x => <Day day={x} />);
   return <div className="history-mobile-exercise-history-body">{dayView}</div>;
 };

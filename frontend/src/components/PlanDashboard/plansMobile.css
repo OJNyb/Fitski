@@ -1,0 +1,54 @@
+.plans-mobile-plan-card {
+  background-color: white;
+  border: 1px solid rgb(235, 211, 211);
+  cursor: pointer;
+  color: rgb(92, 61, 61);
+  box-shadow: 1px 1px 4px 0 rgba(0, 0, 0, 0.11);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 45%;
+  position: relative;
+  margin-left: 5%;
+  padding: 0 0 6px;
+  border-radius: 10px;
+  font-weight: 300;
+  font-size: 15px;
+}
+
+.red-h-5 {
+  height: 23px;
+  width: 100%;
+  background-color: #a60000;
+  border-top-left-radius: 9px;
+  border-top-right-radius: 9px;
+}
+
+.plans-mobile-plan-author {
+  position: absolute;
+  top: -10px;
+  right: calc(50% - 16px);
+}
+
+.plans-mobile-plan-author img {
+  width: 30px;
+  height: 30px;
+}
+
+.plans-mobile-plan-author > div {
+  width: 30px;
+  height: 30px;
+  margin-right: 0;
+}
+
+.plans-mobile-plan-name {
+  text-align: center;
+  margin: 3px 0 2px;
+  color: #a60000;
+  font-weight: 500;
+  font-size: 16px;
+}
+
+/* .plans-mobile-plan-goal
+.plans-mobile-plan-length
+.plans-mobile-plan-created */

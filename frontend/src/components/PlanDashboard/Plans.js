@@ -1,13 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useLayoutEffect } from "react";
 import usePlans from "../../hooks/usePlans";
 import useMobile from "../../hooks/useMobile";
 import useSetLoading from "../../hooks/useSetLoading";
+import { NavContext } from "../../context/navContext";
+import { SINGLE_NAV, IS_WHITE } from "../../types/navTypes";
 
 import PlansNav from "./PlansNav";
 import PlanCard from "./PlanCard";
 
 import "./plans.css";
 import PlanFilter from "./PlanFilter";
+import MobilePlanCard from "./MobileCard";
 
 const Plans = () => {
   const { state, dispatch } = usePlans();
@@ -17,9 +20,19 @@ const Plans = () => {
   const [weekFilter, setWeekFilter] = useState([0, 50]);
   const [goalFilter, setGoalFilter] = useState([false, false, false]);
 
+  const { dispatch: navDispatch } = useContext(NavContext);
   const { isPending, isRejected, woPlans } = state;
 
   useSetLoading(isPending);
+
+  useLayoutEffect(() => {
+    function setNavWhite() {
+      navDispatch({ type: IS_WHITE });
+      navDispatch({ type: SINGLE_NAV });
+    }
+
+    setNavWhite();
+  }, []);
 
   if (isPending) return null;
   if (isRejected) return <p>Derp</p>;
@@ -64,15 +77,24 @@ const Plans = () => {
     );
   }
 
-  let cards = woPlansToDisplay.map(plan => (
-    <PlanCard key={plan._id} plan={plan} isMobile={isMobile} />
-  ));
+  let cards;
+
+  if (!isMobile) {
+    cards = woPlansToDisplay.map(plan => (
+      <PlanCard key={plan._id} plan={plan} isMobile={isMobile} />
+    ));
+  } else {
+    cards = woPlansToDisplay.map(plan => (
+      <MobilePlanCard key={plan._id} plan={plan} />
+    ));
+  }
 
   return (
     <>
-      <PlansNav dispatch={dispatch} />
+      <PlansNav isMobile={isMobile} dispatch={dispatch} />
 
       <PlanFilter
+        isMobile={isMobile}
         nameFilter={nameFilter}
         weekFilter={weekFilter}
         goalFilter={goalFilter}
@@ -84,15 +106,17 @@ const Plans = () => {
       />
 
       <div className="plans-cards-container">
-        <div className="plans-cards-header">
-          <div className="plans-cards-header-name">Name</div>
-          <div className="plans-cards-header-author">Author</div>
-          <div className="plans-cards-header-length">Length</div>
-          <div className="plans-cards-header-goal">Goal</div>
-          {!isMobile && (
-            <div className="plans-cards-header-created">Created</div>
-          )}
-        </div>
+        {!isMobile && (
+          <div className="plans-cards-header">
+            <div className="plans-cards-header-name">Name</div>
+            <div className="plans-cards-header-goal">Goal</div>
+            <div className="plans-cards-header-author">Author</div>
+            <div className="plans-cards-header-length">Length</div>
+            {!isMobile && (
+              <div className="plans-cards-header-created">Created</div>
+            )}
+          </div>
+        )}
         {cards}
       </div>
     </>

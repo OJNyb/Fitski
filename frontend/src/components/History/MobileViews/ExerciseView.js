@@ -14,15 +14,16 @@ const ExerciseView = ({
   handleEditSet,
   handleDeleteSet
 }) => {
-  const { _id, sets, exercise } = exer;
-  console.log(exer);
+  const { _id: exerId, sets, exercise } = exer;
+  const { _id: exerciseId } = exercise;
 
   let viewDisplay;
   if (view === "track") {
     viewDisplay = (
       <TrackView
         sets={sets}
-        exerId={_id}
+        exerId={exerId}
+        exerciseId={exerciseId}
         onAddSet={handleAddSet}
         onEditSet={handleEditSet}
         onDeleteSet={handleDeleteSet}

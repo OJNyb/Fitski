@@ -7,11 +7,12 @@ const WOPlanSchema = new mongoose.Schema(
   {
     _id: ObjectId,
     name: String,
+    difficulty: String,
+    description: String,
     user: {
       type: ObjectId,
       ref: "user"
     },
-    description: String,
     goals: [
       {
         goal: ObjectId

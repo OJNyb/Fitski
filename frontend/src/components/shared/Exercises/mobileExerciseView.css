@@ -35,6 +35,6 @@
 .mobile-exercise-item {
   padding: 10px;
   border-bottom: 1px solid silver;
-  font-weight: 500;
-  color: rgba(0, 0, 0, 0.8);
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.9);
 }

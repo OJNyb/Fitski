@@ -9,15 +9,25 @@ const Navigation = () => {
   const isMobile = useMobile();
   const [showNavbar, setShowNavbar] = useState(false);
   const {
-    state: { isDouble }
+    state: { isDouble, isWhite }
   } = useContext(NavContext);
+
+  console.log(isWhite);
 
   if (isMobile) {
     return (
       <>
-        <div className={"mobile-nav" + (isDouble ? " mobile-nav-double" : "")}>
+        <div
+          className={"mobile-nav" + (isDouble ? " mobile-nav-double" : "")}
+          style={{ backgroundColor: isWhite ? "#fff" : "#a60000" }}
+        >
           <button onClick={() => setShowNavbar(!showNavbar)}>
-            <i className="material-icons">dehaze</i>
+            <i
+              className="material-icons"
+              style={{ color: isWhite ? "#a60000" : "#fff" }}
+            >
+              dehaze
+            </i>
           </button>
         </div>
 
@@ -30,7 +40,7 @@ const Navigation = () => {
             backgroundColor: showNavbar
               ? "rgba(235, 209, 209, 0.5)"
               : "transparent",
-            zIndex: showNavbar ? 998 : 0
+            zIndex: showNavbar ? 998 : -1
           }}
         >
           <NavigationMenu />

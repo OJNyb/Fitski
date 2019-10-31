@@ -10,7 +10,6 @@ const history = require("./routes/api/history");
 const exercise = require("./routes/api/exercise");
 
 const createErrorObject = require("./utils/createErrorObject");
-``;
 
 const {
   APP_PORT,

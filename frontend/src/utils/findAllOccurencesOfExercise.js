@@ -13,4 +13,14 @@ function findAllOccurencesOfExercise(historyDays, exerciseId) {
   }, []);
 }
 
-export { findAllOccurencesOfExercise };
+function findLastOccurenceOfExercise(historyDays, exerciseId) {
+  let allOcc = findAllOccurencesOfExercise(historyDays, exerciseId);
+
+  console.log(allOcc);
+  if (allOcc.length) {
+    const { sets } = allOcc[allOcc.length - 1];
+    return sets[sets.length - 1];
+  }
+}
+
+export { findAllOccurencesOfExercise, findLastOccurenceOfExercise };

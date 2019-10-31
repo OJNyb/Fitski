@@ -1,5 +1,79 @@
+.create-plan-container h2 {
+  text-align: center;
+  color: rgba(85, 69, 69, 0.664);
+  font-weight: 300;
+}
+
 .create-plan-form {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.create-plan-form textarea {
+  width: 70%;
+  height: 20vh;
+  border: 1px solid silver;
+  background-color: transparent;
+  outline: none;
+  padding: 4px 6px;
+  font-size: 15px;
+  font-family: roboto, sans-serif;
+  border-radius: 2px;
+}
+
+.create-plan-form textarea:focus {
+  border: 1px solid #a60000;
+}
+
+.create-plan-name-input {
+  background-color: transparent;
+  text-align: center;
+  border: 0;
+  border-bottom: 1px solid rgb(187, 160, 160);
+  outline: none;
+  font-size: 26px;
+  margin-bottom: 7%;
+  width: 60%;
+  color: rgb(88, 72, 72);
+  border-radius: 0;
+}
+
+.create-plan-name-input:focus {
+  border-bottom: 1px solid #a60000;
+}
+
+.create-plan-check-container {
+  display: flex;
+  margin-top: 40px;
+  width: 70%;
+  justify-content: space-between;
+}
+
+.create-plan-check-container > div {
+  display: flex;
+  flex-direction: column;
+}
+
+.create-plan-check-container h6 {
+  font-size: 13px;
+  font-weight: 700;
+  margin: 0;
+  margin-bottom: 8px;
+  color: rgb(63, 56, 56);
+}
+
+.create-plan-check-container label {
+  color: rgb(70, 60, 60);
+  font-weight: 300;
+}
+
+.create-plan-form button {
+  margin-top: 40px;
+  width: 100%;
+  height: 40px;
+  border-radius: 3px;
+  position: fixed;
+  bottom: 0;
+  font-size: 20px;
 }

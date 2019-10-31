@@ -46,11 +46,16 @@ function planReducer(state, action) {
 
     case ADD_DAY: {
       // push day to days array in place
-      const { date, exercise, dayId, exerId, setId } = payload;
+      const { date, exercise, dayId, exerId, setId, reps, weight } = payload;
       const { history } = state;
       const { days } = history;
       let formattedDate = formatHistoryDate(date);
       let insertIndex;
+
+      let values = {
+        reps: reps ? reps : 0,
+        weight: weight ? ensureDecimal(weight) : 0.0
+      };
 
       if (days.length) {
         for (let i = days.length - 1; i >= 0; i--) {
@@ -71,7 +76,8 @@ function planReducer(state, action) {
             exercise: exercise,
             sets: [
               {
-                _id: setId
+                _id: setId,
+                ...values
               }
             ]
           }
@@ -107,16 +113,22 @@ function planReducer(state, action) {
     }
 
     case ADD_EXERCISE: {
-      const { exerId, dayId, setId, exercise } = payload;
+      const { exerId, dayId, setId, exercise, reps, weight } = payload;
       const { history } = state;
       const { days } = history;
+
+      let values = {
+        reps: reps ? reps : 0,
+        weight: weight ? ensureDecimal(weight) : 0.0
+      };
 
       const newExercise = {
         _id: exerId,
         exercise,
         sets: [
           {
-            _id: setId
+            _id: setId,
+            ...values
           }
         ]
       };
@@ -172,14 +184,10 @@ function planReducer(state, action) {
       const { history } = state;
       const { days } = history;
 
-      let values = {};
-
-      if (reps) {
-        values.reps = reps;
-      }
-      if (weight) {
-        values.weight = ensureDecimal(weight);
-      }
+      let values = {
+        reps: reps ? reps : 0,
+        weight: weight ? ensureDecimal(weight) : 0.0
+      };
 
       const newSet = {
         reps,

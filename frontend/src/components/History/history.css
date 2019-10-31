@@ -12,9 +12,9 @@
 
 .calendar-circle-container {
   bottom: 0px;
-  right: 0;
-  position: absolute;
+  margin: 0 auto;
   display: flex;
+  justify-content: center;
 }
 
 .log-group-red {
@@ -33,7 +33,7 @@
   background-color: skyblue;
 }
 .log-group-yellow {
-  background-color: yellow;
+  background-color: rgb(255, 217, 0);
 }
 
 /* RIGHT SIDE */

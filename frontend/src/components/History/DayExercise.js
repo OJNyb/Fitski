@@ -15,7 +15,7 @@ const DayExercise = ({
   onDeleteExercise
 }) => {
   const {
-    exercise: { name },
+    exercise: { name, _id: exerciseId },
     sets,
     _id: exerId
   } = exercise;
@@ -31,25 +31,33 @@ const DayExercise = ({
       isMobile={isMobile}
       handleEditSet={handleEditSet}
       onDeleteSet={handleDeleteSet}
-      setShowExercise={setShowExercise}
     />
   ));
 
   return (
-    <div className="history-add-card">
+    <div
+      className="history-add-card"
+      onClick={isMobile ? () => setShowExercise(exerId) : () => 0}
+    >
       <div className="history-exercise-name">
         <span className="">{name}</span>
 
         <div className="add-card-btn-container">
           <button
             className="theme-btn-no-border"
-            onClick={() => onAddSet(exerId)}
+            onClick={e => {
+              e.stopPropagation();
+              onAddSet(exerId, exerciseId);
+            }}
           >
             <i className="material-icons ">add</i>
           </button>
           <button
             className="add-card-remove-btn theme-btn-no-border"
-            onClick={() => onDeleteExercise(exerId)}
+            onClick={e => {
+              e.stopPropagation();
+              onDeleteExercise(exerId);
+            }}
           >
             <i className="material-icons ">delete_outline</i>
           </button>
@@ -62,14 +70,7 @@ const DayExercise = ({
   );
 };
 
-const SetColumn = ({
-  set,
-  exerId,
-  isMobile,
-  onDeleteSet,
-  handleEditSet,
-  setShowExercise
-}) => {
+const SetColumn = ({ set, exerId, isMobile, onDeleteSet, handleEditSet }) => {
   const { reps, weight, _id: setId } = set;
   const [inputReps, setInputReps] = useState(reps || "");
   const [inputWeight, setInputWeight] = useState(weight || "");
@@ -168,10 +169,7 @@ const SetColumn = ({
         </button>
       )}
       {(isMobile && (
-        <div
-          className="history-set-row"
-          onClick={() => setShowExercise(exerId)}
-        >
+        <div className="history-set-row">
           <div className="history-row">
             {ensureDecimal(inputWeight) || 0.0}
             <span>kg</span>

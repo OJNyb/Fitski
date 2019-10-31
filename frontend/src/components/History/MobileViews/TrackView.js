@@ -1,7 +1,14 @@
 import React, { useState } from "react";
 import { ensureDecimal } from "../../../utils/ensureDecimal";
 
-const TrackView = ({ sets, exerId, onAddSet, onEditSet, onDeleteSet }) => {
+const TrackView = ({
+  sets,
+  exerId,
+  exerciseId,
+  onAddSet,
+  onEditSet,
+  onDeleteSet
+}) => {
   const [selectedSet, setSelectedSet] = useState({});
   const [weight, setWeight] = useState(
     ensureDecimal(sets[sets.length - 1].weight)
@@ -23,7 +30,7 @@ const TrackView = ({ sets, exerId, onAddSet, onEditSet, onDeleteSet }) => {
   }
 
   function onSaveClick() {
-    onAddSet(exerId, { reps, weight });
+    onAddSet(exerId, exerciseId, { reps, weight });
   }
 
   function onUpdateClick() {
@@ -56,29 +63,33 @@ const TrackView = ({ sets, exerId, onAddSet, onEditSet, onDeleteSet }) => {
     if (validity.valid) setWeight(value);
   }
 
+  function onRepsChange(e) {
+    const { value, validity } = e.target;
+    if (validity.valid && value % 1 === 0) setReps(value);
+  }
   return (
     <>
-      <div className="history-mobile-exercise-input-wrapper">
-        <TrackInput
-          label={"WEIGHT (kgs)"}
-          onDecrement={() => {
-            if (weight - 2.5 >= 0) {
-              setWeight(ensureDecimal(Number(weight) - 2.5));
-            }
-          }}
-          onIncrement={() => setWeight(ensureDecimal(Number(weight) + 2.5))}
-          onChange={onWeightChange}
-          value={weight}
-        />
+      <TrackInput
+        label={"WEIGHT (kgs)"}
+        onDecrement={() => {
+          if (weight - 2.5 >= 0) {
+            setWeight(ensureDecimal(Number(weight) - 2.5));
+          }
+        }}
+        onIncrement={() => setWeight(ensureDecimal(Number(weight) + 2.5))}
+        onChange={onWeightChange}
+        value={weight}
+      />
 
-        <TrackInput
-          label={"REPS"}
-          onDecrement={() => setReps(Number(reps) - 1)}
-          onIncrement={() => setReps(Number(reps) + 1)}
-          onChange={e => setReps(e.target.value)}
-          value={reps}
-        />
-      </div>
+      <TrackInput
+        label={"REPS"}
+        onDecrement={() => {
+          if (reps > 0) setReps(Number(reps) - 1);
+        }}
+        onIncrement={() => setReps(Number(reps) + 1)}
+        onChange={onRepsChange}
+        value={reps}
+      />
       <div className="history-mobile-exercise-button-container">
         <SUButton
           text={setId ? "UPDATE" : "SAVE"}
@@ -87,7 +98,7 @@ const TrackView = ({ sets, exerId, onAddSet, onEditSet, onDeleteSet }) => {
         <CDButton
           text={setId ? "DELETE" : "CLEAR"}
           setId={setId}
-          onClick={setId ? onDeleteClick : onSaveClick}
+          onClick={setId ? onDeleteClick : onClearClick}
         />
       </div>
       <div className="history-mobile-exercise-list-container">{setList}</div>
@@ -149,6 +160,8 @@ const TrackListItem = ({
   onCommentClick
 }) => {
   const { reps, weight, _id: setId } = set;
+
+  console.log(set);
   return (
     <div
       className={

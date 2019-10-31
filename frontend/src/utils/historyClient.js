@@ -12,36 +12,32 @@ import {
 
 const { ObjectId } = Types;
 
-// @route POST api/history/activate/:plan_id
-// @desc Activate workout plan
-// @access Private
-
-// const { startDate } = body;
-// const { plan_id: planId } = params;
-
 function activatePlan(planId, startDate) {
-  console.log("gay");
   axios
     .post(`/history/activate/${planId}`, { startDate })
     .then(res => console.log(res))
     .catch(err => console.log(err));
 }
 
-// @route POST api/history
-// @desc  Add exercise/notes to new day
-// const { unit = "kg", date, exerciseId, notes } = body;
-function addDay(dispatch, date, exercise) {
+function addDay(dispatch, date, exercise, values) {
   const dayId = new ObjectId().toHexString();
   const exerId = new ObjectId().toHexString();
   const setId = new ObjectId().toHexString();
 
   dispatch({
     type: ADD_DAY,
-    payload: { date, exercise, dayId, exerId, setId }
+    payload: { date, exercise, dayId, exerId, setId, ...values }
   });
 
   axios
-    .post("/history", { date, setId, dayId, exerId, exerciseId: exercise._id })
+    .post("/history", {
+      date,
+      setId,
+      dayId,
+      exerId,
+      exerciseId: exercise._id,
+      ...values
+    })
     .then(res => {
       const { data } = res;
       const { message } = data;
@@ -61,8 +57,6 @@ function addDay(dispatch, date, exercise) {
     });
 }
 
-// @route DELETE api/history/:day_id
-// @desc  Delete day
 function deleteDay(dispatch, dayId) {
   dispatch({
     type: DELETE_DAY,
@@ -90,9 +84,6 @@ function deleteDay(dispatch, dayId) {
     });
 }
 
-// @route POST api/plan/exercise/:day_id
-// @desc Add exercise
-// const { unit = "kg", exerId,  exerciseId } = body;
 function addExercise(dispatch, dayId, exercise) {
   const exerId = new ObjectId().toHexString();
   const setId = new ObjectId().toHexString();
@@ -128,9 +119,6 @@ function addExercise(dispatch, dayId, exercise) {
     });
 }
 
-// @route DELETE api/history/exercise/:day_id/:exercise_id
-// @desc Delete exercise
-
 function deleteExercise(dispatch, dayId, exerId) {
   dispatch({
     type: DELETE_EXERCISE,
@@ -155,8 +143,6 @@ function deleteExercise(dispatch, dayId, exerId) {
     });
 }
 
-// add set
-// @route POST api/history/exercise/:day_id/:exercise_id
 function addSet(dispatch, values, dayId, exerId) {
   const setId = new ObjectId().toHexString();
 
@@ -186,10 +172,6 @@ function addSet(dispatch, values, dayId, exerId) {
     });
 }
 
-// edit
-// @route POST api/history/exercise/:day_id/:exercise_id/:set_id
-// const { reps, unit, weight, history } = body;
-// const { day_id: dayId, exercise_id: exerciseId, set_id: setId } = params;
 function editSet(dispatch, values, dayId, exerId, setId) {
   const payload = { values, dayId, exerId, setId };
   dispatch({
@@ -218,9 +200,6 @@ function editSet(dispatch, values, dayId, exerId, setId) {
     });
 }
 
-// delete set
-// @route DELETE api/history/exercise/:day_id/:exercise_id/:set_id
-// const { day_id: dayId, exercise_id: exerciseId, set_id: setId } = params;
 function deleteSet(dispatch, dayId, exerId, setId) {
   dispatch({
     type: DELETE_SET,

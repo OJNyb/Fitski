@@ -31,7 +31,7 @@ const sets = Joi.number()
   .label("Sets");
 
 const reps = Joi.number()
-  .min(1)
+  .min(0)
   .max(1000)
   .label("Reps");
 
@@ -59,11 +59,13 @@ const addDay = Joi.object()
   .keys({
     date,
     unit,
+    reps,
     notes,
     dayId,
-    exerId: exerciseId,
-    exerciseId,
     setId,
+    weight,
+    exerciseId,
+    exerId: exerciseId,
     date: date.label("Date")
   })
   .or("notes", "exerciseId")
@@ -75,6 +77,8 @@ const deleteDay = Joi.object().keys({
 
 const addExercise = Joi.object().keys({
   unit,
+  reps,
+  weight,
   day_id: dayId,
   exerId: exerciseId,
   exerciseId: exerciseId.required(),

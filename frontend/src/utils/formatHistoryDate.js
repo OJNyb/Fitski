@@ -108,8 +108,23 @@ function displayDateWeekday(date) {
   }
 }
 
+function isSameDay(date1, date2) {
+  let y1 = date1.getFullYear();
+  let y2 = date2.getFullYear();
+  if (y1 !== y2) return false;
+  let m1 = date1.getMonth();
+  let m2 = date2.getMonth();
+  if (m1 !== m2) return false;
+  let d1 = date1.getDate();
+  let d2 = date2.getDate();
+  if (d1 !== d2) return false;
+
+  return true;
+}
+
 export {
   addMGC,
+  isSameDay,
   formatDate,
   displayDate,
   decrementDate,

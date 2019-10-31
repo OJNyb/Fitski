@@ -1,4 +1,6 @@
+const IS_RED = "IS_RED";
+const IS_WHITE = "IS_WHITE";
 const SINGLE_NAV = "SINGLE_NAV";
 const DOUBLE_NAV = "DOUBLE_NAV";
 
-export { SINGLE_NAV, DOUBLE_NAV };
+export { IS_RED, IS_WHITE, SINGLE_NAV, DOUBLE_NAV };

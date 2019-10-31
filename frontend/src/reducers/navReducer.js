@@ -1,4 +1,4 @@
-import { SINGLE_NAV, DOUBLE_NAV } from "../types/navTypes";
+import { SINGLE_NAV, DOUBLE_NAV, IS_WHITE, IS_RED } from "../types/navTypes";
 
 function navReducer(state, action) {
   const { type, payload } = action;
@@ -14,6 +14,20 @@ function navReducer(state, action) {
       return {
         ...state,
         isDouble: true
+      };
+    }
+
+    case IS_WHITE: {
+      return {
+        ...state,
+        isWhite: true
+      };
+    }
+
+    case IS_RED: {
+      return {
+        ...state,
+        isWhite: false
       };
     }
 
