@@ -7,15 +7,18 @@ import PlanText from "./PlanText";
 import AddWeeksModal from "./AddWeeksModal";
 import DeletePlanModal from "./DeletePlanModal";
 import ActivatePlanModal from "./ActivatePlanModal";
+import useNavWhiteSingleBack from "../../hooks/useNavWhiteSingleBackNav";
+import useMobile from "../../hooks/useMobile";
 
 import "./plan.css";
 
 const PlanOverview = ({ history }) => {
+  useNavWhiteSingleBack("/plans");
   const {
     state: { woPlan }
   } = useContext(PlanContext);
-
   const [showModal, setShowModal] = useState(false);
+  const isMobile = useMobile();
   const { user, name, weeks, description, _id: planId } = woPlan;
 
   function hideModal() {
@@ -65,35 +68,18 @@ const PlanOverview = ({ history }) => {
 
   return (
     <>
-      <PlanNav planName={name} setShowModal={setShowModal} />
+      <PlanNav
+        planName={name}
+        setShowModal={setShowModal}
+        isMobile={isMobile}
+      />
       <div>
         <h1 className="plan-name">{name}</h1>
-        {/* <div className="plan-author-container">
-          <img src={avatar} />
-          <div>
-            <span className="plan-author-label">Author:</span>
-            <br />
-            <span className="plan-author-uname">{username}</span>
-          </div>
-        </div> */}
         <p className="plan-description-label">Description</p>
         <p className="plan-description">{description}</p>
         {weeksDisplay}
       </div>
-      {/*   <div className="wavy-background-container">
-        <svg
-          width="200"
-          height="720"
-          viewBox="0 0 200 720"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M0 0H200V720H95L63.5752 631.514C35.364 552.078 44.3218 464.17 87.976 392.056V392.056C154.003 282.984 138.283 143.123 49.6903 51.4295L0 0Z"
-            fill="#C4C4C4"
-          />
-        </svg>
-      </div> */}
+
       {modal}
     </>
   );

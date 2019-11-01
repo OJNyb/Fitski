@@ -1,4 +1,11 @@
-import { SINGLE_NAV, DOUBLE_NAV, IS_WHITE, IS_RED } from "../types/navTypes";
+import {
+  SINGLE_NAV,
+  DOUBLE_NAV,
+  IS_WHITE,
+  IS_RED,
+  SHOW_BACK,
+  SHOW_DEHAZE
+} from "../types/navTypes";
 
 function navReducer(state, action) {
   const { type, payload } = action;
@@ -28,6 +35,22 @@ function navReducer(state, action) {
       return {
         ...state,
         isWhite: false
+      };
+    }
+
+    case SHOW_DEHAZE: {
+      return {
+        ...state,
+        showDehaze: true,
+        backLink: null
+      };
+    }
+
+    case SHOW_BACK: {
+      return {
+        ...state,
+        showDehaze: false,
+        backLink: payload.backLink
       };
     }
 

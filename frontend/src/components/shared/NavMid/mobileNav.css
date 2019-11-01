@@ -1,0 +1,27 @@
+.nav-mobile-action-menu-item {
+  padding: 14px;
+  font-size: 14px;
+  display: flex;
+  width: calc(100vw - 28px);
+  align-items: center;
+  color: rgb(61, 44, 44);
+  font-weight: 300;
+}
+
+.nav-mobile-action-menu-item i {
+  color: rgb(136, 118, 118);
+  margin-right: 9px;
+  font-size: 20px;
+}
+
+.delete-color-mobile * {
+  color: #e0245e !important;
+}
+
+.modal-mobile-cancel-large {
+  background-color: rgb(228, 226, 226);
+  width: 90%;
+  padding: 10px;
+  border-radius: 999px;
+  margin: 9px auto;
+}

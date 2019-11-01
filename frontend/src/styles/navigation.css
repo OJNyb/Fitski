@@ -126,12 +126,11 @@ nav section {
 
 .nav-mid-header-container {
   display: flex;
-  flex-direction: row-reverse;
   align-content: center;
   justify-content: space-between;
   position: fixed;
   z-index: 999;
-  padding: 0 15px;
+  padding: 0 10px 0 10px;
 }
 
 .nav-mid-header-item {
@@ -260,16 +259,6 @@ nav section {
   height: 14vh !important;
 }
 
-.mobile-nav button {
-  left: 10px;
-  top: calc(3.5vh - 13px);
-  position: absolute;
-}
-
-.mobile-nav button i {
-  font-size: 26px;
-}
-
 .mobile-nav-menu-container {
   position: fixed;
   width: 200%;
@@ -281,4 +270,17 @@ nav section {
   align-items: center;
   display: flex;
   color: #a60000;
+}
+
+.mobile-nav-main-btn {
+  height: 26px;
+  width: 26px;
+  padding: 0;
+  left: 10px;
+  top: calc(3.5vh - 13px);
+  position: absolute;
+}
+
+.mobile-nav-main-btn {
+  font-size: 26px;
 }

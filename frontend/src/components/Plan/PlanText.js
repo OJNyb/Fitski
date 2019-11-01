@@ -20,7 +20,7 @@ const PlanText = ({ week, index, planId }) => {
   } else {
     daysDisplay = (
       <p className="empty-week-text">
-        Mark as <span>rest week</span> or <span>add exercises</span>
+        Empty {/*   <span>Add exercises</span> */}
       </p>
     );
   }

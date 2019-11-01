@@ -70,7 +70,9 @@ router.get(
 router.post("/", ensureSignedIn, validateRequest, async (req, res, next) => {
   const { body, session } = req;
 
-  const _id = Types.ObjectId();
+  const { planId } = body;
+
+  const _id = planId ? planId : Types.ObjectId();
 
   const newWOPlan = new WOPlan({
     _id,

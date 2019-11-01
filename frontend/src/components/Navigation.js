@@ -2,54 +2,16 @@ import React, { useState, useContext } from "react";
 import "../styles/navigation.css";
 import { NavLink } from "react-router-dom";
 import useMobile from "../hooks/useMobile";
+import { Link } from "react-router-dom";
 
 import { NavContext } from "../context/navContext";
 
 const Navigation = () => {
   const isMobile = useMobile();
-  const [showNavbar, setShowNavbar] = useState(false);
-  const {
-    state: { isDouble, isWhite }
-  } = useContext(NavContext);
-
-  console.log(isWhite);
 
   if (isMobile) {
-    return (
-      <>
-        <div
-          className={"mobile-nav" + (isDouble ? " mobile-nav-double" : "")}
-          style={{ backgroundColor: isWhite ? "#fff" : "#a60000" }}
-        >
-          <button onClick={() => setShowNavbar(!showNavbar)}>
-            <i
-              className="material-icons"
-              style={{ color: isWhite ? "#a60000" : "#fff" }}
-            >
-              dehaze
-            </i>
-          </button>
-        </div>
-
-        <div
-          className="mobile-nav-menu-container"
-          onClick={() => setShowNavbar(false)}
-          style={{
-            top: isDouble ? "14vh" : "7vh",
-            left: showNavbar ? 0 : "-100%",
-            backgroundColor: showNavbar
-              ? "rgba(235, 209, 209, 0.5)"
-              : "transparent",
-            zIndex: showNavbar ? 998 : -1
-          }}
-        >
-          <NavigationMenu />
-        </div>
-      </>
-    );
+    return <MobileNav />;
   }
-
-  // if
 
   return (
     <>
@@ -72,6 +34,73 @@ const Navigation = () => {
   );
 };
 
+const MobileNav = ({}) => {
+  const {
+    state: { isDouble, isWhite, showDehaze, backLink }
+  } = useContext(NavContext);
+  const [showNavbar, setShowNavbar] = useState(false);
+  const [redirect, setRedirect] = useState(false);
+
+  // if (redirect) {
+  //   setRedirect(false);
+  //   return <Redirect to={backLink} />;
+  // }
+
+  let button;
+
+  if (showDehaze) {
+    button = (
+      <button
+        onClick={() => setShowNavbar(!showNavbar)}
+        className="mobile-nav-main-btn"
+      >
+        <i
+          className="material-icons"
+          style={{ color: isWhite ? "#a60000" : "#fff" }}
+        >
+          dehaze
+        </i>
+      </button>
+    );
+  } else {
+    button = (
+      <Link to={backLink} className="mobile-nav-main-btn">
+        <i
+          className="material-icons-round"
+          style={{ color: isWhite ? "#a60000" : "#fff" }}
+        >
+          arrow_back
+        </i>
+      </Link>
+    );
+  }
+
+  return (
+    <>
+      <div
+        className={"mobile-nav" + (isDouble ? " mobile-nav-double" : "")}
+        style={{ backgroundColor: isWhite ? "#fff" : "#a60000" }}
+      >
+        {button}
+      </div>
+
+      <div
+        className="mobile-nav-menu-container"
+        onClick={() => setShowNavbar(false)}
+        style={{
+          top: isDouble ? "14vh" : "7vh",
+          left: showNavbar ? 0 : "-100%",
+          backgroundColor: showNavbar
+            ? "rgba(235, 209, 209, 0.5)"
+            : "transparent",
+          zIndex: showNavbar ? 998 : -1
+        }}
+      >
+        <NavigationMenu />
+      </div>
+    </>
+  );
+};
 const NavigationMenu = ({ marginTop }) => {
   return (
     <nav style={{ marginTop: marginTop && "61px" }}>

@@ -159,15 +159,6 @@ const SetColumn = ({ set, exerId, isMobile, onDeleteSet, handleEditSet }) => {
 
   return (
     <div className="add-card-column">
-      {!isMobile && (
-        <button
-          className="add-card-remove-btn theme-btn-no-border"
-          onClick={() => onDeleteSet(exerId, setId)}
-          tabIndex="-1"
-        >
-          <TrashBin />
-        </button>
-      )}
       {(isMobile && (
         <div className="history-set-row">
           <div className="history-row">
@@ -180,12 +171,21 @@ const SetColumn = ({ set, exerId, isMobile, onDeleteSet, handleEditSet }) => {
           </div>
         </div>
       )) || (
-        <ExerciseForm
-          onChange={onChange}
-          inputReps={inputReps}
-          inputWeight={inputWeight}
-          onInputBlur={onInputBlur}
-        />
+        <>
+          <ExerciseForm
+            onChange={onChange}
+            inputReps={inputReps}
+            inputWeight={inputWeight}
+            onInputBlur={onInputBlur}
+          />
+          <button
+            className="add-card-remove-btn theme-btn-no-border"
+            onClick={() => onDeleteSet(exerId, setId)}
+            tabIndex="-1"
+          >
+            <TrashBin />
+          </button>
+        </>
       )}
     </div>
   );
@@ -196,17 +196,6 @@ const ExerciseForm = ({ onChange, inputWeight, inputReps, onInputBlur }) => {
     <form className="history-set-row">
       <div className="history-col">
         <input
-          name="weight"
-          type="number"
-          value={ensureDecimal(inputWeight)}
-          onChange={onChange}
-          onBlur={onInputBlur}
-        />
-        <span>kg</span>
-      </div>
-
-      <div className="history-col">
-        <input
           name="reps"
           type="number"
           value={inputReps}
@@ -214,6 +203,17 @@ const ExerciseForm = ({ onChange, inputWeight, inputReps, onInputBlur }) => {
           onBlur={onInputBlur}
         />
         <span>reps</span>
+      </div>
+
+      <div className="history-col">
+        <input
+          name="weight"
+          type="number"
+          value={ensureDecimal(inputWeight)}
+          onChange={onChange}
+          onBlur={onInputBlur}
+        />
+        <span>kg</span>
       </div>
     </form>
   );

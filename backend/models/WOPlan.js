@@ -13,11 +13,7 @@ const WOPlanSchema = new mongoose.Schema(
       type: ObjectId,
       ref: "user"
     },
-    goals: [
-      {
-        goal: ObjectId
-      }
-    ],
+    goals: Array,
     access: {
       type: String,
       default: "owner"

@@ -10,20 +10,12 @@
   align-items: center;
 }
 
-.create-plan-form textarea {
+.create-plan-name-input-wrapper {
+  display: flex;
+  justify-content: center;
+  position: relative;
+  margin-bottom: 7%;
   width: 70%;
-  height: 20vh;
-  border: 1px solid silver;
-  background-color: transparent;
-  outline: none;
-  padding: 4px 6px;
-  font-size: 15px;
-  font-family: roboto, sans-serif;
-  border-radius: 2px;
-}
-
-.create-plan-form textarea:focus {
-  border: 1px solid #a60000;
 }
 
 .create-plan-name-input {
@@ -33,14 +25,40 @@
   border-bottom: 1px solid rgb(187, 160, 160);
   outline: none;
   font-size: 26px;
-  margin-bottom: 7%;
-  width: 60%;
+  width: 100%;
   color: rgb(88, 72, 72);
   border-radius: 0;
 }
 
 .create-plan-name-input:focus {
   border-bottom: 1px solid #a60000;
+}
+
+.create-plan-name-input-wrapper:focus-within > i {
+  display: none;
+}
+
+.create-plan-name-input-wrapper > i {
+  position: absolute;
+  right: 0;
+  top: 6px;
+  color: #d90000;
+}
+
+.create-plan-form textarea {
+  width: 69%;
+  height: 20vh;
+  border: 1px solid silver;
+  background-color: transparent;
+  outline: none;
+  padding: 4px 8px;
+  font-size: 16px;
+  font-family: inherit;
+  border-radius: 2px;
+}
+
+.create-plan-form textarea:focus {
+  border: 1px solid #a60000;
 }
 
 .create-plan-check-container {
@@ -72,7 +90,7 @@
   margin-top: 40px;
   width: 100%;
   height: 40px;
-  border-radius: 3px;
+  border-radius: 0px;
   position: fixed;
   bottom: 0;
   font-size: 20px;

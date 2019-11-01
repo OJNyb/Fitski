@@ -1,12 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
 import { Formik, Form, Field } from "formik";
 import useSetLoading from "../../hooks/useSetLoading";
 import axios from "axios";
+import { Types } from "mongoose";
+import { Redirect } from "react-router-dom";
+import CustomCheckbox from "../shared/Form/CustomCheckbox";
+import CustomRadio from "../shared/Form/CustomRadio";
 
 import "./createPlan.css";
+const { ObjectId } = Types;
 
 const CreatePlan = () => {
+  const [redir, setRedir] = useState(false);
   useSetLoading(false);
+
+  if (redir) {
+    return <Redirect to={`plans/${redir}`} />;
+  }
 
   return (
     <div className="create-plan-container">
@@ -17,35 +27,55 @@ const CreatePlan = () => {
           gainMuscle: false,
           loseWeight: false,
           gainStrength: false,
-          difficulty: false
+          difficulty: ""
+        }}
+        validate={({ name }) => {
+          let errors = {};
+          if (!name.length) {
+            errors.name = "Name is required";
+          }
+          return errors;
         }}
         onSubmit={(values, { setSubmitting }) => {
+          const { gainMuscle, gainStrength, loseWeight, difficulty } = values;
+          let goals = [];
+
+          if (gainMuscle) goals.push("Gain muscle");
+          if (gainStrength) goals.push("Gain strength");
+          if (loseWeight) goals.push("Lose weight");
+          if (difficulty === "") delete values.difficulty;
+
+          const planId = new ObjectId().toHexString();
           axios
-            .post("/plan", values)
+            .post("/plan", { planId, goals, ...values })
             .then(res => {
               const { data } = res;
               const { message } = data;
               if (message === "success") {
-                alert("Success");
+                setRedir(planId);
               }
             })
             .catch(err => console.error(err.response));
           setSubmitting(false);
         }}
       >
-        {({ errors, handleSubmit, isSubmitting, values }) => (
+        {({ errors, touched, isSubmitting }) => (
           <>
             <h2>Create plan</h2>
             <Form className="create-plan-form">
+              <div className="create-plan-name-input-wrapper">
+                <Field
+                  name="name"
+                  placeholder="Name"
+                  className="create-plan-name-input"
+                  autoFocus
+                  autoComplete="off"
+                />
+                {errors.name && touched.name && (
+                  <i className="material-icons">warning</i>
+                )}
+              </div>
               <Field
-                type="name"
-                name="name"
-                placeholder="Name"
-                className="create-plan-name-input"
-                autoFocus
-              />
-              <Field
-                type="textarea"
                 name="description"
                 component="textarea"
                 placeholder="Description"
@@ -79,21 +109,21 @@ const CreatePlan = () => {
                     component={CustomRadio}
                     text="Beginner"
                     name="difficulty"
-                    value="beginner"
+                    valueski="Beginner"
                   />
 
                   <Field
                     component={CustomRadio}
                     text="Intermediate"
                     name="difficulty"
-                    value="intermediate"
+                    valueski="Intermediate"
                   />
 
                   <Field
                     component={CustomRadio}
                     text="Advanced"
                     name="difficulty"
-                    value="advanced"
+                    valueski="Advanced"
                   />
                 </div>
               </div>
@@ -109,26 +139,6 @@ const CreatePlan = () => {
         )}
       </Formik>
     </div>
-  );
-};
-
-const CustomCheckbox = ({ text, field }) => {
-  return (
-    <label className="custom-checkbox-container">
-      <input type="checkbox" {...field} />
-      {text}
-      <span className="custom-checkmark"></span>
-    </label>
-  );
-};
-
-const CustomRadio = ({ text, field }) => {
-  return (
-    <label className="custom-checkbox-container">
-      <input type="radio" {...field} />
-      {text}
-      <span className="custom-checkmark"></span>
-    </label>
   );
 };
 

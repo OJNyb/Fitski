@@ -1,50 +1,139 @@
-import React, { useContext } from "react";
+import React, { useState, useContext } from "react";
 import Modal from "../shared/Modal/Modal";
 import axios from "axios";
 import { ADD_WEEK } from "../../types/planTypes";
 import { PlanContext } from "../../context/planContext";
 import { Formik, Form, Field } from "formik";
+import useMobile from "../../hooks/useMobile";
 
 const AddWeeksModal = ({ planId, hideModal }) => {
   const { dispatch } = useContext(PlanContext);
-  let children = (
-    <Formik
-      initialValues={{ numberOfWeeks: 1 }}
-      onSubmit={(values, { setSubmitting }) => {
-        setSubmitting(true);
-        axios
-          .post(`/plan/week/${planId}`, { ...values })
-          .then(res => {
-            const { data } = res;
-            const { message, weekArray } = data;
-            if (message === "success") {
-              hideModal();
-              dispatch({ type: ADD_WEEK, payload: { weekArray } });
-            } else {
-              console.log("err");
-              setSubmitting(false);
-            }
-          })
-          .catch(err => console.log(err.response));
-      }}
-    >
-      {({ isSubmitting }) => (
-        <Form className="add-weeks-form">
-          <div>
-            Weeks to add:
-            <Field type="number" name="numberOfWeeks" />
-          </div>
+  const [weeks, setWeeks] = useState(1);
+  const [isSubmitting, setSubmitting] = useState(false);
+  const isMobile = useMobile();
 
-          <button type="submit" className="theme-btn" disabled={isSubmitting}>
-            Add
-          </button>
-        </Form>
-      )}
-    </Formik>
+  function onSubmit(values, { setSubmitting }) {
+    setSubmitting(true);
+    axios
+      .post(`/plan/week/${planId}`, { ...values })
+      .then(res => {
+        const { data } = res;
+        const { message, weekArray } = data;
+        if (message === "success") {
+          hideModal();
+          dispatch({ type: ADD_WEEK, payload: { weekArray } });
+        } else {
+          console.log("err");
+          setSubmitting(false);
+        }
+      })
+      .catch(err => console.log(err.response));
+  }
+
+  function onWeekChange(e) {
+    const { value, validity } = e.target;
+    if (validity.valid && value % 1 === 0 && value < 100) setWeeks(value);
+  }
+  let children = (
+    <div
+      className={isMobile ? "add-weeks-modal-mobile-container" : "flex-col-cen"}
+    >
+      <div className="add-weeks-modal-mobile-input-wrapper">
+        <button
+          onClick={() => {
+            if (weeks > 0) setWeeks(Number(weeks) - 1);
+          }}
+        >
+          <div className="minus-container">
+            <div />
+          </div>
+        </button>
+        <div className="add-weeks-modal-mobile-input-shiizz">
+          <input
+            type="tel"
+            value={weeks}
+            onChange={onWeekChange}
+            pattern="^[0-9]\d*\.?\d*$"
+          />
+          <div className="border-with-sides" />
+        </div>
+        <button onClick={() => setWeeks(Number(weeks) + 1)}>
+          <div className="plus-container">
+            <div />
+            <div />
+          </div>
+        </button>
+      </div>
+
+      <button
+        disabled={isSubmitting}
+        className={
+          "theme-btn-filled " +
+          (isMobile ? "mobile-modal-submit-btn" : "bs-modal-submit-btn")
+        }
+        onClick={() => {
+          setSubmitting(true);
+          onSubmit({ numberOfWeeks: weeks }, { setSubmitting });
+        }}
+      >
+        Add
+      </button>
+    </div>
   );
 
   return (
     <Modal header={"Add weeks"} children={children} toggleModal={hideModal} />
+  );
+};
+
+const AddWeeksMobile = ({ onSubmit }) => {
+  const [weeks, setWeeks] = useState(1);
+  const [isSubmitting, setSubmitting] = useState(false);
+
+  function onWeekChange(e) {
+    const { value, validity } = e.target;
+    if (validity.valid && value % 1 === 0 && value < 100) setWeeks(value);
+  }
+  return (
+    <div className="add-weeks-modal-mobile-container">
+      <div className="add-weeks-modal-mobile-input-wrapper">
+        <button
+          onClick={() => {
+            if (weeks > 0) setWeeks(Number(weeks) - 1);
+          }}
+        >
+          <div className="minus-container">
+            <div />
+          </div>
+        </button>
+        <div className="add-weeks-modal-mobile-input-shiizz">
+          <input
+            type="tel"
+            value={weeks}
+            onChange={onWeekChange}
+            pattern="^[0-9]\d*\.?\d*$"
+          />
+          <div className="border-with-sides" />
+        </div>
+        <button onClick={() => setWeeks(Number(weeks) + 1)}>
+          <div className="plus-container">
+            <div />
+            <div />
+          </div>
+        </button>
+      </div>
+
+      <button
+        disabled={isSubmitting}
+        className="theme-btn-filled mobile-modal-submit-btn "
+        onClick={() => {
+          setSubmitting(true);
+          onSubmit({ numberOfWeeks: weeks }, { setSubmitting });
+        }}
+      >
+        Add
+      </button>
+    </div>
   );
 };
 

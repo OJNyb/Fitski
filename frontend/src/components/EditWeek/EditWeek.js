@@ -5,16 +5,22 @@ import { addExercise } from "../../utils/planClient";
 import DayHOC from "./DayHOC";
 import EditWeekNav from "./EditWeekNav";
 import Exercises from "../shared/Exercises/Exercises";
+import useNavWhiteSingleBack from "../../hooks/useNavWhiteSingleBackNav";
+import WeekView from "./Mobile/WeekView";
+import useMobile from "../../hooks/useMobile";
 
 import "./editWeek.css";
 
 const EditWeek = ({ match: { params } }) => {
   const { state, dispatch } = useContext(PlanContext);
   const [currentDayIndex, setCurrentDay] = useState(0);
+  const isMobile = useMobile();
 
   const { woPlan } = state;
   const { weeks } = woPlan;
   const { plan_id: planId, week_id: weekId } = params;
+
+  useNavWhiteSingleBack(`/plans/${planId}`);
 
   let weekIndex = weeks.map(x => x._id).indexOf(weekId);
 
@@ -41,9 +47,11 @@ const EditWeek = ({ match: { params } }) => {
     </button>
   ));
 
-  return (
-    <>
-      <EditWeekNav weeks={weeks} weekIndex={weekIndex} key={currentWeek._id} />
+  let view;
+  if (isMobile) {
+    view = <WeekView currentWeek={currentWeek} />;
+  } else {
+    view = (
       <div className="edit-week-container">
         <div className="edit-week-add-container">
           <h2 className="edit-week-header">Days</h2>
@@ -56,6 +64,13 @@ const EditWeek = ({ match: { params } }) => {
           <Exercises handleAddExercise={handleAddExercise} />;
         </div>
       </div>
+    );
+  }
+
+  return (
+    <>
+      <EditWeekNav weeks={weeks} weekIndex={weekIndex} key={currentWeek._id} />
+      {view}
     </>
   );
 };

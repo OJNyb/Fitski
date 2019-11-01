@@ -1,10 +1,29 @@
 import React from "react";
+import MobileModal from "./MobileModal";
+import useMobile from "../../../hooks/useMobile";
 
 import "./modal.css";
 
-const Modal = ({ header, children, toggleModal }) => {
+const Modal = props => {
+  const isMobile = useMobile();
+
+  if (isMobile) {
+    return <MobileModal {...props} />;
+  } else {
+    return <BigViewModal {...props} />;
+  }
+};
+
+const BigViewModal = ({ header, children, toggleModal }) => {
   return (
-    <div id="myModal" className="modal" onClick={toggleModal}>
+    <div
+      id="myModal"
+      className="modal"
+      onClick={toggleModal}
+      style={{
+        top: "66px"
+      }}
+    >
       <div className="modal-content" onClick={e => e.stopPropagation()}>
         <button
           onClick={toggleModal}

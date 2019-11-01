@@ -105,7 +105,12 @@ const Plans = () => {
         setAuthorFilter={setAuthorFilter}
       />
 
-      <div className="plans-cards-container">
+      <div
+        className={
+          "plans-cards-container" +
+          (isMobile ? " plans-cards-container-mobile" : "")
+        }
+      >
         {!isMobile && (
           <div className="plans-cards-header">
             <div className="plans-cards-header-name">Name</div>

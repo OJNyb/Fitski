@@ -2,18 +2,24 @@ import React, { useState, useEffect } from "react";
 import NavMidActionMenu from "./NavMidActionMenu";
 import useMobile from "../../../hooks/useMobile";
 
-const NavMid = ({
-  backText,
-  customNav,
-  midContent,
-  backAction,
-  rightBtnText,
-  rightBtnIcon,
-  rightBtnAction,
-  actionMenuChildren
-}) => {
+import MobileNavMid from "./MobileNavMid";
+
+const NavMid = props => {
   const [showActionMenu, setShowActionMenu] = useState(false);
   const isMobile = useMobile();
+
+  const {
+    backText,
+    customNav,
+    midContent,
+    backAction,
+    rightBtnText,
+    rightBtnIcon,
+    rightBtnAction,
+    actionMenuChildren
+  } = props;
+
+  console.log(rightBtnAction);
 
   function handleMoreActionClick(e) {
     e.preventDefault();
@@ -37,6 +43,8 @@ const NavMid = ({
 
   if (customNav) {
     view = customNav;
+  } else if (isMobile) {
+    view = <MobileNavMid {...props} />;
   } else {
     view = (
       <>
@@ -48,6 +56,7 @@ const NavMid = ({
             >
               <i className="material-icons">arrow_back</i>
             </button>
+
             <h2>{backText}</h2>
           </div>
         )}
@@ -66,12 +75,9 @@ const NavMid = ({
             </button>
           )}
 
-          {(rightBtnAction || rightBtnIcon) && (
+          {(rightBtnText || rightBtnIcon) && (
             <button
-              className={
-                "nav-mid-header-text-btn " +
-                (rightBtnIcon ? "theme-btn-no-border" : "theme-btn")
-              }
+              className="nav-mid-header-text-btn theme-btn"
               onClick={rightBtnAction}
             >
               {rightBtnText || rightBtnIcon}
@@ -89,10 +95,10 @@ const NavMid = ({
       <div
         className="nav-mid-header-container"
         style={{
-          left: isMobile ? "68px" : "250px",
+          left: isMobile ? "35px" : "250px",
           top: isMobile ? "0" : "6px",
           width: isMobile
-            ? "calc(100vw - 98px)"
+            ? "calc(100vw - 55px)"
             : "calc(100% - 200px - 250px - 30px)",
           height: isMobile ? "7%" : "60px"
         }}

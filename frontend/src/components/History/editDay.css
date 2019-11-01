@@ -116,8 +116,9 @@
 
 .history-add-card select,
 .history-add-card input {
-  border: 1px solid silver;
-  border-radius: 2px;
+  border: none;
+  border-bottom: 1px solid #a60000;
+  border-radius: 0;
 }
 
 .history-add-card input {

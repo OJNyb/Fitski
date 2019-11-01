@@ -116,14 +116,14 @@
 .custom-checkbox-container {
   display: block;
   position: relative;
-  padding-left: 20px;
+  padding-left: 23px;
   margin-bottom: 8px;
   cursor: pointer;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  line-height: 15px;
+  line-height: 20px;
 }
 
 .custom-checkbox-container input {
@@ -134,44 +134,62 @@
   width: 0;
 }
 
+.custom-checkmark-radio,
 .custom-checkmark {
   position: absolute;
   top: 0;
   left: 0;
-  height: 15px;
-  width: 15px;
+  height: 20px;
+  width: 20px;
   background-color: rgb(236, 226, 226);
-  border-radius: 4px;
+  border-radius: 3px;
 }
 
-.custom-checkbox-container:hover input ~ .custom-checkmark {
+.custom-checkmark-radio {
+  border-radius: 50%;
+}
+
+.custom-checkbox-container:hover input ~ .custom-checkmark,
+.custom-checkbox-container:hover input ~ .custom-checkmark-radio {
   background-color: rgb(199, 176, 176);
 }
 
-.custom-checkbox-container input:checked ~ .custom-checkmark {
+.custom-checkbox-container input:checked ~ .custom-checkmark,
+.custom-checkbox-container input:checked ~ .custom-checkmark-radio {
   background-color: #a60000;
 }
 
-.custom-checkmark:after {
+.custom-checkmark:after,
+.custom-checkmark-radio:after {
   content: "";
   position: absolute;
   display: none;
 }
 
-.custom-checkbox-container input:checked ~ .custom-checkmark:after {
+.custom-checkbox-container input:checked ~ .custom-checkmark:after,
+.custom-checkbox-container input:checked ~ .custom-checkmark-radio:after {
   display: block;
 }
 
 .custom-checkbox-container .custom-checkmark:after {
-  left: 5px;
+  left: 6px;
   top: 3px;
-  width: 3px;
-  height: 6px;
+  width: 4.5px;
+  height: 9px;
   border: solid white;
-  border-width: 0 2px 2px 0;
+  border-width: 0 3px 3px 0;
   -webkit-transform: rotate(45deg);
   -ms-transform: rotate(45deg);
   transform: rotate(45deg);
+}
+
+.custom-checkbox-container .custom-checkmark-radio:after {
+  left: 6.5px;
+  top: 6.5px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: white;
 }
 
 .border-with-sides {
@@ -191,4 +209,61 @@
 
 .padding-4-12 {
   padding: 4px 12px;
+}
+
+.plus-container,
+.minus-container {
+  display: flex;
+  align-items: center;
+  position: relative;
+  width: 24px;
+  height: 24px;
+  justify-content: center;
+}
+
+.minus-container > div {
+  width: 100%;
+  height: 2px;
+  background-color: #a60000;
+}
+
+.plus-container div:first-child {
+  width: 100%;
+  height: 2px;
+  background-color: #a60000;
+  position: absolute;
+}
+
+.plus-container div:last-child {
+  height: 100%;
+  width: 2.1px;
+  background-color: #a60000;
+  margin-top: -10px;
+}
+
+.material-icons,
+.material-icons-round,
+.material-icons-outlined {
+  color: inherit;
+}
+
+.mobile-calendar-container {
+  height: 100vh;
+  position: fixed;
+  top: 7vh;
+  width: 100%;
+}
+
+.flex-col-cen {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.margin-5 {
+  margin: 5px;
+}
+
+.padding-0 {
+  padding: 0;
 }

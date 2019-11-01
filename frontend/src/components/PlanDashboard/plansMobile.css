@@ -1,3 +1,8 @@
+.plans-cards-container-mobile {
+  display: flex;
+  flex-flow: wrap;
+}
+
 .plans-mobile-plan-card {
   background-color: white;
   border: 1px solid rgb(235, 211, 211);
@@ -9,7 +14,7 @@
   align-items: center;
   width: 45%;
   position: relative;
-  margin-left: 5%;
+  margin: 3% 2.2%;
   padding: 0 0 6px;
   border-radius: 10px;
   font-weight: 300;
