@@ -36,14 +36,15 @@ const WOPlanSchema = new mongoose.Schema(
               type: Boolean,
               default: false
             },
-            muscleGroup: Array,
             exercises: [
               {
                 _id: ObjectId,
                 exercise: { type: ObjectId, ref: "exercise" },
-                sets: Number,
-                reps: Number,
-                rest: Number
+                sets: [
+                  {
+                    reps: Number
+                  }
+                ]
               }
             ]
           }

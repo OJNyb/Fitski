@@ -1,240 +1,142 @@
 import React, { useState } from "react";
-import NavMid from "../../shared/NavMid/NavMid";
-import MobileDouble from "../../shared/NavMid/MobileDouble";
-import EditHistoryDownNav from "../../shared/NavMid/EditHistoryDownNav";
-import useNavWhiteDoubleBack from "../../../hooks/useNavWhiteDoubleBack";
+// import NavMid from "../../shared/NavMid/NavMid";
+// import MobileDouble from "../../shared/NavMid/MobileDouble";
+// import EditHistoryDownNav from "../../shared/NavMid/EditHistoryDownNav";
+// import useNavWhiteDoubleBack from "../../../hooks/useNavWhiteDoubleBack";
+
+import ExerciseCard from "./ExerciseCard";
+import TrackView from "./TrackView";
+import Exercises from "../../shared/Exercises/Exercises";
+import EditWeekNav from "../EditWeekNav";
+import { Link } from "react-router-dom";
 
 import "./EditWeekMobile.css";
 
-const WeekView = ({ currentWeek }) => {
+const WeekView = ({
+  weeks,
+  planId,
+  weekIndex,
+  currentWeek,
+  handleEditSet,
+  handleAddSet,
+  handleDeleteSet,
+  handleAddExercise,
+  handleDeleteExercise
+}) => {
   const [currentDayIndex, setCurrentDay] = useState(0);
-  // useNavWhiteDoubleBack("/plans");
+  const [activeExercise, setActiveExercise] = useState(false);
+  const [showExercises, setShowExercises] = useState(false);
 
   const { days } = currentWeek;
   const currentDay = days[currentDayIndex];
   const { _id: dayId } = currentDay;
+  const { exercises } = currentDay;
 
-  // let dayBtns = days.map((day, index) => (
-  //   <button
-  //     key={day._id}
-  //     onClick={() => setCurrentDay(index)}
-  //     className={currentDayIndex === index ? "edit-week-day-active" : ""}
-  //   >
-  //     {index + 1}
-  //   </button>
-  // ));
+  function handleCardClick(exerId) {
+    if (exerId === activeExercise) {
+      setActiveExercise(null);
+    } else {
+      setActiveExercise(exerId);
+    }
+  }
 
-  let topNavContent = null;
-  // let topNavContent = (
-  //   <>
-  //     <button className="white-material-btn" onClick={() => 0}>
-  //       <i className="material-icons material-icons-22">calendar_today</i>
-  //     </button>
-  //     <button className="white-material-btn" onClick={() => 0}>
-  //       <i className="material-icons material-icons-30">add</i>
-  //     </button>
-  //   </>
-  // );
+  let mainView = exercises.map((x, y) => (
+    <ExerciseCard
+      key={x._id}
+      index={y}
+      exercise={x}
+      dayId={dayId}
+      onAddSet={() => handleAddSet(x._id, x.exercise._id, 4)}
+      handleEditSet={handleEditSet}
+      handleDeleteSet={handleDeleteSet}
+      activeExercise={activeExercise}
+      onCardClick={handleCardClick}
+      onDeleteExercise={() => handleDeleteExercise(x._id)}
+    />
+  ));
 
-  let bottomNavContent;
-  // = (
-  //   <EditHistoryDownNav
-  //     centerText={2}
-  //     leftArrowAction={() => 0}
-  //     rightArrowAction={() => 0}
-  //   />
-  // );
+  if (showExercises) {
+    return (
+      <>
+        <Exercises
+          handleAddExercise={handleAddExercise}
+          closeExercises={() => setShowExercises(false)}
+        />
+      </>
+    );
+  }
+
+  let prevWeekLink;
+  let nextWeekLink;
+
+  if (weeks[weekIndex - 1]) {
+    prevWeekLink = `${weeks[weekIndex - 1]._id}`;
+  }
+
+  if (weeks[weekIndex + 1]) {
+    nextWeekLink = `${weeks[weekIndex + 1]._id}`;
+  }
 
   return (
     <>
-      <NavMid
-        customNav={
-          <MobileDouble
-            topContent={topNavContent}
-            bottomContent={bottomNavContent}
-          />
-        }
-      />
       <div>
         <div className="edit-week-mobile-head-container">
-          <div className="edit-week-mobile-date-btn">
-            <span>Week</span>
-            <div className="edit-week-mobile-pm-container">
-              <div className="minus-container">
-                <div />
-              </div>
-              <div className="plus-container">
-                <div />
-                <div />
+          <div className="edit-week-mobile-date-container">
+            <div className="edit-week-mobile-date-btn">
+              <span>Week</span>
+              <div className="flex-center">
+                <Link
+                  to={prevWeekLink}
+                  className="theme-btn-no-border"
+                  aria-disabled={!prevWeekLink}
+                >
+                  <i className="material-icons">keyboard_arrow_left</i>
+                </Link>
+                <span>{weekIndex + 1}</span>
+                <Link
+                  className="theme-btn-no-border"
+                  to={nextWeekLink}
+                  aria-disabled={!nextWeekLink}
+                >
+                  <i className="material-icons">keyboard_arrow_right</i>
+                </Link>
               </div>
             </div>
+          </div>
 
-            <span>1</span>
-          </div>
+          {/* <button
+            className="theme-btn-no-border"
+            onClick={() => setShowExercises(true)}
+          >
+            <i className="material-icons" style={{ fontSize: "32px" }}>
+              add
+            </i>
+          </button> */}
 
-          <div className="edit-week-mobile-date-btn">
-            <span>Day</span>
-            <span>3</span>
-          </div>
-        </div>
-
-        <div class="history-add-body">
-          <div class="history-add-card">
-            <div class="history-exercise-name">
-              <span class="">Incline Dumbbell Fly</span>
-              <div class="add-card-btn-container">
-                <button class="theme-btn-no-border">
-                  <i class="material-icons ">add</i>
+          <div className="edit-week-mobile-date-container">
+            <div className="edit-week-mobile-date-btn">
+              <span>Day</span>
+              <div className="flex-center">
+                <button
+                  className="theme-btn-no-border"
+                  disabled={!currentDayIndex}
+                  onClick={() => setCurrentDay(currentDayIndex - 1)}
+                >
+                  <i className="material-icons">keyboard_arrow_left</i>
                 </button>
-                <button class="add-card-remove-btn theme-btn-no-border">
-                  <i class="material-icons ">delete_outline</i>
+                <span>{currentDayIndex + 1}</span>
+                <button
+                  className="theme-btn-no-border"
+                  disabled={currentDayIndex === 6}
+                  onClick={() => setCurrentDay(currentDayIndex + 1)}
+                >
+                  <i className="material-icons">keyboard_arrow_right</i>
                 </button>
-              </div>
-            </div>
-            <div class="add-card-body">
-              <div class="add-card-column">
-                <div class="history-set-row">
-                  <div class="history-row">
-                    0.0<span>kg</span>
-                  </div>
-                  <div class="history-row">
-                    3<span>reps</span>
-                  </div>
-                </div>
-              </div>
-              <div class="add-card-column">
-                <div class="history-set-row">
-                  <div class="history-row">
-                    0.0<span>kg</span>
-                  </div>
-                  <div class="history-row">
-                    3<span>reps</span>
-                  </div>
-                </div>
-              </div>
-              <div class="add-card-column">
-                <div class="history-set-row">
-                  <div class="history-row">
-                    0.0<span>kg</span>
-                  </div>
-                  <div class="history-row">
-                    3<span>reps</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="history-add-card">
-            <div class="history-exercise-name">
-              <span class="">Seated Dumbbell Press</span>
-              <div class="add-card-btn-container">
-                <button class="theme-btn-no-border">
-                  <i class="material-icons ">add</i>
-                </button>
-                <button class="add-card-remove-btn theme-btn-no-border">
-                  <i class="material-icons ">delete_outline</i>
-                </button>
-              </div>
-            </div>
-            <div class="add-card-body">
-              <div class="add-card-column">
-                <div class="history-set-row">
-                  <div class="history-row">
-                    0.0<span>kg</span>
-                  </div>
-                  <div class="history-row">
-                    3<span>reps</span>
-                  </div>
-                </div>
-              </div>
-              <div class="add-card-column">
-                <div class="history-set-row">
-                  <div class="history-row">
-                    0.0<span>kg</span>
-                  </div>
-                  <div class="history-row">
-                    3<span>reps</span>
-                  </div>
-                </div>
-              </div>
-              <div class="add-card-column">
-                <div class="history-set-row">
-                  <div class="history-row">
-                    0.0<span>kg</span>
-                  </div>
-                  <div class="history-row">
-                    3<span>reps</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="history-add-card">
-            <div class="history-exercise-name">
-              <span class="">Dips</span>
-              <div class="add-card-btn-container">
-                <button class="theme-btn-no-border">
-                  <i class="material-icons ">add</i>
-                </button>
-                <button class="add-card-remove-btn theme-btn-no-border">
-                  <i class="material-icons ">delete_outline</i>
-                </button>
-              </div>
-            </div>
-            <div class="add-card-body">
-              <div class="add-card-column">
-                <div class="history-set-row">
-                  <div class="history-row">
-                    0.0<span>kg</span>
-                  </div>
-                  <div class="history-row">
-                    4<span>reps</span>
-                  </div>
-                </div>
-              </div>
-              <div class="add-card-column">
-                <div class="history-set-row">
-                  <div class="history-row">
-                    0.0<span>kg</span>
-                  </div>
-                  <div class="history-row">
-                    5<span>reps</span>
-                  </div>
-                </div>
-              </div>
-              <div class="add-card-column">
-                <div class="history-set-row">
-                  <div class="history-row">
-                    0.0<span>kg</span>
-                  </div>
-                  <div class="history-row">
-                    5<span>reps</span>
-                  </div>
-                </div>
-              </div>
-              <div class="add-card-column">
-                <div class="history-set-row">
-                  <div class="history-row">
-                    0.0<span>kg</span>
-                  </div>
-                  <div class="history-row">
-                    5<span>reps</span>
-                  </div>
-                </div>
-              </div>
-              <div class="add-card-column">
-                <div class="history-set-row">
-                  <div class="history-row">
-                    0.0<span>kg</span>
-                  </div>
-                  <div class="history-row">
-                    5<span>reps</span>
-                  </div>
-                </div>
               </div>
             </div>
           </div>
         </div>
+        <div className="">{mainView}</div>
       </div>
     </>
   );

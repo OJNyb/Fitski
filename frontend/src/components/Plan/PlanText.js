@@ -56,14 +56,21 @@ const Day = ({ day, index }) => {
 const Exercise = ({ exercise }) => {
   let {
     exercise: { name },
-    sets,
-    reps
+    sets
   } = exercise;
 
+  let reps = sets.map(x => x.reps);
+
+  let displayReps;
+  if (Math.max(...reps) === Math.min(...reps)) {
+    displayReps = reps[0];
+  } else {
+    displayReps = reps.reduce((accu, curr) => (accu += `${curr} `), "");
+  }
   return (
     <div className="plan-exercise-container">
       <span className="plan-exercise-name">
-        {name} - {sets || 0} sets of {reps || 0} reps
+        {name} - {sets.length || 0} sets of {displayReps || 0} reps
       </span>
 
       {/* <span className="plan-exercise-volume">

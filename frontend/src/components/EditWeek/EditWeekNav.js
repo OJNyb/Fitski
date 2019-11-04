@@ -14,6 +14,7 @@ import NavMid from "../shared/NavMid/NavMid";
 const EditWeekNav = ({
   weeks,
   weekIndex,
+  isMobile,
   history: { push },
   match: {
     params: { plan_id: planId, week_id: weekId }
@@ -110,42 +111,44 @@ const EditWeekNav = ({
     nextWeek = weeks[weekIndex + 1]._id;
   }
 
-  let prevBtn;
-  let nextBtn;
+  if (!isMobile) {
+    let prevBtn;
+    let nextBtn;
 
-  if (prevWeek) {
-    prevBtn = (
-      <button
-        className="edit-week-nav-arrow-btn theme-btn-no-border"
-        onClick={() => redirect(prevWeek)}
-      >
-        <i className="material-icons reversed-icon">arrow_forward_ios</i>
-      </button>
+    if (prevWeek) {
+      prevBtn = (
+        <button
+          className="edit-week-nav-arrow-btn theme-btn-no-border"
+          onClick={() => redirect(prevWeek)}
+        >
+          <i className="material-icons reversed-icon">arrow_forward_ios</i>
+        </button>
+      );
+    } else {
+      prevBtn = <div className="edit-week-nav-filler" />;
+    }
+
+    if (nextWeek) {
+      nextBtn = (
+        <button
+          className="edit-week-nav-arrow-btn theme-btn-no-border"
+          onClick={() => redirect(nextWeek)}
+        >
+          <i className="material-icons">arrow_forward_ios</i>
+        </button>
+      );
+    } else {
+      nextBtn = <div className="edit-week-nav-filler" />;
+    }
+
+    var navMidContent = (
+      <>
+        {prevBtn}
+        <button className="edit-week-nav-week-btn">{weekNumber}</button>
+        {nextBtn}
+      </>
     );
-  } else {
-    prevBtn = <div className="edit-week-nav-filler" />;
   }
-
-  if (nextWeek) {
-    nextBtn = (
-      <button
-        className="edit-week-nav-arrow-btn theme-btn-no-border"
-        onClick={() => redirect(nextWeek)}
-      >
-        <i className="material-icons">arrow_forward_ios</i>
-      </button>
-    );
-  } else {
-    nextBtn = <div className="edit-week-nav-filler" />;
-  }
-
-  const navMidContent = (
-    <>
-      {prevBtn}
-      <button className="edit-week-nav-week-btn">{weekNumber}</button>
-      {nextBtn}
-    </>
-  );
 
   return (
     <>
@@ -175,7 +178,7 @@ const EditWeekNav = ({
             customClass: " delete-color"
           }
         ]}
-        midContent={navMidContent}
+        midContent={isMobile ? null : navMidContent}
       />
       {modal}
     </>

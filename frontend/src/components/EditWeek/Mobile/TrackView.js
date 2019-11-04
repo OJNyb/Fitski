@@ -1,19 +1,14 @@
 import React, { useState } from "react";
-import { ensureDecimal } from "../../../utils/ensureDecimal";
 
-const TrackView = ({
-  sets,
-  exerId,
-  exerciseId,
-  onAddSet,
-  onEditSet,
-  onDeleteSet
-}) => {
+const TrackView = ({ exer, onAddSet, onEditSet, onDeleteSet }) => {
+  const {
+    sets,
+    _id: exerId,
+    exercise: { name, _id: exerciseId }
+  } = exer;
+  console.log(exer);
   const [selectedSet, setSelectedSet] = useState({});
-  const [weight, setWeight] = useState(
-    ensureDecimal(sets[sets.length - 1].weight)
-  );
-  const [reps, setReps] = useState(sets[sets.length - 1].reps);
+  const [reps, setReps] = useState(sets[sets.length - 1].reps || 0);
 
   const { _id: setId } = selectedSet;
 
@@ -22,25 +17,23 @@ const TrackView = ({
       return setSelectedSet({});
     }
     let set = sets.filter(x => x._id === setId)[0];
-    const { reps, weight } = set;
+    const { reps } = set;
 
     setReps(reps || 0);
-    setWeight(weight || 0);
     setSelectedSet(set);
   }
 
   function onSaveClick() {
-    onAddSet(exerId, exerciseId, { reps, weight });
+    onAddSet(exerId, exerciseId, { reps });
   }
 
   function onUpdateClick() {
-    onEditSet({ reps, weight }, exerId, setId);
+    onEditSet({ reps }, exerId, setId);
     setSelectedSet({});
   }
 
   function onClearClick() {
     setReps(0);
-    setWeight(0);
   }
 
   function onDeleteClick() {
@@ -58,30 +51,13 @@ const TrackView = ({
     />
   ));
 
-  function onWeightChange(e) {
-    const { value, validity } = e.target;
-    if (validity.valid) setWeight(value);
-  }
-
   function onRepsChange(e) {
     const { value, validity } = e.target;
     if (validity.valid && value % 1 === 0) setReps(value);
   }
   return (
     <>
-      <TrackInput
-        label={"WEIGHT (kgs)"}
-        onDecrement={() => {
-          if (weight - 2.5 >= 0) {
-            setWeight(ensureDecimal(Number(weight) - 2.5));
-          }
-        }}
-        onIncrement={() => setWeight(ensureDecimal(Number(weight) + 2.5))}
-        onChange={onWeightChange}
-        value={weight}
-      />
-
-      <TrackInput
+      {/* <TrackInput
         label={"REPS"}
         onDecrement={() => {
           if (reps > 0) setReps(Number(reps) - 1);
@@ -89,7 +65,24 @@ const TrackView = ({
         onIncrement={() => setReps(Number(reps) + 1)}
         onChange={onRepsChange}
         value={reps}
-      />
+      /> */}
+      <div class="add-weeks-modal-mobile-input-wrapper">
+        <button>
+          <div class="minus-container">
+            <div></div>
+          </div>
+        </button>
+        <div class="add-weeks-modal-mobile-input-shiizz">
+          <input type="tel" pattern="^[0-9]\d*\.?\d*$" value="1" />
+          <div class="border-with-sides"></div>
+        </div>
+        <button>
+          <div class="plus-container">
+            <div></div>
+            <div></div>
+          </div>
+        </button>
+      </div>
       <div className="history-mobile-exercise-button-container">
         <SUButton
           text={setId ? "UPDATE" : "SAVE"}
@@ -130,7 +123,7 @@ const CDButton = ({ text, setId, onClick }) => {
 const TrackInput = ({ label, onDecrement, onIncrement, onChange, value }) => {
   return (
     <div className="history-mobile-exercise-input-wrapper">
-      <div className="history-mobile-exercise-input-header">{label}:</div>
+      <span className="edit-week-mobile-exercise-input-header">{label}</span>
       <div className="history-mobile-exercise-input-box">
         <button onClick={onDecrement}>
           <i className="material-icons">remove</i>
@@ -152,16 +145,9 @@ const TrackInput = ({ label, onDecrement, onIncrement, onChange, value }) => {
   );
 };
 
-const TrackListItem = ({
-  set,
-  index,
-  onItemClick,
-  selectedSetId,
-  onCommentClick
-}) => {
-  const { reps, weight, _id: setId } = set;
+const TrackListItem = ({ set, index, onItemClick, selectedSetId }) => {
+  const { reps, _id: setId } = set;
 
-  console.log(set);
   return (
     <div
       className={
@@ -173,9 +159,6 @@ const TrackListItem = ({
       onClick={() => onItemClick(setId)}
     >
       <div className="history-mobile-exercise-list-action-index">
-        <button onClick={onCommentClick}>
-          <i className="material-icons">comment</i>
-        </button>
         <span className="history-mobile-exercise-list-bold-span">
           {index + 1}
         </span>
@@ -183,12 +166,8 @@ const TrackListItem = ({
       <div className="history-mobile-exercise-list-kg-reps">
         <div className="history-mobile-exercise-list-label-wrapper">
           <span className="history-mobile-exercise-list-bold-span">
-            {ensureDecimal(weight)}
+            {reps || 0}
           </span>
-          <span className="history-mobile-exercise-list-small-span">kgs</span>
-        </div>
-        <div className="history-mobile-exercise-list-label-wrapper">
-          <span className="history-mobile-exercise-list-bold-span">{reps}</span>
           <span className="history-mobile-exercise-list-small-span">reps</span>
         </div>
       </div>

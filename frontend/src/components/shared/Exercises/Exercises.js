@@ -8,7 +8,7 @@ import MobileExerciseView from "./MobileExerciseView";
 
 import "./exerciseTable.css";
 
-const Exercises = ({ handleAddExercise }) => {
+const Exercises = ({ handleAddExercise, closeExercises }) => {
   const { exerciseState, exerciseDispatch } = useContext(ExerciseContext);
   const [search, setSearch] = useState("");
   const [muscleGroup, setMuscleGroup] = useState([]);
@@ -84,6 +84,7 @@ const Exercises = ({ handleAddExercise }) => {
       exercisesToShow={exercisesToShow}
       exercisesToShow={exercisesToShow}
       handleSearchChange={handleSearchChange}
+      closeExercises={closeExercises}
     />
   ) : (
     <ExercisesBigView

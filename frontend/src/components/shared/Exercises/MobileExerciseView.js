@@ -20,7 +20,8 @@ const MobileExerciseView = ({
   onAddExercise,
   setMuscleGroup,
   exercisesToShow,
-  handleSearchChange
+  handleSearchChange,
+  closeExercises
 }) => {
   let exerciseDisplay;
 
@@ -32,7 +33,10 @@ const MobileExerciseView = ({
       <div
         className="mobile-exercise-item"
         key={x._id}
-        onClick={() => onAddExercise(x)}
+        onClick={() => {
+          onAddExercise(x);
+          closeExercises();
+        }}
       >
         {x.name}
       </div>

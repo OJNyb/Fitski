@@ -19,8 +19,6 @@ const NavMid = props => {
     actionMenuChildren
   } = props;
 
-  console.log(rightBtnAction);
-
   function handleMoreActionClick(e) {
     e.preventDefault();
     setShowActionMenu(true);

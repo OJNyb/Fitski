@@ -15,6 +15,8 @@ const weekId = _id.label("Week ID");
 
 const dayId = _id.label("Day ID");
 
+const setId = _id.label("Set ID");
+
 const exerciseId = _id.label("Exercise ID");
 
 const name = Joi.string()
@@ -40,14 +42,9 @@ const difficulty = Joi.string()
   .regex(/Beginner|Intermediate|Advanced/)
   .label("Difficulty");
 
-const sets = Joi.number()
-  .min(0)
-  .max(999999)
-  .label("Sets");
-
 const reps = Joi.number()
   .min(0)
-  .max(999999)
+  .max(9999)
   .label("Reps");
 
 const getWorkoutPlan = Joi.object().keys({
@@ -124,26 +121,40 @@ const addExercise = Joi.object().keys({
   day_id: dayId,
   exercise: exerciseId.required(),
   _id,
-  sets,
   reps
 });
-
-const editExercise = Joi.object()
-  .keys({
-    plan_id: planId,
-    week_id: weekId,
-    day_id: dayId,
-    exercise_id: exerciseId,
-    sets,
-    reps
-  })
-  .or("sets", "reps");
 
 const deleteExercise = Joi.object().keys({
   plan_id: planId,
   week_id: weekId,
   day_id: dayId,
   exercise_id: exerciseId
+});
+
+const addSet = Joi.object().keys({
+  plan_id: planId,
+  week_id: weekId,
+  day_id: dayId,
+  exercise_id: exerciseId,
+  setId,
+  reps
+});
+
+const editSet = Joi.object().keys({
+  plan_id: planId,
+  week_id: weekId,
+  day_id: dayId,
+  exercise_id: exerciseId,
+  set_id: setId,
+  reps
+});
+
+const deleteSet = Joi.object().keys({
+  plan_id: planId,
+  week_id: weekId,
+  day_id: dayId,
+  exercise_id: exerciseId,
+  set_id: setId
 });
 
 const activatePlan = Joi.object().keys({
@@ -163,7 +174,9 @@ module.exports = {
   "delete/plan/day/:plan_id/:week_id/:day_id": clearDay,
   "delete/plan/day/clear/:plan_id/:week_id/:day_id": clearDay,
   "post/plan/exercise/:plan_id/:week_id/:day_id": addExercise,
-  "post/plan/exercise/:plan_id/:week_id/:day_id/:exercise_id": editExercise,
   "delete/plan/exercise/:plan_id/:week_id/:day_id/:exercise_id": deleteExercise,
+  "post/plan/exercise/:plan_id/:week_id/:day_id/:exercise_id": addSet,
+  "post/plan/exercise/:plan_id/:week_id/:day_id/:exercise_id/:set_id": editSet,
+  "post/plan/exercise/:plan_id/:week_id/:day_id/:exercise_id/:set_id": deleteSet,
   "post/plan/activate": activatePlan
 };

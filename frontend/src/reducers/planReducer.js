@@ -7,8 +7,11 @@ import {
   EDIT_WEEK,
   DELETE_WEEK,
   ADD_EXERCISE,
-  EDIT_EXERCISE,
-  DELETE_EXERCISE
+  // EDIT_EXERCISE,
+  DELETE_EXERCISE,
+  ADD_SET,
+  EDIT_SET,
+  DELETE_SET
 } from "../types/planTypes";
 
 // TODO: If !week/day/woplan
@@ -147,35 +150,35 @@ function planReducer(state, action) {
       };
     }
 
-    case EDIT_EXERCISE: {
-      const { dayId, weekId, exerciseId, values } = payload;
-      const { woPlan } = state;
+    // case EDIT_EXERCISE: {
+    //   const { dayId, weekId, exerId, values } = payload;
+    //   const { woPlan } = state;
 
-      let week = woPlan.weeks.find(x => x._id === weekId);
+    //   let week = woPlan.weeks.find(x => x._id === weekId);
 
-      let day = week.days.find(x => x._id === dayId);
+    //   let day = week.days.find(x => x._id === dayId);
 
-      let { exercises } = day;
+    //   let { exercises } = day;
 
-      let exerciseIndex = exercises.map(x => x._id).indexOf(exerciseId);
+    //   let exerciseIndex = exercises.map(x => x._id).indexOf(exerId);
 
-      exercises[exerciseIndex] = { ...exercises[exerciseIndex], ...values };
+    //   exercises[exerciseIndex] = { ...exercises[exerciseIndex], ...values };
 
-      return {
-        ...state,
-        woPlan
-      };
-    }
+    //   return {
+    //     ...state,
+    //     woPlan
+    //   };
+    // }
 
     case DELETE_EXERCISE: {
-      const { dayId, weekId, exerciseId } = payload;
+      const { dayId, weekId, exerId } = payload;
       const { woPlan } = state;
 
       let week = woPlan.weeks.find(x => x._id === weekId);
 
       let day = week.days.find(x => x._id === dayId);
 
-      let exercises = day.exercises.filter(x => x._id !== exerciseId);
+      let exercises = day.exercises.filter(x => x._id !== exerId);
 
       day.exercises = exercises;
 
@@ -184,6 +187,80 @@ function planReducer(state, action) {
         woPlan
       };
     }
+
+    case ADD_SET: {
+      const { dayId, weekId, exerId, setId, reps } = payload;
+      const { woPlan } = state;
+      const { weeks } = woPlan;
+
+      const newSet = {
+        setId,
+        reps
+      };
+
+      const week = weeks.find(x => x._id === weekId);
+      const { days } = week;
+
+      const day = days.find(x => x._id === dayId);
+      const { exercises } = day;
+
+      const exercise = exercises.find(x => x._id === exerId);
+      const { sets } = exercise;
+
+      sets.push(newSet);
+
+      return {
+        ...state,
+        woPlan
+      };
+    }
+
+    case EDIT_SET: {
+      const { dayId, weekId, exerId, setId, reps } = payload;
+      const { woPlan } = state;
+
+      const week = woPlan.weeks.find(x => x._id === weekId);
+      const { days } = week;
+
+      const day = days.find(x => x._id === dayId);
+      const { exercises } = day;
+
+      const exercise = exercises.find(x => x._id === exerId);
+      const { sets } = exercise;
+
+      let setIndex = sets.map(x => x._id).indexOf(setId);
+
+      sets[setIndex] = { ...sets[setIndex], reps };
+
+      return {
+        ...state,
+        woPlan
+      };
+    }
+
+    case DELETE_SET: {
+      const { dayId, weekId, exerId, setId } = payload;
+      const { woPlan } = state;
+
+      const week = woPlan.weeks.find(x => x._id === weekId);
+      const { days } = week;
+
+      const day = days.find(x => x._id === dayId);
+      const { exercises } = day;
+
+      const exercise = exercises.find(x => x._id === exerId);
+      const { sets } = exercise;
+
+      const newSets = sets.filter(x => x._id !== setId);
+
+      exercises.sets = newSets;
+
+      return {
+        ...state,
+        woPlan
+      };
+    }
+
     default:
       return state;
   }

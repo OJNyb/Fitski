@@ -48,8 +48,6 @@ const MobileNavMid = ({
     );
   }
 
-  console.log(actionMenuChildren);
-
   return (
     <>
       {backText && (

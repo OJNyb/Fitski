@@ -279,69 +279,69 @@ router.delete(
   }
 );
 
-// @route POST api/plan/day/:plan_id/:week_id/:day_id
-// @desc Add muscle group
-// @access Private
-router.post(
-  "/day/:plan_id/:week_id/:day_id",
-  ensureSignedIn,
-  validateRequest,
-  validateWOPlan,
-  async (req, res, next) => {
-    const { body, params } = req;
+// // @route POST api/plan/day/:plan_id/:week_id/:day_id
+// // @desc Add muscle group
+// // @access Private
+// router.post(
+//   "/day/:plan_id/:week_id/:day_id",
+//   ensureSignedIn,
+//   validateRequest,
+//   validateWOPlan,
+//   async (req, res, next) => {
+//     const { body, params } = req;
 
-    const { week_id: weekId, day_id: dayId } = params;
-    const { woPlan, muscleGroup } = body;
+//     const { week_id: weekId, day_id: dayId } = params;
+//     const { woPlan, muscleGroup } = body;
 
-    woPlan
-      .updateOne(
-        { $push: { "weeks.$[w].days.$[d].muscleGroup": muscleGroup } },
-        {
-          arrayFilters: [{ "w._id": weekId }, { "d._id": dayId }]
-        }
-      )
-      .then(reski => {
-        if (reski.nModified) {
-          res.json({ message: "success" });
-        } else {
-          res.status(500).json(createErrorObject(["Couldn't apply update"]));
-        }
-      })
-      .catch(next);
-  }
-);
+//     woPlan
+//       .updateOne(
+//         { $push: { "weeks.$[w].days.$[d].muscleGroup": muscleGroup } },
+//         {
+//           arrayFilters: [{ "w._id": weekId }, { "d._id": dayId }]
+//         }
+//       )
+//       .then(reski => {
+//         if (reski.nModified) {
+//           res.json({ message: "success" });
+//         } else {
+//           res.status(500).json(createErrorObject(["Couldn't apply update"]));
+//         }
+//       })
+//       .catch(next);
+//   }
+// );
 
-// @route DELETE api/plan/day/:plan_id/:week_id/:day_id
-// @desc Remove muscle group
-// @access Private
-router.delete(
-  "/day/:plan_id/:week_id/:day_id",
-  ensureSignedIn,
-  validateRequest,
-  validateWOPlan,
-  async (req, res, next) => {
-    const { body, params } = req;
+// // @route DELETE api/plan/day/:plan_id/:week_id/:day_id
+// // @desc Remove muscle group
+// // @access Private
+// router.delete(
+//   "/day/:plan_id/:week_id/:day_id",
+//   ensureSignedIn,
+//   validateRequest,
+//   validateWOPlan,
+//   async (req, res, next) => {
+//     const { body, params } = req;
 
-    const { week_id: weekId, day_id: dayId } = params;
-    const { woPlan, muscleGroup } = body;
+//     const { week_id: weekId, day_id: dayId } = params;
+//     const { woPlan, muscleGroup } = body;
 
-    woPlan
-      .updateOne(
-        { $pull: { "weeks.$[w].days.$[d].muscleGroup": muscleGroup } },
-        {
-          arrayFilters: [{ "w._id": weekId }, { "d._id": dayId }]
-        }
-      )
-      .then(reski => {
-        if (reski.nModified) {
-          res.json({ message: "success", _id });
-        } else {
-          res.status(500).json(createErrorObject(["Couldn't apply update"]));
-        }
-      })
-      .catch(next);
-  }
-);
+//     woPlan
+//       .updateOne(
+//         { $pull: { "weeks.$[w].days.$[d].muscleGroup": muscleGroup } },
+//         {
+//           arrayFilters: [{ "w._id": weekId }, { "d._id": dayId }]
+//         }
+//       )
+//       .then(reski => {
+//         if (reski.nModified) {
+//           res.json({ message: "success", _id });
+//         } else {
+//           res.status(500).json(createErrorObject(["Couldn't apply update"]));
+//         }
+//       })
+//       .catch(next);
+//   }
+// );
 
 // @route POST api/plan/exercise/:plan_id/:week_id/:day_id
 // @desc Add exercise to workout plan
@@ -366,58 +366,6 @@ router.post(
         { $push: { "weeks.$[w].days.$[d].exercises": { ...body } } },
         {
           arrayFilters: [{ "w._id": weekId }, { "d._id": dayId }]
-        }
-      )
-      .then(reski => {
-        if (reski.nModified) {
-          res.json({ message: "success" });
-        } else {
-          res.status(500).json(createErrorObject(["Couldn't apply update"]));
-        }
-      })
-      .catch(next);
-  }
-);
-
-// @route POST api/plan/exercise/:plan_id/:week_id/:day_id/:exercise_id
-// @desc Edit exercise sets/reps/rest
-// @access Private
-router.post(
-  "/exercise/:plan_id/:week_id/:day_id/:exercise_id",
-  ensureSignedIn,
-  validateRequest,
-  validateWOPlan,
-
-  async (req, res, next) => {
-    const { body, params } = req;
-
-    const { week_id: weekId, day_id: dayId, exercise_id: exerciseId } = params;
-
-    const { sets, reps, rest, woPlan } = body;
-
-    let update = {};
-
-    if (sets || sets === 0) {
-      update["weeks.$[w].days.$[d].exercises.$[e].sets"] = sets;
-    }
-
-    if (reps || reps === 0) {
-      update["weeks.$[w].days.$[d].exercises.$[e].reps"] = reps;
-    }
-
-    woPlan
-      .updateOne(
-        {
-          $set: {
-            ...update
-          }
-        },
-        {
-          arrayFilters: [
-            { "w._id": weekId },
-            { "d._id": dayId },
-            { "e._id": exerciseId }
-          ]
         }
       )
       .then(reski => {
@@ -462,6 +410,148 @@ router.delete(
         },
         {
           arrayFilters: [{ "w._id": weekId }, { "d._id": dayId }]
+        }
+      )
+      .then(reski => {
+        if (reski.nModified) {
+          res.json({ message: "success" });
+        } else {
+          res.status(500).json(createErrorObject(["Couldn't apply update"]));
+        }
+      })
+      .catch(next);
+  }
+);
+
+// @route POST api/plan/exercise/:plan_id/:week_id/:day_id/:exercise_id
+// @desc Add set
+// @access Private
+router.post(
+  "/exercise/:plan_id/:week_id/:day_id/:exercise_id",
+  ensureSignedIn,
+  validateRequest,
+  validateWOPlan,
+
+  async (req, res, next) => {
+    const { body, params } = req;
+
+    const { week_id: weekId, day_id: dayId, exercise_id: exerciseId } = params;
+
+    const { reps, setId, woPlan } = body;
+
+    const newSet = {
+      reps,
+      _id: setId
+    };
+
+    woPlan
+      .updateOne(
+        {
+          $push: {
+            ["weeks.$[w].days.$[d].exercises.$[e].sets"]: newSet
+          }
+        },
+        {
+          arrayFilters: [
+            { "w._id": weekId },
+            { "d._id": dayId },
+            { "e._id": exerciseId }
+          ]
+        }
+      )
+      .then(reski => {
+        if (reski.nModified) {
+          res.json({ message: "success" });
+        } else {
+          res.status(500).json(createErrorObject(["Couldn't apply update"]));
+        }
+      })
+      .catch(next);
+  }
+);
+
+// @route POST api/plan/exercise/:plan_id/:week_id/:day_id/:exercise_id/:set_id
+// @desc Edit set
+// @access Private
+router.post(
+  "/exercise/:plan_id/:week_id/:day_id/:exercise_id/:set_id",
+  ensureSignedIn,
+  validateRequest,
+  validateWOPlan,
+
+  async (req, res, next) => {
+    const { body, params } = req;
+
+    const {
+      week_id: weekId,
+      day_id: dayId,
+      exercise_id: exerciseId,
+      set_id: setId
+    } = params;
+
+    const { reps, woPlan } = body;
+
+    woPlan
+      .updateOne(
+        {
+          $set: {
+            ["weeks.$[w].days.$[d].exercises.$[e].sets.$[s].reps"]: reps
+          }
+        },
+        {
+          arrayFilters: [
+            { "w._id": weekId },
+            { "d._id": dayId },
+            { "e._id": exerciseId },
+            { "s._id": setId }
+          ]
+        }
+      )
+      .then(reski => {
+        if (reski.nModified) {
+          res.json({ message: "success" });
+        } else {
+          res.status(500).json(createErrorObject(["Couldn't apply update"]));
+        }
+      })
+      .catch(next);
+  }
+);
+
+// @route POST api/plan/exercise/:plan_id/:week_id/:day_id/:exercise_id/:set_id
+// @desc Delete set
+// @access Private
+router.post(
+  "/exercise/:plan_id/:week_id/:day_id/:exercise_id/:set_id",
+  ensureSignedIn,
+  validateRequest,
+  validateWOPlan,
+
+  async (req, res, next) => {
+    const { body, params } = req;
+
+    const {
+      week_id: weekId,
+      day_id: dayId,
+      exercise_id: exerciseId,
+      set_id: setId
+    } = params;
+
+    const { woPlan } = body;
+
+    woPlan
+      .updateOne(
+        {
+          $pull: {
+            "weeks.$[w].days.$[d].exercises.$[e].sets": { _id: setId }
+          }
+        },
+        {
+          arrayFilters: [
+            { "w._id": weekId },
+            { "d._id": dayId },
+            { "e._id": exerciseId }
+          ]
         }
       )
       .then(reski => {

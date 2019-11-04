@@ -2,8 +2,10 @@ import axios from "axios";
 import { Types } from "mongoose";
 import {
   ADD_EXERCISE,
-  EDIT_EXERCISE,
-  DELETE_EXERCISE
+  DELETE_EXERCISE,
+  ADD_SET,
+  EDIT_SET,
+  DELETE_SET
 } from "../types/planTypes";
 
 const { ObjectId } = Types;
@@ -36,16 +38,59 @@ function addExercise(dispatch, planId, weekId, dayId, exercise) {
     .catch(err => console.error(err.response));
 }
 
-function editExercise(dispatch, values, planId, weekId, dayId, exerciseId) {
-  const payload = { weekId, dayId, exerciseId, values };
+// function editExercise(dispatch, values, planId, weekId, dayId, exerId) {
+//   const payload = { weekId, dayId, exerId, values };
+//   dispatch({
+//     type: EDIT_EXERCISE,
+//     payload
+//   });
+
+//   axios
+//     .post(`/plan/exercise/${planId}/${weekId}/${dayId}/${exerId}`, {
+//       ...values
+//     })
+//     .then(res => {
+//       const { data } = res;
+//       const { message } = data;
+//       if (message !== "success") {
+//         console.log("todo");
+//       }
+//     })
+//     .catch(err => console.error(err.response));
+// }
+
+function deleteExercise(dispatch, planId, weekId, dayId, exerId) {
+  const payload = { weekId, dayId, exerId };
   dispatch({
-    type: EDIT_EXERCISE,
+    type: DELETE_EXERCISE,
     payload
   });
 
   axios
-    .post(`/plan/exercise/${planId}/${weekId}/${dayId}/${exerciseId}`, {
-      ...values
+    .delete(`/plan/exercise/${planId}/${weekId}/${dayId}/${exerId}`)
+    .then(res => {
+      const { data } = res;
+      const { message } = data;
+      if (message !== "success") {
+        console.log("todo");
+      }
+    })
+    .catch(console.error);
+}
+
+function addSet(dispatch, reps, planId, weekId, dayId, exerId) {
+  const setId = new ObjectId().toHexString();
+
+  const payload = { weekId, dayId, exerId, setId, reps };
+  dispatch({
+    type: ADD_SET,
+    payload
+  });
+
+  axios
+    .post(`/plan/exercise/${planId}/${weekId}/${dayId}/${exerId}`, {
+      reps,
+      setId
     })
     .then(res => {
       const { data } = res;
@@ -57,15 +102,17 @@ function editExercise(dispatch, values, planId, weekId, dayId, exerciseId) {
     .catch(err => console.error(err.response));
 }
 
-function deleteExercise(dispatch, planId, weekId, dayId, exerciseId) {
-  const payload = { weekId, dayId, exerciseId };
+function editSet(dispatch, reps, planId, weekId, dayId, exerId, setId) {
+  const payload = { weekId, dayId, exerId, setId, reps };
   dispatch({
-    type: DELETE_EXERCISE,
+    type: EDIT_SET,
     payload
   });
 
   axios
-    .delete(`/plan/exercise/${planId}/${weekId}/${dayId}/${exerciseId}`)
+    .post(`/plan/exercise/${planId}/${weekId}/${dayId}/${exerId}/${setId}`, {
+      reps
+    })
     .then(res => {
       const { data } = res;
       const { message } = data;
@@ -73,6 +120,25 @@ function deleteExercise(dispatch, planId, weekId, dayId, exerciseId) {
         console.log("todo");
       }
     })
-    .catch(console.error);
+    .catch(err => console.error(err.response));
 }
-export { addExercise, editExercise, deleteExercise };
+
+function deleteSet(dispatch, planId, weekId, dayId, exerId, setId) {
+  const payload = { weekId, dayId, exerId, setId };
+  dispatch({
+    type: DELETE_SET,
+    payload
+  });
+
+  axios
+    .delete(`/plan/exercise/${planId}/${weekId}/${dayId}/${exerId}/${setId}`)
+    .then(res => {
+      const { data } = res;
+      const { message } = data;
+      if (message !== "success") {
+        console.log("todo");
+      }
+    })
+    .catch(err => console.error(err.response));
+}
+export { addExercise, deleteExercise, addSet, editSet, deleteSet };

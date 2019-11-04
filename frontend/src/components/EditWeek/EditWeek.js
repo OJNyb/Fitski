@@ -1,6 +1,12 @@
 import React, { useState, useContext } from "react";
 import { PlanContext } from "../../context/planContext";
-import { addExercise } from "../../utils/planClient";
+import {
+  addSet,
+  editSet,
+  deleteSet,
+  addExercise,
+  deleteExercise
+} from "../../utils/planClient";
 
 import DayHOC from "./DayHOC";
 import EditWeekNav from "./EditWeekNav";
@@ -37,6 +43,22 @@ const EditWeek = ({ match: { params } }) => {
     addExercise(dispatch, planId, weekId, dayId, exercise);
   }
 
+  function handleDeleteExercise(exerId) {
+    deleteExercise(dispatch, planId, weekId, dayId, exerId);
+  }
+
+  function handleAddSet(exerId, exerciseId, reps) {
+    addSet(dispatch, reps, planId, weekId, dayId, exerId);
+  }
+
+  function handleEditSet(exerId, setId, reps) {
+    editSet(dispatch, reps, planId, weekId, dayId, exerId, setId);
+  }
+
+  function handleDeleteSet(exerId, setId) {
+    deleteSet(dispatch, planId, weekId, dayId, exerId, setId);
+  }
+
   let dayBtns = days.map((day, index) => (
     <button
       key={day._id}
@@ -49,7 +71,19 @@ const EditWeek = ({ match: { params } }) => {
 
   let view;
   if (isMobile) {
-    view = <WeekView currentWeek={currentWeek} />;
+    view = (
+      <WeekView
+        weeks={weeks}
+        planId={planId}
+        weekIndex={weekIndex}
+        currentWeek={currentWeek}
+        handleAddSet={handleAddSet}
+        handleEditSet={handleEditSet}
+        handleDeleteSet={handleDeleteSet}
+        handleAddExercise={handleAddExercise}
+        handleDeleteExercise={handleDeleteExercise}
+      />
+    );
   } else {
     view = (
       <div className="edit-week-container">
@@ -67,12 +101,7 @@ const EditWeek = ({ match: { params } }) => {
     );
   }
 
-  return (
-    <>
-      <EditWeekNav weeks={weeks} weekIndex={weekIndex} key={currentWeek._id} />
-      {view}
-    </>
-  );
+  return <>{view}</>;
 };
 
 export default EditWeek;
