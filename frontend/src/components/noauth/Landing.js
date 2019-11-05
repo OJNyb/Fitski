@@ -2,16 +2,19 @@ import React, { useState } from "react";
 
 import Register from "./Register";
 import Login from "./Login";
+import useSetLoading from "../../hooks/useSetLoading";
+import useMobile from "../../hooks/useMobile";
+import MobileLanding from "./MobileLanding";
 
 import "./noauth.css";
-
-// Switch out background with some wavy shit?
-// When showSignX tab click old stuff reappears
 
 const Landing = () => {
   const [signUp, setSignUp] = useState(false);
   const [login, setLogin] = useState(false);
   const [showSignX, setShowSignX] = useState(false);
+  const isMobile = useMobile();
+
+  useSetLoading(false);
 
   function showLogin() {
     !showSignX && setShowSignX(true);
@@ -24,6 +27,8 @@ const Landing = () => {
     setSignUp(true);
     setLogin(false);
   }
+
+  if (isMobile) return <MobileLanding />;
 
   return (
     <>
@@ -76,16 +81,16 @@ const Landing = () => {
 
             <div className="landing-img-text-container">
               <div className="landing-img-text-item">
-                <i className="material-icons">insert_chart_outlined</i>
-                <span>Create a workout plan</span>
-              </div>
-              <div className="landing-img-text-item">
                 <i className="material-icons">search</i>
-                <span>Find a workout plan</span>
+                <span>Get with a program</span>
               </div>
               <div className="landing-img-text-item">
-                <i className="material-icons-outlined">headset_mic</i>
-                <span>Track what you lift</span>
+                <i className="material-icons">show_chart</i>
+                <span>Keep tabs on your gains</span>
+              </div>
+              <div className="landing-img-text-item">
+                <i className="material-icons-outlined">fitness_center</i>
+                <span>Watch as you get shredded</span>
               </div>
             </div>
           </div>
@@ -120,7 +125,7 @@ const Landing = () => {
 
               <h1>Get with the program, bitch</h1>
 
-              <h2>Join Fitnal today</h2>
+              <h2>Join Fitnut today</h2>
               <div>
                 <button className="theme-btn-filled" onClick={showRegister}>
                   Sign up

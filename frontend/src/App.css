@@ -1,7 +1,5 @@
 main {
   width: 100%;
-  min-height: 100vh;
-  margin-top: 66px;
   background-color: rgb(251, 247, 247);
 }
 
@@ -31,6 +29,7 @@ input[type="number"] {
 }
 
 input {
-  border: 1px solid silver;
+  border: 0;
+  outline: none;
   border-radius: 3px;
 }

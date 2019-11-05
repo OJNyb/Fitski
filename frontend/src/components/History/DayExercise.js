@@ -40,7 +40,7 @@ const DayExercise = ({
       onClick={isMobile ? () => setShowExercise(exerId) : () => 0}
     >
       <div className="history-exercise-name">
-        <span className="">{name}</span>
+        <span className="black">{name}</span>
 
         <div className="add-card-btn-container">
           <button

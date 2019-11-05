@@ -6,6 +6,10 @@
   transition: background-color 0.2s, color 0.2s;
 }
 
+.tc {
+  color: #a60000;
+}
+
 .theme-btn,
 .theme-btn-no-border {
   color: #a60000;
@@ -15,6 +19,7 @@
 .theme-btn-no-border:disabled,
 .theme-btn[aria-disabled="true"],
 .theme-btn-no-border[aria-disabled="true"] {
+  pointer-events: none;
   color: #a6000046;
 }
 
@@ -54,17 +59,6 @@
   background-color: rgb(228, 228, 228);
 }
 
-.flex-col {
-  display: flex;
-  flex-direction: column;
-}
-
-.flex-center {
-  align-content: center;
-  align-items: center;
-  justify-content: center;
-}
-
 .delete-color i {
   color: #e0245ed8 !important;
 }
@@ -92,21 +86,30 @@
   font-size: 30px;
 }
 
-.font-28 {
-  font-size: 28px;
-  line-height: 20px;
-}
-
+/* FONT */
 .font-16 {
   font-size: 16px;
+}
+
+.font-17 {
+  font-size: 17px;
+}
+
+.font-18 {
+  font-size: 18px;
 }
 
 .font-20 {
   font-size: 20px;
 }
 
-.font-18 {
-  font-size: 18px;
+.font-21 {
+  font-size: 21px;
+}
+
+.font-28 {
+  font-size: 28px;
+  line-height: 20px;
 }
 
 .mr-5 {
@@ -259,7 +262,7 @@
   width: 100%;
 }
 
-.flex-center {
+.flex-ai-center {
   display: flex;
   align-items: center;
 }
@@ -270,10 +273,87 @@
   flex-direction: column;
 }
 
+.flex-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flex-center-space-bw {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .margin-5 {
   margin: 5px;
 }
 
+.margin-a {
+  margin: 0 auto;
+}
+
+.margin-5-a {
+  margin: 5px auto;
+}
+
+.margin-0-0-20 {
+  margin: 0 0 20px;
+}
+
 .padding-0 {
   padding: 0;
+}
+
+.width-80p {
+  width: 80%;
+}
+
+.width-90p {
+  width: 90%;
+}
+
+.width-100p {
+  width: 100%;
+}
+
+.width-90p-20px {
+  width: calc(90% - 20px);
+}
+
+.width-100p-20px {
+  width: calc(100% - 20px);
+}
+
+.padding-s-10 {
+  padding: 0 10px;
+}
+
+.padding-0-5 {
+  padding: 0 5px;
+}
+
+.pt-10 {
+  padding-top: 10px;
+}
+
+.padding-15 {
+  padding: 15px;
+}
+
+.fw-bc-theme:focus-within .border-with-sides {
+  border-color: #a60000;
+}
+
+.black {
+  color: #1a1414;
+}
+
+.min-h-93vh-10 {
+  min-height: calc(93vh - 10px);
 }

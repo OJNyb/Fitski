@@ -5,9 +5,7 @@ import React, { useState } from "react";
 // import useNavWhiteDoubleBack from "../../../hooks/useNavWhiteDoubleBack";
 
 import ExerciseCard from "./ExerciseCard";
-import TrackView from "./TrackView";
 import Exercises from "../../shared/Exercises/Exercises";
-import EditWeekNav from "../EditWeekNav";
 import { Link } from "react-router-dom";
 
 import "./EditWeekMobile.css";
@@ -19,15 +17,16 @@ const WeekView = ({
   currentWeek,
   handleEditSet,
   handleAddSet,
+  currentDayIndex,
+  setCurrentDayIndex,
   handleDeleteSet,
   handleAddExercise,
   handleDeleteExercise
 }) => {
-  const [currentDayIndex, setCurrentDay] = useState(0);
-  const [activeExercise, setActiveExercise] = useState(false);
   const [showExercises, setShowExercises] = useState(false);
+  const [activeExercise, setActiveExercise] = useState(null);
 
-  const { days } = currentWeek;
+  const { days, _id: weekId } = currentWeek;
   const currentDay = days[currentDayIndex];
   const { _id: dayId } = currentDay;
   const { exercises } = currentDay;
@@ -46,7 +45,7 @@ const WeekView = ({
       index={y}
       exercise={x}
       dayId={dayId}
-      onAddSet={() => handleAddSet(x._id, x.exercise._id, 4)}
+      onAddSet={handleAddSet}
       handleEditSet={handleEditSet}
       handleDeleteSet={handleDeleteSet}
       activeExercise={activeExercise}
@@ -79,23 +78,26 @@ const WeekView = ({
 
   return (
     <>
-      <div>
+      <div
+        onClick={() => setActiveExercise(null)}
+        className="min-h-93vh-10 pt-10"
+      >
         <div className="edit-week-mobile-head-container">
           <div className="edit-week-mobile-date-container">
             <div className="edit-week-mobile-date-btn">
               <span>Week</span>
               <div className="flex-center">
                 <Link
-                  to={prevWeekLink}
+                  to={prevWeekLink || weekId}
                   className="theme-btn-no-border"
                   aria-disabled={!prevWeekLink}
                 >
                   <i className="material-icons">keyboard_arrow_left</i>
                 </Link>
-                <span>{weekIndex + 1}</span>
+                <span className="black">{weekIndex + 1}</span>
                 <Link
                   className="theme-btn-no-border"
-                  to={nextWeekLink}
+                  to={nextWeekLink || weekId}
                   aria-disabled={!nextWeekLink}
                 >
                   <i className="material-icons">keyboard_arrow_right</i>
@@ -104,14 +106,14 @@ const WeekView = ({
             </div>
           </div>
 
-          {/* <button
+          <button
             className="theme-btn-no-border"
             onClick={() => setShowExercises(true)}
           >
             <i className="material-icons" style={{ fontSize: "32px" }}>
               add
             </i>
-          </button> */}
+          </button>
 
           <div className="edit-week-mobile-date-container">
             <div className="edit-week-mobile-date-btn">
@@ -120,15 +122,15 @@ const WeekView = ({
                 <button
                   className="theme-btn-no-border"
                   disabled={!currentDayIndex}
-                  onClick={() => setCurrentDay(currentDayIndex - 1)}
+                  onClick={() => setCurrentDayIndex(currentDayIndex - 1)}
                 >
                   <i className="material-icons">keyboard_arrow_left</i>
                 </button>
-                <span>{currentDayIndex + 1}</span>
+                <span className="black">{currentDayIndex + 1}</span>
                 <button
                   className="theme-btn-no-border"
                   disabled={currentDayIndex === 6}
-                  onClick={() => setCurrentDay(currentDayIndex + 1)}
+                  onClick={() => setCurrentDayIndex(currentDayIndex + 1)}
                 >
                   <i className="material-icons">keyboard_arrow_right</i>
                 </button>

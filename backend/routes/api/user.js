@@ -7,6 +7,7 @@ const { SESS_NAME } = require("../../config/keys");
 // Models
 const User = require("../../models/User");
 const History = require("../../models/History");
+const UserExercise = require("../../models/UserExercise");
 
 // Validation
 const { ensureSignedIn, ensureSignedOut } = require("../../middlewares/auth");
@@ -41,10 +42,15 @@ router.post("/register", ensureSignedOut, validateRequest, (req, res, next) => {
     user: _id
   });
 
+  let newUserExercise = new UserExercise({
+    user: _id
+  });
+
   newUser
     .save()
     .then(user => {
       newHistory.save().catch(next);
+      newUserExercise.save().catch(next);
       delete user.password;
       return res.json({ message: "success" });
     })

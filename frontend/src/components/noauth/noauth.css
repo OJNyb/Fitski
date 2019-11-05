@@ -137,38 +137,24 @@
 }
 
 .landing-signup-container h1 {
-  margin: 0;
-  font-size: 24px;
-  line-height: 32px;
+  font-size: 28px;
+  margin: 20px 0 0 0;
   width: 300px;
 }
 
 .landing-signup-container h2 {
-  margin: 48px auto 16px;
-
-  font-size: 17px;
+  margin: 59px 0 15px;
+  font-size: 15px;
   font-weight: 700;
   line-height: 24px;
   width: 300px;
 }
 
 .landing-signup-container button {
-  padding: 6px 16px;
+  padding: 9px 16px;
   display: block;
-
   font-size: 14px;
-
-  font-weight: bold;
-
-  margin-bottom: 16px;
-}
-
-.landing-signup-container button {
-  padding: 6px 16px;
-  display: block;
-
-  font-size: 14px;
-
+  font-weight: 700;
   margin-bottom: 16px;
   width: 100%;
 }
@@ -323,4 +309,9 @@
 
 .sign-x-error-close:hover {
   color: black;
+}
+
+.mobile-landing-container {
+  width: calc(100% - 20px);
+  max-width: 380px;
 }

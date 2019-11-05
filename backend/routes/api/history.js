@@ -405,7 +405,6 @@ router.post(
       newField[`days.$[d].exercises.$[e].sets.$[s].${field2}`] = patch2;
     }
 
-    console.log(newField);
     history
       .updateOne(
         {

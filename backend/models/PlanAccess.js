@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const { Schema } = mongoose;
+const { model, Schema } = mongoose;
 const { ObjectId } = Schema.Types;
 
 const PlanAccess = new Schema(
@@ -14,4 +14,4 @@ const PlanAccess = new Schema(
   { timestamps: true }
 );
 
-module.exports = User = mongoose.model("planAccess", PlanAccess);
+module.exports = User = model("planAccess", PlanAccess);

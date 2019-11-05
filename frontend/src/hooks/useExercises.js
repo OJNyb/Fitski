@@ -9,7 +9,7 @@ const initialState = {
   exercises: null,
   isPending: false,
   isRejected: false,
-  getExercises: false
+  getExercises: true
 };
 
 const useExercises = () => {

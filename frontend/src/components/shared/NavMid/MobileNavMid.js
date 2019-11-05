@@ -52,7 +52,7 @@ const MobileNavMid = ({
     <>
       {backText && (
         <div className="nav-mid-header-item">
-          <h2>{backText}</h2>
+          <h2 className="nav-h2 font-20 black">{backText}</h2>
         </div>
       )}
       {/* 

@@ -1,8 +1,10 @@
 const mongoose = require("mongoose");
-const { ObjectId } = mongoose.Schema.Types;
+const { model, Schema } = mongoose;
+const { ObjectId } = Schema.Types;
+
 const { hash, compare } = require("bcryptjs");
 
-const UserSchema = new mongoose.Schema(
+const UserSchema = new Schema(
   {
     name: String,
     avatar: String,
@@ -55,5 +57,5 @@ UserSchema.statics.doesntExist = async function(options) {
   return (await this.where(options).countDocuments()) === 0;
 };
 
-const User = mongoose.model("user", UserSchema);
+const User = model("user", UserSchema);
 module.exports = User;

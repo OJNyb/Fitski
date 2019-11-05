@@ -8,16 +8,11 @@ const Logout = () => {
 
   const { data, error, isPending, isRejected } = state;
 
-  console.log(data);
-
-  console.log(state);
-
   if (isPending) {
     return <Loading />;
   }
 
   if (isRejected) {
-    console.log(error);
     return <p>Error... check console</p>;
   }
 

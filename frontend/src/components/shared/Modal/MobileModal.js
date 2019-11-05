@@ -12,7 +12,7 @@ const MobileModal = ({ header, children, toggleModal }) => {
         }}
       >
         {header && (
-          <div className="mobile-modal-header">
+          <div className="mobile-modal-header black">
             <span>{header}</span>
           </div>
         )}

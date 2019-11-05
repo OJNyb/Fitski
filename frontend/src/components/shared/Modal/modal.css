@@ -74,13 +74,13 @@
   margin-bottom: 20px;
   font-weight: 500;
   font-size: 14px;
-  color: rgb(75, 68, 68);
 }
 
 .mobile-modal-submit-btn {
-  padding: 12px;
+  padding: 9px;
   margin: 9px auto;
   width: 80%;
-  border-radius: 15px;
+  border-radius: 9999px;
   margin-top: 20px;
+  font-size: 14px;
 }

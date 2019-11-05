@@ -128,14 +128,20 @@ function planReducer(state, action) {
     }
 
     case ADD_EXERCISE: {
-      const { _id, dayId, weekId, exercise } = payload;
+      const { exerId, dayId, weekId, exercise, setId, reps } = payload;
       const { woPlan } = state;
 
       const { weeks } = woPlan;
 
       const newExercise = {
-        _id,
-        exercise
+        _id: exerId,
+        exercise,
+        sets: [
+          {
+            reps,
+            _id: setId
+          }
+        ]
       };
 
       let week = weeks.find(x => x._id === weekId);
@@ -194,7 +200,7 @@ function planReducer(state, action) {
       const { weeks } = woPlan;
 
       const newSet = {
-        setId,
+        _id: setId,
         reps
       };
 
@@ -253,7 +259,7 @@ function planReducer(state, action) {
 
       const newSets = sets.filter(x => x._id !== setId);
 
-      exercises.sets = newSets;
+      exercise.sets = newSets;
 
       return {
         ...state,

@@ -1,25 +1,19 @@
 import React, { useState, useEffect } from "react";
 
-const NavActionMenu = ({ children, hideActionMenu }) => {
+const NavActionMenu = ({ children, hideActionMenu, moreBtn }) => {
   const [offsetLeft, setOffsetLeft] = useState(0);
   const [offsetTop, setOffsetTop] = useState(0);
 
+  console.log(moreBtn);
   useEffect(() => {
-    const moreBtn = document.getElementsByClassName(
-      "nav-mid-header-more-btn"
-    )[0];
-
     function handleWindowResize() {
-      setOffsetLeft(moreBtn.offsetLeft + 251 - 180 + 30 - 2);
-      setOffsetTop(moreBtn.offsetTop + 6);
+      const { current } = moreBtn;
+      const { offsetLeft, offsetTop } = current;
+      setOffsetLeft(offsetLeft + 251 - 180 + 30 - 2);
+      setOffsetTop(offsetTop + 6.5);
     }
 
     handleWindowResize();
-    window.addEventListener("resize", handleWindowResize);
-
-    return function cleanup() {
-      window.removeEventListener("resize", handleWindowResize);
-    };
   });
 
   const left = offsetLeft + "px";

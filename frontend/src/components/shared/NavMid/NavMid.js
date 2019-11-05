@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useRef, useState } from "react";
 import NavMidActionMenu from "./NavMidActionMenu";
 import useMobile from "../../../hooks/useMobile";
 
@@ -7,6 +7,7 @@ import MobileNavMid from "./MobileNavMid";
 const NavMid = props => {
   const [showActionMenu, setShowActionMenu] = useState(false);
   const isMobile = useMobile();
+  const moreBtn = useRef(null);
 
   const {
     backText,
@@ -55,7 +56,7 @@ const NavMid = props => {
               <i className="material-icons">arrow_back</i>
             </button>
 
-            <h2>{backText}</h2>
+            <h2 className="nav-h2 font-21 black">{backText}</h2>
           </div>
         )}
 
@@ -66,6 +67,7 @@ const NavMid = props => {
             <button
               className="nav-mid-header-more-btn theme-btn"
               onClick={handleMoreActionClick}
+              ref={moreBtn}
             >
               <i className="material-icons nav-mid-header-more-icon">
                 more_horiz
@@ -83,7 +85,9 @@ const NavMid = props => {
           )}
         </div>
 
-        {showActionMenu && <NavMidActionMenu children={actionMenuChildren} />}
+        {showActionMenu && (
+          <NavMidActionMenu children={actionMenuChildren} moreBtn={moreBtn} />
+        )}
       </>
     );
   }

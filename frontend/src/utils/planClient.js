@@ -12,18 +12,21 @@ const { ObjectId } = Types;
 
 // TODO: What if it fails
 
-function addExercise(dispatch, planId, weekId, dayId, exercise) {
-  const _id = new ObjectId().toHexString();
+function addExercise(dispatch, planId, weekId, dayId, exercise, reps) {
+  const exerId = new ObjectId().toHexString();
+  const setId = new ObjectId().toHexString();
 
   dispatch({
     type: ADD_EXERCISE,
-    payload: { _id, weekId, dayId, exercise }
+    payload: { exerId, weekId, dayId, exercise, setId, reps }
   });
 
   axios
     .post(`/plan/exercise/${planId}/${weekId}/${dayId}`, {
-      exercise: exercise._id,
-      _id
+      exerciseId: exercise._id,
+      exerId,
+      setId,
+      reps
     })
     .then(res => {
       const { data } = res;
@@ -31,7 +34,7 @@ function addExercise(dispatch, planId, weekId, dayId, exercise) {
       if (message !== "success") {
         dispatch({
           type: "ADD_EXERCISE_FAILED",
-          payload: { weekId, dayId, _id }
+          payload: { weekId, dayId, exerId }
         });
       }
     })

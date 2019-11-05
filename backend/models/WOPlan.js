@@ -1,9 +1,10 @@
 const mongoose = require("mongoose");
-const { ObjectId } = mongoose.Schema.Types;
+const { model, Schema } = mongoose;
+const { ObjectId } = Schema.Types;
 
 // access = owner/all/private
 
-const WOPlanSchema = new mongoose.Schema(
+const WOPlanSchema = new Schema(
   {
     _id: ObjectId,
     name: String,
@@ -42,6 +43,7 @@ const WOPlanSchema = new mongoose.Schema(
                 exercise: { type: ObjectId, ref: "exercise" },
                 sets: [
                   {
+                    _id: ObjectId,
                     reps: Number
                   }
                 ]
@@ -59,6 +61,6 @@ WOPlanSchema.methods.isOwner = function(userId) {
   return userId === this.user.toString();
 };
 
-const WOPlan = mongoose.model("woPlan", WOPlanSchema);
+const WOPlan = model("woPlan", WOPlanSchema);
 
 module.exports = WOPlan;

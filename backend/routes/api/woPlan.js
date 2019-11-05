@@ -357,13 +357,22 @@ router.post(
     const { body, params } = req;
 
     const { week_id: weekId, day_id: dayId } = params;
-    const { woPlan } = body;
+    const { woPlan, exerId, setId, reps, exerciseId } = body;
 
-    // const _id = Types.ObjectId();
+    const newExer = {
+      _id: exerId,
+      exercise: exerciseId,
+      sets: [
+        {
+          _id: setId,
+          reps: reps || 0
+        }
+      ]
+    };
 
     woPlan
       .updateOne(
-        { $push: { "weeks.$[w].days.$[d].exercises": { ...body } } },
+        { $push: { "weeks.$[w].days.$[d].exercises": newExer } },
         {
           arrayFilters: [{ "w._id": weekId }, { "d._id": dayId }]
         }
@@ -440,10 +449,11 @@ router.post(
     const { reps, setId, woPlan } = body;
 
     const newSet = {
-      reps,
+      reps: reps || 0,
       _id: setId
     };
 
+    console.log(newSet);
     woPlan
       .updateOne(
         {
@@ -478,10 +488,8 @@ router.post(
   ensureSignedIn,
   validateRequest,
   validateWOPlan,
-
   async (req, res, next) => {
     const { body, params } = req;
-
     const {
       week_id: weekId,
       day_id: dayId,
@@ -489,7 +497,10 @@ router.post(
       set_id: setId
     } = params;
 
+    console.log("gay");
     const { reps, woPlan } = body;
+
+    console.log(reps);
 
     woPlan
       .updateOne(
@@ -521,7 +532,7 @@ router.post(
 // @route POST api/plan/exercise/:plan_id/:week_id/:day_id/:exercise_id/:set_id
 // @desc Delete set
 // @access Private
-router.post(
+router.delete(
   "/exercise/:plan_id/:week_id/:day_id/:exercise_id/:set_id",
   ensureSignedIn,
   validateRequest,
@@ -538,6 +549,8 @@ router.post(
     } = params;
 
     const { woPlan } = body;
+
+    console.log("gay");
 
     woPlan
       .updateOne(

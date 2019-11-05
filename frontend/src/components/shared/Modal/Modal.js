@@ -31,7 +31,7 @@ const BigViewModal = ({ header, children, toggleModal }) => {
         >
           <i className="material-icons">close</i>
         </button>
-        <h2>{header}</h2>
+        <h2 className="black">{header}</h2>
         {children}
       </div>
     </div>

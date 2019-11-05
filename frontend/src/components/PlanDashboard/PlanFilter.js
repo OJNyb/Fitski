@@ -100,14 +100,13 @@ const PlanFilter = ({
             )}
             renderThumb={({ props }) => {
               return (
-                <>
-                  <div
-                    className="plans-filter-render-thumb"
-                    style={{
-                      ...props.style
-                    }}
-                  ></div>
-                </>
+                <div
+                  key={props.key}
+                  className="plans-filter-render-thumb"
+                  style={{
+                    ...props.style
+                  }}
+                ></div>
               );
             }}
           />

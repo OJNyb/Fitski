@@ -1,7 +1,16 @@
 import React, { useState, useEffect, useContext } from "react";
-import { GET_EXERCISES } from "../../../types/exerciseTypes";
+import {
+  ADD_EXERCISE,
+  EDIT_EXERCISE,
+  DELETE_EXERCISE
+} from "../../../types/exerciseTypes";
 import { ExerciseContext } from "../../../context/exerciseContext";
 import useMobile from "../../../hooks/useMobile";
+import {
+  addExercise,
+  editExercise,
+  deleteExercise
+} from "../../../utils/exerciseClient";
 
 import ExercisesBigView from "./ExercisesBigView";
 import MobileExerciseView from "./MobileExerciseView";
@@ -9,23 +18,13 @@ import MobileExerciseView from "./MobileExerciseView";
 import "./exerciseTable.css";
 
 const Exercises = ({ handleAddExercise, closeExercises }) => {
-  const { exerciseState, exerciseDispatch } = useContext(ExerciseContext);
+  const { state, dispatch } = useContext(ExerciseContext);
   const [search, setSearch] = useState("");
   const [muscleGroup, setMuscleGroup] = useState([]);
   const [exercisesToShow, setExercisesToShow] = useState(null);
   const isMobile = useMobile();
 
-  const { exercises, isPending, isRejected } = exerciseState;
-
-  useEffect(() => {
-    function getExercises() {
-      if (!exercises) {
-        exerciseDispatch({ type: GET_EXERCISES });
-      }
-    }
-
-    getExercises();
-  }, [exerciseDispatch]);
+  const { exercises, isPending, isRejected } = state;
 
   useEffect(() => {
     function filterExercises() {
@@ -56,6 +55,17 @@ const Exercises = ({ handleAddExercise, closeExercises }) => {
     filterExercises();
   }, [search, muscleGroup, isMobile, exercises]);
 
+  function handleAddCustomExercise(name, category) {
+    addExercise(dispatch, name, category);
+  }
+
+  function handleEditCustomExercise(exerciseId, values) {
+    addExercise(dispatch, exerciseId, values);
+  }
+
+  function handleDeleteCustomExercise(exerciseId) {
+    deleteExercise(dispatch, exerciseId);
+  }
   function handleSearchChange(e) {
     const { value } = e.target;
     setSearch(value);
@@ -79,12 +89,15 @@ const Exercises = ({ handleAddExercise, closeExercises }) => {
       search={search}
       isPending={isPending}
       muscleGroup={muscleGroup}
-      onAddExercise={handleAddExercise}
       setMuscleGroup={setMuscleGroup}
-      exercisesToShow={exercisesToShow}
-      exercisesToShow={exercisesToShow}
-      handleSearchChange={handleSearchChange}
       closeExercises={closeExercises}
+      exercisesToShow={exercisesToShow}
+      exercisesToShow={exercisesToShow}
+      onAddExercise={handleAddExercise}
+      handleSearchChange={handleSearchChange}
+      handleAddCustomExercise={handleAddCustomExercise}
+      handleEditCustomExercise={handleEditCustomExercise}
+      handleDeleteCustomExercise={handleDeleteCustomExercise}
     />
   ) : (
     <ExercisesBigView

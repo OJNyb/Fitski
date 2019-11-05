@@ -27,35 +27,44 @@ function App() {
   const { isDouble } = state;
 
   let marginTop;
+  let marginLeft = 0;
+  let minHeight;
 
   if (!isMobile) {
     marginTop = "66px";
+    marginLeft = "251px";
+    minHeight = "calc(100vh - 251px)";
   } else if (isMobile && !isDouble) {
-    marginTop = "calc(7vh)";
+    marginTop = "7vh";
+    minHeight = "93vh";
   } else {
     marginTop = "14vh";
+    minHeight = "86vh";
   }
+
+  console.log(exerciseState);
 
   return (
     <NavContext.Provider value={{ state, dispatch }}>
       <Navigation />
       <main
         style={{
-          marginLeft: isMobile ? 0 : "251px",
-          marginTop
+          marginLeft,
+          marginTop,
+          minHeight
         }}
       >
-        <Route exact path="/plans" component={Plans} />
-        <Route exact path="/progress" component={CreatePlan} />
-        <Route exact path="/create-plan" component={CreatePlan} />
-        <Route exact path="/settings" component={Settings} />
-
-        <Route exact path="/logout" component={Logout} />
-
-        <ExerciseContext.Provider value={{ exerciseState, exerciseDispatch }}>
+        <ExerciseContext.Provider
+          value={{ state: exerciseState, dispatch: exerciseDispatch }}
+        >
+          <Route exact path="/plans" component={Plans} />
+          <Route exact path="/progress" component={CreatePlan} />
+          <Route exact path="/create-plan" component={CreatePlan} />
+          <Route exact path="/settings" component={Settings} />
           <Route exact path="/history" component={History} />
           <Route path="/plans/:plan_id" component={PlanHOC} />
         </ExerciseContext.Provider>
+        <Route exact path="/logout" component={Logout} />
       </main>
     </NavContext.Provider>
   );

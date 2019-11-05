@@ -15,6 +15,8 @@ const weekId = _id.label("Week ID");
 
 const dayId = _id.label("Day ID");
 
+const exerId = _id.label("Exer ID");
+
 const setId = _id.label("Set ID");
 
 const exerciseId = _id.label("Exercise ID");
@@ -119,8 +121,9 @@ const addExercise = Joi.object().keys({
   plan_id: planId,
   week_id: weekId,
   day_id: dayId,
-  exercise: exerciseId.required(),
-  _id,
+  exerciseId: exerciseId.required(),
+  exerId,
+  setId,
   reps
 });
 

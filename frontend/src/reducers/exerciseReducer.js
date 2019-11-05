@@ -1,8 +1,11 @@
 import {
   IS_PENDING,
   IS_REJECTED,
+  ADD_EXERCISE,
+  EDIT_EXERCISE,
   SET_EXERCISES,
-  GET_EXERCISES
+  GET_EXERCISES,
+  DELETE_EXERCISE
 } from "../types/exerciseTypes";
 
 // TODO: If !week/day/woplan
@@ -41,6 +44,54 @@ function planReducer(state, action) {
       return {
         ...state,
         getExercises: true
+      };
+    }
+
+    case ADD_EXERCISE: {
+      const { exercises } = state;
+      const { name, category, exerciseId } = payload;
+
+      let newExercise = {
+        name,
+        category,
+        _id: exerciseId
+      };
+
+      exercises.push(newExercise);
+      return {
+        ...state,
+        exercises
+      };
+    }
+
+    case EDIT_EXERCISE: {
+      const { exercises } = state;
+      const { values, exerciseId } = payload;
+
+      let exerciseIndex = exercises.map(x => x._id).indexOf(exerciseId);
+
+      exercises[exerciseIndex] = {
+        ...exercises[exerciseIndex],
+        ...values
+      };
+
+      return {
+        ...state,
+        exercises
+      };
+    }
+
+    case DELETE_EXERCISE: {
+      const { exercises } = state;
+      const { exerciseId } = payload;
+
+      let exerciseIndex = exercises.map(x => x._id).indexOf(exerciseId);
+
+      exercises.splice(exerciseIndex, 1);
+
+      return {
+        ...state,
+        exercises
       };
     }
 

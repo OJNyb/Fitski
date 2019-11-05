@@ -1,11 +1,11 @@
 const mongoose = require("mongoose");
-const { Schema } = mongoose;
+const { model, Schema } = mongoose;
 const { ObjectId } = Schema.Types;
 const _id = { type: ObjectId, required: true };
 
 const HistorySchema = new Schema(
   {
-    user: ObjectId,
+    user: { type: ObjectId, ref: "user" },
     days: [
       {
         _id,
@@ -32,4 +32,4 @@ const HistorySchema = new Schema(
   { timestamps: true }
 );
 
-module.exports = User = mongoose.model("history", HistorySchema);
+module.exports = User = model("history", HistorySchema);
