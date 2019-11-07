@@ -1,6 +1,6 @@
 .modal {
   position: fixed;
-  z-index: 997;
+  z-index: 9999;
   left: 0;
   top: 7vh;
   width: 100%;

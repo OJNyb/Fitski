@@ -7,8 +7,9 @@ import navReducer from "../reducers/navReducer";
 const initialState = {
   isDouble: false,
   isWhite: false,
-  showDehaze: true,
-  backLink: null
+  showNone: false,
+  backLink: null,
+  showDehaze: true
 };
 
 const useNav = () => {

@@ -1,4 +1,5 @@
 import React from "react";
+import "./modal.css";
 
 const MobileModal = ({ header, children, toggleModal }) => {
   return (

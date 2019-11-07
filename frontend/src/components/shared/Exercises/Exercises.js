@@ -1,21 +1,18 @@
-import React, { useState, useEffect, useContext } from "react";
-import {
-  ADD_EXERCISE,
-  EDIT_EXERCISE,
-  DELETE_EXERCISE
-} from "../../../types/exerciseTypes";
-import { ExerciseContext } from "../../../context/exerciseContext";
+import React, { lazy, useState, useEffect, useContext, Suspense } from "react";
 import useMobile from "../../../hooks/useMobile";
+import { ExerciseContext } from "../../../context/exerciseContext";
 import {
   addExercise,
   editExercise,
   deleteExercise
 } from "../../../utils/exerciseClient";
 
-import ExercisesBigView from "./ExercisesBigView";
-import MobileExerciseView from "./MobileExerciseView";
+import SetLoading from "../../SetLoading";
 
 import "./exerciseTable.css";
+
+const ExercisesBigView = lazy(() => import("./ExercisesBigView"));
+const MobileExerciseView = lazy(() => import("./MobileExerciseView"));
 
 const Exercises = ({ handleAddExercise, closeExercises }) => {
   const { state, dispatch } = useContext(ExerciseContext);
@@ -113,7 +110,7 @@ const Exercises = ({ handleAddExercise, closeExercises }) => {
     />
   );
 
-  return <>{view}</>;
+  return <Suspense fallback={SetLoading}>{view}</Suspense>;
 };
 
 export default Exercises;

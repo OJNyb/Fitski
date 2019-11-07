@@ -243,13 +243,10 @@ nav section {
   position: fixed;
   display: flex;
   padding: 0px 0px 0px 15px;
-  height: 7%;
+  height: 7vh;
   width: 100%;
   z-index: 999;
-}
-
-.mobile-nav-double {
-  height: 14vh !important;
+  top: 0;
 }
 
 .mobile-nav-menu-container {

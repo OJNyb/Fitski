@@ -123,16 +123,14 @@
 }
 
 .edit-week-card-rep-index {
-  color: rgb(112, 94, 94);
+  color: rgb(82, 68, 68);
   font-weight: 500;
-  font-family: "Oswald", sans-serif;
 }
 
 .edit-week-card-rep-label {
-  color: rgb(139, 112, 112);
-  font-size: 13px;
-  font-weight: 300;
   margin-left: 1px;
+  font-size: 12px;
+  color: #808080;
 }
 
 .edit-week-mobile-set-delete-btn {

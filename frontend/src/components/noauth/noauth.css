@@ -76,9 +76,13 @@
 .landing-img-text-item {
   display: flex;
   align-items: center;
-  margin: 30px;
-  font-weight: 500;
+  margin-bottom: 40px;
+  font-weight: 700;
   font-size: 18px;
+}
+
+.landing-img-text-item:last-child {
+  margin: 0;
 }
 
 .landing-img-text-item i {
@@ -122,18 +126,17 @@
 
 .landing-login-button {
   padding: 0 12px;
-
   font-size: 13px;
   font-weight: 900;
 }
 
 .landing-signup-container {
-  max-width: 340px;
+  max-width: 380px;
 }
 
-.landing-signup-container i {
+.landing-icon-medium {
   color: #a60000;
-  font-size: 42px;
+  font-size: 38px;
 }
 
 .landing-signup-container h1 {
@@ -150,12 +153,11 @@
   width: 300px;
 }
 
-.landing-signup-container button {
-  padding: 9px 16px;
-  display: block;
+.landing-upper-button {
   font-size: 14px;
   font-weight: 700;
   margin-bottom: 16px;
+  height: 35px;
   width: 100%;
 }
 
@@ -201,7 +203,6 @@
 .landing-log-in-existing-btn-container button {
   padding: 8px;
   border-radius: 3px;
-
   font-size: 14px;
 }
 
@@ -311,7 +312,36 @@
   color: black;
 }
 
+/* MOBILE */
 .mobile-landing-container {
-  width: calc(100% - 20px);
+  width: calc(100% - 30px);
   max-width: 380px;
+}
+
+.landing-icon-conatiner-small {
+  background-color: #a60000bb;
+  position: relative;
+  overflow: hidden;
+}
+
+.landing-icon-small {
+  position: absolute;
+  top: -10vh;
+  right: -50vh;
+  height: 140vh;
+  font-size: 100vh;
+  color: #a60000;
+  z-index: -1;
+}
+
+.mobile-sign-x-button-down-container {
+  padding: 39px 15px 30px;
+  justify-content: center;
+}
+
+.mobile-sign-x-link-down {
+  min-height: 37px;
+  font-weight: bold;
+  font-size: 14px;
+  max-width: 180px;
 }

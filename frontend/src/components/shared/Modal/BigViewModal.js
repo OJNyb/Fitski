@@ -1,0 +1,27 @@
+import React from "react";
+
+const BigViewModal = ({ header, children, toggleModal }) => {
+  return (
+    <div
+      id="myModal"
+      className="modal"
+      onClick={toggleModal}
+      style={{
+        top: "66px"
+      }}
+    >
+      <div className="modal-content" onClick={e => e.stopPropagation()}>
+        <button
+          onClick={toggleModal}
+          className="close-modal-btn theme-btn-no-border"
+        >
+          <i className="material-icons">close</i>
+        </button>
+        <h2 className="black">{header}</h2>
+        {children}
+      </div>
+    </div>
+  );
+};
+
+export default BigViewModal;

@@ -1,0 +1,44 @@
+.mobile-sign-x-input-wrapper {
+  border-bottom: 2px solid rgb(134, 101, 101);
+  background-color: rgb(250, 245, 245);
+}
+
+.mobile-sign-x-input-wrapper {
+  border-bottom: 2px solid rgb(134, 101, 101);
+  background-color: rgb(250, 245, 245);
+}
+
+.mobile-sign-x-label-box {
+  padding: 5px 10px 0;
+}
+
+.mobile-sign-x-input-wrapper span {
+  color: #866565;
+  font-size: 14px;
+}
+
+.mobile-sign-x-input-wrapper:focus-within span {
+  color: #a60000;
+}
+
+.mobile-sign-x-input-wrapper:focus-within {
+  border-color: #a60000;
+}
+
+.mobile-sign-x-input-wrapper input {
+  background-color: rgb(250, 245, 245);
+  padding: 2px 10px 5px;
+}
+
+.landing-mobile-sign-x-form button {
+  min-height: 46px;
+  font-weight: bold;
+}
+
+.mobile-sign-x-input-error {
+  border-color: #d90000;
+}
+
+.mobile-sign-x-input-error span {
+  color: #d90000;
+}

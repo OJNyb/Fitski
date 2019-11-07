@@ -15,12 +15,38 @@ function findAllOccurencesOfExercise(historyDays, exerciseId) {
 
 function findLastOccurenceOfExercise(historyDays, exerciseId) {
   let allOcc = findAllOccurencesOfExercise(historyDays, exerciseId);
-
-  console.log(allOcc);
   if (allOcc.length) {
     const { sets } = allOcc[allOcc.length - 1];
     return sets[sets.length - 1];
   }
 }
 
-export { findAllOccurencesOfExercise, findLastOccurenceOfExercise };
+function findLastOccurenceOfExercisePlan(weeks, exerciseId) {
+  let lastSet;
+  for (let i = weeks.length - 1; i >= 0; i--) {
+    if (lastSet) break;
+    const { days } = weeks[i];
+    for (let i = days.length - 1; i >= 0; i--) {
+      if (lastSet) break;
+      const { exercises } = days[i];
+      for (let i = exercises.length - 1; i >= 0; i--) {
+        if (lastSet) break;
+        const {
+          sets,
+          exercise: { _id }
+        } = exercises[i];
+        if (_id === exerciseId) {
+          lastSet = sets[sets.length - 1];
+          break;
+        }
+      }
+    }
+  }
+  return lastSet || { reps: 0 };
+}
+
+export {
+  findAllOccurencesOfExercise,
+  findLastOccurenceOfExercise,
+  findLastOccurenceOfExercisePlan
+};

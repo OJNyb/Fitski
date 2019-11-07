@@ -4,6 +4,8 @@ import { ensureDecimal } from "../../../utils/ensureDecimal";
 
 import TrashBin from "../../shared/SVGs/TrashBin";
 
+import "../../../styles/exerciseCard.css";
+
 const ExerciseCard = ({
   dayId,
   exercise,
@@ -66,7 +68,7 @@ const ExerciseCard = ({
   return (
     <div
       className={
-        "edit-week-mobile-add-card" +
+        "history-add-card" +
         (isActive ? " edit-week-mobile-add-card-active" : "")
       }
       onClick={e => {
@@ -102,7 +104,7 @@ const ExerciseCard = ({
       </div>
 
       {headDropdown}
-      <div className="edit-week-mobile-card-body">{cardView}</div>
+      <div className="add-card-body">{cardView}</div>
     </div>
   );
 };
@@ -111,7 +113,7 @@ const SetColumn = ({ set, index }) => {
   const { reps, _id: setId } = set;
 
   return (
-    <div className="edit-week-mobile-card-column">
+    <div className="edit-week-mobile-card-column black">
       <div>
         <span className="edit-week-card-rep-index">{reps || 0}</span>
         <span className="edit-week-card-rep-label">reps</span>

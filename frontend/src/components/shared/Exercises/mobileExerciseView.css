@@ -3,9 +3,8 @@
   position: fixed;
   z-index: 1000;
   height: 7vh;
-  width: calc(100% - 15px);
+  width: calc(100%);
   top: 0;
-  background-color: #fff;
   padding-left: 10px;
 }
 

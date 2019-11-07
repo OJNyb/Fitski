@@ -7,13 +7,13 @@ import PlanText from "./PlanText";
 import AddWeeksModal from "./AddWeeksModal";
 import DeletePlanModal from "./DeletePlanModal";
 import ActivatePlanModal from "./ActivatePlanModal";
-import useNavWhiteSingleBack from "../../hooks/useNavWhiteSingleBackNav";
+import useNavWhiteBack from "../../hooks/useNavWhiteBack";
 import useMobile from "../../hooks/useMobile";
 
 import "./plan.css";
 
 const PlanOverview = ({ history }) => {
-  useNavWhiteSingleBack("/plans");
+  useNavWhiteBack("/plans");
   const {
     state: { woPlan }
   } = useContext(PlanContext);

@@ -1,5 +1,7 @@
-import React, { useState, useContext } from "react";
+import React, { lazy, useState, useContext, Suspense } from "react";
+import useMobile from "../../hooks/useMobile";
 import { PlanContext } from "../../context/planContext";
+import { findLastOccurenceOfExercisePlan } from "../../utils/findAllOccurencesOfExercise";
 import {
   addSet,
   editSet,
@@ -8,63 +10,14 @@ import {
   deleteExercise
 } from "../../utils/planClient";
 
-import DayHOC from "./DayHOC";
+import SetLoading from "../SetLoading";
 import EditWeekNav from "./EditWeekNav";
-import Exercises from "../shared/Exercises/Exercises";
-import useNavWhiteSingleBack from "../../hooks/useNavWhiteSingleBackNav";
-import WeekView from "./Mobile/WeekView";
-import useMobile from "../../hooks/useMobile";
+import useNavWhiteBack from "../../hooks/useNavWhiteBack";
 
 import "./editWeek.css";
 
-function findLastOccurenceOfExercise(weeks, exerciseId) {
-  let lastSet;
-  for (let i = weeks.length - 1; i >= 0; i--) {
-    if (lastSet) break;
-    const { days } = weeks[i];
-    for (let i = days.length - 1; i >= 0; i--) {
-      if (lastSet) break;
-      const { exercises } = days[i];
-      for (let i = exercises.length - 1; i >= 0; i--) {
-        if (lastSet) break;
-        const {
-          sets,
-          exercise: { _id }
-        } = exercises[i];
-        if (_id === exerciseId) {
-          lastSet = sets[sets.length - 1];
-          break;
-        }
-      }
-    }
-  }
-  return lastSet || { reps: 0 };
-}
-
-// function findAllOccurencesOfExercise(historyDays, exerciseId) {
-//   return historyDays.reduce((accu, curr) => {
-//     const filteredExercises = curr.exercises.filter(
-//       x => x.exercise._id === exerciseId
-//     );
-
-//     if (filteredExercises.length)
-//       accu.push({
-//         date: curr.date,
-//         sets: filteredExercises[0].sets
-//       });
-//     return accu;
-//   }, []);
-// }
-
-// function findLastOccurenceOfExercise(historyDays, exerciseId) {
-//   let allOcc = findAllOccurencesOfExercise(historyDays, exerciseId);
-
-//   console.log(allOcc);
-//   if (allOcc.length) {
-//     const { sets } = allOcc[allOcc.length - 1];
-//     return sets[sets.length - 1];
-//   }
-// }
+const WeekView = lazy(() => import("./Mobile/WeekView"));
+const BigScreenEditWeek = lazy(() => import("./BigScreenEditWeek"));
 
 const EditWeek = ({ match: { params } }) => {
   const { state, dispatch } = useContext(PlanContext);
@@ -75,9 +28,7 @@ const EditWeek = ({ match: { params } }) => {
   const { weeks } = woPlan;
   const { plan_id: planId, week_id: weekId } = params;
 
-  console.log(woPlan);
-
-  useNavWhiteSingleBack(`/plans/${planId}`);
+  useNavWhiteBack(`/plans/${planId}`);
 
   let weekIndex = weeks.map(x => x._id).indexOf(weekId);
 
@@ -91,7 +42,7 @@ const EditWeek = ({ match: { params } }) => {
   const { _id: dayId } = currentDay;
 
   function handleAddExercise(exercise) {
-    const { reps } = findLastOccurenceOfExercise(weeks, exercise._id);
+    const { reps } = findLastOccurenceOfExercisePlan(weeks, exercise._id);
 
     addExercise(dispatch, planId, weekId, dayId, exercise, reps);
   }
@@ -102,7 +53,7 @@ const EditWeek = ({ match: { params } }) => {
 
   function handleAddSet(exerId, exerciseId, reps) {
     if (!reps) {
-      reps = findLastOccurenceOfExercise(weeks, exerciseId).reps;
+      reps = findLastOccurenceOfExercisePlan(weeks, exerciseId).reps;
     }
     addSet(dispatch, reps, planId, weekId, dayId, exerId);
   }
@@ -114,16 +65,6 @@ const EditWeek = ({ match: { params } }) => {
   function handleDeleteSet(exerId, setId) {
     deleteSet(dispatch, planId, weekId, dayId, exerId, setId);
   }
-
-  let dayBtns = days.map((day, index) => (
-    <button
-      key={day._id}
-      onClick={() => setCurrentDayIndex(index)}
-      className={currentDayIndex === index ? "edit-week-day-active" : ""}
-    >
-      {index + 1}
-    </button>
-  ));
 
   let view;
   if (isMobile) {
@@ -144,25 +85,26 @@ const EditWeek = ({ match: { params } }) => {
     );
   } else {
     view = (
-      <div className="edit-week-container">
-        <div className="edit-week-add-container">
-          <h2 className="edit-week-header">Days</h2>
-
-          <div className="edit-week-add-days-container">{dayBtns}</div>
-          <DayHOC day={currentDay} />
-        </div>
-        <div className="edit-week-exercise-container">
-          <h2 className="edit-week-header">Exercises</h2>
-          <Exercises handleAddExercise={handleAddExercise} />;
-        </div>
-      </div>
+      <BigScreenEditWeek
+        weeks={weeks}
+        planId={planId}
+        weekIndex={weekIndex}
+        currentWeek={currentWeek}
+        handleAddSet={handleAddSet}
+        currentDayIndex={currentDayIndex}
+        setCurrentDayIndex={setCurrentDayIndex}
+        handleEditSet={handleEditSet}
+        handleDeleteSet={handleDeleteSet}
+        handleAddExercise={handleAddExercise}
+        handleDeleteExercise={handleDeleteExercise}
+      />
     );
   }
 
   return (
     <>
       <EditWeekNav weeks={weeks} weekIndex={weekIndex} isMobile={isMobile} />
-      {view}
+      <Suspense fallback={SetLoading}>{view}</Suspense>
     </>
   );
 };

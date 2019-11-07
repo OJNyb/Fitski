@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { lazy, useState, Suspense } from "react";
 import useHistory from "../../hooks/useHistory";
 import { addMGC, formatHistoryDate } from "../../utils/formatHistoryDate";
 import { formatMuscleGroups } from "../../utils/displayMuscleGroups";
@@ -18,12 +18,14 @@ import {
   deleteSet
 } from "../../utils/historyClient";
 
-import MobileView from "./MobileView";
-import BigScreenView from "./BigScreenView";
+import SetLoading from "../SetLoading";
 
 import "./history.css";
 import "react-dates/lib/css/_datepicker.css";
 import "./calendar-styles.css";
+
+const MobileView = lazy(() => import("./MobileView"));
+const BigScreenView = lazy(() => import("./BigScreenView"));
 
 const History = () => {
   const { state, dispatch } = useHistory("/history");
@@ -132,47 +134,43 @@ const History = () => {
     }
   }
 
-  return (
-    <>
-      <div
-        className="log-container"
-        style={{
-          marginTop: isMobile ? "0" : "30px"
-        }}
-      >
-        {(isMobile && (
-          <MobileView
-            date={moment(date)}
-            dayIndex={dayIndex}
-            currentDay={currentDay}
-            historyDays={days}
-            handleAddSet={handleAddSet}
-            handleEditSet={handleEditSet}
-            handleDeleteSet={handleDeleteSet}
-            handleAddExercise={handleAddExercise}
-            onDateChange={handleDateChange}
-            displayGroupCircle={displayGroupCircle}
-            handleDeleteExercise={handleDeleteExercise}
-          />
-        )) || (
-          <BigScreenView
-            date={moment(date)}
-            dayIndex={dayIndex}
-            currentDay={currentDay}
-            handleAddSet={handleAddSet}
-            handleEditSet={handleEditSet}
-            showExercises={showExercises}
-            handleDeleteSet={handleDeleteSet}
-            onDateChange={handleDateChange}
-            setShowExercises={setShowExercises}
-            handleAddExercise={handleAddExercise}
-            displayGroupCircle={displayGroupCircle}
-            handleDeleteExercise={handleDeleteExercise}
-          />
-        )}
-      </div>
-    </>
-  );
+  let view;
+  if (isMobile) {
+    view = (
+      <MobileView
+        date={moment(date)}
+        dayIndex={dayIndex}
+        currentDay={currentDay}
+        historyDays={days}
+        handleAddSet={handleAddSet}
+        handleEditSet={handleEditSet}
+        handleDeleteSet={handleDeleteSet}
+        handleAddExercise={handleAddExercise}
+        onDateChange={handleDateChange}
+        displayGroupCircle={displayGroupCircle}
+        handleDeleteExercise={handleDeleteExercise}
+      />
+    );
+  } else {
+    view = (
+      <BigScreenView
+        date={moment(date)}
+        dayIndex={dayIndex}
+        currentDay={currentDay}
+        handleAddSet={handleAddSet}
+        handleEditSet={handleEditSet}
+        showExercises={showExercises}
+        handleDeleteSet={handleDeleteSet}
+        onDateChange={handleDateChange}
+        setShowExercises={setShowExercises}
+        handleAddExercise={handleAddExercise}
+        displayGroupCircle={displayGroupCircle}
+        handleDeleteExercise={handleDeleteExercise}
+      />
+    );
+  }
+
+  return <Suspense fallback={SetLoading}>{view}</Suspense>;
 };
 
 export default History;

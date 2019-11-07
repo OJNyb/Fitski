@@ -25,7 +25,7 @@ const createErrorObject = require("../../utils/createErrorObject");
 // TODO: Avatar
 
 router.post("/register", ensureSignedOut, validateRequest, (req, res, next) => {
-  const { body } = req;
+  const { body, session } = req;
 
   const avatar =
     "https://pbs.twimg.com/profile_images/971421611030171658/ldC9VK6w_400x400.jpg";
@@ -52,6 +52,7 @@ router.post("/register", ensureSignedOut, validateRequest, (req, res, next) => {
       newHistory.save().catch(next);
       newUserExercise.save().catch(next);
       delete user.password;
+      session.userId = user.id;
       return res.json({ message: "success" });
     })
     .catch(err => {

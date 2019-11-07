@@ -3,7 +3,7 @@ import usePlans from "../../hooks/usePlans";
 import useMobile from "../../hooks/useMobile";
 import useSetLoading from "../../hooks/useSetLoading";
 import { NavContext } from "../../context/navContext";
-import { SINGLE_NAV, IS_WHITE } from "../../types/navTypes";
+import { IS_WHITE, SHOW_DEHAZE } from "../../types/navTypes";
 
 import PlansNav from "./PlansNav";
 import PlanCard from "./PlanCard";
@@ -28,7 +28,7 @@ const Plans = () => {
   useLayoutEffect(() => {
     function setNavWhite() {
       navDispatch({ type: IS_WHITE });
-      navDispatch({ type: SINGLE_NAV });
+      navDispatch({ type: SHOW_DEHAZE });
     }
 
     setNavWhite();

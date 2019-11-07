@@ -3,6 +3,7 @@ import { withRouter } from "react-router-dom";
 import { ensureDecimal } from "../../utils/ensureDecimal";
 
 import TrashBin from "../shared/SVGs/TrashBin";
+import "../../styles/exerciseCard.css";
 
 const DayExercise = ({
   dayId,
@@ -73,7 +74,7 @@ const DayExercise = ({
 const SetColumn = ({ set, exerId, isMobile, onDeleteSet, handleEditSet }) => {
   const { reps, weight, _id: setId } = set;
   const [inputReps, setInputReps] = useState(reps || "");
-  const [inputWeight, setInputWeight] = useState(weight || "");
+  const [inputWeight, setInputWeight] = useState(ensureDecimal(weight) || "");
   const repsRef = useRef();
   const weightRef = useRef();
   const lastSetsReqRef = useRef();
@@ -104,6 +105,7 @@ const SetColumn = ({ set, exerId, isMobile, onDeleteSet, handleEditSet }) => {
         }
       }, 5000);
     } else if (name === "weight") {
+      console.log(value);
       setInputWeight(value);
       weightRef.current = value;
       setTimeout(() => {
@@ -177,6 +179,7 @@ const SetColumn = ({ set, exerId, isMobile, onDeleteSet, handleEditSet }) => {
             inputReps={inputReps}
             inputWeight={inputWeight}
             onInputBlur={onInputBlur}
+            setId={setId}
           />
           <button
             className="add-card-remove-btn theme-btn-no-border"
@@ -191,29 +194,43 @@ const SetColumn = ({ set, exerId, isMobile, onDeleteSet, handleEditSet }) => {
   );
 };
 
-const ExerciseForm = ({ onChange, inputWeight, inputReps, onInputBlur }) => {
+const ExerciseForm = ({
+  setId,
+  onChange,
+  inputWeight,
+  inputReps,
+  onInputBlur
+}) => {
   return (
     <form className="history-set-row">
       <div className="history-col">
-        <input
-          name="reps"
-          type="number"
-          value={inputReps}
-          onChange={onChange}
-          onBlur={onInputBlur}
-        />
-        <span>reps</span>
+        <label for={`reps-${setId}`} className="padding-5">
+          <input
+            name="reps"
+            id={`reps-${setId}`}
+            type="number"
+            value={inputReps}
+            onChange={onChange}
+            onBlur={onInputBlur}
+            onFocus={e => e.target.select()}
+          />
+          reps
+        </label>
       </div>
 
       <div className="history-col">
-        <input
-          name="weight"
-          type="number"
-          value={ensureDecimal(inputWeight)}
-          onChange={onChange}
-          onBlur={onInputBlur}
-        />
-        <span>kg</span>
+        <label for={`weight-${setId}`} className="padding-5">
+          <input
+            name="weight"
+            id={`weight-${setId}`}
+            type="number"
+            value={inputWeight}
+            onChange={onChange}
+            onBlur={onInputBlur}
+            onFocus={e => e.target.select()}
+          />
+          kg
+        </label>
       </div>
     </form>
   );

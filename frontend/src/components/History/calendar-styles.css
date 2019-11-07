@@ -31,3 +31,7 @@
 .DayPickerKeyboardShortcuts_show__bottomRight:hover::before {
   border-right-color: #800909;
 }
+
+.SingleDatePicker_picker {
+  z-index: 3;
+}

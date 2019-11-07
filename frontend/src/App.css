@@ -32,4 +32,5 @@ input {
   border: 0;
   outline: none;
   border-radius: 3px;
+  font-family: inherit;
 }

@@ -1,12 +1,10 @@
 import React, { useState, useLayoutEffect, useContext } from "react";
 import { NavContext } from "../../context/navContext";
-import { SINGLE_NAV, DOUBLE_NAV } from "../../types/navTypes";
+import { IS_RED, SHOW_NONE, SHOW_DEHAZE } from "../../types/navTypes";
 
 import DayView from "./DayView";
 import ExerciseView from "./MobileViews/ExerciseView";
-import NavMid from "../shared/NavMid/NavMid";
 import Exercises from "../shared/Exercises/Exercises";
-import MobileDouble from "../shared/NavMid/MobileDouble";
 import { DayPicker } from "react-dates";
 import { isSameDay } from "../../utils/formatHistoryDate";
 
@@ -44,16 +42,14 @@ const MobileView = ({
   useLayoutEffect(() => {
     function setDouble() {
       if (!showHistory) {
-        dispatch({ type: DOUBLE_NAV });
+        dispatch({ type: SHOW_DEHAZE });
+        dispatch({ type: IS_RED });
       } else {
-        dispatch({ type: SINGLE_NAV });
+        dispatch({ type: SHOW_NONE });
       }
     }
 
     setDouble();
-    return () => {
-      dispatch(SINGLE_NAV);
-    };
   }, [showHistory]);
 
   function handleAddExerciseski(exercise) {
@@ -88,6 +84,7 @@ const MobileView = ({
             onDateChange(date);
             setShowHistory(false);
           }}
+          numberOfMonths={3}
           orientation={"vertical"}
           verticalHeight={Math.round(
             window.screen.height - (window.screen.height / 100) * 7
@@ -110,7 +107,12 @@ const MobileView = ({
       </div>
     );
   } else if (showExercises) {
-    view = <Exercises handleAddExercise={handleAddExerciseski} />;
+    return (
+      <Exercises
+        handleAddExercise={handleAddExerciseski}
+        closeExercises={() => setShowExercises(false)}
+      />
+    );
   } else if (showExercise) {
     currentExercise = currentDay.exercises.filter(
       x => x._id === showExercise
@@ -143,7 +145,7 @@ const MobileView = ({
     );
   }
 
-  let topNavContent;
+  let topNavContent = null;
   if (showExercise) {
     topNavContent = (
       <>
@@ -156,35 +158,33 @@ const MobileView = ({
         </button>
       </>
     );
-  } else if (showHistory) {
-    topNavContent = <></>;
-  } else {
+  } else if (!showExercises && !showHistory) {
     topNavContent = (
-      <>
+      <div className="mobile-nav-icon-container flex-ai-center border-box">
         <button className="white-material-btn" onClick={onCalendarClick}>
           <i className="material-icons material-icons-22">calendar_today</i>
         </button>
         <button className="white-material-btn" onClick={onExerciseClick}>
           <i className="material-icons material-icons-30">add</i>
         </button>
-      </>
+      </div>
     );
   }
 
-  let bottomNavContent;
+  let bottomNavContent = null;
   if (showHistory) {
     bottomNavContent = null;
   } else if (showExercises) {
-    bottomNavContent = (
-      <button
-        className="white-material-btn"
-        onClick={() => setShowExercises(false)}
-      >
-        <i className="material-icons reversed-icon font-16">
-          arrow_forward_ios
-        </i>
-      </button>
-    );
+    // bottomNavContent = (
+    //   <button
+    //     className="white-material-btn"
+    //     onClick={}
+    //   >
+    //     <i className="material-icons reversed-icon font-16">
+    //       arrow_forward_ios
+    //     </i>
+    //   </button>
+    // );
   } else if (showExercise) {
     bottomNavContent = (
       <>
@@ -235,15 +235,14 @@ const MobileView = ({
 
   return (
     <>
-      <NavMid
-        customNav={
-          <MobileDouble
-            topContent={topNavContent}
-            bottomContent={bottomNavContent}
-          />
-        }
-      />
-      <div className="history-mobile-add-container">{view}</div>
+      {topNavContent}
+      <div>
+        {/* <NavMid customNav={<MobileDouble topContent={topNavContent} />} /> */}
+        <div className="bc-d9 width-100p flex-center-space-bw color-white padding-10 border-box">
+          {bottomNavContent}
+        </div>
+        <div className="history-mobile-add-container">{view}</div>
+      </div>
     </>
   );
 };

@@ -5,6 +5,7 @@ import { useAuth } from "../../context/authContext";
 const Login = () => {
   const [loginErr, setLoginErr] = useState(false);
   const { login } = useAuth();
+  console.log(loginErr);
   return (
     <Formik
       initialValues={{ email: "", password: "" }}

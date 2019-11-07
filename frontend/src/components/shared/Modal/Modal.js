@@ -1,41 +1,24 @@
-import React from "react";
-import MobileModal from "./MobileModal";
+import React, { lazy, Suspense } from "react";
 import useMobile from "../../../hooks/useMobile";
 
+import SetLoading from "../../SetLoading";
+
 import "./modal.css";
+
+const MobileModal = lazy(() => import("./MobileModal"));
+const BigViewModal = lazy(() => import("./BigViewModal"));
 
 const Modal = props => {
   const isMobile = useMobile();
 
+  let view;
   if (isMobile) {
-    return <MobileModal {...props} />;
+    view = <MobileModal {...props} />;
   } else {
-    return <BigViewModal {...props} />;
+    view = <BigViewModal {...props} />;
   }
-};
 
-const BigViewModal = ({ header, children, toggleModal }) => {
-  return (
-    <div
-      id="myModal"
-      className="modal"
-      onClick={toggleModal}
-      style={{
-        top: "66px"
-      }}
-    >
-      <div className="modal-content" onClick={e => e.stopPropagation()}>
-        <button
-          onClick={toggleModal}
-          className="close-modal-btn theme-btn-no-border"
-        >
-          <i className="material-icons">close</i>
-        </button>
-        <h2 className="black">{header}</h2>
-        {children}
-      </div>
-    </div>
-  );
+  return <Suspense fallback={SetLoading}>{view}</Suspense>;
 };
 
 export default Modal;

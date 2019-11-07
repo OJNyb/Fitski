@@ -34,50 +34,10 @@
   font-size: 13.3px;
 }
 
-.history-exercise-name {
-  padding: 8px 10px 6px;
-  display: flex;
-  justify-content: space-between;
-  border-bottom: 1px solid #a60000;
-  align-items: center;
-}
-
 .history-exercise-name span {
   width: calc(100% - 75px);
   line-height: 15px;
-  font-family: "Oswald", sans-serif;
   font-size: 17px;
-}
-
-.add-card-btn-container {
-  display: flex;
-}
-
-.add-card-btn-container button {
-  padding: 0;
-  margin: 0 5px;
-}
-
-.add-card-remove-btn i {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.add-card-remove-btn i {
-  width: 24px;
-  height: 24px;
-  font-size: 20px;
-}
-
-.add-card-body {
-  padding: 4px 0;
-}
-
-.history-add-card {
-  margin: 10px;
-  background-color: rgb(255, 255, 255);
-  border-radius: 2px;
 }
 
 .add-card-column {
@@ -104,26 +64,24 @@
   display: flex;
   width: 50%;
   justify-content: space-between;
-  font-family: "Oswald", "sans-serif";
 }
 
-.history-set-row span {
+.history-set-row span,
+.history-set-row label {
   margin-left: 1px;
   font-size: 12px;
   color: gray;
 }
 
-.history-add-card select,
 .history-add-card input {
-  border: none;
-  border-bottom: 1px solid #a60000;
+  width: 40px;
+  height: 15px;
+  text-align: end;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.7);
   border-radius: 0;
 }
 
-.history-add-card input {
-  width: 25px;
-  height: 15px;
-  text-align: center;
-  font-weight: 500;
-  color: rgba(0, 0, 0, 0.7);
+.history-add-card input:focus {
+  border-bottom: 1px solid #a60000;
 }

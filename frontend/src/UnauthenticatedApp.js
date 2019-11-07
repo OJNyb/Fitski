@@ -1,13 +1,26 @@
-import React from "react";
-import { Route } from "react-router-dom";
+import React, { lazy, Suspense } from "react";
+import { Route, Switch, Redirect } from "react-router-dom";
 
-import Landing from "./components/noauth/Landing";
+import SetLoading from "./components/SetLoading";
+
+const Landing = lazy(() => import("./components/noauth/Landing"));
+const Login = lazy(() => import("./components/noauth/MobileLogin"));
+const Register = lazy(() => import("./components/noauth/MobileRegister"));
+const NoMatch = lazy(() => import("./components/NoMatch"));
 
 const UnauthenticatedApp = () => {
   return (
-    <>
-      <Route exact path="/" component={Landing} />
-    </>
+    <Suspense fallback={SetLoading}>
+      <Switch>
+        <Route exact path="/" component={Landing} />
+        <Route exact path="/login" component={Login} />
+        <Route exact path="/register" component={Register} />
+        <Route exact path="/history">
+          <Redirect to="/login" />
+        </Route>
+        <Route path="*" component={NoMatch} />
+      </Switch>
+    </Suspense>
   );
 };
 

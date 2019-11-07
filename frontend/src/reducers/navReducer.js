@@ -1,8 +1,8 @@
 import {
-  SINGLE_NAV,
-  DOUBLE_NAV,
+  SHOW_NONE,
   IS_WHITE,
   IS_RED,
+  SHOW,
   SHOW_BACK,
   SHOW_DEHAZE
 } from "../types/navTypes";
@@ -10,20 +10,6 @@ import {
 function navReducer(state, action) {
   const { type, payload } = action;
   switch (type) {
-    case SINGLE_NAV: {
-      return {
-        ...state,
-        isDouble: false
-      };
-    }
-
-    case DOUBLE_NAV: {
-      return {
-        ...state,
-        isDouble: true
-      };
-    }
-
     case IS_WHITE: {
       return {
         ...state,
@@ -41,16 +27,33 @@ function navReducer(state, action) {
     case SHOW_DEHAZE: {
       return {
         ...state,
+        showNone: false,
         showDehaze: true,
         backLink: null
       };
     }
 
     case SHOW_BACK: {
+      const { backLink } = payload;
       return {
         ...state,
-        showDehaze: false,
-        backLink: payload.backLink
+        showNone: false,
+        backLink,
+        showDehaze: false
+      };
+    }
+
+    case SHOW_NONE: {
+      return {
+        ...state,
+        showNone: true
+      };
+    }
+
+    case SHOW: {
+      return {
+        ...state,
+        showNone: false
       };
     }
 

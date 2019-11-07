@@ -19,7 +19,7 @@ const BigScreenView = ({
   const [focused, setFocused] = useState(false);
 
   return (
-    <>
+    <div className="log-container">
       <div className="log-left-container">
         <SingleDatePicker
           date={date}
@@ -49,7 +49,7 @@ const BigScreenView = ({
       <div className="log-right-container">
         <Exercises handleAddExercise={handleAddExercise} />
       </div>
-    </>
+    </div>
   );
 };
 

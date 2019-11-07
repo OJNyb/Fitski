@@ -18,9 +18,9 @@ const WeekView = ({
   handleEditSet,
   handleAddSet,
   currentDayIndex,
-  setCurrentDayIndex,
   handleDeleteSet,
   handleAddExercise,
+  setCurrentDayIndex,
   handleDeleteExercise
 }) => {
   const [showExercises, setShowExercises] = useState(false);
