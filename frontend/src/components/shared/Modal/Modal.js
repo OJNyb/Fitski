@@ -18,7 +18,7 @@ const Modal = props => {
     view = <BigViewModal {...props} />;
   }
 
-  return <Suspense fallback={SetLoading}>{view}</Suspense>;
+  return <Suspense fallback={<SetLoading />}>{view}</Suspense>;
 };
 
 export default Modal;

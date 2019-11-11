@@ -1,5 +1,3 @@
-import React from "react";
-
 import useSetLoading from "../hooks/useSetLoading";
 
 const SetLoading = () => {

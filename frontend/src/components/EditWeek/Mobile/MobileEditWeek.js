@@ -4,13 +4,16 @@ import React, { useState } from "react";
 // import EditHistoryDownNav from "../../shared/NavMid/EditHistoryDownNav";
 // import useNavWhiteDoubleBack from "../../../hooks/useNavWhiteDoubleBack";
 
+import useSetLoading from "../../../hooks/useSetLoading";
+import useNavWhiteBack from "../../../hooks/useNavWhiteBack";
+
 import ExerciseCard from "./ExerciseCard";
 import Exercises from "../../shared/Exercises/Exercises";
 import { Link } from "react-router-dom";
 
 import "./EditWeekMobile.css";
 
-const WeekView = ({
+const MobileEditWeek = ({
   weeks,
   planId,
   weekIndex,
@@ -25,6 +28,8 @@ const WeekView = ({
 }) => {
   const [showExercises, setShowExercises] = useState(false);
   const [activeExercise, setActiveExercise] = useState(null);
+  useSetLoading(false);
+  useNavWhiteBack(`/plans/${planId}`);
 
   const { days, _id: weekId } = currentWeek;
   const currentDay = days[currentDayIndex];
@@ -144,4 +149,4 @@ const WeekView = ({
   );
 };
 
-export default WeekView;
+export default MobileEditWeek;

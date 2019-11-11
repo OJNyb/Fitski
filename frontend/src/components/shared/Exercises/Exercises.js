@@ -8,6 +8,7 @@ import {
 } from "../../../utils/exerciseClient";
 
 import SetLoading from "../../SetLoading";
+import useSetLoading from "../../../hooks/useSetLoading";
 
 import "./exerciseTable.css";
 
@@ -73,12 +74,10 @@ const Exercises = ({ handleAddExercise, closeExercises }) => {
     setMuscleGroup(value);
   }
 
+  useSetLoading(isPending);
+
   if (isRejected) {
     return <p>Error...</p>;
-  }
-
-  if (isPending) {
-    return <p>Loading..</p>;
   }
 
   let view = isMobile ? (
@@ -88,7 +87,6 @@ const Exercises = ({ handleAddExercise, closeExercises }) => {
       muscleGroup={muscleGroup}
       setMuscleGroup={setMuscleGroup}
       closeExercises={closeExercises}
-      exercisesToShow={exercisesToShow}
       exercisesToShow={exercisesToShow}
       onAddExercise={handleAddExercise}
       handleSearchChange={handleSearchChange}
@@ -104,13 +102,12 @@ const Exercises = ({ handleAddExercise, closeExercises }) => {
       onAddExercise={handleAddExercise}
       setMuscleGroup={setMuscleGroup}
       exercisesToShow={exercisesToShow}
-      exercisesToShow={exercisesToShow}
       handleSearchChange={handleSearchChange}
       handleSelectChange={handleSelectChange}
     />
   );
 
-  return <Suspense fallback={SetLoading}>{view}</Suspense>;
+  return <Suspense fallback={<SetLoading />}>{view}</Suspense>;
 };
 
 export default Exercises;

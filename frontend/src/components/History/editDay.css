@@ -21,7 +21,6 @@
 }
 
 .history-empty-log-btn-container button span {
-  color: gray;
   margin-top: 5px;
 }
 
@@ -37,14 +36,7 @@
 .history-exercise-name span {
   width: calc(100% - 75px);
   line-height: 15px;
-  font-size: 17px;
-}
-
-.add-card-column {
-  display: flex;
-  flex-direction: row-reverse;
-  justify-content: space-between;
-  padding: 4px 20px 4px 4px;
+  font-size: 16px;
 }
 
 .add-card-column button {
@@ -66,22 +58,29 @@
   justify-content: space-between;
 }
 
-.history-set-row span,
-.history-set-row label {
-  margin-left: 1px;
-  font-size: 12px;
-  color: gray;
-}
-
-.history-add-card input {
+.web-card-input {
   width: 40px;
   height: 15px;
   text-align: end;
-  font-weight: 500;
-  color: rgba(0, 0, 0, 0.7);
   border-radius: 0;
+  border-bottom: 1px solid transparent;
 }
 
-.history-add-card input:focus {
+.web-card-input:focus {
   border-bottom: 1px solid #a60000;
+  background-color: #fef5f5;
+}
+
+.history-row {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.history-row:first-child {
+  flex: 0.6 60%;
+}
+
+.history-row:last-child {
+  flex: 0.4 40%;
 }

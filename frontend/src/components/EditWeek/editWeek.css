@@ -33,9 +33,6 @@
 .edit-week-container {
   display: flex;
   justify-content: space-around;
-
-  color: rgba(0, 0, 0, 0.75);
-  color: rgb(129, 91, 91);
 }
 
 .edit-week-header {
@@ -49,7 +46,6 @@
   width: 400px;
   margin-top: 10px;
   position: relative;
-  color: rgb(129, 91, 91);
 }
 
 .edit-week-add-days-container {
@@ -59,8 +55,8 @@
 .edit-week-add-days-container button {
   padding: 10px 0;
   width: 100%;
-  color: #927c7c;
-  border-bottom: 1.5px solid #e1bcbc;
+  color: rgb(134, 101, 101);
+  border-bottom: 1.5px solid rgb(134, 101, 101);
   background-color: #fff;
   font-size: 14px;
   font-weight: 500;

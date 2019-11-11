@@ -4,7 +4,7 @@ import { NavContext } from "../../context/navContext";
 import NavigationMenu from "./NavigationMenu";
 import { Link } from "react-router-dom";
 
-const MobileNavigation = ({}) => {
+const MobileNavigation = () => {
   const {
     state: { isWhite, backLink, showNone, showDehaze }
   } = useContext(NavContext);
@@ -12,7 +12,7 @@ const MobileNavigation = ({}) => {
 
   let button;
   if (showNone) {
-    button = null;
+    return null;
   } else if (showDehaze) {
     button = (
       <button
@@ -43,7 +43,7 @@ const MobileNavigation = ({}) => {
   return (
     <>
       <div
-        className="mobile-nav"
+        className="mobile-nav border-box"
         style={{ backgroundColor: isWhite ? "#fff" : "#a60000" }}
       >
         {button}

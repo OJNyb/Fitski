@@ -7,7 +7,8 @@ import {
   DELETE_EXERCISE,
   ADD_SET,
   EDIT_SET,
-  DELETE_SET
+  DELETE_SET,
+  COPY_DAY
 } from "../types/historyTypes";
 
 const { ObjectId } = Types;
@@ -24,6 +25,8 @@ function addDay(dispatch, date, exercise, values) {
   const exerId = new ObjectId().toHexString();
   const setId = new ObjectId().toHexString();
 
+  const custom = exercise.custom || false;
+
   dispatch({
     type: ADD_DAY,
     payload: { date, exercise, dayId, exerId, setId, ...values }
@@ -35,6 +38,7 @@ function addDay(dispatch, date, exercise, values) {
       setId,
       dayId,
       exerId,
+      custom,
       exerciseId: exercise._id,
       ...values
     })
@@ -88,6 +92,7 @@ function addExercise(dispatch, dayId, exercise) {
   const exerId = new ObjectId().toHexString();
   const setId = new ObjectId().toHexString();
   //
+  const custom = exercise.custom || false;
 
   dispatch({
     type: ADD_EXERCISE,
@@ -98,6 +103,7 @@ function addExercise(dispatch, dayId, exercise) {
     .post(`/history/exercise/${dayId}`, {
       setId,
       exerId,
+      custom,
       exerciseId: exercise._id
     })
     .then(res => {
@@ -224,6 +230,59 @@ function deleteSet(dispatch, dayId, exerId, setId) {
     });
 }
 
+function getNewExerciseIds(exercises) {
+  const newIds = [];
+  for (let i = 0; i < exercises.length; i++) {
+    const exerId = new ObjectId().toHexString();
+    const setIds = [];
+    const { sets } = exercises[i];
+    for (let i = 0; i < sets.length; i++) {
+      setIds.push(new ObjectId().toHexString());
+    }
+    newIds.push({ exerId, setIds });
+  }
+
+  return newIds;
+}
+
+function copyDay(dispatch, dayToCopy, formattedDate) {
+  const { exercises } = dayToCopy;
+  const newDayId = new ObjectId().toHexString();
+  const newIds = getNewExerciseIds(exercises);
+
+  console.log(newIds);
+
+  dispatch({
+    type: COPY_DAY,
+    payload: { dayToCopy, newDayId, newIds, formattedDate }
+  });
+
+  axios
+    .post("/history/copy", {
+      dayToCopyId: dayToCopy._id,
+      newDayId,
+      newIds,
+      formattedDate
+    })
+    .then(res => {
+      const { data } = res;
+      const { message } = data;
+      if (message !== "success") {
+        dispatch({
+          type: "COPY_DAY_FAILED",
+          payload: { newDayId }
+        });
+      }
+    })
+    .catch(err => {
+      dispatch({
+        type: "COPY_DAY_FAILED",
+        payload: { newDayId }
+      });
+      console.error(err.response);
+    });
+}
+
 export {
   activatePlan,
   addDay,
@@ -232,5 +291,6 @@ export {
   deleteExercise,
   addSet,
   editSet,
-  deleteSet
+  deleteSet,
+  copyDay
 };

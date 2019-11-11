@@ -1,8 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
 import { withRouter } from "react-router-dom";
-import { ensureDecimal } from "../../../utils/ensureDecimal";
-
-import TrashBin from "../../shared/SVGs/TrashBin";
 
 import "../../../styles/exerciseCard.css";
 
@@ -68,7 +65,7 @@ const ExerciseCard = ({
   return (
     <div
       className={
-        "history-add-card" +
+        "history-add-card margin-10" +
         (isActive ? " edit-week-mobile-add-card-active" : "")
       }
       onClick={e => {
@@ -110,15 +107,15 @@ const ExerciseCard = ({
 };
 
 const SetColumn = ({ set, index }) => {
-  const { reps, _id: setId } = set;
+  const { reps } = set;
 
   return (
     <div className="edit-week-mobile-card-column black">
       <div>
-        <span className="edit-week-card-rep-index">{reps || 0}</span>
-        <span className="edit-week-card-rep-label">reps</span>
+        <span className="font-15 black mr-1">{reps || 0}</span>
+        <span className="font-12 color-gray font-w-300">reps</span>
       </div>
-      <span className="edit-week-card-rep-index">{index + 1}</span>
+      <span className="font-15 black">{index + 1}</span>
     </div>
   );
 };
@@ -126,12 +123,14 @@ const SetColumn = ({ set, index }) => {
 const EditColumn = ({ set, index, exerId, onDeleteSet, handleEditSet }) => {
   const { reps, _id: setId } = set;
   const [inputReps, setInputReps] = useState(reps || 0);
+  const isDeleted = useRef(false);
+
   const repsRef = useRef();
   const lastRepsReqRef = useRef();
 
   useEffect(() => {
     return () => {
-      onExerciseEdit();
+      if (!isDeleted.current) onExerciseEdit();
     };
   }, []);
 
@@ -172,6 +171,7 @@ const EditColumn = ({ set, index, exerId, onDeleteSet, handleEditSet }) => {
         className="edit-week-mobile-set-delete-btn"
         onClick={e => {
           e.stopPropagation();
+          isDeleted.current = true;
           onDeleteSet(exerId, setId);
         }}
       >
@@ -182,7 +182,7 @@ const EditColumn = ({ set, index, exerId, onDeleteSet, handleEditSet }) => {
         <div className="flex-center" onClick={e => e.stopPropagation()}>
           <button
             className="edit-week-mobile-reps-btn"
-            onClick={() => handleRepsChange(inputReps - 1)}
+            onClick={() => handleRepsChange(Number(inputReps) - 1)}
           >
             <i className="material-icons">remove</i>
           </button>
@@ -193,12 +193,14 @@ const EditColumn = ({ set, index, exerId, onDeleteSet, handleEditSet }) => {
               onChange={onRepsChange}
               pattern="^[0-9]\d*\.?\d*$"
               onBlur={onInputBlur}
+              onFocus={e => e.target.select()}
+              className="color-gray"
             />
             <div className="border-with-sides" />
           </div>
           <button
             className="edit-week-mobile-reps-btn"
-            onClick={() => handleRepsChange(inputReps + 1)}
+            onClick={() => handleRepsChange(Number(inputReps) + 1)}
           >
             <i className="material-icons">add</i>
           </button>

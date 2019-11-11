@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import useSetLoading from "../../../hooks/useSetLoading";
+
 import "./bsExerciseView.css";
 
 const muscleGroupArray = [
@@ -21,6 +23,7 @@ const ExercisesBigView = ({
 }) => {
   const [showFilter, setShowFilter] = useState(false);
   if (isPending) exercisesDisplay = <p>Loading...</p>;
+  useSetLoading(false);
 
   let exercisesDisplay;
   if (exercisesToShow) {

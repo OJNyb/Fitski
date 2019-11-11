@@ -33,6 +33,7 @@ const sets = Joi.number()
 const reps = Joi.number()
   .min(0)
   .max(1000)
+  .integer()
   .label("Reps");
 
 const weight = Joi.number()
@@ -55,6 +56,15 @@ const activatePlan = Joi.object().keys({
   startDate: date.label("Start date")
 });
 
+const custom = Joi.boolean().label("custom");
+
+const formattedDate = Joi.number()
+  .integer()
+  .min(20000101)
+  .max(21000101)
+  .required()
+  .label("Formatted date");
+
 const addDay = Joi.object()
   .keys({
     date,
@@ -66,10 +76,11 @@ const addDay = Joi.object()
     weight,
     exerciseId,
     exerId: exerciseId,
-    date: date.label("Date")
+    date: date.label("Date"),
+    custom
   })
   .or("notes", "exerciseId")
-  .and("exerciseId", "setId");
+  .and("exerciseId", "setId", "custom");
 
 const deleteDay = Joi.object().keys({
   day_id: dayId
@@ -82,7 +93,8 @@ const addExercise = Joi.object().keys({
   day_id: dayId,
   exerId: exerciseId,
   exerciseId: exerciseId.required(),
-  setId: setId.required()
+  setId: setId.required(),
+  custom: custom.required()
 });
 
 const deleteExercise = Joi.object().keys({
@@ -117,6 +129,16 @@ const deleteSet = Joi.object().keys({
   set_id: setId
 });
 
+const copyDay = Joi.object().keys({
+  formattedDate,
+  dayToCopyId: dayId,
+  newDayId: dayId,
+  newIds: Joi.array().items({
+    exerId: exerciseId,
+    setIds: Joi.array().items(setId)
+  })
+});
+
 module.exports = {
   "post/history/activate/:plan_id": activatePlan,
   "post/history": addDay,
@@ -125,5 +147,6 @@ module.exports = {
   "delete/history/exercise/:day_id/:exercise_id": deleteExercise,
   "post/history/exercise/:day_id/:exercise_id": addSet,
   "post/history/exercise/:day_id/:exercise_id/:set_id": editSet,
-  "delete/history/exercise/:day_id/:exercise_id/:set_id": deleteSet
+  "delete/history/exercise/:day_id/:exercise_id/:set_id": deleteSet,
+  "post/history/copy": copyDay
 };

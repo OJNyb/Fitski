@@ -12,11 +12,13 @@ const HistorySchema = new Schema(
         date: Number,
         notes: String,
         woPlan: ObjectId,
-        muscleGroup: Array,
         exercises: [
           {
             _id,
-            exercise: { type: ObjectId, ref: "exercise" },
+            exercise: { type: ObjectId, refPath: "days.exercises.onModel" },
+            onModel: {
+              type: String
+            },
             sets: [
               {
                 _id,

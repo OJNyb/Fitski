@@ -1,11 +1,17 @@
 import React from "react";
 import { displayMuscleGroups } from "../../utils/displayMuscleGroups";
 
-import DayExercise from "./ExerciseCard";
+import ExerciseCard from "./ExerciseCard";
 
 import "./editWeek.css";
 
-const EditDay = ({ day, handleEditExercise, handleDeleteExercise }) => {
+const EditDay = ({
+  day,
+  handleAddSet,
+  handleEditSet,
+  handleDeleteSet,
+  handleDeleteExercise
+}) => {
   const { exercises } = day;
 
   let exerciseDisplay = exercises.map(exercise => {
@@ -13,30 +19,21 @@ const EditDay = ({ day, handleEditExercise, handleDeleteExercise }) => {
       return null;
     } else {
       return (
-        <DayExercise
+        <ExerciseCard
           dayId={day._id}
           key={exercise._id}
           exercise={exercise}
-          onEditExercise={handleEditExercise}
+          onAddSet={handleAddSet}
+          handleEditSet={handleEditSet}
+          handleDeleteSet={handleDeleteSet}
           onDeleteExercise={handleDeleteExercise}
         />
       );
     }
   });
 
-  let muscleGroup = displayMuscleGroups(exercises);
-
   return (
     <>
-      {/* <div className="edit-week-add-muscle-group-container">
-        {muscleGroup.length !== 0 && (
-          <>
-            <p className="edit-week-muscle-group-label">Muscle group</p>
-            <h3 className="edit-week-muscle-group">{muscleGroup}</h3>
-          </>
-        )}
-      </div> */}
-
       <div className="edit-week-add-header">
         <span>Sets</span>
         <span>Reps</span>

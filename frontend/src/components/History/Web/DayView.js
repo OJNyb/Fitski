@@ -1,6 +1,6 @@
 import React from "react";
 
-import EditDayTable from "./EditDayTable";
+import WebExerciseCard from "./WebExerciseCard";
 
 const DayView = ({
   dayIndex,
@@ -11,22 +11,31 @@ const DayView = ({
   handleDeleteSet,
   setShowExercise,
   setShowExercises,
-
   handleDeleteExercise
 }) => {
   if (dayIndex !== -1) {
-    return (
-      <EditDayTable
-        day={currentDay}
-        showWeight={true}
-        isMobile={isMobile}
-        handleAddSet={handleAddSet}
-        handleEditSet={handleEditSet}
-        handleDeleteSet={handleDeleteSet}
-        setShowExercise={setShowExercise}
-        handleDeleteExercise={handleDeleteExercise}
-      />
-    );
+    const { exercises, _id: dayId } = currentDay;
+
+    let exerciseDisplay = exercises.map(exercise => {
+      if (!exercise || !exercise.exercise) {
+        return null;
+      } else {
+        return (
+          <WebExerciseCard
+            dayId={dayId}
+            key={exercise._id}
+            exercise={exercise}
+            onAddSet={handleAddSet}
+            handleEditSet={handleEditSet}
+            handleDeleteSet={handleDeleteSet}
+            setShowExercise={setShowExercise}
+            onDeleteExercise={handleDeleteExercise}
+          />
+        );
+      }
+    });
+
+    return <div className="history-add-body">{exerciseDisplay}</div>;
   } else {
     return (
       <div className="history-empty-log-container">

@@ -15,7 +15,8 @@ import {
   deleteExercise,
   addSet,
   editSet,
-  deleteSet
+  deleteSet,
+  copyDay
 } from "../../utils/historyClient";
 
 import SetLoading from "../SetLoading";
@@ -24,8 +25,8 @@ import "./history.css";
 import "react-dates/lib/css/_datepicker.css";
 import "./calendar-styles.css";
 
-const MobileView = lazy(() => import("./MobileView"));
-const BigScreenView = lazy(() => import("./BigScreenView"));
+const MobileView = lazy(() => import("./Mobile/MobileView"));
+const WebView = lazy(() => import("./Web/WebView"));
 
 const History = () => {
   const { state, dispatch } = useHistory("/history");
@@ -116,6 +117,10 @@ const History = () => {
     deleteSet(dispatch, dayId, exerId, setId);
   }
 
+  function handleCopyDay(dayToCopy) {
+    copyDay(dispatch, dayToCopy, formattedDate);
+  }
+
   function displayGroupCircle(dateski) {
     dateski = formatHistoryDate(dateski);
 
@@ -149,11 +154,12 @@ const History = () => {
         onDateChange={handleDateChange}
         displayGroupCircle={displayGroupCircle}
         handleDeleteExercise={handleDeleteExercise}
+        handleCopyDay={handleCopyDay}
       />
     );
   } else {
     view = (
-      <BigScreenView
+      <WebView
         date={moment(date)}
         dayIndex={dayIndex}
         currentDay={currentDay}
@@ -166,11 +172,12 @@ const History = () => {
         handleAddExercise={handleAddExercise}
         displayGroupCircle={displayGroupCircle}
         handleDeleteExercise={handleDeleteExercise}
+        handleCopyDay={handleCopyDay}
       />
     );
   }
 
-  return <Suspense fallback={SetLoading}>{view}</Suspense>;
+  return <Suspense fallback={<SetLoading />}>{view}</Suspense>;
 };
 
 export default History;

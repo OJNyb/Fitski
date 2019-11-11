@@ -1,13 +1,4 @@
 /* NAV */
-.mobile-exercises-nav {
-  position: fixed;
-  z-index: 1000;
-  height: 7vh;
-  width: calc(100%);
-  top: 0;
-  padding-left: 10px;
-}
-
 .mobile-exercise-nav-items {
   width: 100%;
   margin-left: 10px;

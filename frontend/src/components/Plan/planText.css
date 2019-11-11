@@ -1,17 +1,11 @@
 .plan-week-container {
   margin-top: 20px;
   position: relative;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-
-  color: rgba(0, 0, 0, 0.748);
 }
 
 .plan-week-container h1 {
   font-size: 30px;
   margin: 0;
-  color: rgba(0, 0, 0, 0.75);
   transition: color 0.15s;
 }
 
@@ -29,21 +23,8 @@
 }
 
 .plan-day-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin: 10px;
-  border-radius: 5px;
-}
-
-.plan-day-container h2 {
-  margin: 0;
-}
-
-.plan-day-container h3 {
-  margin: 0;
-  margin-bottom: 2px;
+  margin: 0 10px 10px;
+  color: #332222;
 }
 
 .plan-exercises-container {
@@ -52,11 +33,8 @@
 
 .plan-exercise-container {
   position: relative;
-  width: 330px;
+  max-width: 330px;
   margin: 4px 0 4px 4px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
 }
 
 .plan-exercise-container:first-child {
@@ -65,17 +43,4 @@
 
 .plan-exercise-container:last-child {
   margin-bottom: 0;
-}
-
-.empty-week-text {
-  margin: 0;
-}
-
-.empty-week-text span {
-  color: #a60000;
-  cursor: pointer;
-}
-
-.empty-week-text span:hover {
-  text-decoration: underline;
 }

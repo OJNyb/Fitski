@@ -2,9 +2,10 @@ import React, { useState } from "react";
 
 import DayView from "./DayView";
 import { SingleDatePicker } from "react-dates";
-import Exercises from "../shared/Exercises/Exercises";
+import Exercises from "../../shared/Exercises/Exercises";
+import useSetLoading from "../../../hooks/useSetLoading";
 
-const BigScreenView = ({
+const WebView = ({
   date,
   dayIndex,
   currentDay,
@@ -17,6 +18,7 @@ const BigScreenView = ({
   handleDeleteExercise
 }) => {
   const [focused, setFocused] = useState(false);
+  useSetLoading(false);
 
   return (
     <div className="log-container">
@@ -36,7 +38,7 @@ const BigScreenView = ({
             );
           }}
         />
-        <BigScreenViewLeft
+        <WebViewLeft
           dayIndex={dayIndex}
           currentDay={currentDay}
           handleAddSet={handleAddSet}
@@ -53,7 +55,7 @@ const BigScreenView = ({
   );
 };
 
-const BigScreenViewLeft = ({
+const WebViewLeft = ({
   dayIndex,
   currentDay,
   handleAddSet,
@@ -77,4 +79,4 @@ const BigScreenViewLeft = ({
   );
 };
 
-export default BigScreenView;
+export default WebView;

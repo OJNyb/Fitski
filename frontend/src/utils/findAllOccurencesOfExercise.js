@@ -1,8 +1,11 @@
 function findAllOccurencesOfExercise(historyDays, exerciseId) {
+  console.log(historyDays, exerciseId);
   return historyDays.reduce((accu, curr) => {
-    const filteredExercises = curr.exercises.filter(
-      x => x.exercise._id === exerciseId
-    );
+    const filteredExercises = curr.exercises.filter(x => {
+      const { exercise } = x;
+      if (!exercise) return false;
+      return exercise._id === exerciseId;
+    });
 
     if (filteredExercises.length)
       accu.push({
@@ -31,6 +34,7 @@ function findLastOccurenceOfExercisePlan(weeks, exerciseId) {
       const { exercises } = days[i];
       for (let i = exercises.length - 1; i >= 0; i--) {
         if (lastSet) break;
+        if (!exercises[i].exercise) continue;
         const {
           sets,
           exercise: { _id }

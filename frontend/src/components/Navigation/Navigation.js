@@ -16,7 +16,7 @@ const Navigation = () => {
     view = <BigScreenNavigation />;
   }
 
-  return <Suspense fallback={SetLoading}>{view}</Suspense>;
+  return <Suspense fallback={<SetLoading />}>{view}</Suspense>;
 };
 
 export default Navigation;

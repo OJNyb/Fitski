@@ -161,26 +161,11 @@ router.post(
   async (req, res, next) => {
     const { body } = req;
 
-    let { woPlan, numberOfWeeks } = body;
-
-    let weekArray = [];
-
-    numberOfWeeks = numberOfWeeks || 1;
-
-    let newWeeks = [];
-
-    for (let i = 0; i < numberOfWeeks; i++) {
-      const { _id, days, dayIdArray } = createWeek();
-      weekArray.push({ _id, dayIdArray });
-      newWeeks.push({
-        _id,
-        days
-      });
-    }
+    let { woPlan, weekArray } = body;
 
     woPlan
       .updateOne({
-        $push: { weeks: { $each: newWeeks } }
+        $push: { weeks: { $each: weekArray } }
       })
       .then(reski => {
         if (reski.nModified) {
@@ -357,11 +342,14 @@ router.post(
     const { body, params } = req;
 
     const { week_id: weekId, day_id: dayId } = params;
-    const { woPlan, exerId, setId, reps, exerciseId } = body;
+    const { woPlan, exerId, setId, reps, exerciseId, custom } = body;
+
+    const onModel = custom ? "userExercise" : "exercise";
 
     const newExer = {
       _id: exerId,
       exercise: exerciseId,
+      onModel,
       sets: [
         {
           _id: setId,
@@ -497,10 +485,7 @@ router.post(
       set_id: setId
     } = params;
 
-    console.log("gay");
     const { reps, woPlan } = body;
-
-    console.log(reps);
 
     woPlan
       .updateOne(

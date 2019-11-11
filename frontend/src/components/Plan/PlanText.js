@@ -1,6 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { displayMuscleGroups } from "../../utils/displayMuscleGroups";
 
 import "./planText.css";
 
@@ -18,17 +17,13 @@ const PlanText = ({ week, index, planId }) => {
       <Day day={day} index={index} key={day._id} />
     ));
   } else {
-    daysDisplay = (
-      <p className="empty-week-text">
-        Empty {/*   <span>Add exercises</span> */}
-      </p>
-    );
+    daysDisplay = <p className="margin-0">Rest Week</p>;
   }
 
   return (
-    <div className="plan-week-container">
+    <div className="plan-week-container black flex-col-cen">
       <Link to={`/plans/${planId}/${weekId}`}>
-        <h1 className="theme-btn-hover">Week {index + 1}</h1>
+        <h1 className="theme-btn-hover black font-w-500">Week {index + 1}</h1>
       </Link>
       <div className="plan-days-container">{daysDisplay}</div>
     </div>
@@ -38,27 +33,31 @@ const PlanText = ({ week, index, planId }) => {
 const Day = ({ day, index }) => {
   const { exercises } = day;
 
-  const muscleGroup = displayMuscleGroups(exercises);
-
   if (!exercises.length) return null;
   const exerciseDisplay = exercises.map(exercise => (
     <Exercise exercise={exercise} key={exercise._id} />
   ));
   return (
-    <div className="plan-day-container">
-      <h2>Day {index + 1}</h2>
-      {/* <h3>{muscleGroup}</h3> */}
+    <div className="plan-day-container flex-col-cen">
+      <h2 className="margin-0 font-w-500">Day {index + 1}</h2>
       <div className="plan-exercises-container">{exerciseDisplay}</div>
     </div>
   );
 };
 
 const Exercise = ({ exercise }) => {
+  if (!exercise.exercise) return null;
   let {
     exercise: { name },
     sets
   } = exercise;
 
+  const { length } = sets;
+
+  let setText = "set";
+  if (length !== 1) {
+    setText += "s";
+  }
   let reps = sets.map(x => x.reps);
 
   let displayReps;
@@ -68,9 +67,9 @@ const Exercise = ({ exercise }) => {
     displayReps = reps.reduce((accu, curr) => (accu += `${curr} `), "");
   }
   return (
-    <div className="plan-exercise-container">
+    <div className="plan-exercise-container flex-center-space-bw">
       <span className="plan-exercise-name">
-        {name} - {sets.length || 0} sets of {displayReps || 0} reps
+        {name} - {length || 0} {setText} of {displayReps || 0} reps
       </span>
 
       {/* <span className="plan-exercise-volume">

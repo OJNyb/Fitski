@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import MobileExercisesNav from "./MobileExercisesNav";
 
 import "./exerciseTable.css";
 import "./mobileExerciseView.css";
+import useSetLoading from "../../../hooks/useSetLoading";
 
 const muscleGroupArray = [
   "Shoulders",
@@ -24,21 +25,27 @@ const MobileExerciseView = ({
   handleAddCustomExercise
 }) => {
   let exerciseDisplay;
+  useSetLoading(false);
+  const [editView, setEditView] = useState(false);
+  const [selectedExercises, setSelectedExercises] = useState([]);
 
   if (!exercisesToShow) exerciseDisplay = <p>No exercise with that name</p>;
 
-  let shouldShowExercises =
+  const shouldShowExercises =
     (search.length || muscleGroup.length) && exercisesToShow;
 
   if (shouldShowExercises) {
-    let exercisesToDisplay = exercisesToShow.map(x => (
+    const onClick = editView
+      ? x => setSelectedExercises([...selectedExercises, x])
+      : x => {
+          onAddExercise(x);
+          closeExercises();
+        };
+    const exercisesToDisplay = exercisesToShow.map(x => (
       <div
         className="mobile-exercise-item"
         key={x._id}
-        onClick={() => {
-          onAddExercise(x);
-          closeExercises();
-        }}
+        onClick={() => onClick(x)}
       >
         {x.name}
       </div>
@@ -61,13 +68,31 @@ const MobileExerciseView = ({
     ));
   }
 
+  let editExerciseNav = null;
+  if (selectedExercises.length) {
+    editExerciseNav = (
+      <div className="width-100p flex-ai-center">
+        <button>
+          <i className="material-icons-outlined">edit</i>
+        </button>
+        <button>
+          <i className="material-icons-outlined">delete</i>
+        </button>
+      </div>
+    );
+  }
+
   return (
     <>
       <MobileExercisesNav
+        editView={editView}
+        setEditView={setEditView}
         closeExercises={closeExercises}
         handleAddCustomExercise={handleAddCustomExercise}
       />
+
       <div className="mobile-exercises-container">
+        {editExerciseNav}
         <div className="mobile-exercises-head">
           <i className="material-icons">search</i>
           <div className="flex-col mobile-exercises-search-wrapper">
@@ -88,5 +113,35 @@ const MuscleGroupItem = ({ mg, onClick }) => {
     </div>
   );
 };
+
+function useLongPress(callback = () => {}, ms = 300) {
+  const [startLongPress, setStartLongPress] = useState(false);
+
+  useEffect(() => {
+    let timerId;
+    if (startLongPress) {
+      timerId = setTimeout(callback, ms);
+    } else {
+      clearTimeout(timerId);
+    }
+
+    return () => {
+      clearTimeout(timerId);
+    };
+  }, [startLongPress]);
+
+  const start = useCallback(() => {
+    setStartLongPress(true);
+  }, []);
+  const stop = useCallback(() => {
+    setStartLongPress(false);
+  }, []);
+
+  return {
+    onTouchEnd: stop,
+    onMouseLeave: stop,
+    onTouchStart: start
+  };
+}
 
 export default MobileExerciseView;

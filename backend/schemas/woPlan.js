@@ -75,12 +75,18 @@ const deleteWorkoutPlan = Joi.object().keys({
   plan_id: planId
 });
 
+const custom = Joi.boolean()
+  .required()
+  .label("custom");
+
 const addWeek = Joi.object().keys({
   plan_id: planId,
-  numberOfWeeks: Joi.number()
-    .min(1)
-    .max(999)
-    .label("Number of weeks")
+  weekArray: Joi.array().items({
+    _id: weekId,
+    days: Joi.array().items({
+      _id: dayId
+    })
+  })
 });
 
 const editWeek = Joi.object()
@@ -124,7 +130,8 @@ const addExercise = Joi.object().keys({
   exerciseId: exerciseId.required(),
   exerId,
   setId,
-  reps
+  reps,
+  custom
 });
 
 const deleteExercise = Joi.object().keys({
@@ -180,6 +187,6 @@ module.exports = {
   "delete/plan/exercise/:plan_id/:week_id/:day_id/:exercise_id": deleteExercise,
   "post/plan/exercise/:plan_id/:week_id/:day_id/:exercise_id": addSet,
   "post/plan/exercise/:plan_id/:week_id/:day_id/:exercise_id/:set_id": editSet,
-  "post/plan/exercise/:plan_id/:week_id/:day_id/:exercise_id/:set_id": deleteSet,
+  "delete/plan/exercise/:plan_id/:week_id/:day_id/:exercise_id/:set_id": deleteSet,
   "post/plan/activate": activatePlan
 };

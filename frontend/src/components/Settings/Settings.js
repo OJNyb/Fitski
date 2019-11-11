@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
+// import axios from "axios";
 import { useUser } from "../../context/userContext";
 
 const Settings = () => {
@@ -37,20 +37,20 @@ const Settings = () => {
   );
 };
 
-const SettingsContent = ({ title }) => {
-  return (
-    <section>
-      <h6>Date & Time</h6>
-      <form>
-        <label>Time zone</label>
-        <select>
-          <option>arse</option>
-        </select>
-        <label>Date format</label>
-        <label>Time format</label>
-      </form>
-    </section>
-  );
-};
+// const SettingsContent = ({ title }) => {
+//   return (
+//     <section>
+//       <h6>Date & Time</h6>
+//       <form>
+//         <label>Time zone</label>
+//         <select>
+//           <option>arse</option>
+//         </select>
+//         <label>Date format</label>
+//         <label>Time format</label>
+//       </form>
+//     </section>
+//   );
+// };
 
 export default Settings;

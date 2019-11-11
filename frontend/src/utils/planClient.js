@@ -1,6 +1,7 @@
 import axios from "axios";
 import { Types } from "mongoose";
 import {
+  ADD_WEEK,
   ADD_EXERCISE,
   DELETE_EXERCISE,
   ADD_SET,
@@ -12,9 +13,54 @@ const { ObjectId } = Types;
 
 // TODO: What if it fails
 
+function createDays() {
+  let days = [];
+
+  for (let i = 0; i < 7; i++) {
+    const _id = new ObjectId().toHexString();
+    days.push({ _id });
+  }
+  return { days };
+}
+
+function createWeek() {
+  const _id = new ObjectId().toHexString();
+  const { days } = createDays();
+  return { _id, days };
+}
+
+function addWeeks(dispatch, planId, numberOfWeeks = 1) {
+  let weekArray = [];
+
+  for (let i = 0; i < numberOfWeeks; i++) {
+    const { _id, days } = createWeek();
+    weekArray.push({
+      _id,
+      days
+    });
+  }
+
+  dispatch({ type: ADD_WEEK, payload: { planId, weekArray } });
+
+  axios
+    .post(`/plan/week/${planId}`, { weekArray })
+    .then(res => {
+      const { data } = res;
+      const { message } = data;
+      if (message !== "success") {
+        dispatch({
+          type: "ADD_WEEK_FAILED",
+          payload: { planId, weekArray }
+        });
+      }
+    })
+    .catch(err => console.error(err.response));
+}
+
 function addExercise(dispatch, planId, weekId, dayId, exercise, reps) {
   const exerId = new ObjectId().toHexString();
   const setId = new ObjectId().toHexString();
+  const custom = exercise.custom || false;
 
   dispatch({
     type: ADD_EXERCISE,
@@ -26,7 +72,8 @@ function addExercise(dispatch, planId, weekId, dayId, exercise, reps) {
       exerciseId: exercise._id,
       exerId,
       setId,
-      reps
+      reps,
+      custom
     })
     .then(res => {
       const { data } = res;
@@ -106,6 +153,7 @@ function addSet(dispatch, reps, planId, weekId, dayId, exerId) {
 }
 
 function editSet(dispatch, reps, planId, weekId, dayId, exerId, setId) {
+  console.log("editting");
   const payload = { weekId, dayId, exerId, setId, reps };
   dispatch({
     type: EDIT_SET,
@@ -144,4 +192,4 @@ function deleteSet(dispatch, planId, weekId, dayId, exerId, setId) {
     })
     .catch(err => console.error(err.response));
 }
-export { addExercise, deleteExercise, addSet, editSet, deleteSet };
+export { addWeeks, addExercise, deleteExercise, addSet, editSet, deleteSet };

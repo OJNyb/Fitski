@@ -12,12 +12,11 @@ import {
 
 import SetLoading from "../SetLoading";
 import EditWeekNav from "./EditWeekNav";
-import useNavWhiteBack from "../../hooks/useNavWhiteBack";
 
 import "./editWeek.css";
 
-const WeekView = lazy(() => import("./Mobile/WeekView"));
-const BigScreenEditWeek = lazy(() => import("./BigScreenEditWeek"));
+const MobileEditWEek = lazy(() => import("./Mobile/MobileEditWeek"));
+const WebEditWeek = lazy(() => import("./Web/WebEditWeek"));
 
 const EditWeek = ({ match: { params } }) => {
   const { state, dispatch } = useContext(PlanContext);
@@ -27,8 +26,6 @@ const EditWeek = ({ match: { params } }) => {
   const { woPlan } = state;
   const { weeks } = woPlan;
   const { plan_id: planId, week_id: weekId } = params;
-
-  useNavWhiteBack(`/plans/${planId}`);
 
   let weekIndex = weeks.map(x => x._id).indexOf(weekId);
 
@@ -42,12 +39,16 @@ const EditWeek = ({ match: { params } }) => {
   const { _id: dayId } = currentDay;
 
   function handleAddExercise(exercise) {
-    const { reps } = findLastOccurenceOfExercisePlan(weeks, exercise._id);
-
+    let { reps } = findLastOccurenceOfExercisePlan(weeks, exercise._id);
+    if (!reps) {
+      reps = 0;
+    }
     addExercise(dispatch, planId, weekId, dayId, exercise, reps);
   }
 
   function handleDeleteExercise(exerId) {
+    console.log("edit gay");
+
     deleteExercise(dispatch, planId, weekId, dayId, exerId);
   }
 
@@ -55,6 +56,12 @@ const EditWeek = ({ match: { params } }) => {
     if (!reps) {
       reps = findLastOccurenceOfExercisePlan(weeks, exerciseId).reps;
     }
+
+    console.log(reps);
+    if (!reps) {
+      reps = 0;
+    }
+
     addSet(dispatch, reps, planId, weekId, dayId, exerId);
   }
 
@@ -66,10 +73,10 @@ const EditWeek = ({ match: { params } }) => {
     deleteSet(dispatch, planId, weekId, dayId, exerId, setId);
   }
 
-  let view;
+  let view = null;
   if (isMobile) {
     view = (
-      <WeekView
+      <MobileEditWEek
         weeks={weeks}
         planId={planId}
         weekIndex={weekIndex}
@@ -85,7 +92,7 @@ const EditWeek = ({ match: { params } }) => {
     );
   } else {
     view = (
-      <BigScreenEditWeek
+      <WebEditWeek
         weeks={weeks}
         planId={planId}
         weekIndex={weekIndex}
@@ -104,7 +111,7 @@ const EditWeek = ({ match: { params } }) => {
   return (
     <>
       <EditWeekNav weeks={weeks} weekIndex={weekIndex} isMobile={isMobile} />
-      <Suspense fallback={SetLoading}>{view}</Suspense>
+      <Suspense fallback={<SetLoading />}>{view}</Suspense>
     </>
   );
 };

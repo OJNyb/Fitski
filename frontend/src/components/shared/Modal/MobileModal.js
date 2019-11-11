@@ -1,7 +1,10 @@
 import React from "react";
 import "./modal.css";
+import useSetLoading from "../../../hooks/useSetLoading";
 
 const MobileModal = ({ header, children, toggleModal }) => {
+  useSetLoading(false);
+
   return (
     <div id="myModal" className="modal" onClick={toggleModal}>
       <div

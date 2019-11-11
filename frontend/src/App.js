@@ -3,7 +3,6 @@ import { BrowserRouter as Router } from "react-router-dom";
 import { useUser } from "./context/userContext";
 import ScrollToTop from "./utils/ScrollToTop";
 import "./App.css";
-import Loading from "./components/shared/SVGs/Loading";
 
 import "./styles/common.css";
 

@@ -2,7 +2,7 @@
   position: fixed;
   z-index: 9999;
   left: 0;
-  top: 7vh;
+  top: 0;
   width: 100%;
   height: 100%;
   overflow: auto;
@@ -31,17 +31,24 @@
 .modal-content-mobile {
   width: 100%;
   min-height: 20%;
+  max-height: 80%;
+  overflow-y: scroll;
   position: fixed;
   bottom: -2px;
   border-top-left-radius: 25px;
   border-top-right-radius: 25px;
 }
 
+.modal-header {
+  border-bottom: 1px solid silver;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
 .modal-content h2 {
-  margin-top: 10px;
-  color: rgba(0, 0, 0, 0.8);
-  font-weight: 400;
-  font-size: 20px;
+  font-weight: 500;
+  font-size: 14px;
 }
 
 .close-modal-btn {

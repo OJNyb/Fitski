@@ -40,7 +40,14 @@ const WOPlanSchema = new Schema(
             exercises: [
               {
                 _id: ObjectId,
-                exercise: { type: ObjectId, ref: "exercise" },
+                exercise: {
+                  type: ObjectId,
+                  refPath: "weeks.days.exercises.onModel"
+                },
+                onModel: {
+                  type: String,
+                  enum: ["exercise", "userExercise"]
+                },
                 sets: [
                   {
                     _id: ObjectId,

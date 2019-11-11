@@ -35,14 +35,12 @@ function App() {
     marginTop = "66px";
     marginLeft = "251px";
     minHeight = "calc(100vh - 66px)";
-    width = "calc(100vw - 251px)";
+    width = "calc(100% - 251px)";
   } else if (isMobile) {
     marginTop = "7vh";
     minHeight = "93vh";
-    width = "calc(100vw + 1px)";
+    width = "calc(100%)";
   }
-
-  console.log(exerciseState);
 
   return (
     <NavContext.Provider value={{ state, dispatch }}>

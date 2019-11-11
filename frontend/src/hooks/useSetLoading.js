@@ -4,7 +4,7 @@ import { useLoading } from "../context/loadingContext";
 import { IS_LOADING, IS_SETTLED } from "../types/loadingTypes";
 
 function useSetLoading(isPending) {
-  const { state, dispatch } = useLoading();
+  const { dispatch } = useLoading();
 
   useLayoutEffect(() => {
     function setLoading() {
@@ -15,7 +15,7 @@ function useSetLoading(isPending) {
       }
     }
     setLoading();
-  }, [isPending]);
+  }, [dispatch, isPending]);
 }
 
 export default useSetLoading;

@@ -2,7 +2,8 @@
 
 .plan-name {
   text-align: center;
-  color: rgba(0, 0, 0, 0.8);
+  margin: 0px;
+  font-weight: 400;
 }
 
 .plan-author-container {
@@ -19,7 +20,7 @@
 
 .plan-author-label {
   font-size: 14px;
-  font-weight: bold;
+  font-weight: 500;
 }
 
 .plan-author-uname {
@@ -35,7 +36,7 @@
 
 .plan-description-label {
   text-align: center;
-  font-weight: 700;
+  font-weight: 500;
   margin: 0;
 }
 
@@ -125,4 +126,15 @@
 .bs-activate-plan-cal-contaioner {
   position: absolute;
   top: 70px;
+}
+
+/* MOBILE */
+.plan-mobile-empty-plan-container {
+  bottom: 0;
+  height: 50%;
+  justify-content: space-between;
+}
+
+.plan-mobile-empty-plan-container > div {
+  padding: 30px;
 }

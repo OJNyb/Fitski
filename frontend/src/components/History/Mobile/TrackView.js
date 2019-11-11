@@ -70,7 +70,7 @@ const TrackView = ({
   return (
     <>
       <TrackInput
-        label={"WEIGHT (kgs)"}
+        label={"WEIGHT (kg)"}
         onDecrement={() => {
           if (weight - 2.5 >= 0) {
             setWeight(ensureDecimal(Number(weight) - 2.5));
@@ -90,7 +90,7 @@ const TrackView = ({
         onChange={onRepsChange}
         value={reps}
       />
-      <div className="history-mobile-exercise-button-container">
+      <div className="flex-center margin-top-20">
         <SUButton
           text={setId ? "UPDATE" : "SAVE"}
           onClick={setId ? onUpdateClick : onSaveClick}
@@ -107,8 +107,13 @@ const TrackView = ({
 };
 
 const SUButton = ({ text, onClick }) => {
+  const style = { backgroundColor: "rgb(82, 206, 138)" };
   return (
-    <button onClick={onClick}>
+    <button
+      onClick={onClick}
+      className="history-mobile-exercise-action-button"
+      style={style}
+    >
       <span>{text}</span>
     </button>
   );
@@ -117,6 +122,7 @@ const SUButton = ({ text, onClick }) => {
 const CDButton = ({ text, setId, onClick }) => {
   return (
     <button
+      className="history-mobile-exercise-action-button"
       style={{
         backgroundColor: setId ? "#ff3838" : "rgba(92, 119, 240, 0.842)"
       }}
@@ -130,16 +136,20 @@ const CDButton = ({ text, setId, onClick }) => {
 const TrackInput = ({ label, onDecrement, onIncrement, onChange, value }) => {
   return (
     <div className="history-mobile-exercise-input-wrapper">
-      <div className="history-mobile-exercise-input-header">{label}:</div>
+      <div className="history-mobile-exercise-input-header font-w-700 font-13 color-gray">
+        {label}:
+      </div>
       <div className="history-mobile-exercise-input-box">
         <button onClick={onDecrement}>
           <i className="material-icons">remove</i>
         </button>
         <div className="history-mobile-exercise-input-shiizz">
           <input
+            onFocus={e => e.target.select()}
             type="tel"
             value={value}
             onChange={onChange}
+            type="number"
             pattern="^[0-9]\d*\.?\d*$"
           />
           <div className="border-with-sides"></div>
@@ -161,7 +171,6 @@ const TrackListItem = ({
 }) => {
   const { reps, weight, _id: setId } = set;
 
-  console.log(set);
   return (
     <div
       className={
@@ -172,24 +181,26 @@ const TrackListItem = ({
       }
       onClick={() => onItemClick(setId)}
     >
-      <div className="history-mobile-exercise-list-action-index">
+      <div className="history-mobile-exercise-list-action-index flex-center-space-bw">
         <button onClick={onCommentClick}>
           <i className="material-icons">comment</i>
         </button>
-        <span className="history-mobile-exercise-list-bold-span">
-          {index + 1}
-        </span>
+        <b className="font-16">{index + 1}</b>
       </div>
       <div className="history-mobile-exercise-list-kg-reps">
         <div className="history-mobile-exercise-list-label-wrapper">
-          <span className="history-mobile-exercise-list-bold-span">
-            {ensureDecimal(weight)}
+          <span>
+            <b className="mr-1">{ensureDecimal(weight)}</b>
+            <span className="font-12 color-gray font-w-400 color-light-gray">
+              kg
+            </span>
           </span>
-          <span className="history-mobile-exercise-list-small-span">kgs</span>
         </div>
         <div className="history-mobile-exercise-list-label-wrapper">
-          <span className="history-mobile-exercise-list-bold-span">{reps}</span>
-          <span className="history-mobile-exercise-list-small-span">reps</span>
+          <span>
+            <b className="mr-1 font-16 font-w-700">{reps}</b>
+            <span className="font-12 font-w-400 color-light-gray">reps</span>
+          </span>
         </div>
       </div>
     </div>

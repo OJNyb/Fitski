@@ -8,6 +8,7 @@ const DELETE_EXERCISE = "DELETE_EXERCISE";
 const EDIT_SET = "EDIT_SET";
 const ADD_SET = "ADD_SET";
 const DELETE_SET = "DELETE_SET";
+const COPY_DAY = "COPY_DAY";
 
 export {
   IS_PENDING,
@@ -19,5 +20,6 @@ export {
   DELETE_EXERCISE,
   ADD_SET,
   EDIT_SET,
-  DELETE_SET
+  DELETE_SET,
+  COPY_DAY
 };

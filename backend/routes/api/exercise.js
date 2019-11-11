@@ -10,6 +10,8 @@ const UserExercise = require("../../models/UserExercise");
 // Validation
 const SchemaValidator = require("../../middlewares/SchemaValidator");
 const validateRequest = SchemaValidator(true);
+const validateExercise = require("../../middlewares/validateExercise");
+
 const { ensureSignedIn } = require("../../middlewares/auth");
 
 // @route GET api/exercise
@@ -21,12 +23,14 @@ router.get("/", async (req, res, next) => {
   let exercises;
   try {
     let preExercises = await Exercise.find({});
-    let ownExercises = await UserExercise.find({ user: userId });
+    let ownExercises = await UserExercise.find({
+      user: userId,
+      isDeleted: false
+    });
     exercises = [...preExercises, ...ownExercises];
   } catch (e) {
     next(e);
   }
-  console.log("GAY \n", exercises);
 
   return res.json(exercises);
 });
@@ -62,23 +66,15 @@ router.post(
     const { userId } = session;
     const { category, name, exerciseId } = body;
 
-    const newExercise = {
-      name,
+    const newExercise = new UserExercise({
       _id: exerciseId,
-      muscleGroup: category
-    };
+      name,
+      muscleGroup: category,
+      user: userId
+    });
 
-    console.log(newExercise);
-
-    UserExercise.findOneAndUpdate(
-      { user: userId },
-      {
-        $push: { exercises: newExercise }
-      },
-      {
-        new: true
-      }
-    )
+    newExercise
+      .save()
       .then(reski => {
         console.log(reski);
         res.json({ message: "success" });
@@ -95,11 +91,10 @@ router.patch(
   "/custom/:exercise_id",
   ensureSignedIn,
   validateRequest,
+  validateExercise,
   async (req, res, next) => {
-    const { body, params, session } = req;
-    const { userId } = session;
-    const { exercise_id: exerciseId } = params;
-    const { name, category } = body;
+    const { body } = req;
+    const { name, category, exercise } = body;
 
     let field;
     let patch;
@@ -120,22 +115,18 @@ router.patch(
     }
 
     let newField = {
-      [`exercises.$[e].${field}`]: patch
+      [`${field}`]: patch
     };
 
     if (patch2) {
-      newField[`exercises.$[e].${field2}`] = patch2;
+      newField[`${field2}`] = patch2;
     }
 
-    UserExercise.findOneAndUpdate(
-      { user: userId },
-      {
+    exercise
+      .updateOne({
         $set: { ...newField }
-      },
-      {
-        arrayFilters: [{ "e._id": exerciseId }]
-      }
-    )
+      })
+
       .then(reski => {
         if (reski.nModified) {
           res.json({ message: "success" });
@@ -154,17 +145,15 @@ router.delete(
   "/custom/:exercise_id",
   ensureSignedIn,
   validateRequest,
+  validateExercise,
   async (req, res, next) => {
-    const { params, session } = req;
-    const { userId } = session;
-    const { exercise_id: exerciseId } = params;
+    const { body } = req;
+    const { exercise } = body;
 
-    UserExercise.findOneAndUpdate(
-      { user: userId },
-      {
-        $pull: { exercises: { _id: exerciseId } }
-      }
-    )
+    exercise
+      .updateOne({
+        $set: { isDeleted: true }
+      })
       .then(reski => {
         if (reski.nModified) {
           res.json({ message: "success" });

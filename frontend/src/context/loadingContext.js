@@ -9,8 +9,6 @@ function LoadingProvider({ children }) {
 
   const { isLoading } = state;
 
-  console.log(state);
-
   return (
     <LoadingContext.Provider
       value={{ state, dispatch }}

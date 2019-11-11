@@ -146,7 +146,17 @@ router.post(
 router.post("/", ensureSignedIn, validateRequest, async (req, res, next) => {
   const { body, session } = req;
   const { userId } = session;
-  const { dayId, exerId, date, exerciseId, notes, setId, reps, weight } = body;
+  const {
+    dayId,
+    exerId,
+    date,
+    exerciseId,
+    notes,
+    setId,
+    reps,
+    weight,
+    custom
+  } = body;
 
   const history = await History.findOne({ user: userId });
 
@@ -169,6 +179,8 @@ router.post("/", ensureSignedIn, validateRequest, async (req, res, next) => {
     }
   }
 
+  const onModel = custom ? "userExercise" : "exercise";
+
   let newDay = { _id: dayId, date: formattedDate };
 
   if (exerciseId) {
@@ -176,6 +188,7 @@ router.post("/", ensureSignedIn, validateRequest, async (req, res, next) => {
       {
         _id: exerId,
         exercise: exerciseId,
+        onModel,
         sets: [
           {
             _id: setId,
@@ -196,8 +209,6 @@ router.post("/", ensureSignedIn, validateRequest, async (req, res, next) => {
   if (insertIndex !== -1) {
     update.$position = insertIndex;
   }
-
-  console.log(update);
 
   history
     .updateOne({ $push: { days: update } })
@@ -243,7 +254,6 @@ router.delete(
 // @route POST api/history/exercise/:day_id
 // @desc Add exercise
 // @access Private
-
 // TODO: Better way to see if update failed?
 router.post(
   "/exercise/:day_id",
@@ -254,11 +264,14 @@ router.post(
     const { body, params } = req;
     const { day_id: dayId } = params;
 
-    const { history, exerId, exerciseId, setId, reps, weight } = body;
+    const { history, exerId, exerciseId, setId, reps, weight, custom } = body;
+
+    const onModel = custom ? "userExercise" : "exercise";
 
     const newExercise = {
       _id: exerId,
       exercise: exerciseId,
+      onModel,
       sets: [
         {
           _id: setId,
@@ -459,6 +472,78 @@ router.delete(
         return res.json({ message: "success" });
       })
 
+      .catch(next);
+  }
+);
+
+// @route POST api/history
+// @desc  Copy previous day
+// @access Private
+router.post(
+  "/copy",
+  ensureSignedIn,
+  validateRequest,
+  async (req, res, next) => {
+    const { body, session } = req;
+    const { userId } = session;
+    const { dayToCopyId, newDayId, newIds, formattedDate } = body;
+
+    const history = await History.findOne({ user: userId });
+    const { days } = history;
+    let dates = days.map(x => x.date);
+    let insertIndex = -1;
+
+    for (let i = dates.length - 1; i >= 0; i--) {
+      if (dates[i] === formattedDate) {
+        return res.status(400).json(createErrorObject(["Date already exists"]));
+      }
+      if (dates[i] > formattedDate) {
+        insertIndex = i;
+      }
+    }
+
+    const dayToCopy = days[days.map(x => x._id).indexOf(dayToCopyId)];
+
+    const { exercises } = dayToCopy;
+
+    const newExercises = [];
+
+    for (let i = 0; i < exercises.length; i++) {
+      const { sets } = exercises[i];
+      const ids = newIds[i];
+      const { exerId, setIds } = ids;
+      const newSets = [];
+      for (let i = 0; i < sets.length; i++) {
+        newSets.push({ ...sets[i], _id: setIds[i] });
+      }
+      newExercises.push({
+        ...exercises[i],
+        _id: exerId,
+        sets: newSets
+      });
+    }
+
+    const newDay = { _id: newDayId, date: formattedDate, exercises };
+
+    console.log(newDay);
+
+    const update = {
+      $each: [newDay]
+    };
+
+    if (insertIndex !== -1) {
+      update.$position = insertIndex;
+    }
+
+    history
+      .updateOne({ $push: { days: update } })
+      .then(reski => {
+        if (reski.nModified) {
+          res.json({ message: "success" });
+        } else {
+          res.status(404).json(createErrorObject(["Couldn't apply update"]));
+        }
+      })
       .catch(next);
   }
 );

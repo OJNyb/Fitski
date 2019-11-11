@@ -4,7 +4,6 @@ const NavActionMenu = ({ children, hideActionMenu, moreBtn }) => {
   const [offsetLeft, setOffsetLeft] = useState(0);
   const [offsetTop, setOffsetTop] = useState(0);
 
-  console.log(moreBtn);
   useEffect(() => {
     function handleWindowResize() {
       const { current } = moreBtn;

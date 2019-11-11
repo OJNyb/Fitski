@@ -47,27 +47,13 @@ function planReducer(state, action) {
     case ADD_WEEK: {
       const { weekArray } = payload;
       const { woPlan } = state;
-
       const { weeks } = woPlan;
 
-      // create weeks with days, id, repeat: 0,
-      // days exercises: [], _id
-
       weekArray.forEach(x => {
-        const { _id, dayIdArray } = x;
-        let days = [];
-
-        dayIdArray.forEach(day => {
-          days.push({
-            _id: day._id,
-            exercises: []
-          });
+        x.days = x.days.map(x => {
+          return { _id: x._id, exercises: [] };
         });
-        weeks.push({
-          _id,
-          days,
-          repeat: 0
-        });
+        weeks.push(x);
       });
 
       return {
@@ -204,13 +190,34 @@ function planReducer(state, action) {
         reps
       };
 
+      if (!weeks) {
+        return {
+          ...state
+        };
+      }
+
       const week = weeks.find(x => x._id === weekId);
+      if (!week) {
+        return {
+          ...state
+        };
+      }
       const { days } = week;
 
       const day = days.find(x => x._id === dayId);
+      if (!day) {
+        return {
+          ...state
+        };
+      }
       const { exercises } = day;
 
       const exercise = exercises.find(x => x._id === exerId);
+      if (!exercise) {
+        return {
+          ...state
+        };
+      }
       const { sets } = exercise;
 
       sets.push(newSet);
@@ -225,13 +232,35 @@ function planReducer(state, action) {
       const { dayId, weekId, exerId, setId, reps } = payload;
       const { woPlan } = state;
 
-      const week = woPlan.weeks.find(x => x._id === weekId);
+      const { weeks } = woPlan;
+
+      if (!weeks) {
+        return {
+          ...state
+        };
+      }
+      const week = weeks.find(x => x._id === weekId);
+      if (!week) {
+        return {
+          ...state
+        };
+      }
       const { days } = week;
 
       const day = days.find(x => x._id === dayId);
+      if (!day) {
+        return {
+          ...state
+        };
+      }
       const { exercises } = day;
 
       const exercise = exercises.find(x => x._id === exerId);
+      if (!exercise) {
+        return {
+          ...state
+        };
+      }
       const { sets } = exercise;
 
       let setIndex = sets.map(x => x._id).indexOf(setId);

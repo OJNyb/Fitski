@@ -5,6 +5,7 @@ import { ADD_WEEK } from "../../types/planTypes";
 import { PlanContext } from "../../context/planContext";
 import { Formik, Form, Field } from "formik";
 import useMobile from "../../hooks/useMobile";
+import { addWeeks } from "../../utils/planClient";
 
 const AddWeeksModal = ({ planId, hideModal }) => {
   const { dispatch } = useContext(PlanContext);
@@ -14,20 +15,7 @@ const AddWeeksModal = ({ planId, hideModal }) => {
 
   function onSubmit(values, { setSubmitting }) {
     setSubmitting(true);
-    axios
-      .post(`/plan/week/${planId}`, { ...values })
-      .then(res => {
-        const { data } = res;
-        const { message, weekArray } = data;
-        if (message === "success") {
-          hideModal();
-          dispatch({ type: ADD_WEEK, payload: { weekArray } });
-        } else {
-          console.log("err");
-          setSubmitting(false);
-        }
-      })
-      .catch(err => console.log(err.response));
+    addWeeks(dispatch, planId, weeks);
   }
 
   function onWeekChange(e) {
@@ -125,7 +113,7 @@ const AddWeeksMobile = ({ onSubmit }) => {
 
       <button
         disabled={isSubmitting}
-        className="theme-btn-filled mobile-modal-submit-btn "
+        className="theme-btn-filled mobile-modal-submit-btn"
         onClick={() => {
           setSubmitting(true);
           onSubmit({ numberOfWeeks: weeks }, { setSubmitting });
