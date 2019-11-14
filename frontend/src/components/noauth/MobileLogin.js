@@ -5,6 +5,7 @@ import { useAuth } from "../../context/authContext";
 import MobileInput from "./MobileInput";
 import useSetLoading from "../../hooks/useSetLoading";
 
+import "./signXError.css";
 import "./MobileLogin.css";
 
 const Login = () => {

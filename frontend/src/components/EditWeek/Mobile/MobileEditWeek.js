@@ -1,9 +1,4 @@
 import React, { useState } from "react";
-// import NavMid from "../../shared/NavMid/NavMid";
-// import MobileDouble from "../../shared/NavMid/MobileDouble";
-// import EditHistoryDownNav from "../../shared/NavMid/EditHistoryDownNav";
-// import useNavWhiteDoubleBack from "../../../hooks/useNavWhiteDoubleBack";
-
 import useSetLoading from "../../../hooks/useSetLoading";
 import useNavWhiteBack from "../../../hooks/useNavWhiteBack";
 

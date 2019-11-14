@@ -17,23 +17,17 @@ const MobileNavigation = () => {
     button = (
       <button
         onClick={() => setShowNavbar(!showNavbar)}
-        className="mobile-nav-main-btn"
+        className="mobile-nav-main-btn padding-5"
       >
-        <i
-          className="material-icons"
-          style={{ color: isWhite ? "#a60000" : "#fff" }}
-        >
+        <i className="material-icons" style={{ color: "#fff" }}>
           dehaze
         </i>
       </button>
     );
   } else {
     button = (
-      <Link to={backLink} className="mobile-nav-main-btn">
-        <i
-          className="material-icons-round"
-          style={{ color: isWhite ? "#a60000" : "#fff" }}
-        >
+      <Link to={backLink} className="mobile-nav-back-btn">
+        <i className="material-icons-round" style={{ color: "#fff" }}>
           arrow_back
         </i>
       </Link>
@@ -44,7 +38,7 @@ const MobileNavigation = () => {
     <>
       <div
         className="mobile-nav border-box"
-        style={{ backgroundColor: isWhite ? "#fff" : "#a60000" }}
+        style={{ backgroundColor: "#a60000" }}
       >
         {button}
       </div>

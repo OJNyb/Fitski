@@ -1,8 +1,8 @@
 import React from "react";
-import Modal from "../shared/Modal/Modal";
+import Modal from "../../shared/Modal/Modal";
 import axios from "axios";
-import { ADD_PLAN } from "../../types/plansTypes";
-import { useUser } from "../../context/userContext";
+import { ADD_PLAN } from "../../../types/plansTypes";
+import { useUser } from "../../../context/userContext";
 
 import { Formik, Form, Field } from "formik";
 

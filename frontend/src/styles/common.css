@@ -131,9 +131,17 @@
   line-height: 20px;
 }
 
+.font-30 {
+  font-size: 30px;
+}
+
 .font-32 {
   font-size: 32px;
   line-height: 24px;
+}
+
+.font-40 {
+  font-size: 40px;
 }
 
 .font-w-300 {
@@ -150,6 +158,16 @@
 
 .font-w-700 {
   font-weight: 700;
+}
+
+.font-fam-babas {
+  font-family: "Bebas Neue", "Roboto", sans-serif;
+  line-height: 1;
+}
+
+.font-fam-oswald {
+  font-family: "Oswald", sans-serif;
+  line-height: 1;
 }
 
 /* CUSTOM CHECKBOX */
@@ -283,13 +301,6 @@
   color: inherit;
 }
 
-.mobile-calendar-container {
-  height: 100vh;
-  position: fixed;
-  top: 7vh;
-  width: 100%;
-}
-
 .flex-ai-center {
   display: flex;
   align-items: center;
@@ -342,8 +353,16 @@
   margin: 0 0 20px;
 }
 
+.margin-0-10 {
+  margin: 0 10px;
+}
+
 .margin-top-20 {
   margin-top: 20px;
+}
+
+.margin-top-10 {
+  margin-top: 10px;
 }
 
 .m-l-10 {
@@ -446,6 +465,10 @@
   padding: 4px 12px;
 }
 
+.padding-0-10-77 {
+  padding: 0 10px 77px;
+}
+
 .pl-10 {
   padding-left: 10px;
 }
@@ -521,8 +544,16 @@
   background-color: #a60000;
 }
 
+.bc-white {
+  background-color: #fff;
+}
+
 .fixed {
   position: fixed;
+}
+
+.relative {
+  position: relative;
 }
 
 .top-0 {
@@ -539,4 +570,23 @@
 
 .height-7vh {
   height: 7vh;
+}
+
+.plan-mobile-empty-plan-container {
+  bottom: 0;
+  height: calc(50% + 10px);
+  justify-content: space-between;
+}
+
+.plan-mobile-empty-plan-container > div {
+  padding: 30px;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.space-after::after {
+  content: "i";
+  color: transparent;
 }

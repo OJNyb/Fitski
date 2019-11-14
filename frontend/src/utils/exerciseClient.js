@@ -8,13 +8,6 @@ import {
 
 const { ObjectId } = Types;
 
-// @route GET api/exercise
-// @desc Create custom exercise
-// @access Private
-// router.post(
-//   "/custom",
-//     const { category, name, exerciseId } = body;
-
 function addExercise(dispatch, name, category) {
   const exerciseId = new ObjectId().toHexString();
 
@@ -42,13 +35,6 @@ function addExercise(dispatch, name, category) {
     .catch(err => console.error(err.response));
 }
 
-// @route GET api/exercise
-// @desc Edit custom exercise
-// @access Private
-// router.patch(
-//   "/custom/:exercise_id",
-//     const { exercise_id: exerciseId } = params;
-//     const { name, category } = body;
 function editExercise(dispatch, exerciseId, values) {
   const payload = { values, exerciseId };
   dispatch({
@@ -70,22 +56,18 @@ function editExercise(dispatch, exerciseId, values) {
     .catch(err => console.error(err.response));
 }
 
-// @route GET api/exercise
-// @desc Delete custom exercise
-// @access Private
-// router.delete(
-//   "/custom/:exercise_id",
-//     const { exercise_id: exerciseId } = params;
-
-function deleteExercise(dispatch, exerciseId) {
-  const payload = { exerciseId };
+function deleteExercise(dispatch, exerciseIds) {
+  const payload = { exerciseIds };
+  console.log(exerciseIds);
   dispatch({
     type: DELETE_EXERCISE,
     payload
   });
 
   axios
-    .delete(`/exercise/custom/${exerciseId}`)
+    .delete("/exercise", {
+      data: { exerciseIds }
+    })
     .then(res => {
       const { data } = res;
       const { message } = data;

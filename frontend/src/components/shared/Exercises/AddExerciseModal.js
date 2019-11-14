@@ -1,4 +1,5 @@
 import React, { useRef, useState } from "react";
+import MobileModal from "../Modal/MobileModal";
 
 const muscleGroupArray = [
   "Shoulders",
@@ -9,15 +10,23 @@ const muscleGroupArray = [
   "Back"
 ];
 
-const AddExerciseModal = ({ onAddCustomExercise }) => {
-  const [name, setName] = useState("");
+const AddEditModal = ({
+  header,
+  cantEdit,
+  hideModal,
+  buttonText,
+  initName = "",
+  initCategory = "",
+  handleSubmit
+}) => {
+  const [name, setName] = useState(initName);
   const categoryContainer = useRef(null);
-  const [category, setCategory] = useState("");
+  const [category, setCategory] = useState(initCategory);
   const [showCategories, setShowCategories] = useState(false);
 
   function onSubmit() {
     if (name.length && category.length) {
-      onAddCustomExercise(name, category);
+      handleSubmit(name, category);
     }
   }
   let categoryDropDown;
@@ -50,44 +59,52 @@ const AddExerciseModal = ({ onAddCustomExercise }) => {
     );
   }
 
-  return (
-    <div onClick={() => setShowCategories(false)} className="width-100p">
-      <div className="margin-a width-80p">
-        <div className="margin-0-0-20">
-          <div className="mobile-exercises-add-label">NAME:</div>
-          <div className="width-90p margin-5-a fw-bc-theme">
-            <input
-              className="padding-0-5 font-17 black"
-              value={name}
-              onChange={e => setName(e.target.value)}
-            />
-            <div className="border-with-sides" />
+  let children;
+  if (cantEdit) {
+    children = <p>Can't edit the default exercises</p>;
+  } else {
+    children = (
+      <div onClick={() => setShowCategories(false)} className="width-100p">
+        <div className="margin-a width-80p">
+          <div className="margin-0-0-20">
+            <div className="mobile-exercises-add-label">NAME:</div>
+            <div className="width-90p margin-5-a fw-bc-theme">
+              <input
+                className="padding-0-5 font-17 black"
+                value={name}
+                onChange={e => setName(e.target.value)}
+              />
+              <div className="border-with-sides" />
+            </div>
           </div>
-        </div>
 
-        {categoryDropDown}
-        <div className="margin-0-0-20">
-          <div className="mobile-exercises-add-label">CATEGORY:</div>
-          <div
-            className="width-90p margin-5-a fw-bc-theme custom-select-upwards"
-            onClick={e => {
-              e.stopPropagation();
-              setShowCategories(!showCategories);
-            }}
-            ref={categoryContainer}
-          >
-            <span className="padding-0-5 font-17 black">{category}</span>
-            <div className="select-triangle" />
+          {categoryDropDown}
+          <div className="margin-0-0-20">
+            <div className="mobile-exercises-add-label">CATEGORY:</div>
+            <div
+              className="width-90p margin-5-a fw-bc-theme custom-select-upwards"
+              onClick={e => {
+                e.stopPropagation();
+                setShowCategories(!showCategories);
+              }}
+              ref={categoryContainer}
+            >
+              <span className="padding-0-5 font-17 black">{category}</span>
+              <div className="select-triangle" />
+            </div>
           </div>
         </div>
+        <button
+          className="theme-btn-filled mobile-modal-submit-btn"
+          onClick={onSubmit}
+        >
+          {buttonText}
+        </button>
       </div>
-      <button
-        className="theme-btn-filled mobile-modal-submit-btn"
-        onClick={onSubmit}
-      >
-        Add
-      </button>
-    </div>
+    );
+  }
+  return (
+    <MobileModal children={children} header={header} toggleModal={hideModal} />
   );
 };
 
@@ -102,4 +119,4 @@ const CategoryItem = ({ mG, onClick }) => {
   );
 };
 
-export default AddExerciseModal;
+export default AddEditModal;

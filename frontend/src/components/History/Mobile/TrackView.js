@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { ensureDecimal } from "../../../utils/ensureDecimal";
+import useSetLoading from "../../../hooks/useSetLoading";
 
 const TrackView = ({
   sets,
@@ -10,10 +11,11 @@ const TrackView = ({
   onDeleteSet
 }) => {
   const [selectedSet, setSelectedSet] = useState({});
-  const [weight, setWeight] = useState(
-    ensureDecimal(sets[sets.length - 1].weight)
-  );
-  const [reps, setReps] = useState(sets[sets.length - 1].reps);
+  const { reps: dReps, weight: dWeight } = sets[sets.length - 1];
+  const [weight, setWeight] = useState(ensureDecimal(dWeight));
+  const [reps, setReps] = useState(dReps);
+
+  useSetLoading(false);
 
   const { _id: setId } = selectedSet;
 
@@ -50,6 +52,7 @@ const TrackView = ({
 
   let setList = sets.map((x, y) => (
     <TrackListItem
+      key={x._id}
       set={x}
       index={y}
       selectedSetId={setId}
@@ -59,25 +62,29 @@ const TrackView = ({
   ));
 
   function onWeightChange(e) {
-    const { value, validity } = e.target;
-    if (validity.valid) setWeight(value);
+    const { value } = e.target;
+
+    setWeight(value);
   }
 
   function onRepsChange(e) {
-    const { value, validity } = e.target;
-    if (validity.valid && value % 1 === 0) setReps(value);
+    const { value } = e.target;
+    if (value % 1 === 0) {
+      setReps(value);
+    }
   }
+
   return (
     <>
       <TrackInput
         label={"WEIGHT (kg)"}
+        onChange={onWeightChange}
         onDecrement={() => {
           if (weight - 2.5 >= 0) {
             setWeight(ensureDecimal(Number(weight) - 2.5));
           }
         }}
         onIncrement={() => setWeight(ensureDecimal(Number(weight) + 2.5))}
-        onChange={onWeightChange}
         value={weight}
       />
 
@@ -146,11 +153,9 @@ const TrackInput = ({ label, onDecrement, onIncrement, onChange, value }) => {
         <div className="history-mobile-exercise-input-shiizz">
           <input
             onFocus={e => e.target.select()}
-            type="tel"
             value={value}
             onChange={onChange}
             type="number"
-            pattern="^[0-9]\d*\.?\d*$"
           />
           <div className="border-with-sides"></div>
         </div>

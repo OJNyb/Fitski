@@ -1,28 +1,16 @@
-import React, { useState, useContext } from "react";
-import { withRouter } from "react-router-dom";
-import axios from "axios";
-import { PlanContext } from "../../context/planContext";
+import React, { useState } from "react";
+import { useParams, useHistory } from "react-router-dom";
 
 import CopyModal from "./CopyModal";
 import DeleteModal from "./DeleteModal";
 import RepeatModal from "./RepeatModal";
 
-import { EDIT_WEEK, DELETE_WEEK } from "../../types/planTypes";
-
 import NavMid from "../shared/NavMid/NavMid";
 
-const EditWeekNav = ({
-  weeks,
-  weekIndex,
-  isMobile,
-  history: { push },
-  match: {
-    params: { plan_id: planId, week_id: weekId }
-  }
-}) => {
+const EditWeekNav = ({ weeks, weekIndex, isMobile }) => {
+  const { plan_id: planId } = useParams();
+  const { push } = useHistory();
   const [showModal, setShowModal] = useState(false);
-
-  const { dispatch } = useContext(PlanContext);
 
   function redirect(weekId) {
     push(`/plans/${planId}/${weekId}`);
@@ -44,82 +32,49 @@ const EditWeekNav = ({
     setShowModal(false);
   }
 
-  function handleSubmit(method, data) {
-    let request = {
-      url: `/plan/week/${planId}/${weekId}`,
-      method
-    };
+  let prevWeekId;
+  let nextWeekId;
 
-    if (data) request.data = data;
-
-    axios(request)
-      .then(res => {
-        const { data: resData } = res;
-        const { message } = resData;
-        if (message === "success") {
-          setShowModal(false);
-          if (method === "delete") {
-            // TODO: go to prev week
-            dispatch({ type: DELETE_WEEK, payload: { weekId } });
-            redirect(prevWeek || nextWeek || "");
-          } else {
-            dispatch({ type: EDIT_WEEK, payload: { data, weekId } });
-          }
-        }
-      })
-      .catch(err => console.log(err.response));
+  if (weeks[weekIndex - 1]) {
+    prevWeekId = weeks[weekIndex - 1]._id;
   }
 
-  let modal;
+  if (weeks[weekIndex + 1]) {
+    nextWeekId = weeks[weekIndex + 1]._id;
+  }
+
+  const currentWeek = weeks[weekIndex];
+  let modal = null;
   if (showModal) {
     if (showModal === "copy") {
       modal = (
-        <CopyModal
-          weeks={weeks}
-          handleSubmit={handleSubmit}
-          hideModal={hideModal}
-        />
+        <CopyModal weeks={weeks} weekIndex={weekIndex} hideModal={hideModal} />
       );
     }
 
     if (showModal === "delete") {
-      modal = <DeleteModal onDelete={handleSubmit} hideModal={hideModal} />;
+      modal = (
+        <DeleteModal
+          hideModal={hideModal}
+          prevWeekId={prevWeekId}
+          nextWeekId={nextWeekId}
+        />
+      );
     }
     if (showModal === "repeat") {
-      modal = <RepeatModal onSubmit={handleSubmit} hideModal={hideModal} />;
+      modal = <RepeatModal hideModal={hideModal} currentWeek={currentWeek} />;
     }
-  }
-
-  let currentWeek = weeks[weekIndex];
-
-  let repeats = weeks
-    .slice(0, weekIndex)
-    .map(x => x.repeat)
-    .reduce((acc, curr) => acc + curr, 0);
-  let weekNumber = weekIndex + 1 + repeats;
-  const { repeat } = currentWeek;
-  if (repeat) weekNumber += ` - ${weekNumber + repeat}`;
-
-  let prevWeek;
-  let nextWeek;
-
-  if (weeks[weekIndex - 1]) {
-    prevWeek = weeks[weekIndex - 1]._id;
-  }
-
-  if (weeks[weekIndex + 1]) {
-    nextWeek = weeks[weekIndex + 1]._id;
   }
 
   if (!isMobile) {
     let prevBtn;
     let nextBtn;
 
-    if (prevWeek) {
+    if (prevWeekId) {
       prevBtn = (
         <button
           className="edit-week-nav-arrow-btn theme-btn-no-border"
-          onClick={() => redirect(prevWeek)}
+          onClick={() => redirect(prevWeekId)}
         >
           <i className="material-icons reversed-icon">arrow_forward_ios</i>
         </button>
@@ -128,11 +83,11 @@ const EditWeekNav = ({
       prevBtn = <div className="edit-week-nav-filler" />;
     }
 
-    if (nextWeek) {
+    if (nextWeekId) {
       nextBtn = (
         <button
           className="edit-week-nav-arrow-btn theme-btn-no-border"
-          onClick={() => redirect(nextWeek)}
+          onClick={() => redirect(nextWeekId)}
         >
           <i className="material-icons">arrow_forward_ios</i>
         </button>
@@ -144,7 +99,7 @@ const EditWeekNav = ({
     var navMidContent = (
       <>
         {prevBtn}
-        <button className="edit-week-nav-week-btn">{weekNumber}</button>
+        <button className="edit-week-nav-week-btn">{weekIndex + 1}</button>
         {nextBtn}
       </>
     );
@@ -166,7 +121,7 @@ const EditWeekNav = ({
           },
           {
             icon: "file_copy",
-            text: "Copy another week",
+            text: "Copy week",
             action: handleCopyClick,
             customClass: " nav-minified-icon",
             outlined: true
@@ -185,4 +140,4 @@ const EditWeekNav = ({
   );
 };
 
-export default withRouter(EditWeekNav);
+export default EditWeekNav;

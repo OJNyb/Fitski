@@ -1,13 +1,13 @@
 .plans-cards-container-mobile {
   display: flex;
   flex-flow: wrap;
+  padding: 5px 0;
 }
 
 .plans-mobile-plan-card {
   background-color: white;
   border: 1px solid rgb(235, 211, 211);
   cursor: pointer;
-  color: rgb(92, 61, 61);
   box-shadow: 1px 1px 4px 0 rgba(0, 0, 0, 0.11);
   display: flex;
   flex-direction: column;
@@ -16,8 +16,8 @@
   position: relative;
   margin: 3% 2.2%;
   padding: 0 0 6px;
-  border-radius: 10px;
-  font-weight: 300;
+  border-radius: 5px;
+  font-weight: 400;
   font-size: 15px;
 }
 
@@ -25,8 +25,8 @@
   height: 23px;
   width: 100%;
   background-color: #a60000;
-  border-top-left-radius: 9px;
-  border-top-right-radius: 9px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
 }
 
 .plans-mobile-plan-author {
@@ -48,12 +48,19 @@
 
 .plans-mobile-plan-name {
   text-align: center;
-  margin: 3px 0 2px;
-  color: #a60000;
+  margin: 5px 0 2px;
   font-weight: 500;
   font-size: 16px;
 }
 
-/* .plans-mobile-plan-goal
-.plans-mobile-plan-length
-.plans-mobile-plan-created */
+/* FILTER */
+.xx {
+  flex: 1 100%;
+  margin: 5px 10px;
+  border: 1px solid black;
+  border-radius: 5px;
+  color: black;
+  font-weight: 500;
+  background-color: #fff;
+  font-size: 16px;
+}

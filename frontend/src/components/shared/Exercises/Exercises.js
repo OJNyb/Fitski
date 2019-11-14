@@ -1,5 +1,6 @@
 import React, { lazy, useState, useEffect, useContext, Suspense } from "react";
 import useMobile from "../../../hooks/useMobile";
+import useSetLoading from "../../../hooks/useSetLoading";
 import { ExerciseContext } from "../../../context/exerciseContext";
 import {
   addExercise,
@@ -8,7 +9,6 @@ import {
 } from "../../../utils/exerciseClient";
 
 import SetLoading from "../../SetLoading";
-import useSetLoading from "../../../hooks/useSetLoading";
 
 import "./exerciseTable.css";
 
@@ -20,6 +20,8 @@ const Exercises = ({ handleAddExercise, closeExercises }) => {
   const [search, setSearch] = useState("");
   const [muscleGroup, setMuscleGroup] = useState([]);
   const [exercisesToShow, setExercisesToShow] = useState(null);
+  const [edit, setEdit] = useState(0);
+
   const isMobile = useMobile();
 
   const { exercises, isPending, isRejected } = state;
@@ -51,18 +53,21 @@ const Exercises = ({ handleAddExercise, closeExercises }) => {
     }
 
     filterExercises();
-  }, [search, muscleGroup, isMobile, exercises]);
+  }, [search, muscleGroup, isMobile, exercises.length, exercises, edit]);
+
+  console.log(state);
 
   function handleAddCustomExercise(name, category) {
     addExercise(dispatch, name, category);
   }
 
-  function handleEditCustomExercise(exerciseId, values) {
-    addExercise(dispatch, exerciseId, values);
+  function handleEditExercise(exerciseId, values) {
+    editExercise(dispatch, exerciseId, values);
+    setEdit(edit + 1);
   }
 
-  function handleDeleteCustomExercise(exerciseId) {
-    deleteExercise(dispatch, exerciseId);
+  function handleDeleteExercises(exerciseIds) {
+    deleteExercise(dispatch, exerciseIds);
   }
   function handleSearchChange(e) {
     const { value } = e.target;
@@ -90,9 +95,9 @@ const Exercises = ({ handleAddExercise, closeExercises }) => {
       exercisesToShow={exercisesToShow}
       onAddExercise={handleAddExercise}
       handleSearchChange={handleSearchChange}
+      handleEditExercise={handleEditExercise}
+      handleDeleteExercises={handleDeleteExercises}
       handleAddCustomExercise={handleAddCustomExercise}
-      handleEditCustomExercise={handleEditCustomExercise}
-      handleDeleteCustomExercise={handleDeleteCustomExercise}
     />
   ) : (
     <ExercisesBigView

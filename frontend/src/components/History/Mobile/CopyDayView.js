@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import CalendarView from "./CalendarView";
+import CalendarView from "../../shared/Calendar/MobileCalendar";
 import MobileModal from "../../shared/Modal/MobileModal";
 import { ensureDecimal } from "../../../utils/ensureDecimal";
 import {
@@ -39,7 +39,7 @@ const CopyDayVIew = ({
       <CalendarView
         date={date}
         onDayClick={handleDayClick}
-        setShowHistory={setShowCopyView}
+        setShowCalendar={setShowCopyView}
         displayGroupCircle={displayGroupCircle}
       />
       {showSelectedDay && (
@@ -67,7 +67,7 @@ const SelectedDayModal = ({
       <ExerciseItem key={x._id} exercise={x} />
     ));
     children = (
-      <div className="width-100p border-box padding-s-10">
+      <div className="width-100p border-box padding-0-10-77">
         {exercisesList}
         <div className="flex-ai-center">
           <button

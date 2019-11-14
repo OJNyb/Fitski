@@ -40,9 +40,7 @@ const NavMid = props => {
 
   let view;
 
-  if (customNav) {
-    view = customNav;
-  } else if (isMobile) {
+  if (isMobile) {
     view = <MobileNavMid {...props} />;
   } else {
     view = (
@@ -56,7 +54,7 @@ const NavMid = props => {
               <i className="material-icons">arrow_back</i>
             </button>
 
-            <h2 className="nav-h2 font-21 black">{backText}</h2>
+            <h2 className="nav-h2 font-21">{backText}</h2>
           </div>
         )}
 

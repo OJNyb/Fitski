@@ -3,12 +3,10 @@ import React from "react";
 const MobileInput = ({ type, label, field, form }) => {
   const { name } = field;
   const { touched, errors } = form;
-  console.log(errors);
   let error = errors[name];
   let touch = touched[name];
 
   let isError = !!error && !!touch;
-  console.log(isError);
   return (
     <div className="padding-10-15">
       <div

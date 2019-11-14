@@ -4,7 +4,8 @@ import {
   SET_PLAN,
   EDIT_PLAN,
   ADD_WEEK,
-  EDIT_WEEK,
+  COPY_WEEK,
+  REPEAT_WEEK,
   DELETE_WEEK,
   ADD_EXERCISE,
   // EDIT_EXERCISE,
@@ -62,34 +63,89 @@ function planReducer(state, action) {
       };
     }
 
-    case EDIT_WEEK: {
-      const { weekId, data } = payload;
+    case COPY_WEEK: {
+      const { newIds, weekId, copyWeek } = payload;
       const { woPlan } = state;
-
       const { weeks } = woPlan;
 
       const weekIndex = weeks.map(x => x._id).indexOf(weekId);
 
-      let week = weeks[weekIndex];
+      const week = weeks[weekIndex];
 
-      let patch = {};
+      const { days } = copyWeek;
 
-      const { copyWeekId } = data;
+      const newDays = [];
 
-      if (copyWeekId) {
-        patch.days = weeks.find(x => x._id === copyWeekId).days;
-      } else {
-        patch = {
-          ...data
-        };
+      for (let i = 0; i < days.length; i++) {
+        const oldDay = days[i];
+        const newDayIds = newIds[i];
+        const { exercises: oldExercises } = oldDay;
+        const { dayId: newDayId, exercises: newExercises } = newDayIds;
+        const exercises = [];
+        for (let i = 0; i < newExercises.length; i++) {
+          const oldExercise = oldExercises[i];
+          const newExerciseIds = newExercises[i];
+          const { sets: oldSets } = oldExercise;
+          const { exerId, setIds: newSetIds } = newExerciseIds;
+          const newSets = [];
+          for (let i = 0; i < newSetIds.length; i++) {
+            const oldSet = oldSets[i];
+            const newSetId = newSetIds[i];
+            newSets.push({ ...oldSet, _id: newSetId });
+          }
+          exercises.push({ ...oldExercise, _id: exerId, sets: newSets });
+        }
+        newDays.push({ _id: newDayId, exercises });
       }
 
-      week = {
-        ...week,
-        ...patch
-      };
+      week.days = newDays;
 
-      woPlan.weeks[weekIndex] = week;
+      return {
+        ...state,
+        woPlan
+      };
+    }
+
+    case REPEAT_WEEK: {
+      const { newIds, copyWeek } = payload;
+      const { woPlan } = state;
+      const { weeks } = woPlan;
+
+      const copyWeekIndex = weeks.map(x => x._id).indexOf(copyWeek._id);
+
+      const { days } = copyWeek;
+
+      const newWeeks = [];
+
+      for (let i = 0; i < newIds.length; i++) {
+        const newWeekIds = newIds[i];
+        console.log(newWeekIds);
+        const { weekId, days: newDayIds } = newWeekIds;
+        const newDays = [];
+
+        for (let i = 0; i < days.length; i++) {
+          const oldDay = days[i];
+          const { exercises: oldExercises } = oldDay;
+          const { dayId: newDayId, exercises: newExercises } = newDayIds[i];
+          const exercises = [];
+          for (let i = 0; i < newExercises.length; i++) {
+            const oldExercise = oldExercises[i];
+            const newExerciseIds = newExercises[i];
+            const { sets: oldSets } = oldExercise;
+            const { exerId, setIds: newSetIds } = newExerciseIds;
+            const newSets = [];
+            for (let i = 0; i < newSetIds.length; i++) {
+              const oldSet = oldSets[i];
+              const newSetId = newSetIds[i];
+              newSets.push({ ...oldSet, _id: newSetId });
+            }
+            exercises.push({ ...oldExercise, _id: exerId, sets: newSets });
+          }
+          newDays.push({ _id: newDayId, exercises });
+        }
+        newWeeks.push({ _id: weekId, days: newDays });
+      }
+      weeks.splice(copyWeekIndex + 1, 0, ...newWeeks);
 
       return {
         ...state,

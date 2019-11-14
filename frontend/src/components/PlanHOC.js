@@ -1,25 +1,16 @@
 import React from "react";
-import { Route, withRouter } from "react-router-dom";
+import { Route, useParams } from "react-router-dom";
 import { PlanContext } from "../context/planContext";
-import Loading from "./shared/SVGs/Loading";
 
 import usePlan from "../hooks/usePlan";
-import useSetLoading from "../hooks/useSetLoading";
 
 import Plan from "./Plan/Plan";
 import EditWeek from "./EditWeek/EditWeek";
 
-const PlanHOC = props => {
-  const {
-    location: { pathname }
-  } = props;
-
-  let planId = pathname.split("/")[2];
+const PlanHOC = () => {
+  const { plan_id: planId } = useParams();
   const { state, dispatch } = usePlan(planId);
-
   const { woPlan, isPending, isRejected } = state;
-
-  useSetLoading(isPending);
 
   if (isPending) {
     return null;
@@ -41,4 +32,4 @@ const PlanHOC = props => {
   );
 };
 
-export default withRouter(PlanHOC);
+export default PlanHOC;

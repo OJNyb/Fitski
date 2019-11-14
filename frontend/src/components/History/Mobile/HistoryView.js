@@ -3,26 +3,43 @@ import { ensureDecimal } from "../../../utils/ensureDecimal";
 import { findAllOccurencesOfExercise } from "../../../utils/findAllOccurencesOfExercise";
 import {
   displayDateWeekday,
-  reverseHistoryDate
+  reverseHistoryDate,
+  formatHistoryDate
 } from "../../../utils/formatHistoryDate";
 
 const HistoryView = ({ exercise, historyDays }) => {
   const { _id: exerciseId } = exercise;
+  const todayFormatted = formatHistoryDate(new Date());
 
   let exerciseHistory = findAllOccurencesOfExercise(historyDays, exerciseId);
 
-  let dayView = exerciseHistory.map(x => <Day day={x} />);
+  let sliceIndex;
+  for (let i = exerciseHistory.length - 1; i >= 0; i--) {
+    if (exerciseHistory[i].date > todayFormatted) {
+      sliceIndex = i;
+    } else {
+      break;
+    }
+  }
+
+  if (sliceIndex) {
+    exerciseHistory = exerciseHistory.slice(0, sliceIndex);
+  }
+
+  let dayView = exerciseHistory
+    .reverse()
+    .map((x, y) => <Day day={x} key={y} />);
   return <div className="history-mobile-exercise-history-body">{dayView}</div>;
 };
 
 const Day = ({ day }) => {
   const { date, sets } = day;
   let setsView = sets.map(x => {
-    return <Column set={x} />;
+    return <Column set={x} key={x._id} />;
   });
   return (
     <div className="history-mobile-exercise-history-day-container">
-      <div className="history-mobile-exercise-input-header">
+      <div className="history-mobile-exercise-input-header font-w-500 color-gray">
         {displayDateWeekday(reverseHistoryDate(date))}
       </div>
       {setsView}
@@ -35,14 +52,12 @@ const Column = ({ set }) => {
   return (
     <div className="history-mobile-exercise-history-column">
       <div className="history-mobile-exercise-list-label-wrapper">
-        <span className="history-mobile-exercise-list-bold-span">
-          {ensureDecimal(weight)}
-        </span>
-        <span className="history-mobile-exercise-list-small-span">kgs</span>
+        <b className="color-gray mr-1">{ensureDecimal(weight)}</b>
+        <span className="black font-12 font-w-300">kg</span>
       </div>
       <div className="history-mobile-exercise-list-label-wrapper">
-        <span className="history-mobile-exercise-list-bold-span">{reps}</span>
-        <span className="history-mobile-exercise-list-small-span">reps</span>
+        <b className="color-gray mr-1">{reps}</b>
+        <span className="black font-12 font-w-300">reps</span>
       </div>
     </div>
   );

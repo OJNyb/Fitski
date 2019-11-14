@@ -2,6 +2,7 @@ import React from "react";
 import { isSameDay } from "../../../utils/formatHistoryDate";
 import { DayPicker } from "react-dates";
 import useSetLoading from "../../../hooks/useSetLoading";
+import "react-dates/initialize";
 
 const CalendarView = ({
   date,
@@ -40,7 +41,8 @@ const CalendarView = ({
                   (y ? " history-mobile-calendar-day-active" : "")
                 }
               >
-                {date.getDate()} {displayGroupCircle(date)}
+                {date.getDate()}
+                {displayGroupCircle && displayGroupCircle(date)}
               </div>
             );
           }}

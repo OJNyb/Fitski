@@ -1,5 +1,4 @@
 function findAllOccurencesOfExercise(historyDays, exerciseId) {
-  console.log(historyDays, exerciseId);
   return historyDays.reduce((accu, curr) => {
     const filteredExercises = curr.exercises.filter(x => {
       const { exercise } = x;

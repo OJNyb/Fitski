@@ -1,9 +1,6 @@
 import React, { useState, useContext } from "react";
 import Modal from "../shared/Modal/Modal";
-import axios from "axios";
-import { ADD_WEEK } from "../../types/planTypes";
 import { PlanContext } from "../../context/planContext";
-import { Formik, Form, Field } from "formik";
 import useMobile from "../../hooks/useMobile";
 import { addWeeks } from "../../utils/planClient";
 
@@ -16,6 +13,7 @@ const AddWeeksModal = ({ planId, hideModal }) => {
   function onSubmit(values, { setSubmitting }) {
     setSubmitting(true);
     addWeeks(dispatch, planId, weeks);
+    hideModal();
   }
 
   function onWeekChange(e) {

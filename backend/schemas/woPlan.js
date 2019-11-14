@@ -45,6 +45,7 @@ const difficulty = Joi.string()
   .label("Difficulty");
 
 const reps = Joi.number()
+  .integer()
   .min(0)
   .max(9999)
   .label("Reps");
@@ -89,20 +90,32 @@ const addWeek = Joi.object().keys({
   })
 });
 
-const editWeek = Joi.object()
-  .keys({
-    plan_id: planId,
-    week_id: weekId,
-    repeat: Joi.number()
-      .min(1)
-      .max(100)
-      .label("Repeat"),
-    copyWeekId: Joi.string()
-      .objectId()
-      .not(Joi.ref("week_id"))
-      .label("Copy week ID")
+const copyWeek = Joi.object().keys({
+  plan_id: planId,
+  week_id: weekId,
+  newIds: Joi.array().items({
+    dayId,
+    exercises: Joi.array().items({
+      exerId,
+      setIds: Joi.array().items(setId)
+    })
   })
-  .or("repeat", "copyWeekId");
+});
+
+const repeatWeek = Joi.object().keys({
+  plan_id: planId,
+  week_id: weekId,
+  newIds: Joi.array().items({
+    weekId,
+    days: Joi.array().items({
+      dayId,
+      exercises: Joi.array().items({
+        exerId,
+        setIds: Joi.array().items(setId)
+      })
+    })
+  })
+});
 
 const deleteWeek = Joi.object().keys({
   plan_id: planId,
@@ -178,7 +191,8 @@ module.exports = {
   "delete/plan/:plan_id": deleteWorkoutPlan,
   "post/plan/:plan_id": editWorkoutPlan,
   "post/plan/week/:plan_id": addWeek,
-  "post/plan/week/:plan_id/:week_id": editWeek,
+  "post/plan/week/copy/:plan_id/:week_id": copyWeek,
+  "post/plan/week/repeat/:plan_id/:week_id": repeatWeek,
   "delete/plan/:plan_id/:week_id": deleteWeek,
   "post/plan/day/:plan_id/:week_id/:day_id": editDay,
   "delete/plan/day/:plan_id/:week_id/:day_id": clearDay,

@@ -33,15 +33,6 @@
   line-height: 19px;
 }
 
-.mobile-nav-icon-container {
-  position: absolute;
-  top: 0;
-  right: 0;
-  z-index: 9999;
-  padding-top: calc(3.5vh - 15px);
-  padding-right: 5px;
-}
-
 /* VIEW */
 .history-mobile-add-container p {
   text-align: center;
@@ -58,43 +49,6 @@
 }
 
 /* HISTORY */
-.history-mobile-calendar-container {
-  position: relative;
-}
-
-.history-mobile-calendar-container .CalendarDay__default {
-  border: none;
-  border-radius: 50%;
-  padding: 0;
-}
-
-.history-mobile-calendar-container .CalendarDay__default:hover {
-  border: none;
-  background-color: #fff;
-}
-
-.history-mobile-calendar-day {
-  width: 15px;
-  height: 15px;
-  padding: 8px;
-  margin: auto;
-  border-radius: 50%;
-  line-height: 15px;
-}
-
-.history-mobile-calendar-day-active {
-  background-color: #a60000;
-  color: white;
-}
-
-.DayPickerNavigation__verticalDefault_3 {
-  display: flex;
-}
-
-.DayPickerNavigation__verticalDefault_3 > div {
-  box-sizing: border-box;
-  flex: 1 50%;
-}
 
 .history-mobile-empty-log-container {
   height: 87vh;

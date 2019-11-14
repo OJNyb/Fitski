@@ -1,5 +1,8 @@
-import React, { useState } from "react";
-import { Range, getTrackBackground } from "react-range";
+import React, { lazy, useState, Suspense } from "react";
+
+import SetLoading from "../SetLoading";
+const MobileFilter = lazy(() => import("./Mobile/MobileFilter"));
+const WebFilter = lazy(() => import("./Web/WebFilter"));
 
 const PlanFilter = ({
   isMobile,
@@ -37,141 +40,52 @@ const PlanFilter = ({
     setGoalFilter(newGoalFilter);
   }
 
-  let backgroundImage = getTrackBackground({
-    min: 0,
-    max: 50,
-    values: weekFilter,
-    colors: ["rgb(201, 160, 160)", "rgb(129, 58, 58)", "rgb(201, 160, 160)"]
-  });
+  let view;
 
-  return (
-    <>
-      <button
-        className="plans-filter-button"
-        onClick={() => setShowFilters(!showFilters)}
-        style={{
-          margin: isMobile ? "20px 0 15px 5%" : "20px auto 5px"
-        }}
-      >
-        FILTER
-      </button>
-      <div
-        className={
-          "plans-filter-container" +
-          (showFilters ? " plans-filter-container-show" : "")
-        }
-      >
-        <div>
-          <div className="plans-name-filter-container">
-            <input
-              placeholder={"Name"}
-              value={nameFilter}
-              onChange={e => setNameFilter(e.target.value)}
-            />
-          </div>
-          <div className="plans-author-filter-container">
-            <input
-              placeholder={"Author"}
-              value={authorFilter}
-              onChange={e => setAuthorFilter(e.target.value)}
-            />
-          </div>
-        </div>
-        <div className="plans-length-filter-container">
-          <h6 className="plans-filter-category-header">Length</h6>
+  if (isMobile) {
+    view = <MobileFilter />;
+  } else {
+    view = <WebFilter />;
+  }
 
-          <Range
-            step={1}
-            min={0}
-            max={50}
-            values={weekFilter}
-            onChange={weekFilter => setWeekFilter(weekFilter)}
-            renderTrack={({ props, children }) => (
-              <div
-                {...props}
-                className="plans-filter-length-bar"
-                style={{
-                  ...props.style,
-                  backgroundImage
-                }}
-              >
-                {children}
-              </div>
-            )}
-            renderThumb={({ props }) => {
-              return (
-                <div
-                  key={props.key}
-                  className="plans-filter-render-thumb"
-                  style={{
-                    ...props.style
-                  }}
-                ></div>
-              );
-            }}
-          />
-          <div className="plans-filter-length-input-container">
-            <div className="plans-filter-length-input-wrapper">
-              <input
-                type="number"
-                value={weekFilter[0]}
-                onChange={e => onInputChange(e, 0)}
-              />
-            </div>
-
-            <div className="plans-filter-length-seperator" />
-            <div className="plans-filter-length-input-wrapper">
-              <input
-                type="number"
-                value={weekFilter[1]}
-                onChange={e => onInputChange(e, 1)}
-              />
-              {weekFilter[1] === 50 && <span>+</span>}
-            </div>
-          </div>
-        </div>
-        <div className="plans-goal-filter-container">
-          <h6 className="plans-filter-category-header">Goal</h6>
-
-          <label className="custom-checkbox-container">
-            <input
-              type="checkbox"
-              id="gainStrength"
-              name="gainStrength"
-              checked={goalFilter[0]}
-              onChange={() => onGoalChange(0)}
-            />
-            Gain strength
-            <span className="custom-checkmark"></span>
-          </label>
-
-          <label className="custom-checkbox-container">
-            <input
-              type="checkbox"
-              id="gainMass"
-              name="gainMass"
-              checked={goalFilter[1]}
-              onChange={() => onGoalChange(1)}
-            />
-            Gain mass
-            <span className="custom-checkmark"></span>
-          </label>
-
-          <label className="custom-checkbox-container">
-            <input
-              type="checkbox"
-              id="loseFat"
-              name="loseFat"
-              checked={goalFilter[2]}
-              onChange={() => onGoalChange(2)}
-            />
-            Lose fat
-            <span className="custom-checkmark"></span>
-          </label>
-        </div>
-      </div>
-    </>
-  );
+  return <Suspense fallback={<SetLoading />}>{view}</Suspense>;
 };
 
 export default PlanFilter;
+
+// let woPlansToDisplay = woPlans;
+
+// if (nameFilter.length) {
+//   let regex = RegExp(nameFilter, "i");
+//   woPlansToDisplay = woPlans.filter(x => regex.test(x.name));
+// }
+
+// if (authorFilter.length) {
+//   let regex = RegExp(authorFilter, "i");
+//   woPlansToDisplay = woPlans.filter(x => regex.test(x.user.username));
+// }
+
+// if (weekFilter[0] > 0 || weekFilter[1] < 50) {
+//   woPlansToDisplay = woPlans.filter(x => {
+//     const { length } = x.weeks;
+
+//     return length >= weekFilter[0] && length <= weekFilter[1];
+//   });
+// }
+
+// if (goalFilter.includes(true)) {
+//   let filter = [];
+//   if (goalFilter[0]) {
+//     filter.push("Gain strength");
+//   }
+//   if (goalFilter[1]) {
+//     filter.push("Gain mass");
+//   }
+//   if (goalFilter[2]) {
+//     filter.push("Lose fat");
+//   }
+
+//   woPlansToDisplay = woPlans.filter(
+//     x => x.goals.map(x => x.goal).filter(x => filter.indexOf(x) > -1).length
+//   );
+// }

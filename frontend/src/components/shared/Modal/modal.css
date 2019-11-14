@@ -84,10 +84,30 @@
 }
 
 .mobile-modal-submit-btn {
-  padding: 9px;
-  margin: 9px auto;
-  width: 80%;
-  border-radius: 9999px;
-  margin-top: 20px;
+  padding: 13px;
+  width: 100%;
   font-size: 14px;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  background-color: #a60000;
+  color: #fff;
+  height: 47px;
+  border-radius: 0;
+}
+
+.modal-mobile-delete-btn-container {
+  padding-bottom: 30px;
+}
+
+.modal-mobile-delete-btn-container button {
+  height: 40px;
+  width: 40vw;
+  border-radius: 999px;
+  font-size: 14px;
+}
+
+.cancel-btn {
+  background-color: rgb(236, 226, 226);
+  color: rgb(65, 49, 49);
 }

@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 import { Formik, Form, Field } from "formik";
-import axios from "axios";
 import useSetLoading from "../../hooks/useSetLoading";
 import MobileInput from "./MobileInput";
+import { useAuth } from "../../context/authContext";
+
+import "./signXError.css";
 import "./MobileLogin.css";
 
 const Register = () => {
+  const { register } = useAuth();
   const [serverErr, setServerErr] = useState(false);
   useSetLoading(false);
 
@@ -51,8 +54,8 @@ const Register = () => {
           }}
           onSubmit={(values, { setSubmitting }) => {
             setServerErr(false);
-            axios.post("/user/register", values).catch(err => {
-              setServerErr(err.response.data);
+            register(values).catch(err => {
+              setServerErr(err);
             });
             setSubmitting(false);
           }}

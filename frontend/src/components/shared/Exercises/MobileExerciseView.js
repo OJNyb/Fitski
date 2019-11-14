@@ -1,9 +1,13 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState } from "react";
+import useLongPress from "../../../hooks/useLongPress";
+
 import MobileExercisesNav from "./MobileExercisesNav";
+import useSetLoading from "../../../hooks/useSetLoading";
+import AddExerciseModal from "./AddExerciseModal";
+import DeleteExerciseModal from "./DeleteExerciseModal";
 
 import "./exerciseTable.css";
 import "./mobileExerciseView.css";
-import useSetLoading from "../../../hooks/useSetLoading";
 
 const muscleGroupArray = [
   "Shoulders",
@@ -22,77 +26,120 @@ const MobileExerciseView = ({
   setMuscleGroup,
   exercisesToShow,
   handleSearchChange,
-  handleAddCustomExercise
+  handleAddCustomExercise,
+  handleEditExercise,
+  handleDeleteExercises
 }) => {
-  let exerciseDisplay;
   useSetLoading(false);
-  const [editView, setEditView] = useState(false);
   const [selectedExercises, setSelectedExercises] = useState([]);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+
+  let modal = null;
+
+  function handleDeleteSubmit() {
+    handleDeleteExercises(selectedIds);
+    setShowDeleteModal(false);
+    setSelectedExercises([]);
+  }
+
+  function handleEditSubmit(name, category) {
+    setShowEditModal(false);
+    handleEditExercise(selectedExercises[0]._id, { name, category });
+    setSelectedExercises([]);
+  }
+
+  if (showEditModal) {
+    const { name, muscleGroup, custom } = selectedExercises[0];
+
+    modal = (
+      <AddExerciseModal
+        initName={name}
+        buttonText={"Edit"}
+        header={"Edit Exercise"}
+        initCategory={muscleGroup}
+        handleSubmit={handleEditSubmit}
+        hideModal={() => setShowEditModal(false)}
+        cantEdit={!custom}
+      />
+    );
+  }
+
+  if (showDeleteModal) {
+    modal = (
+      <DeleteExerciseModal
+        selectedExercises={selectedExercises}
+        setShowDeleteModal={setShowDeleteModal}
+        onDeleteSubmit={handleDeleteSubmit}
+      />
+    );
+  }
 
   if (!exercisesToShow) exerciseDisplay = <p>No exercise with that name</p>;
 
   const shouldShowExercises =
     (search.length || muscleGroup.length) && exercisesToShow;
 
+  function handleBackClick() {
+    if (shouldShowExercises) {
+      setMuscleGroup([]);
+    } else {
+      closeExercises();
+    }
+  }
+
+  let header = shouldShowExercises ? muscleGroup[0] : "Exercises";
+
+  function handleSelectExercise(exercise) {
+    let exerciseIndex = selectedExercises.map(x => x._id).indexOf(exercise._id);
+    if (exerciseIndex === -1) {
+      setSelectedExercises([...selectedExercises, exercise]);
+    } else {
+      let newSE = selectedExercises.concat();
+      newSE.splice(exerciseIndex, 1);
+      setSelectedExercises(newSE);
+    }
+  }
+
+  let exerciseDisplay;
+  const selectedIds = selectedExercises.map(x => x._id);
   if (shouldShowExercises) {
-    const onClick = editView
-      ? x => setSelectedExercises([...selectedExercises, x])
+    const onClick = selectedExercises.length
+      ? x => handleSelectExercise(x)
       : x => {
           onAddExercise(x);
           closeExercises();
         };
-    const exercisesToDisplay = exercisesToShow.map(x => (
-      <div
-        className="mobile-exercise-item"
+    exerciseDisplay = exercisesToShow.map(x => (
+      <ExerciseItem
         key={x._id}
-        onClick={() => onClick(x)}
-      >
-        {x.name}
-      </div>
+        exercise={x}
+        onClick={onClick}
+        selected={selectedIds.indexOf(x._id) > -1}
+        onSelectExercise={handleSelectExercise}
+      />
     ));
-    exerciseDisplay = (
-      <>
-        <div
-          className="flex-ai-center mobile-exercise-nav-back-wrapper"
-          onClick={() => setMuscleGroup([])}
-        >
-          <i className="material-icons-round">keyboard_arrow_left</i>
-          <span>Muscle groups</span>
-        </div>
-        {exercisesToDisplay}
-      </>
-    );
   } else {
     exerciseDisplay = muscleGroupArray.map(x => (
-      <MuscleGroupItem key={x} mg={x} onClick={() => setMuscleGroup(x)} />
+      <MuscleGroupItem key={x} mg={x} onClick={() => setMuscleGroup([x])} />
     ));
-  }
-
-  let editExerciseNav = null;
-  if (selectedExercises.length) {
-    editExerciseNav = (
-      <div className="width-100p flex-ai-center">
-        <button>
-          <i className="material-icons-outlined">edit</i>
-        </button>
-        <button>
-          <i className="material-icons-outlined">delete</i>
-        </button>
-      </div>
-    );
   }
 
   return (
     <>
       <MobileExercisesNav
-        editView={editView}
-        setEditView={setEditView}
-        closeExercises={closeExercises}
+        header={header}
+        onBackClick={handleBackClick}
         handleAddCustomExercise={handleAddCustomExercise}
       />
 
+      <SelectedNavBar
+        setShowEditModal={setShowEditModal}
+        selectedExercises={selectedExercises}
+        setSelectedExercises={setSelectedExercises}
+        setShowDeleteModal={setShowDeleteModal}
+      />
       <div className="mobile-exercises-container">
-        {editExerciseNav}
         <div className="mobile-exercises-head">
           <i className="material-icons">search</i>
           <div className="flex-col mobile-exercises-search-wrapper">
@@ -102,6 +149,7 @@ const MobileExerciseView = ({
         </div>
         <div className="mobile-exercises-body">{exerciseDisplay}</div>
       </div>
+      {modal}
     </>
   );
 };
@@ -114,34 +162,64 @@ const MuscleGroupItem = ({ mg, onClick }) => {
   );
 };
 
-function useLongPress(callback = () => {}, ms = 300) {
-  const [startLongPress, setStartLongPress] = useState(false);
+const ExerciseItem = ({ onClick, exercise, selected, onSelectExercise }) => {
+  const { name } = exercise;
+  const { onTouchEnd, onTouchStart, onTouchMove } = useLongPress(() =>
+    onSelectExercise(exercise)
+  );
+  return (
+    <div
+      className={
+        "mobile-exercise-item" +
+        (selected ? " mobile-exercise-item-selected" : "")
+      }
+      onClick={() => onClick(exercise)}
+      onTouchStart={onTouchStart}
+      onTouchEnd={onTouchEnd}
+      onTouchMove={onTouchMove}
+    >
+      {name}
+    </div>
+  );
+};
 
-  useEffect(() => {
-    let timerId;
-    if (startLongPress) {
-      timerId = setTimeout(callback, ms);
-    } else {
-      clearTimeout(timerId);
-    }
+const SelectedNavBar = ({
+  setShowEditModal,
+  selectedExercises,
+  setShowDeleteModal,
+  setSelectedExercises
+}) => {
+  let editExerciseNav;
+  let text = selectedExercises.length > 1 ? "exercises" : "exercise";
+  if (selectedExercises.length) {
+    editExerciseNav = (
+      <div className="width-100p flex-center-space-bw fixed exercises-mobile-selected-container">
+        <div className="flex-ai-center exercises-mobile-check-n-span-wrapper">
+          <button
+            className="padding-5"
+            onClick={() => setSelectedExercises([])}
+          >
+            <i className="material-icons-outlined">check</i>
+          </button>
+          <span className="exercises-mobile-selected-exercises-span black font-w-500 font-14">
+            {selectedExercises.length} {text}
+          </span>
+        </div>
 
-    return () => {
-      clearTimeout(timerId);
-    };
-  }, [startLongPress]);
-
-  const start = useCallback(() => {
-    setStartLongPress(true);
-  }, []);
-  const stop = useCallback(() => {
-    setStartLongPress(false);
-  }, []);
-
-  return {
-    onTouchEnd: stop,
-    onMouseLeave: stop,
-    onTouchStart: start
-  };
-}
+        <div className="flex-ai-center">
+          {selectedExercises.length === 1 && (
+            <button onClick={() => setShowEditModal(true)}>
+              <i className="material-icons-outlined">edit</i>
+            </button>
+          )}
+          <button onClick={() => setShowDeleteModal(true)}>
+            <i className="material-icons-outlined">delete</i>
+          </button>
+        </div>
+      </div>
+    );
+  }
+  return <>{editExerciseNav}</>;
+};
 
 export default MobileExerciseView;

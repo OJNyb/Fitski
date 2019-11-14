@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import CreatePlanModal from "./CreatePlanModal";
-import NavMid from "../shared/NavMid/NavMid";
+import NavMid from "../../shared/NavMid/NavMid";
 
 const PlansNav = ({ isMobile, dispatch }) => {
   const [showModal, setShowModal] = useState(false);

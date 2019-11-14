@@ -7,9 +7,8 @@ import React, {
   useLayoutEffect
 } from "react";
 import { NavContext } from "../../../context/navContext";
-import { IS_RED, SHOW_NONE, SHOW_DEHAZE } from "../../../types/navTypes";
 import useSetLoading from "../../../hooks/useSetLoading";
-
+import { IS_RED, SHOW_NONE, SHOW_DEHAZE } from "../../../types/navTypes";
 import {
   displayDate,
   incrementDate,
@@ -19,17 +18,15 @@ import {
 import TrackNav from "./TrackNav";
 import MobileDayView from "./MobileDayView";
 import NavigateDays from "./NavigateDays";
-
-import "./mobileView.css";
-
 import SetLoading from "../../SetLoading";
 import Plus20 from "../../shared/SVGs/Plus20";
 
+import "./mobileView.css";
 const loadExerciseView = () => import("./ExerciseView");
 const ExerciseView = lazy(loadExerciseView);
 const loadExercises = () => import("../../shared/Exercises/Exercises");
 const Exercises = lazy(loadExercises);
-const loadCalendar = () => import("./CalendarView");
+const loadCalendar = () => import("../../shared/Calendar/MobileCalendar");
 const CalendarView = lazy(loadCalendar);
 const loadCopyDayView = () => import("./CopyDayView");
 const CopyDayView = lazy(loadCopyDayView);
@@ -106,7 +103,7 @@ const MobileView = ({
       <CalendarView
         date={date}
         onDateChange={onDateChange}
-        setShowHistory={setShowHistory}
+        setShowCalendar={setShowHistory}
         displayGroupCircle={displayGroupCircle}
         onDayClick={date => {
           onDateChange(date);
@@ -128,7 +125,7 @@ const MobileView = ({
       x => x._id === showExercise
     )[0];
     view = (
-      <Suspense fallback={SetLoading}>
+      <Suspense fallback={<SetLoading />}>
         <ExerciseView
           view={exerciseView}
           exer={currentExercise}
@@ -177,10 +174,16 @@ const MobileView = ({
   } else if (!showExercises && !showHistory) {
     topNavContent = (
       <div className="mobile-nav-icon-container flex-ai-center border-box">
-        <button className="white-material-btn" onClick={onCalendarClick}>
+        <button
+          className="white-material-btn padding-5"
+          onClick={onCalendarClick}
+        >
           <i className="material-icons material-icons-22">calendar_today</i>
         </button>
-        <button className="white-material-btn" onClick={onExerciseClick}>
+        <button
+          className="white-material-btn padding-5"
+          onClick={onExerciseClick}
+        >
           {/* <i className="material-icons material-icons-30">add</i> */}
           <Plus20 fill={"#fff"} />
         </button>
@@ -192,7 +195,7 @@ const MobileView = ({
   if (showExercise) {
     bottomNavContent = (
       <>
-        <div className="width-100p flex-center-space-bw color-white border-box">
+        <div className="width-100p flex-center-space-bw color-white border-box history-mobile-exercise-header">
           <div
             className={
               "history-mobile-exercise-header-item flex-center" +

@@ -50,15 +50,7 @@ const ExerciseCard = ({
     ));
   } else {
     cardView = sets.map((x, y) => (
-      <SetColumn
-        set={x}
-        index={y}
-        key={x._id}
-        dayId={dayId}
-        exerId={exerId}
-        handleEditSet={handleEditSet}
-        onDeleteSet={handleDeleteSet}
-      />
+      <SetColumn set={x} index={y} key={x._id} dayId={dayId} exerId={exerId} />
     ));
   }
 
@@ -74,29 +66,32 @@ const ExerciseCard = ({
       }}
     >
       <div className="history-exercise-name">
-        <span className="black">{name}</span>
+        <span className="black height-20 flex-ai-center">{name}</span>
 
         <div className="add-card-btn-container">
           {isActive && (
-            <button
-              className="add-card-remove-btn theme-btn-no-border"
-              onClick={e => {
-                e.stopPropagation();
-                onDeleteExercise(exerId);
-              }}
-            >
-              <i className="material-icons ">delete_outline</i>
-            </button>
+            <>
+              <button
+                className="add-card-remove-btn theme-btn-no-border"
+                onClick={e => {
+                  e.stopPropagation();
+                  onDeleteExercise(exerId);
+                }}
+              >
+                <i className="material-icons ">delete_outline</i>
+              </button>
+
+              <button
+                className="theme-btn-no-border"
+                onClick={e => {
+                  e.stopPropagation();
+                  onAddSet(exerId, exerciseId);
+                }}
+              >
+                <i className="material-icons ">add</i>
+              </button>
+            </>
           )}
-          <button
-            className="theme-btn-no-border"
-            onClick={e => {
-              e.stopPropagation();
-              onAddSet(exerId, exerciseId);
-            }}
-          >
-            <i className="material-icons ">add</i>
-          </button>
         </div>
       </div>
 
@@ -122,8 +117,10 @@ const SetColumn = ({ set, index }) => {
 
 const EditColumn = ({ set, index, exerId, onDeleteSet, handleEditSet }) => {
   const { reps, _id: setId } = set;
+  console.log(set);
   const [inputReps, setInputReps] = useState(reps || 0);
   const isDeleted = useRef(false);
+  const isClosed = useRef(false);
 
   const repsRef = useRef();
   const lastRepsReqRef = useRef();
@@ -131,6 +128,7 @@ const EditColumn = ({ set, index, exerId, onDeleteSet, handleEditSet }) => {
   useEffect(() => {
     return () => {
       if (!isDeleted.current) onExerciseEdit();
+      isClosed.current = true;
     };
   }, []);
 
@@ -148,13 +146,15 @@ const EditColumn = ({ set, index, exerId, onDeleteSet, handleEditSet }) => {
     repsRef.current = value;
     setTimeout(() => {
       const { current } = repsRef;
-      if (current === value) {
+      if (current === value && !isClosed.current) {
+        console.log("ga333y");
         onExerciseEdit();
       }
     }, 5000);
   }
 
   function onExerciseEdit() {
+    console.log("gaay");
     const { current: currentReps } = repsRef;
     if (currentReps && currentReps !== lastRepsReqRef.current) {
       handleEditSet(exerId, setId, currentReps);
@@ -162,6 +162,7 @@ const EditColumn = ({ set, index, exerId, onDeleteSet, handleEditSet }) => {
   }
 
   function onInputBlur() {
+    console.log(document.activeElement);
     onExerciseEdit();
   }
 
@@ -183,6 +184,7 @@ const EditColumn = ({ set, index, exerId, onDeleteSet, handleEditSet }) => {
           <button
             className="edit-week-mobile-reps-btn"
             onClick={() => handleRepsChange(Number(inputReps) - 1)}
+            onBlur={onInputBlur}
           >
             <i className="material-icons">remove</i>
           </button>
@@ -201,6 +203,7 @@ const EditColumn = ({ set, index, exerId, onDeleteSet, handleEditSet }) => {
           <button
             className="edit-week-mobile-reps-btn"
             onClick={() => handleRepsChange(Number(inputReps) + 1)}
+            onBlur={onInputBlur}
           >
             <i className="material-icons">add</i>
           </button>

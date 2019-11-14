@@ -1,6 +1,7 @@
 import React, { lazy, useState, useContext, Suspense } from "react";
 import useMobile from "../../hooks/useMobile";
 import { PlanContext } from "../../context/planContext";
+import useSetLoading from "../../hooks/useSetLoading";
 import { findLastOccurenceOfExercisePlan } from "../../utils/findAllOccurencesOfExercise";
 import {
   addSet,
@@ -15,13 +16,14 @@ import EditWeekNav from "./EditWeekNav";
 
 import "./editWeek.css";
 
-const MobileEditWEek = lazy(() => import("./Mobile/MobileEditWeek"));
+const MobileEditWeek = lazy(() => import("./Mobile/MobileEditWeek"));
 const WebEditWeek = lazy(() => import("./Web/WebEditWeek"));
 
 const EditWeek = ({ match: { params } }) => {
   const { state, dispatch } = useContext(PlanContext);
   const [currentDayIndex, setCurrentDayIndex] = useState(0);
   const isMobile = useMobile();
+  useSetLoading(false);
 
   const { woPlan } = state;
   const { weeks } = woPlan;
@@ -76,7 +78,7 @@ const EditWeek = ({ match: { params } }) => {
   let view = null;
   if (isMobile) {
     view = (
-      <MobileEditWEek
+      <MobileEditWeek
         weeks={weeks}
         planId={planId}
         weekIndex={weekIndex}

@@ -7,7 +7,7 @@ const _id = Joi.string()
   .required()
   .label("ID");
 
-const exerciseId = _id.label("Workout plan ID");
+const exerciseId = _id.label("Exercise ID");
 
 const name = Joi.string()
   .min(1)
@@ -31,12 +31,15 @@ const editExercise = Joi.object()
   })
   .or("name", "category");
 
-const deleteExercise = Joi.object().keys({
-  exercise_id: exerciseId
+const deleteExercises = Joi.object().keys({
+  exerciseIds: Joi.array()
+    .items(exerciseId)
+    .required()
+    .label("Exercise IDs")
 });
 
 module.exports = {
+  "delete/exercise": deleteExercises,
   "post/exercise/custom": addExercise,
-  "patch/exercise/custom/:exercise_id": editExercise,
-  "delete/exercise/custom/:exercise_id": deleteExercise
+  "patch/exercise/custom/:exercise_id": editExercise
 };

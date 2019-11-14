@@ -17,7 +17,7 @@ import { ensureDecimal } from "../utils/ensureDecimal";
 
 // TODO: If !DAY/day/woplan
 
-function planReducer(state, action) {
+function historyReducer(state, action) {
   const { type, payload } = action;
   switch (type) {
     case IS_REJECTED: {
@@ -51,7 +51,7 @@ function planReducer(state, action) {
       const { history } = state;
       const { days } = history;
       let formattedDate = formatHistoryDate(date);
-      let insertIndex;
+      let insertIndex = days.length - 1;
 
       let values = {
         reps: reps ? reps : 0,
@@ -67,6 +67,8 @@ function planReducer(state, action) {
           }
         }
       }
+
+      console.log(insertIndex);
 
       const newDay = {
         date: formattedDate,
@@ -85,11 +87,7 @@ function planReducer(state, action) {
         ]
       };
 
-      if (insertIndex) {
-        history.days.splice(insertIndex, 0, newDay);
-      } else {
-        history.days.push(newDay);
-      }
+      history.days.splice(insertIndex, 0, newDay);
 
       return {
         ...state,
@@ -399,4 +397,4 @@ function planReducer(state, action) {
   }
 }
 
-export default planReducer;
+export default historyReducer;

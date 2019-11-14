@@ -32,6 +32,7 @@ function planReducer(state, action) {
 
     case SET_EXERCISES: {
       const { exercises } = payload;
+
       return {
         ...state,
         exercises,
@@ -53,8 +54,9 @@ function planReducer(state, action) {
 
       let newExercise = {
         name,
-        category,
-        _id: exerciseId
+        custom: true,
+        _id: exerciseId,
+        muscleGroup: category
       };
 
       exercises.push(newExercise);
@@ -83,11 +85,14 @@ function planReducer(state, action) {
 
     case DELETE_EXERCISE: {
       const { exercises } = state;
-      const { exerciseId } = payload;
+      const { exerciseIds } = payload;
 
-      let exerciseIndex = exercises.map(x => x._id).indexOf(exerciseId);
+      const oldExerciseIds = exercises.map(x => x._id);
 
-      exercises.splice(exerciseIndex, 1);
+      exerciseIds.forEach(x => {
+        const exerciseIndex = oldExerciseIds.indexOf(x);
+        exercises.splice(exerciseIndex, 1);
+      });
 
       return {
         ...state,

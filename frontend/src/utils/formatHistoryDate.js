@@ -78,19 +78,8 @@ function displayDate(date) {
 }
 
 function displayDateWeekday(date) {
-  let fDate = formatHistoryDate(date);
-  let nDate = formatHistoryDate(new Date());
-
-  if (nDate === fDate) {
-    return "Today";
-  } else if (nDate === fDate + 1) {
-    return "Yesterday";
-  } else if (nDate === fDate - 1) {
-    return "Tomorrow";
-  }
-
-  fDate += "";
-  nDate += "";
+  let fDate = formatHistoryDate(date) + "";
+  let nDate = formatHistoryDate(new Date()) + "";
 
   let day = fDate.slice(6);
   if (day < 10) {

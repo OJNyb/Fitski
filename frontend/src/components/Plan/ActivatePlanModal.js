@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Modal from "../shared/Modal/Modal";
 import { activatePlan } from "../../utils/historyClient";
 import useMobile from "../../hooks/useMobile";
+import CalendarView from "../shared/Calendar/MobileCalendar";
 
 import CustomRadio from "../shared/Form/CustomRadio";
 import "react-dates/initialize";
@@ -15,6 +16,7 @@ const ActivatePlanModal = ({ planId, hideModal }) => {
 
   function onActivate() {
     activatePlan(planId, startDate);
+    hideModal();
   }
 
   function onDateChange(date) {
@@ -24,31 +26,20 @@ const ActivatePlanModal = ({ planId, hideModal }) => {
   if (showCalendar) {
     if (isMobile) {
       return (
-        <div className="mobile-calendar-container">
-          <button
-            className="history-mobile-cal-clear-btn"
-            onClick={() => setShowCalendar(false)}
-          >
-            <i className="material-icons">clear</i>
-          </button>
-          <DayPicker
-            onDayClick={date => {
-              onDateChange(date);
-              setShowCalendar(false);
-            }}
-            orientation={"vertical"}
-            verticalHeight={Math.round(
-              window.screen.height - (window.screen.height / 100) * 7
-            )}
-            transitionDuration={0}
-          />
-        </div>
+        <CalendarView
+          onDayClick={date => {
+            onDateChange(date);
+            setShowCalendar(false);
+          }}
+          date={{ _d: startDate }}
+          setShowCalendar={setShowCalendar}
+        />
       );
     }
   }
 
   let children = (
-    <>
+    <div className="padding-0-10-77 flex-col-cen">
       <span className="activate-plan-span">Starting</span>
       <button
         className="activate-plan-date"
@@ -74,7 +65,7 @@ const ActivatePlanModal = ({ planId, hideModal }) => {
       >
         Activate
       </button>
-    </>
+    </div>
   );
 
   return (

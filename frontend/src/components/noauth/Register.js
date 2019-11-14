@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import { Formik, Form, Field } from "formik";
-import axios from "axios";
+import { useAuth } from "../../context/authContext";
+
+import "./signXError.css";
 
 const Register = () => {
+  const { register } = useAuth();
   const [serverErr, setServerErr] = useState(false);
 
   return (
@@ -44,8 +47,8 @@ const Register = () => {
         }}
         onSubmit={(values, { setSubmitting }) => {
           setServerErr(false);
-          axios.post("/user/register", values).catch(err => {
-            setServerErr(err.response.data);
+          register(values).catch(err => {
+            setServerErr(err);
           });
           setSubmitting(false);
         }}

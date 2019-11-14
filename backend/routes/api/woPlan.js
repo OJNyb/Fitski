@@ -179,50 +179,142 @@ router.post(
 );
 
 // @route POST api/plan/week/:plan_id/:week_id
-// @desc Edit week
+// @desc Copy week
 // @access Private
-// TODO: On copy change day id's?`
 router.post(
-  "/week/:plan_id/:week_id",
+  "/week/copy/:plan_id/:week_id",
   ensureSignedIn,
   validateRequest,
   validateWOPlan,
   async (req, res, next) => {
     const { body, params } = req;
-
     const { week_id: weekId } = params;
-
-    const { repeat, woPlan, copyWeekId } = body;
+    const { woPlan, copyWeekId, newIds } = body;
 
     const { weeks } = woPlan;
 
-    let field;
-    let patch;
+    let copyWeek = weeks.find(x => x._id.toString() === copyWeekId);
+    if (!copyWeek) {
+      return res
+        .status(404)
+        .json(createErrorObject(["No week with this ID to copy"]));
+    }
 
-    if (repeat) {
-      patch = repeat;
-      field = "repeat";
-    } else if (copyWeekId) {
-      let copyWeek = weeks.find(x => x._id.toString() === copyWeekId);
-      if (!copyWeek) {
-        return res
-          .status(404)
-          .json(createErrorObject(["No week with this ID to copy"]));
+    const { days } = copyWeek;
+
+    const newDays = [];
+
+    for (let i = 0; i < days.length; i++) {
+      const oldDay = days[i];
+      const newDayIds = newIds[i];
+      const { exercises: oldExercises } = oldDay;
+      const { dayId: newDayId, exercises: newExercises } = newDayIds;
+      const exercises = [];
+      for (let i = 0; i < newExercises.length; i++) {
+        const oldExercise = oldExercises[i];
+        const newExerciseIds = newExercises[i];
+        const { sets: oldSets, onModel, exercise } = oldExercise;
+        const { exerId, setIds: newSetIds } = newExerciseIds;
+        const newSets = [];
+        for (let i = 0; i < newSetIds.length; i++) {
+          const oldSet = oldSets[i];
+          const newSetId = newSetIds[i];
+          const { reps } = oldSet;
+
+          newSets.push({ reps, _id: newSetId });
+        }
+        exercises.push({ onModel, exercise, _id: exerId, sets: newSets });
       }
-
-      patch = copyWeek.days;
-      field = "days";
+      newDays.push({ _id: newDayId, exercises });
     }
 
     woPlan
       .updateOne(
         {
-          $set: { [`weeks.$[w].${field}`]: patch }
+          $set: { [`weeks.$[w].days`]: newDays }
         },
         {
           arrayFilters: [{ "w._id": weekId }]
         }
       )
+      .then(reski => {
+        if (reski.nModified) {
+          res.json({ message: "success" });
+        } else {
+          res.status(404).json(createErrorObject(["Couldn't apply update"]));
+        }
+      })
+      .catch(next);
+  }
+);
+
+// @route POST api/plan/week/:plan_id/:week_id
+// @desc Repeat week
+// @access Private
+router.post(
+  "/week/repeat/:plan_id/:week_id",
+  ensureSignedIn,
+  validateRequest,
+  validateWOPlan,
+  async (req, res, next) => {
+    const { body, params } = req;
+    const { week_id: weekId } = params;
+    const { woPlan, newIds } = body;
+
+    const { weeks } = woPlan;
+
+    const copyWeekIndex = weeks.map(x => x._id.toString()).indexOf(weekId);
+    const copyWeek = weeks[copyWeekIndex];
+    if (!copyWeek) {
+      return res
+        .status(404)
+        .json(createErrorObject(["No week with this ID to copy"]));
+    }
+
+    const { days } = copyWeek;
+
+    const newWeeks = [];
+
+    for (let i = 0; i < newIds.length; i++) {
+      const newWeekIds = newIds[i];
+      const { weekId, days: newDayIds } = newWeekIds;
+      const newDays = [];
+
+      for (let i = 0; i < days.length; i++) {
+        const oldDay = days[i];
+        const { exercises: oldExercises } = oldDay;
+        const { dayId: newDayId, exercises: newExercises } = newDayIds[i];
+        const exercises = [];
+        for (let i = 0; i < newExercises.length; i++) {
+          const oldExercise = oldExercises[i];
+          const newExerciseIds = newExercises[i];
+          const { sets: oldSets, onModel, exercise } = oldExercise;
+          const { exerId, setIds: newSetIds } = newExerciseIds;
+          const newSets = [];
+          for (let i = 0; i < newSetIds.length; i++) {
+            const oldSet = oldSets[i];
+            const newSetId = newSetIds[i];
+            const { reps } = oldSet;
+
+            newSets.push({ reps, _id: newSetId });
+          }
+          exercises.push({ onModel, exercise, _id: exerId, sets: newSets });
+        }
+        newDays.push({ _id: newDayId, exercises });
+      }
+      newWeeks.push({ _id: weekId, days: newDays });
+    }
+    console.log(newWeeks);
+
+    woPlan
+      .updateOne({
+        $push: {
+          weeks: {
+            $each: newWeeks,
+            $position: copyWeekIndex
+          }
+        }
+      })
       .then(reski => {
         if (reski.nModified) {
           res.json({ message: "success" });

@@ -39,3 +39,37 @@
 .SingleDatePicker {
   width: 152px;
 }
+
+.DayPickerNavigation__verticalDefault_3 {
+  display: flex;
+}
+
+.DayPickerNavigation__verticalDefault_3 > div {
+  box-sizing: border-box;
+  flex: 1 50%;
+}
+
+.mobile-calendar-container .CalendarDay__default {
+  border: none;
+  border-radius: 50%;
+  padding: 0;
+}
+
+.mobile-calendar-container .CalendarDay__default:hover {
+  border: none;
+  background-color: #fff;
+}
+
+.mobile-calendar-day {
+  width: 15px;
+  height: 15px;
+  padding: 8px;
+  margin: auto;
+  border-radius: 50%;
+  line-height: 15px;
+}
+
+.mobile-calendar-day-active {
+  background-color: #a60000;
+  color: white;
+}

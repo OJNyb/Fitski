@@ -4,7 +4,6 @@
 }
 
 .plan-week-container h1 {
-  font-size: 30px;
   margin: 0;
   transition: color 0.15s;
 }
@@ -24,17 +23,19 @@
 
 .plan-day-container {
   margin: 0 10px 10px;
-  color: #332222;
-}
-
-.plan-exercises-container {
-  border-left: 2px solid #a60000;
 }
 
 .plan-exercise-container {
   position: relative;
   max-width: 330px;
+}
+
+.plan-web-exercise-container {
   margin: 4px 0 4px 4px;
+}
+
+.plan-exercise-name {
+  font-size: 15px;
 }
 
 .plan-exercise-container:first-child {
@@ -43,4 +44,12 @@
 
 .plan-exercise-container:last-child {
   margin-bottom: 0;
+}
+
+.inline-block {
+  display: inline-block;
+}
+
+.border-left-2-theme {
+  border-left: 2px solid #a60000;
 }

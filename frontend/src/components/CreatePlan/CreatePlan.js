@@ -6,6 +6,7 @@ import { Types } from "mongoose";
 import { Redirect } from "react-router-dom";
 import CustomCheckbox from "../shared/Form/CustomCheckbox";
 import CustomRadio from "../shared/Form/CustomRadio";
+import useNavRedDehaze from "../../hooks/useNavRedDehaze";
 
 import "./createPlan.css";
 const { ObjectId } = Types;
@@ -13,6 +14,7 @@ const { ObjectId } = Types;
 const CreatePlan = () => {
   const [redir, setRedir] = useState(false);
   useSetLoading(false);
+  useNavRedDehaze();
 
   if (redir) {
     return <Redirect to={`plans/${redir}`} />;

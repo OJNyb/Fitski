@@ -13,6 +13,7 @@ const WebExerciseColumn = ({
   const repsRef = useRef();
   const lastRepsReqRef = useRef();
   const isDeleted = useRef(false);
+  const isClosed = useRef(false);
 
   function onInputBlur() {
     onEditSet();
@@ -26,7 +27,7 @@ const WebExerciseColumn = ({
     repsRef.current = value;
     setTimeout(() => {
       const { current } = repsRef;
-      if (current === value) {
+      if (current === value && !isClosed.current) {
         onEditSet();
       }
     }, 5000);
@@ -35,6 +36,7 @@ const WebExerciseColumn = ({
   useEffect(() => {
     return () => {
       if (!isDeleted.current) onEditSet();
+      isClosed.current = true;
     };
   }, []);
 
@@ -54,9 +56,8 @@ const WebExerciseColumn = ({
       if (currentReps === "") {
         reps = 0;
       }
+      handleEditSet(exerId, setId, reps);
     }
-
-    handleEditSet(exerId, setId, reps);
   }
   return (
     <div className="add-card-column flex-center-space-bw padding-0-20">

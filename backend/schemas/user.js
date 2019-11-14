@@ -27,7 +27,9 @@ const password = Joi.string()
     }
   });
 
-const confirmPassword = Joi.valid(Joi.ref("password"));
+const confirmPassword = Joi.valid(Joi.ref("password")).label(
+  "Confirm password"
+);
 
 const signUp = Joi.object().keys({
   name,

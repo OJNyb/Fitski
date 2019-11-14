@@ -8,6 +8,31 @@
   font-size: 30px;
 }
 
+.exercises-mobile-selected-container {
+  top: 7vh;
+  z-index: 2;
+  background-color: #fff;
+  border-bottom: 2px solid #a60000;
+  height: 6vh;
+  padding: 0 0px;
+  box-sizing: border-box;
+}
+
+.exercises-mobile-check-n-span-wrapper button {
+  margin: 0 14px !important;
+}
+
+.exercises-mobile-selected-exercises-span {
+  border-left: 1px solid #a60000;
+  padding-left: 20px;
+}
+
+.exercises-mobile-selected-container button {
+  padding: 5px;
+  margin: 3px;
+  color: #a60000;
+}
+
 /* BODY */
 .mobile-exercises-container {
   width: 100%;
@@ -50,19 +75,6 @@
   border-color: #a60000;
 }
 
-.mobile-exercise-nav-back-wrapper {
-  padding: 10px 10px;
-  font-weight: 400;
-  font-size: 13px;
-  color: rgb(110, 97, 97);
-  line-height: 18.5px;
-  /* border-bottom: 1px solid rgb(109, 106, 106);*/
-}
-
-.mobile-exercise-nav-back-wrapper i {
-  font-size: 18px;
-}
-
 .mobile-exercises-body {
   padding-top: 48px;
 }
@@ -71,6 +83,12 @@
   border-bottom: 1px solid silver;
   font-weight: 400;
   color: rgba(0, 0, 0, 0.9);
+}
+
+.mobile-exercise-item-selected {
+  background-color: rgb(240, 166, 166);
+  border-color: #fff;
+  color: black;
 }
 
 /* ADD EXERCISE MODAL */

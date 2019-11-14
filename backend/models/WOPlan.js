@@ -2,11 +2,16 @@ const mongoose = require("mongoose");
 const { model, Schema } = mongoose;
 const { ObjectId } = Schema.Types;
 
+const _id = {
+  type: ObjectId,
+  required: true
+};
+
 // access = owner/all/private
 
 const WOPlanSchema = new Schema(
   {
-    _id: ObjectId,
+    _id,
     name: String,
     difficulty: String,
     description: String,
@@ -21,25 +26,13 @@ const WOPlanSchema = new Schema(
     },
     weeks: [
       {
-        _id: ObjectId,
-        repeat: {
-          type: Number,
-          default: 0
-        },
-        restWeek: {
-          type: Boolean,
-          default: false
-        },
+        _id,
         days: [
           {
-            _id: ObjectId,
-            restDay: {
-              type: Boolean,
-              default: false
-            },
+            _id,
             exercises: [
               {
-                _id: ObjectId,
+                _id,
                 exercise: {
                   type: ObjectId,
                   refPath: "weeks.days.exercises.onModel"
@@ -50,7 +43,7 @@ const WOPlanSchema = new Schema(
                 },
                 sets: [
                   {
-                    _id: ObjectId,
+                    _id,
                     reps: Number
                   }
                 ]

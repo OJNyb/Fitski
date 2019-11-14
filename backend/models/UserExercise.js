@@ -11,7 +11,10 @@ const UserExerciseSchema = new Schema({
     type: Boolean,
     default: true
   },
-  isDeleted: Boolean
+  isDeleted: {
+    type: Boolean,
+    default: false
+  }
 });
 
 module.exports = Exercise = model("userExercise", UserExerciseSchema);

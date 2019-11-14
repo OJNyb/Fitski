@@ -32,7 +32,7 @@ const sets = Joi.number()
 
 const reps = Joi.number()
   .min(0)
-  .max(1000)
+  .max(9999)
   .integer()
   .label("Reps");
 

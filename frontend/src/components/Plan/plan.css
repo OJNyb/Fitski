@@ -80,35 +80,6 @@
   padding: 2px 12px;
 }
 
-.add-weeks-modal-mobile-container {
-  width: 100vw;
-  padding-bottom: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.add-weeks-modal-mobile-input-wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-}
-
-.add-weeks-modal-mobile-input-shiizz {
-  width: 25%;
-  margin: 0 20px;
-}
-
-.add-weeks-modal-mobile-input-wrapper input {
-  border: none;
-  outline: none;
-  text-align: center;
-  font-size: 28px;
-  width: 100%;
-  color: rgb(59, 43, 43);
-}
-
 /* ACTIVATE PLAN */
 .activate-plan-span {
   color: #353232;
@@ -126,15 +97,4 @@
 .bs-activate-plan-cal-contaioner {
   position: absolute;
   top: 70px;
-}
-
-/* MOBILE */
-.plan-mobile-empty-plan-container {
-  bottom: 0;
-  height: 50%;
-  justify-content: space-between;
-}
-
-.plan-mobile-empty-plan-container > div {
-  padding: 30px;
 }

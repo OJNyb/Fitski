@@ -4,7 +4,6 @@ import { addMGC, formatHistoryDate } from "../../utils/formatHistoryDate";
 import { formatMuscleGroups } from "../../utils/displayMuscleGroups";
 import useMobile from "../../hooks/useMobile";
 import useSetLoading from "../../hooks/useSetLoading";
-import "react-dates/initialize";
 import moment from "moment";
 import { findLastOccurenceOfExercise } from "../../utils/findAllOccurencesOfExercise";
 
@@ -22,8 +21,6 @@ import {
 import SetLoading from "../SetLoading";
 
 import "./history.css";
-import "react-dates/lib/css/_datepicker.css";
-import "./calendar-styles.css";
 
 const MobileView = lazy(() => import("./Mobile/MobileView"));
 const WebView = lazy(() => import("./Web/WebView"));
@@ -67,6 +64,7 @@ const History = () => {
   }
 
   function handleAddExercise(exercise) {
+    console.log(currentDay);
     const { _id: exerciseId } = exercise;
     if (dayIndex === -1) {
       let x = findLastOccurenceOfExercise(days, exerciseId);

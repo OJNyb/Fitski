@@ -8,6 +8,7 @@ const { SESS_NAME } = require("../../config/keys");
 const User = require("../../models/User");
 const History = require("../../models/History");
 const UserExercise = require("../../models/UserExercise");
+const DefaultExerciseDelete = require("../../models/DefaultExerciseDelete");
 
 // Validation
 const { ensureSignedIn, ensureSignedOut } = require("../../middlewares/auth");
@@ -38,19 +39,29 @@ router.post("/register", ensureSignedOut, validateRequest, (req, res, next) => {
     ...body
   });
 
-  let newHistory = new History({
+  const newHistory = new History({
     user: _id
   });
 
-  let newUserExercise = new UserExercise({
+  const newDefaultExerciseDelete = new DefaultExerciseDelete({
     user: _id
   });
 
   newUser
     .save()
-    .then(user => {
-      newHistory.save().catch(next);
-      newUserExercise.save().catch(next);
+    .then(async user => {
+      try {
+        await newHistory.save();
+        await newDefaultExerciseDelete.save();
+      } catch (err) {
+        try {
+          newUser.remove();
+        } catch (err) {
+          return next(err);
+        }
+        return next(err);
+      }
+
       delete user.password;
       session.userId = user.id;
       return res.json({ message: "success" });

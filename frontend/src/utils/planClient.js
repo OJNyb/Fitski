@@ -2,6 +2,9 @@ import axios from "axios";
 import { Types } from "mongoose";
 import {
   ADD_WEEK,
+  COPY_WEEK,
+  REPEAT_WEEK,
+  DELETE_WEEK,
   ADD_EXERCISE,
   DELETE_EXERCISE,
   ADD_SET,
@@ -21,6 +24,50 @@ function createDays() {
     days.push({ _id });
   }
   return { days };
+}
+
+// const newIds = [
+//   {
+//     dayId,
+//     exercises: [
+//       {
+//         exerId,
+//         setIds: []
+//       }
+//     ]
+//   }
+// ];
+
+function createWeekIds(copyWeek) {
+  const days = createWeekdayIds(copyWeek);
+  const weekId = new ObjectId().toHexString();
+
+  return { weekId, days };
+}
+
+function createWeekdayIds(copyWeek) {
+  const { days } = copyWeek;
+  const newIds = [];
+  for (let i = 0; i < days.length; i++) {
+    const day = days[i];
+    const { exercises: copyExercises } = day;
+    const exercises = [];
+    console.log(copyExercises);
+    for (let i = 0; i < copyExercises.length; i++) {
+      const exercise = copyExercises[i];
+      const { sets } = exercise;
+      const setIds = [];
+      for (let i = 0; i < sets.length; i++) {
+        setIds.push(new ObjectId().toHexString());
+      }
+      const exerId = new ObjectId().toHexString();
+      exercises.push({ exerId, setIds });
+    }
+    const dayId = new ObjectId().toHexString();
+    newIds.push({ dayId, exercises });
+  }
+
+  return newIds;
 }
 
 function createWeek() {
@@ -57,6 +104,77 @@ function addWeeks(dispatch, planId, numberOfWeeks = 1) {
     .catch(err => console.error(err.response));
 }
 
+function copyWeek(dispatch, planId, weekId, copyWeek) {
+  const newIds = createWeekdayIds(copyWeek);
+
+  dispatch({ type: COPY_WEEK, payload: { newIds, weekId, copyWeek } });
+
+  axios
+    .post(`/plan/week/copy/${planId}/${weekId}`, {
+      newIds,
+      copyWeekId: copyWeek._id
+    })
+    .then(res => {
+      const { data } = res;
+      const { message } = data;
+      if (message !== "success") {
+        dispatch({
+          type: "COPY_WEEK_FAILED",
+          payload: { weekId }
+        });
+      }
+    })
+    .catch(err => console.error(err.response));
+}
+
+function repeatWeek(dispatch, planId, timesToRepeat, copyWeek) {
+  const newIds = [];
+  for (let i = 0; i < timesToRepeat; i++) {
+    newIds.push(createWeekIds(copyWeek));
+  }
+
+  dispatch({ type: REPEAT_WEEK, payload: { newIds, copyWeek } });
+
+  axios
+    .post(`/plan/week/repeat/${planId}/${copyWeek._id}`, {
+      newIds,
+      copyWeekId: copyWeek._id
+    })
+    .then(res => {
+      const { data } = res;
+      const { message } = data;
+      if (message !== "success") {
+        dispatch({
+          type: "COPY_WEEK_FAILED",
+          payload: { newIds }
+        });
+      }
+    })
+    .catch(err => console.error(err.response));
+}
+
+function deleteWeek(dispatch, planId, weekId) {
+  const payload = { weekId };
+  dispatch({
+    type: DELETE_WEEK,
+    payload
+  });
+
+  axios
+    .delete(`/plan/week/${planId}/${weekId}`)
+    .then(res => {
+      const { data } = res;
+      const { message } = data;
+      if (message !== "success") {
+        dispatch({
+          type: "COPY_WEEK_FAILED",
+          payload: { weekId }
+        });
+      }
+    })
+    .catch(err => console.error(err.response));
+}
+
 function addExercise(dispatch, planId, weekId, dayId, exercise, reps) {
   const exerId = new ObjectId().toHexString();
   const setId = new ObjectId().toHexString();
@@ -87,27 +205,6 @@ function addExercise(dispatch, planId, weekId, dayId, exercise, reps) {
     })
     .catch(err => console.error(err.response));
 }
-
-// function editExercise(dispatch, values, planId, weekId, dayId, exerId) {
-//   const payload = { weekId, dayId, exerId, values };
-//   dispatch({
-//     type: EDIT_EXERCISE,
-//     payload
-//   });
-
-//   axios
-//     .post(`/plan/exercise/${planId}/${weekId}/${dayId}/${exerId}`, {
-//       ...values
-//     })
-//     .then(res => {
-//       const { data } = res;
-//       const { message } = data;
-//       if (message !== "success") {
-//         console.log("todo");
-//       }
-//     })
-//     .catch(err => console.error(err.response));
-// }
 
 function deleteExercise(dispatch, planId, weekId, dayId, exerId) {
   const payload = { weekId, dayId, exerId };
@@ -192,4 +289,14 @@ function deleteSet(dispatch, planId, weekId, dayId, exerId, setId) {
     })
     .catch(err => console.error(err.response));
 }
-export { addWeeks, addExercise, deleteExercise, addSet, editSet, deleteSet };
+export {
+  addWeeks,
+  copyWeek,
+  repeatWeek,
+  deleteWeek,
+  addExercise,
+  deleteExercise,
+  addSet,
+  editSet,
+  deleteSet
+};

@@ -1,5 +1,5 @@
 import React from "react";
-import { displayDate } from "../../utils/formatHistoryDate";
+import { displayDate } from "../../../utils/formatHistoryDate";
 import { Link } from "react-router-dom";
 
 const PlanCard = ({ plan, isMobile }) => {

@@ -7,14 +7,12 @@ import PlanText from "./PlanText";
 import AddWeeksModal from "./AddWeeksModal";
 import DeletePlanModal from "./DeletePlanModal";
 import ActivatePlanModal from "./ActivatePlanModal";
-import useNavWhiteBack from "../../hooks/useNavWhiteBack";
 import useMobile from "../../hooks/useMobile";
+import MobilePlan from "./Mobile/Plan";
 
 import "./plan.css";
-import Plus20 from "../shared/SVGs/Plus20";
 
 const PlanOverview = ({ history }) => {
-  useNavWhiteBack("/plans");
   const {
     state: { woPlan }
   } = useContext(PlanContext);
@@ -54,21 +52,31 @@ const PlanOverview = ({ history }) => {
       );
     });
   } else {
-    if (isMobile) {
-      weeksDisplay = <MobileNoWeeks setShowModal={setShowModal} />;
-    } else {
-      weeksDisplay = (
-        <div className="plan-week-container flex-col-cen">
-          <p>Wah gwan! Looks like there's no weeks</p>
-          <button
-            className="theme-btn-filled"
-            onClick={() => setShowModal("addWeeks")}
-          >
-            Add weeks
-          </button>
-        </div>
-      );
-    }
+    weeksDisplay = (
+      <div className="plan-week-container flex-col-cen">
+        <p>Wah gwan! Looks like there's no weeks</p>
+        <button
+          className="theme-btn-filled"
+          onClick={() => setShowModal("addWeeks")}
+        >
+          Add weeks
+        </button>
+      </div>
+    );
+  }
+
+  let view;
+  if (isMobile) {
+    view = <MobilePlan woPlan={woPlan} setShowModal={setShowModal} />;
+  } else {
+    view = (
+      <div style={{ padding: "10px 0 50px" }}>
+        <h1 className="plan-name black">{name}</h1>
+        {/* <p className="plan-description-label black">Description</p>
+    <p className="plan-description">{description}</p> */}
+        {weeksDisplay}
+      </div>
+    );
   }
 
   return (
@@ -78,31 +86,9 @@ const PlanOverview = ({ history }) => {
         setShowModal={setShowModal}
         isMobile={isMobile}
       />
-      <div style={{ padding: "10px 0 50px" }}>
-        <h1 className="plan-name black">{name}</h1>
-        {/* <p className="plan-description-label black">Description</p>
-        <p className="plan-description">{description}</p> */}
-        {weeksDisplay}
-      </div>
-
+      {view}
       {modal}
     </>
-  );
-};
-
-const MobileNoWeeks = ({ setShowModal }) => {
-  return (
-    <div className="flex-col-cen fixed width-100p plan-mobile-empty-plan-container">
-      <span className="color-gray">Workout Plan Empty</span>
-      <div className="flex-col-cen">
-        <button onClick={() => setShowModal("addWeeks")}>
-          <Plus20 fill={"theme"} />
-        </button>
-        <span className="color-light-gray font-14 margin-5">
-          Start Adding Weeks
-        </span>
-      </div>
-    </div>
   );
 };
 

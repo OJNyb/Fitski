@@ -6,11 +6,15 @@ const objectId = require("../../schemas/utils");
 
 const Exercise = require("../../models/Exercise");
 const UserExercise = require("../../models/UserExercise");
+const DefaultExerciseDelete = require("../../models/DefaultExerciseDelete");
 
 // Validation
 const SchemaValidator = require("../../middlewares/SchemaValidator");
 const validateRequest = SchemaValidator(true);
-const validateExercise = require("../../middlewares/validateExercise");
+const {
+  validateExercise,
+  validateDeleteExercises
+} = require("../../middlewares/validateExercise");
 
 const { ensureSignedIn } = require("../../middlewares/auth");
 
@@ -22,14 +26,25 @@ router.get("/", async (req, res, next) => {
   const { userId } = session;
   let exercises;
   try {
-    let preExercises = await Exercise.find({});
-    let ownExercises = await UserExercise.find({
+    const deletedDefaultExercises = await DefaultExerciseDelete.findOne({
+      user: userId
+    });
+    const defExercises = await Exercise.find({});
+    const ownExercises = await UserExercise.find({
       user: userId,
       isDeleted: false
     });
-    exercises = [...preExercises, ...ownExercises];
+
+    console.log(ownExercises);
+    const { exercises: ddExercises } = deletedDefaultExercises;
+    const ddExerciseIds = ddExercises.map(x => x.exercise.toString());
+
+    let defExercisesFiltered = defExercises.filter(
+      x => !ddExerciseIds.includes(x._id.toString())
+    );
+    exercises = [...defExercisesFiltered, ...ownExercises];
   } catch (e) {
-    next(e);
+    return next(e);
   }
 
   return res.json(exercises);
@@ -138,30 +153,85 @@ router.patch(
   }
 );
 
+// // @route GET api/exercise
+// // @desc Delete exercise
+// // @access Private
+// router.delete(
+//   "/:exercise_id",
+//   ensureSignedIn,
+//   validateRequest,
+//   validateDeleteExercise,
+//   async (req, res, next) => {
+//     const { body } = req;
+//     const { exercise } = body;
+
+//     if (exercise._id)
+//       exercise
+//         .updateOne({
+//           $set: { isDeleted: true }
+//         })
+//         .then(reski => {
+//           if (reski.nModified) {
+//             res.json({ message: "success" });
+//           } else {
+//             res.status(404).json(createErrorObject(["Couldn't apply update"]));
+//           }
+//         })
+//         .catch(next);
+//   }
+// );
+
 // @route GET api/exercise
-// @desc Delete custom exercise
+// @desc Delete custom exercises
 // @access Private
 router.delete(
-  "/custom/:exercise_id",
+  "/",
   ensureSignedIn,
   validateRequest,
-  validateExercise,
+  validateDeleteExercises,
   async (req, res, next) => {
-    const { body } = req;
-    const { exercise } = body;
+    const { body, session } = req;
+    const { userId } = session;
+    const { defaultExercisesToDelete, customExercisesToDelete } = body;
 
-    exercise
-      .updateOne({
-        $set: { isDeleted: true }
-      })
-      .then(reski => {
-        if (reski.nModified) {
-          res.json({ message: "success" });
-        } else {
-          res.status(404).json(createErrorObject(["Couldn't apply update"]));
+    if (defaultExercisesToDelete.length) {
+      const newExercisesToDelete = defaultExercisesToDelete.map(x => {
+        return {
+          exercise: x
+        };
+      });
+      DefaultExerciseDelete.updateOne(
+        { user: userId },
+        {
+          $push: { exercises: { $each: newExercisesToDelete } }
         }
-      })
-      .catch(next);
+      )
+        .then(reski => {
+          if (!reski.nModified) {
+          } else {
+            res.status(404).json(createErrorObject(["Couldn't apply update"]));
+          }
+        })
+        .catch(next);
+    }
+
+    if (customExercisesToDelete.length) {
+      UserExercise.update(
+        { _id: { $in: customExercisesToDelete } },
+        {
+          $set: { isDeleted: true }
+        }
+      )
+        .then(reski => {
+          if (!reski.nModified) {
+          } else {
+            res.status(404).json(createErrorObject(["Couldn't apply update"]));
+          }
+        })
+        .catch(next);
+    }
+    return res.json({ message: "success" });
   }
 );
+
 module.exports = router;

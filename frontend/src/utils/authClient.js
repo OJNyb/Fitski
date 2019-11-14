@@ -1,29 +1,28 @@
 import axios from "axios";
 
-function login({ email, password }) {
+function login(values) {
   return axios
     .post("/user/login", {
-      email,
-      password
+      ...values
     })
     .then(res => {
       return res.data;
+    })
+    .catch(err => {
+      return Promise.reject(err.response.data);
     });
 }
 
-const register = ({ name, email, password, password2 }) => {
+const register = values => {
   return axios
     .post("/user/register", {
-      name,
-      email,
-      password,
-      password2
+      ...values
     })
     .then(res => {
-      console.log(res);
+      return res.data;
     })
     .catch(err => {
-      console.log(err.response.data);
+      return Promise.reject(err.response.data);
     });
 };
 

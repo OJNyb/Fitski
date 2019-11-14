@@ -91,7 +91,7 @@ function deleteDay(dispatch, dayId) {
 function addExercise(dispatch, dayId, exercise) {
   const exerId = new ObjectId().toHexString();
   const setId = new ObjectId().toHexString();
-  //
+
   const custom = exercise.custom || false;
 
   dispatch({
