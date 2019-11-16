@@ -6,6 +6,7 @@ import useMobile from "../../hooks/useMobile";
 import useSetLoading from "../../hooks/useSetLoading";
 import moment from "moment";
 import { findLastOccurenceOfExercise } from "../../utils/findAllOccurencesOfExercise";
+import useTitle from "../../hooks/useTitle";
 
 import {
   addDay,
@@ -35,6 +36,7 @@ const History = () => {
   const [showExercises, setShowExercises] = useState(false);
   const { history, error, isPending, isRejected } = state;
   const isMobile = useMobile();
+  useTitle("Fitnut - History");
 
   useSetLoading(isPending);
 

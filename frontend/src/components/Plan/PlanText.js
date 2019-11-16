@@ -89,7 +89,6 @@ const Exercise = ({ exercise }) => {
 
   let view;
 
-  console.log(isMobile);
   if (isMobile) {
     view = (
       <ExerciseMobile

@@ -1,5 +1,7 @@
 import React from "react";
 import MobileModal from "../../shared/Modal/MobileModal";
+import Plus24 from "../../shared/SVGs/Plus24";
+import Minus24 from "../../shared/SVGs/Minus24";
 
 const RepeatWeekModal = ({
   onSubmit,
@@ -14,7 +16,7 @@ const RepeatWeekModal = ({
   }
 
   function onClick(value) {
-    if (value > 0) {
+    if (timesToRepeat + value > 0) {
       setTimesToRepeat(Number(timesToRepeat) + value);
     }
   }
@@ -26,9 +28,7 @@ const RepeatWeekModal = ({
             onClick(-1);
           }}
         >
-          <div className="minus-container">
-            <div />
-          </div>
+          <Minus24 fill={"#a60000"} />
         </button>
         <div className="add-weeks-modal-mobile-input-shiizz">
           <input
@@ -40,10 +40,7 @@ const RepeatWeekModal = ({
           <div className="border-with-sides" />
         </div>
         <button onClick={() => onClick(1)}>
-          <div className="plus-container">
-            <div />
-            <div />
-          </div>
+          <Plus24 fill={"#a60000"} />
         </button>
       </div>
 

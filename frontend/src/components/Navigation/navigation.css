@@ -129,7 +129,19 @@ nav section {
   justify-content: space-between;
   position: fixed;
   z-index: 999;
-  padding: 0 10px 0 10px;
+  margin: 0 10px;
+}
+
+.nav-mid-web-header-container {
+  left: 250px;
+  top: 6px;
+  width: calc(100% - 200px - 250px - 30px);
+  height: 60px;
+}
+
+.nav-mid-mobile-header-container {
+  top: 0;
+  height: 7vh;
 }
 
 .nav-mid-header-item {
@@ -139,7 +151,9 @@ nav section {
 
 .nav-h2 {
   font-weight: 500;
+  margin-top: 0;
   margin-left: 3px;
+  margin-bottom: 1px;
 }
 
 .nav-mid-header-container-back-btn {

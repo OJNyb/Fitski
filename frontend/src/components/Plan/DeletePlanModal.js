@@ -1,8 +1,10 @@
 import React from "react";
 import Modal from "../shared/Modal/Modal";
 import axios from "axios";
+import { useHistory } from "react-router-dom";
 
-const DeletePlanModal = ({ planId, redirect, hideModal }) => {
+const DeletePlanModal = ({ planId, hideModal }) => {
+  const { push } = useHistory();
   function onDelete() {
     axios
       .delete(`/plan/${planId}`)
@@ -10,7 +12,7 @@ const DeletePlanModal = ({ planId, redirect, hideModal }) => {
         const { data } = res;
         const { message } = data;
         if (message === "success") {
-          redirect("/plans");
+          push("/plans");
         } else {
           console.log("err");
         }

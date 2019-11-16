@@ -3,7 +3,7 @@ import { Redirect, withRouter } from "react-router-dom";
 
 import NavMid from "../shared/NavMid/NavMid";
 
-const PlanNav = ({ isMobile, planName, setShowModal }) => {
+const PlanNav = ({ planId, planName, setShowModal }) => {
   const [redirect, setRedirect] = useState(false);
 
   if (redirect) {
@@ -27,11 +27,18 @@ const PlanNav = ({ isMobile, planName, setShowModal }) => {
         rightBtnAction={() => setShowModal("activate")}
         actionMenuChildren={[
           {
-            icon: "edit",
-            text: "Edit plan",
-            action: () => setShowModal("edit"),
+            link: true,
+            icon: "description",
+            text: "Overview",
+            to: `/plans/${planId}/overview`,
             outlined: true
           },
+          // {
+          //   icon: "edit",
+          //   text: "Edit plan",
+          //   action: () => setShowModal("edit"),
+          //   outlined: true
+          // },
           {
             icon: "playlist_add",
             text: "Add weeks",

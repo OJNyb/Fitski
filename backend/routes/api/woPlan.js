@@ -304,7 +304,6 @@ router.post(
       }
       newWeeks.push({ _id: weekId, days: newDays });
     }
-    console.log(newWeeks);
 
     woPlan
       .updateOne({
@@ -533,7 +532,6 @@ router.post(
       _id: setId
     };
 
-    console.log(newSet);
     woPlan
       .updateOne(
         {
@@ -626,8 +624,6 @@ router.delete(
     } = params;
 
     const { woPlan } = body;
-
-    console.log("gay");
 
     woPlan
       .updateOne(

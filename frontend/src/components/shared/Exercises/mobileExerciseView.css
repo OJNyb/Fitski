@@ -94,7 +94,7 @@
 /* ADD EXERCISE MODAL */
 .custom-select-upwards {
   position: relative;
-  border-bottom: 1px solid silver;
+  border-bottom: 1px solid rgb(192, 169, 169);
 }
 
 .select-triangle {

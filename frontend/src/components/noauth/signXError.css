@@ -1,3 +1,8 @@
+.landing-mobile-sign-x-form button {
+  min-height: 46px;
+  font-weight: bold;
+}
+
 .form-error-container {
   width: 206px;
   margin-bottom: 5px;

@@ -26,7 +26,7 @@ const MobileExerciseCard = ({
       <div className="history-exercise-name">
         <span className="black">{name}</span>
 
-        <div className="add-card-btn-container">
+        {/* <div className="add-card-btn-container">
           <button
             className="theme-btn-no-border"
             onClick={e => {
@@ -45,7 +45,7 @@ const MobileExerciseCard = ({
           >
             <i className="material-icons ">delete_outline</i>
           </button>
-        </div>
+        </div>*/}
       </div>
 
       <div className="add-card-body">{setDisplay}</div>

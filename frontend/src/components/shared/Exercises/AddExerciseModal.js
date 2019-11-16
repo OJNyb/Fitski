@@ -64,7 +64,10 @@ const AddEditModal = ({
     children = <p>Can't edit the default exercises</p>;
   } else {
     children = (
-      <div onClick={() => setShowCategories(false)} className="width-100p">
+      <div
+        onClick={() => setShowCategories(false)}
+        className="width-100p padding-0-10-77"
+      >
         <div className="margin-a width-80p">
           <div className="margin-0-0-20">
             <div className="mobile-exercises-add-label">NAME:</div>

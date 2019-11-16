@@ -2,11 +2,10 @@ import React, { useState } from "react";
 import { Form, Field, Formik } from "formik";
 import { useAuth } from "../../context/authContext";
 
-import MobileInput from "./MobileInput";
+import MobileInput from "../shared/Form/MobileInput";
 import useSetLoading from "../../hooks/useSetLoading";
 
 import "./signXError.css";
-import "./MobileLogin.css";
 
 const Login = () => {
   const [loginErr, setLoginErr] = useState(false);
@@ -15,7 +14,7 @@ const Login = () => {
 
   return (
     <div className="width-100p padding-0-14 margin-top-20 flex-col-cen border-box max-width-600 margin-a">
-      <i className="material-icons landing-icon-medium">fitness_center</i>
+      <i className="material-icons tc font-30">fitness_center</i>
       <h2 className="font-21 margin-10-0">Log in to Fitnut</h2>
       <Formik
         initialValues={{ email: "", password: "" }}

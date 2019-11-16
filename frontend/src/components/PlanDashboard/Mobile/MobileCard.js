@@ -1,24 +1,49 @@
 import React from "react";
-import { displayDate } from "../../../utils/formatHistoryDate";
 import { Link } from "react-router-dom";
 
 import "./plansMobile.css";
 
-const MobilePlanCard = ({ plan }) => {
-  const { _id, name, user, goal, weeks, createdAt } = plan;
+const MobilePlanCard = ({ plan, onActivateClick }) => {
+  const { _id: planId, name, user, goals, weeks, description } = plan;
   const { username: author, avatar } = user;
 
+  const goalDisplay = goals.join(", ");
+
+  let descDisplay = description;
+
+  if (description.length > 150) {
+    descDisplay = description.slice(0, 150) + "...";
+  }
+
   return (
-    <Link to={`/plans/${_id}`} className="plans-mobile-plan-card color-gray">
-      <div className="plans-mobile-plan-author plans-plan-author">
+    <Link
+      to={`/plans/${planId}`}
+      className="padding-10 flex-stretch border-box width-100p plans-mobile-card black"
+    >
+      <div className="flex-stretch plans-mobile-plan-author margin-0-5">
         <div style={{ backgroundImage: `url(${avatar})` }}>
           <img src={avatar} />
         </div>
       </div>
-      <div className="red-h-5" />
-      <div className="plans-mobile-plan-name black">{name}</div>
-      <div className="plans-plan-goal">Gain muscle</div>
-      <div className="plans-plan-length">{weeks.length} weeks</div>
+      <div className="flex-col margin-0-5 border-box width-100p">
+        <div className="flex-center-space-bw">
+          <div className="flex-col">
+            <span className="black line-height-12">{name}</span>
+            <span className="font-w-300 font-14 line-height-11">
+              <span className="tc">@OJNyb</span> | {goalDisplay} |{" "}
+              {weeks.length} weeks
+            </span>
+            <span className="font-w-300 font-14 line-height-11"></span>
+          </div>
+          <button
+            onClick={e => onActivateClick(e, planId)}
+            className="theme-btn padding-0-15 align-s-fs"
+          >
+            <span className="mb-1 font-w-500">Activate</span>
+          </button>
+        </div>
+        <div className="pt-5 font-w-300">{descDisplay}</div>
+      </div>
     </Link>
   );
 };

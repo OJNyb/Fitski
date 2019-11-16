@@ -8,7 +8,7 @@ import { SET_PLAN, IS_PENDING, IS_REJECTED } from "../types/planTypes";
 
 const initialState = {
   woPlan: null,
-  isPending: false,
+  isPending: true,
   isRejected: false,
   error: null
 };

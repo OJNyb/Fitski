@@ -1,5 +1,4 @@
 import React, { useState, useContext } from "react";
-import { withRouter } from "react-router-dom";
 import { PlanContext } from "../../context/planContext";
 
 import PlanNav from "./PlanNav";
@@ -9,16 +8,20 @@ import DeletePlanModal from "./DeletePlanModal";
 import ActivatePlanModal from "./ActivatePlanModal";
 import useMobile from "../../hooks/useMobile";
 import MobilePlan from "./Mobile/Plan";
+import useTitle from "../../hooks/useTitle";
+import PlanOverview from "./PlanOverview";
 
 import "./plan.css";
 
-const PlanOverview = ({ history }) => {
+const Plan = () => {
   const {
     state: { woPlan }
   } = useContext(PlanContext);
   const [showModal, setShowModal] = useState(false);
   const isMobile = useMobile();
-  const { user, name, weeks, description, _id: planId } = woPlan;
+  const { user, name, weeks, _id: planId } = woPlan;
+  console.log(name);
+  useTitle(name);
 
   function hideModal() {
     setShowModal(false);
@@ -28,18 +31,9 @@ const PlanOverview = ({ history }) => {
   if (showModal) {
     if (showModal === "addWeeks") {
       modal = <AddWeeksModal planId={planId} hideModal={hideModal} />;
-    }
-    if (showModal === "delete") {
-      modal = (
-        <DeletePlanModal
-          planId={planId}
-          redirect={history.push}
-          hideModal={hideModal}
-        />
-      );
-    }
-
-    if (showModal === "activate") {
+    } else if (showModal === "delete") {
+      modal = <DeletePlanModal planId={planId} hideModal={hideModal} />;
+    } else if (showModal === "activate") {
       modal = <ActivatePlanModal planId={planId} hideModal={hideModal} />;
     }
   }
@@ -82,6 +76,7 @@ const PlanOverview = ({ history }) => {
   return (
     <>
       <PlanNav
+        planId={planId}
         planName={name}
         setShowModal={setShowModal}
         isMobile={isMobile}
@@ -92,4 +87,4 @@ const PlanOverview = ({ history }) => {
   );
 };
 
-export default withRouter(PlanOverview);
+export default Plan;

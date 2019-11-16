@@ -92,19 +92,15 @@ const NavMid = props => {
 
   return (
     <>
-      <div
-        className="nav-mid-header-container"
-        style={{
-          left: isMobile ? "35px" : "250px",
-          top: isMobile ? "0" : "6px",
-          width: isMobile
-            ? "calc(100vw - 55px)"
-            : "calc(100% - 200px - 250px - 30px)",
-          height: isMobile ? "7%" : "60px"
-        }}
-      >
-        {view}
-      </div>
+      {/* <div
+        className={
+          "nav-mid-header-container " +
+          (isMobile
+            ? "nav-mid-mobile-header-container"
+            : "nav-mid-web-header-container")
+        }
+      > */}
+      {view}
     </>
   );
 };

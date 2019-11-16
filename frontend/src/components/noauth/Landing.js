@@ -14,13 +14,13 @@ const Landing = () => {
   if (isMobile) {
     return (
       <Suspense fallback={SetLoading}>
-        <MobileLanding />;
+        <MobileLanding />
       </Suspense>
     );
   } else {
     return (
       <Suspense fallback={SetLoading}>
-        <BigScreenLanding />;
+        <BigScreenLanding />
       </Suspense>
     );
   }

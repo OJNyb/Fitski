@@ -1,4 +1,5 @@
 import React from "react";
+import "./mobileInput.css";
 
 const MobileInput = ({ type, label, field, form }) => {
   const { name } = field;
@@ -11,11 +12,11 @@ const MobileInput = ({ type, label, field, form }) => {
     <div className="padding-10-15">
       <div
         className={
-          "mobile-sign-x-input-wrapper flex-col border-box" +
-          (isError ? " mobile-sign-x-input-error" : "")
+          "mobile-input-wrapper flex-col border-box" +
+          (isError ? " mobile-input-error" : "")
         }
       >
-        <div className="mobile-sign-x-label-box">
+        <div className="mobile-label-box">
           <span>{label}</span>
         </div>
         <div className="pos-rel">

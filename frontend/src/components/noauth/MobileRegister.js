@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import { Formik, Form, Field } from "formik";
 import useSetLoading from "../../hooks/useSetLoading";
-import MobileInput from "./MobileInput";
+import MobileInput from "../shared/Form/MobileInput";
 import { useAuth } from "../../context/authContext";
 
 import "./signXError.css";
-import "./MobileLogin.css";
 
 const Register = () => {
   const { register } = useAuth();

@@ -35,7 +35,6 @@ router.get("/", async (req, res, next) => {
       isDeleted: false
     });
 
-    console.log(ownExercises);
     const { exercises: ddExercises } = deletedDefaultExercises;
     const ddExerciseIds = ddExercises.map(x => x.exercise.toString());
 
@@ -91,7 +90,6 @@ router.post(
     newExercise
       .save()
       .then(reski => {
-        console.log(reski);
         res.json({ message: "success" });
         //   res.status(404).json(createErrorObject(["Couldn't apply update"]));
       })

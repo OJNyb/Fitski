@@ -5,6 +5,7 @@ import useSetLoading from "../../hooks/useSetLoading";
 
 import "./plans.css";
 import SetLoading from "../SetLoading";
+import useTitle from "../../hooks/useTitle";
 
 const MobilePlans = lazy(() => import("./Mobile/PlansMobile"));
 const WebPlans = lazy(() => import("./Web/PlansWeb"));
@@ -16,10 +17,9 @@ const Plans = () => {
   // const [authorFilter, setAuthorFilter] = useState("");
   // const [weekFilter, setWeekFilter] = useState([0, 50]);
   // const [goalFilter, setGoalFilter] = useState([false, false, false]);
-
   const { isPending, isRejected, woPlans } = state;
-
   useSetLoading(isPending);
+  useTitle("Fitnut - Plans");
 
   if (isPending) return null;
   if (isRejected) return <p>Derp</p>;

@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import MobileModal from "../Modal/MobileModal";
+import { Link } from "react-router-dom";
+import MobileNavMidContainer from "./MobileNavMidContainer";
 
 import "./mobileNav.css";
 
@@ -33,7 +35,7 @@ const MobileNavMid = ({
 
   if (actionMenuChildren) {
     let actionMenu = actionMenuChildren.map(x => (
-      <NavMidActionMenuItem element={x} key={x.action} />
+      <NavMidActionMenuItem element={x} key={x.text} />
     ));
     children = (
       <div onClick={() => setShowActionModal(false)}>
@@ -48,28 +50,49 @@ const MobileNavMid = ({
     );
   }
 
+  let backTextDisplay = null;
+  if (backText) {
+    backTextDisplay = (
+      <div className="nav-mid-header-item">
+        <h2 className="nav-h2 font-18 color-white">{backText}</h2>
+      </div>
+    );
+  }
+
+  let moreBtn = null;
+  if (actionMenuChildren) {
+    moreBtn = (
+      <div className="nav-mid-header-item nav-mid-header-button-container">
+        <button
+          className="nav-mid-header-more-btn"
+          onClick={handleMoreActionClick}
+        >
+          <svg
+            width="19"
+            height="21"
+            viewBox="0 0 19 21"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <rect x="7" y="1" width="5" height="5" fill="white" />
+            <rect x="7" y="8" width="5" height="5" fill="white" />
+            <rect x="7" y="15" width="5" height="5" fill="white" />
+          </svg>
+        </button>
+      </div>
+    );
+  }
+
+  const navChildren = (
+    <>
+      {backTextDisplay}
+      {moreBtn}
+    </>
+  );
+
   return (
     <>
-      {backText && (
-        <div className="nav-mid-header-item">
-          <h2 className="margin-0 nav-h2 font-18 color-white">{backText}</h2>
-        </div>
-      )}
-      {/* 
-      {midContent && <div className="nav-mid-header-item">{midContent}</div>} */}
-
-      <div className="nav-mid-header-item nav-mid-header-button-container">
-        {actionMenuChildren && (
-          <button
-            className="nav-mid-header-more-btn theme-btn"
-            onClick={handleMoreActionClick}
-          >
-            <i className="material-icons nav-mid-header-more-icon">
-              more_horiz
-            </i>
-          </button>
-        )}
-      </div>
+      <MobileNavMidContainer children={navChildren} />
 
       {showActionModal && (
         <MobileModal
@@ -82,7 +105,7 @@ const MobileNavMid = ({
 };
 
 const NavMidActionMenuItem = ({ element }) => {
-  const { icon, text, action, outlined, customClass } = element;
+  const { to, link, icon, text, action, outlined, customClass } = element;
 
   const divClass =
     "nav-mobile-action-menu-item" +
@@ -92,12 +115,30 @@ const NavMidActionMenuItem = ({ element }) => {
     "nav-mobile-action-menu-icon material-icons" +
     (outlined ? "-outlined" : "");
 
-  return (
-    <div className={divClass} onClick={action}>
+  const content = (
+    <>
       <i className={iconClass}>{icon}</i>
       <span>{text}</span>
-    </div>
+    </>
   );
+
+  let view;
+
+  if (link) {
+    view = (
+      <Link to={to} className={divClass}>
+        {content}
+      </Link>
+    );
+  } else {
+    view = (
+      <div className={divClass} onClick={action}>
+        {content}
+      </div>
+    );
+  }
+
+  return view;
 };
 
 export default MobileNavMid;

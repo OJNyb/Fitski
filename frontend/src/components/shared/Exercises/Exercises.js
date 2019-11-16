@@ -55,8 +55,6 @@ const Exercises = ({ handleAddExercise, closeExercises }) => {
     filterExercises();
   }, [search, muscleGroup, isMobile, exercises.length, exercises, edit]);
 
-  console.log(state);
-
   function handleAddCustomExercise(name, category) {
     addExercise(dispatch, name, category);
   }

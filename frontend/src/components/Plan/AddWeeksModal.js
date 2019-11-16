@@ -3,6 +3,8 @@ import Modal from "../shared/Modal/Modal";
 import { PlanContext } from "../../context/planContext";
 import useMobile from "../../hooks/useMobile";
 import { addWeeks } from "../../utils/planClient";
+import Plus24 from "../shared/SVGs/Plus24";
+import Minus24 from "../shared/SVGs/Minus24";
 
 const AddWeeksModal = ({ planId, hideModal }) => {
   const { dispatch } = useContext(PlanContext);
@@ -10,8 +12,7 @@ const AddWeeksModal = ({ planId, hideModal }) => {
   const [isSubmitting, setSubmitting] = useState(false);
   const isMobile = useMobile();
 
-  function onSubmit(values, { setSubmitting }) {
-    setSubmitting(true);
+  function onSubmit() {
     addWeeks(dispatch, planId, weeks);
     hideModal();
   }
@@ -30,9 +31,7 @@ const AddWeeksModal = ({ planId, hideModal }) => {
             if (weeks > 0) setWeeks(Number(weeks) - 1);
           }}
         >
-          <div className="minus-container">
-            <div />
-          </div>
+          <Minus24 fill={"#a60000"} />
         </button>
         <div className="add-weeks-modal-mobile-input-shiizz">
           <input
@@ -44,10 +43,7 @@ const AddWeeksModal = ({ planId, hideModal }) => {
           <div className="border-with-sides" />
         </div>
         <button onClick={() => setWeeks(Number(weeks) + 1)}>
-          <div className="plus-container">
-            <div />
-            <div />
-          </div>
+          <Plus24 fill={"#a60000"} />
         </button>
       </div>
 
@@ -57,10 +53,7 @@ const AddWeeksModal = ({ planId, hideModal }) => {
           "theme-btn-filled " +
           (isMobile ? "mobile-modal-submit-btn" : "bs-modal-submit-btn")
         }
-        onClick={() => {
-          setSubmitting(true);
-          onSubmit({ numberOfWeeks: weeks }, { setSubmitting });
-        }}
+        onClick={onSubmit}
       >
         Add
       </button>
