@@ -138,3 +138,8 @@
   flex: 1 35%;
   justify-content: center;
 }
+
+.mobile-exercise-nav-wrapper {
+  width: calc(100% - 42px);
+  padding: 0 10px 0 2px;
+}

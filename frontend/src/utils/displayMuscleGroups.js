@@ -7,12 +7,7 @@ function formatMuscleGroups(exercises) {
     }
   });
 
-  if (muscleGroup.includes("Triceps") && muscleGroup.includes("Biceps")) {
-    muscleGroup.push("Arms");
-    muscleGroup = muscleGroup.filter(x => {
-      return x !== "Triceps" && x !== "Biceps";
-    });
-  }
+  console.log(exercises);
 
   return muscleGroup
     .reduce((accu, curr) => {
@@ -30,13 +25,4 @@ function formatMuscleGroups(exercises) {
     });
 }
 
-function displayMuscleGroups(exercises) {
-  return formatMuscleGroups(exercises).reduce((accu, curr) => {
-    if (accu.length) {
-      accu += "/";
-    }
-    return accu + `${curr}`;
-  }, "");
-}
-
-export { formatMuscleGroups, displayMuscleGroups };
+export { formatMuscleGroups };

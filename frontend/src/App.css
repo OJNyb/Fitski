@@ -28,9 +28,11 @@ input[type="number"] {
   -moz-appearance: textfield; /* Firefox */
 }
 
-input {
+input,
+textarea {
   border: 0;
   outline: none;
   border-radius: 3px;
   font-family: inherit;
+  background-color: transparent;
 }

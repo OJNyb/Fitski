@@ -1,23 +1,16 @@
 import React, { useState } from "react";
 import Modal from "../shared/Modal/Modal";
-import { activatePlan } from "../../utils/historyClient";
 import useMobile from "../../hooks/useMobile";
 import CalendarView from "../shared/Calendar/MobileCalendar";
 
-import CustomRadio from "../shared/Form/CustomRadio";
 import "react-dates/initialize";
 import { DayPicker } from "react-dates";
 import { displayDate } from "../../utils/formatHistoryDate";
 
-const ActivatePlanModal = ({ planId, hideModal }) => {
+const ActivatePlanModal = ({ planId, hideModal, onActivateSubmit }) => {
   const [startDate, setStartDate] = useState(new Date());
   const [showCalendar, setShowCalendar] = useState(false);
   const isMobile = useMobile();
-
-  function onActivate() {
-    activatePlan(planId, startDate);
-    hideModal();
-  }
 
   function onDateChange(date) {
     setStartDate(new Date(date._d));
@@ -40,9 +33,9 @@ const ActivatePlanModal = ({ planId, hideModal }) => {
 
   let children = (
     <div className="padding-0-10-77 flex-col-cen">
-      <span className="activate-plan-span">Starting</span>
+      <span className="font-w-300 font-14 black">Starting</span>
       <button
-        className="activate-plan-date"
+        className="tc margin-0 font-w-300 font-30"
         onClick={() => setShowCalendar(true)}
         type="button"
       >
@@ -61,7 +54,7 @@ const ActivatePlanModal = ({ planId, hideModal }) => {
       )}
       <button
         className="theme-btn-filled mobile-modal-submit-btn "
-        onClick={onActivate}
+        onClick={() => onActivateSubmit(startDate)}
       >
         Activate
       </button>

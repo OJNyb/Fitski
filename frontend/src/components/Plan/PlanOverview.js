@@ -4,7 +4,7 @@ import { PlanContext } from "../../context/planContext";
 import useNavRedBack from "../../hooks/useNavRedBack";
 import useTitle from "../../hooks/useTitle";
 import MobileNavMidContainer from "../shared/NavMid/MobileNavMidContainer";
-import PlanEdit from "./PlanEdit";
+import { Link } from "react-router-dom";
 
 const Overview = () => {
   const {
@@ -25,27 +25,22 @@ const Overview = () => {
   const [edit, setEdit] = useState(false);
   const { avatar, username } = user;
   const goalsDisplay = goals.join(", ");
-  function onEditClick() {
-    setEdit(true);
-  }
 
-  let navBtn;
-  let view;
-
-  if (edit) {
-    navBtn = (
-      <button className="white-material-btn padding-5" onClick={onEditClick}>
-        <i className="material-icons-outlined">edit</i>
-      </button>
-    );
-    view = <PlanEdit woPlan={woPlan} setEdit={setEdit} />;
-  } else {
-    navBtn = (
-      <button className="white-material-btn padding-5" onClick={onEditClick}>
-        <i className="material-icons-outlined">edit</i>
-      </button>
-    );
-    view = (
+  return (
+    <>
+      <MobileNavMidContainer
+        children={
+          <>
+            <h2 className="margin-0 nav-h2 font-18 color-white">Overview</h2>
+            <Link
+              to={`/plans/${planId}/edit`}
+              className="white-material-btn padding-5"
+            >
+              <i className="material-icons-outlined">edit</i>
+            </Link>
+          </>
+        }
+      />
       <div className="padding-10">
         <div>
           <Label label={"Name"} />
@@ -74,20 +69,6 @@ const Overview = () => {
           <Content content={description} />
         </div>
       </div>
-    );
-  }
-
-  return (
-    <>
-      <MobileNavMidContainer
-        children={
-          <>
-            <h2 className="margin-0 nav-h2 font-18 color-white">Overview</h2>
-            {navBtn}
-          </>
-        }
-      />
-      {view}
     </>
   );
 };

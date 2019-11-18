@@ -29,7 +29,7 @@ const MobileDayView = ({
         );
       }
     });
-    return <div className="history-add-body">{exerciseDisplay}</div>;
+    return exerciseDisplay;
   } else {
     return (
       <div className="history-mobile-empty-log-container flex-col-cen">

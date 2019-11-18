@@ -1,25 +1,62 @@
-import React, { lazy, useState, Suspense } from "react";
+import React, { lazy, useState, useEffect, Suspense } from "react";
 import usePlans from "../../hooks/usePlans";
 import useMobile from "../../hooks/useMobile";
-import useSetLoading from "../../hooks/useSetLoading";
+import { useUser } from "../../context/userContext";
+import { useAuth } from "../../context/authContext";
+import { ACTIVATE_PLAN } from "../../types/plansTypes";
+import ConfirmModal from "../shared/Modal/ConfirmModal";
+import ActivatePlanModal from "../Plan/ActivatePlanModal";
 
 import "./plans.css";
 import SetLoading from "../SetLoading";
 import useTitle from "../../hooks/useTitle";
+import { activatePlan, deactivatePlan } from "../../utils/planClient";
 
 const MobilePlans = lazy(() => import("./Mobile/PlansMobile"));
 const WebPlans = lazy(() => import("./Web/PlansWeb"));
 
 const Plans = () => {
-  const { state, dispatch } = usePlans();
   const isMobile = useMobile();
-  // const [nameFilter, setNameFilter] = useState("");
-  // const [authorFilter, setAuthorFilter] = useState("");
-  // const [weekFilter, setWeekFilter] = useState([0, 50]);
-  // const [goalFilter, setGoalFilter] = useState([false, false, false]);
+  const { state, dispatch } = usePlans();
+  const user = useUser();
+  const { activatePlan: aPlan, deactivatePlan: dPlan } = useAuth();
+  const [showModal, setShowModal] = useState(false);
+  const { activeWOPlan } = user;
   const { isPending, isRejected, woPlans } = state;
-  useSetLoading(isPending);
   useTitle("Fitnut - Plans");
+
+  useEffect(() => {
+    function setActivePlan() {
+      dispatch({ type: ACTIVATE_PLAN, payload: { activeWOPlan } });
+    }
+    setActivePlan();
+  }, [dispatch, activeWOPlan, woPlans]);
+
+  function handleActivateClick(e, planId) {
+    e.preventDefault();
+    console.log("gay");
+    setShowModal({ planId, modal: "activate" });
+  }
+
+  function handleActivateSubmit(startDate) {
+    const { planId } = showModal;
+    activatePlan(aPlan, planId, startDate);
+    setShowModal(false);
+  }
+
+  function handleDeactivateClick(e, planId) {
+    e.preventDefault();
+    setShowModal({ planId, modal: "deactivate" });
+  }
+
+  function handleDeactivateSubmit(e) {
+    const { planId } = showModal;
+    console.log(showModal);
+    console.log(planId);
+    e.preventDefault();
+    deactivatePlan(dPlan, planId);
+    setShowModal(false);
+  }
 
   if (isPending) return null;
   if (isRejected) return <p>Derp</p>;
@@ -27,64 +64,45 @@ const Plans = () => {
     return <p>Derp...</p>;
   }
 
-  // let woPlansToDisplay = woPlans;
-
-  // if (nameFilter.length) {
-  //   let regex = RegExp(nameFilter, "i");
-  //   woPlansToDisplay = woPlans.filter(x => regex.test(x.name));
-  // }
-
-  // if (authorFilter.length) {
-  //   let regex = RegExp(authorFilter, "i");
-  //   woPlansToDisplay = woPlans.filter(x => regex.test(x.user.username));
-  // }
-
-  // if (weekFilter[0] > 0 || weekFilter[1] < 50) {
-  //   woPlansToDisplay = woPlans.filter(x => {
-  //     const { length } = x.weeks;
-
-  //     return length >= weekFilter[0] && length <= weekFilter[1];
-  //   });
-  // }
-
-  // if (goalFilter.includes(true)) {
-  //   let filter = [];
-  //   if (goalFilter[0]) {
-  //     filter.push("Gain strength");
-  //   }
-  //   if (goalFilter[1]) {
-  //     filter.push("Gain mass");
-  //   }
-  //   if (goalFilter[2]) {
-  //     filter.push("Lose fat");
-  //   }
-
-  //   woPlansToDisplay = woPlans.filter(
-  //     x => x.goals.map(x => x.goal).filter(x => filter.indexOf(x) > -1).length
-  //   );
-  // }
+  let modal = null;
+  if (showModal) {
+    if (showModal.modal === "deactivate") {
+      modal = (
+        <ConfirmModal
+          hideModal={() => setShowModal(false)}
+          header={"Deactivate plan"}
+          onSubmit={handleDeactivateSubmit}
+          text={"Are you sure you want to deactivate this plan?"}
+        />
+      );
+    } else if (showModal.modal === "activate") {
+      modal = (
+        <ActivatePlanModal
+          planId={showModal.planId}
+          onActivateSubmit={handleActivateSubmit}
+          hideModal={() => setShowModal(false)}
+        />
+      );
+    }
+  }
 
   let view;
   if (isMobile) {
-    view = <MobilePlans woPlans={woPlans} />;
+    view = (
+      <MobilePlans
+        woPlans={woPlans}
+        handleActivateClick={handleActivateClick}
+        handleDeactivateClick={handleDeactivateClick}
+      />
+    );
   } else {
     view = <WebPlans woPlans={woPlans} dispatch={dispatch} />;
   }
 
   return (
     <>
-      {/* <PlanFilter
-        isMobile={isMobile}
-        nameFilter={nameFilter}
-        weekFilter={weekFilter}
-        goalFilter={goalFilter}
-        authorFilter={authorFilter}
-        setNameFilter={setNameFilter}
-        setWeekFilter={setWeekFilter}
-        setGoalFilter={setGoalFilter}
-        setAuthorFilter={setAuthorFilter}
-      /> */}
       <Suspense fallback={<SetLoading />}>{view}</Suspense>
+      {modal}
     </>
   );
 };

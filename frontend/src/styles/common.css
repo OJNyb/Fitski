@@ -126,9 +126,12 @@
   font-size: 21px;
 }
 
+.font-22 {
+  font-size: 22px;
+}
+
 .font-28 {
   font-size: 28px;
-  line-height: 20px;
 }
 
 .font-30 {
@@ -137,7 +140,6 @@
 
 .font-32 {
   font-size: 32px;
-  line-height: 24px;
 }
 
 .font-40 {
@@ -250,8 +252,8 @@
 }
 
 .custom-checkbox-container .custom-checkmark-radio:after {
-  left: 6.5px;
-  top: 6.5px;
+  left: 6.75px;
+  top: 6.75px;
   width: 7px;
   height: 7px;
   border-radius: 50%;
@@ -318,6 +320,11 @@
 
 .align-s-fs {
   align-self: flex-start;
+}
+
+.flex-jc-end {
+  display: flex;
+  justify-content: flex-end;
 }
 
 .margin-0 {
@@ -495,6 +502,10 @@
   padding: 4px 20px;
 }
 
+.pb-50 {
+  padding-bottom: 50px;
+}
+
 .border-box {
   box-sizing: border-box;
 }
@@ -600,4 +611,22 @@
 .space-after::after {
   content: "i";
   color: transparent;
+}
+
+.mobile-modal-submit-btn {
+  padding: 13px;
+  width: 100%;
+  font-size: 14px;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  background-color: #a60000;
+  color: #fff;
+  height: 47px;
+  border-radius: 0;
+}
+
+.mobile-modal-submit-btn:disabled {
+  background-color: #a60000;
+  background-color: #f98e8e;
 }

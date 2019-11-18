@@ -138,7 +138,7 @@ const MobileEditWeek = ({
             </div>
           </div>
         </div>
-        <div className="">{mainView}</div>
+        <div className="pb-50">{mainView}</div>
       </div>
     </>
   );

@@ -67,12 +67,14 @@ const Login = () => {
                 name="email"
                 component={MobileInput}
                 label="Email"
+                autoComplete="email"
               />
               <Field
                 type="password"
                 name="password"
                 component={MobileInput}
                 label="Password"
+                autoComplete="current-password"
               />
 
               <div className="margin-15">

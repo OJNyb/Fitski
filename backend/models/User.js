@@ -30,14 +30,10 @@ const UserSchema = new Schema(
     activeWOPlan: {
       woPlan: {
         type: ObjectId,
-        ref: "mealPlan"
+        ref: "woPlan"
       },
       startDate: Date,
-      endDate: Date,
-      postponed: {
-        type: Number,
-        default: 0
-      }
+      endDate: Date
     }
   },
   { timestamps: true }

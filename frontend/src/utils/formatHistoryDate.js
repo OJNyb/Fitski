@@ -1,18 +1,18 @@
 function addMGC(mG) {
   if (mG === "Chest") {
-    return "log-group-red";
+    return "#e21111";
   } else if (mG === "Back") {
-    return "log-group-blue";
+    return "#4718f0";
   } else if (mG === "Shoulders") {
-    return "log-group-purple";
+    return "#c400c4";
   } else if (mG === "Legs") {
-    return "log-group-light-blue";
+    return "#4fb9e4";
   } else if (mG === "Biceps") {
-    return "log-group-yellow";
+    return "#fab804";
   } else if (mG === "Triceps") {
-    return "log-group-green";
+    return "#13b413";
   } else if (mG === "Abs") {
-    return "log-group-black";
+    return "#000";
   }
 }
 

@@ -2,7 +2,6 @@ import React, { useState, createContext } from "react";
 import { useAsync } from "react-async";
 import axios from "axios";
 import * as authClient from "../utils/authClient";
-import Loading from "../components/shared/SVGs/Loading";
 
 const AuthContext = createContext();
 
@@ -36,7 +35,8 @@ function AuthProvider(props) {
     isRejected,
     isPending,
     isSettled,
-    reload
+    reload,
+    setData
   } = useAsync({
     promiseFn: bootstrapAppData
   });
@@ -63,8 +63,42 @@ function AuthProvider(props) {
 
   const login = values => authClient.login(values).then(reload);
   const register = values => authClient.register(values).then(reload);
+  const activatePlan = planId => {
+    let tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    const { user } = data;
+    setData({
+      user: {
+        ...user,
+        activeWOPlan: {
+          woPlan: planId,
+          startDate: new Date(),
+          endDate: tomorrow
+        }
+      }
+    });
+  };
+  const deactivatePlan = () => {
+    let yestarday = new Date();
+    yestarday.setDate(yestarday.getDate() - 1);
+    const { user } = data;
+    setData({
+      user: {
+        ...user,
+        activeWOPlan: {
+          ...user.activeWOPlan,
+          endDate: yestarday
+        }
+      }
+    });
+  };
 
-  return <AuthContext.Provider value={{ data, login, register }} {...props} />;
+  return (
+    <AuthContext.Provider
+      value={{ data, login, register, activatePlan, deactivatePlan }}
+      {...props}
+    />
+  );
 }
 
 function useAuth() {

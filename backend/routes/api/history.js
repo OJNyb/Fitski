@@ -3,9 +3,13 @@ const router = express.Router();
 const { Types } = require("mongoose");
 const { ObjectId } = Types;
 
-const { formatHistoryDate } = require("../../utils/formatHistoryDate");
+const {
+  formatHistoryDate,
+  reverseHistoryDate
+} = require("../../utils/formatHistoryDate");
 
 // Models
+const User = require("../../models/User");
 const WOPlan = require("../../models/WOPlan");
 const History = require("../../models/History");
 const PlanAccess = require("../../models/PlanAccess");
@@ -19,8 +23,6 @@ const SchemaValidator = require("../../middlewares/SchemaValidator");
 const validateRequest = SchemaValidator(true);
 
 const createErrorObject = require("../../utils/createErrorObject");
-
-// TODO: Validatation, stadardize dates?
 
 // @route GET api/history
 // @desc Get current users history
@@ -37,10 +39,6 @@ router.get("/", ensureSignedIn, (req, res) => {
 // @route POST api/history/activate/:plan_id
 // @desc Activate workout plan
 // @access Private
-
-// If !history, create one, if !server error
-// Ensure no duplicate days on update
-// activate plan 1x
 router.post(
   "/activate/:plan_id",
   ensureSignedIn,
@@ -78,23 +76,29 @@ router.post(
 
     weeks.forEach(week =>
       week.days.forEach(day => {
-        const { restDay, exercises: dayExercises } = day;
-        if (restDay || !dayExercises.length) {
+        const { exercises: dayExercises } = day;
+        if (!dayExercises.length) {
           date.setDate(date.getDate() + 1);
           return;
         }
 
         let exercises = [];
         dayExercises.forEach(exercise => {
-          const { exercise: exerciseId, sets, reps } = exercise;
+          const { exercise: exerciseId, sets, onModel } = exercise;
           let setski = [];
-          for (let i = 0; i < sets; i++) {
-            let repId = new ObjectId();
-            setski.push({ _id: repId, reps });
+          for (let i = 0; i < sets.length; i++) {
+            const { reps } = sets[i];
+            let setId = new ObjectId();
+            setski.push({ _id: setId, reps, weight: 0 });
           }
 
           let exerId = new ObjectId();
-          exercises.push({ _id: exerId, exercise: exerciseId, sets: setski });
+          exercises.push({
+            _id: exerId,
+            exercise: exerciseId,
+            sets: setski,
+            onModel
+          });
         });
 
         let dayskiId = new ObjectId();
@@ -111,9 +115,10 @@ router.post(
       })
     );
 
-    let formattedStartDate = formatHistoryDate(new Date(startDate));
+    const formattedStartDate = formatHistoryDate(new Date(startDate));
+    const endDate = reverseHistoryDate(newDays[newDays.length - 1].date);
 
-    if (days[days.length - 1].date >= formattedStartDate) {
+    if (days.length && days[days.length - 1].date >= formattedStartDate) {
       let dates = days.map(x => x.date);
       for (let i = 0; i < dates.length; i++) {
         if (dates[i] >= formattedStartDate) {
@@ -133,7 +138,86 @@ router.post(
           days: days
         }
       })
-      .then(() => res.json({ message: "success" }))
+      .then(() => {
+        User.findByIdAndUpdate(userId, {
+          $set: {
+            activeWOPlan: {
+              woPlan: planId,
+              startDate,
+              endDate
+            }
+          }
+        })
+          .then(() => {
+            res.json({ message: "success" });
+          })
+          .catch(next);
+      })
+      .catch(next);
+  }
+);
+
+// @route POST api/history/deactivate/:plan_id
+// @desc Deactivate workout plan
+// @access Private
+router.post(
+  "/deactivate/:plan_id",
+  ensureSignedIn,
+  validateRequest,
+  validateWOPlan,
+  async (req, res, next) => {
+    const { params, session } = req;
+    const { userId } = session;
+    const { plan_id: planId } = params;
+
+    const history = await History.findOne({ user: userId });
+    const date = new Date();
+    const formattedDate = formatHistoryDate(date);
+    const yestarday = new Date().setDate(date.getDate() - 1);
+
+    const { days } = history;
+    let dateFilter;
+    let currentDayIndex = days.map(x => x.date).indexOf(formattedDate);
+    if (currentDayIndex > -1) {
+      let x = days[currentDayIndex].exercises
+        .map(x => x.sets)
+        .map(x => x.weight);
+      // .reduce(
+      //   (accu, curr) =>
+      //     (accu += curr.reduce((accu, curr) => (accu += curr), 0)),
+      //   0
+      // );
+      console.log(x);
+    } else {
+      dateFilter = {
+        $gte: formattedDate
+      };
+    }
+
+    dateFilter = {
+      $gte: formattedDate
+    };
+
+    history
+      .updateOne({
+        $pull: {
+          days: { date: dateFilter, woPlan: planId }
+        }
+      })
+      .then(() => {
+        User.findByIdAndUpdate(userId, {
+          $set: {
+            activeWOPlan: {
+              woPlan: planId,
+              endDate: yestarday
+            }
+          }
+        })
+          .then(() => {
+            res.json({ message: "success" });
+          })
+          .catch(next);
+      })
       .catch(next);
   }
 );
@@ -356,8 +440,6 @@ router.post(
     newSet.weight = weight ? weight : 0;
     newSet.reps = reps ? reps : 0;
 
-    console.log(newSet);
-
     history
       .updateOne(
         { $push: { "days.$[d].exercises.$[e].sets": newSet } },
@@ -392,36 +474,19 @@ router.post(
     const { reps, weight, history } = body;
     const { day_id: dayId, exercise_id: exerciseId, set_id: setId } = params;
 
-    let patch;
-    let patch2;
-
-    let field;
-    let field2;
-
-    if (reps && weight) {
-      patch = weight;
-      field = "weight";
-      patch2 = reps;
-      field2 = "reps";
-    } else if (weight) {
-      patch = weight;
-      field = "weight";
-    } else if (reps) {
-      patch = reps;
-      field = "reps";
+    let update = {};
+    const base = "days.$[d].exercises.$[e].sets.$[s].";
+    if (weight) {
+      update[`${base}weight`] = weight;
     }
-    let newField = {
-      [`days.$[d].exercises.$[e].sets.$[s].${field}`]: patch
-    };
-
-    if (patch2) {
-      newField[`days.$[d].exercises.$[e].sets.$[s].${field2}`] = patch2;
+    if (reps) {
+      update[`${base}reps`] = reps;
     }
 
     history
       .updateOne(
         {
-          $set: { ...newField }
+          $set: update
         },
         {
           arrayFilters: [
@@ -524,8 +589,6 @@ router.post(
     }
 
     const newDay = { _id: newDayId, date: formattedDate, exercises };
-
-    console.log(newDay);
 
     const update = {
       $each: [newDay]

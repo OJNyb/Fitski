@@ -6,4 +6,13 @@ function formatHistoryDate(date) {
   return year * 10000 + month * 100 + day;
 }
 
-module.exports = { formatHistoryDate };
+function reverseHistoryDate(date) {
+  date += "";
+  let year = date.slice(0, 4);
+  let month = date.slice(4, 6);
+  let day = date.slice(6, 8);
+
+  return new Date(year, month, day);
+}
+
+module.exports = { formatHistoryDate, reverseHistoryDate };

@@ -100,7 +100,7 @@
 }
 
 .edit-week-mobile-reps-input-wrapper input {
-  height: 18px;
+  height: 20px;
   padding: 0;
   width: 30px;
   background-color: transparent;
@@ -109,6 +109,10 @@
   font-size: 20px;
   font-family: "Oswald", sans-serif;
   font-weight: 500;
+}
+
+.edit-week-mobile-reps-input-wrapper .border-with-sides {
+  margin-top: -1px;
 }
 
 .edit-week-mobile-reps-input-wrapper:focus-within .border-with-sides {

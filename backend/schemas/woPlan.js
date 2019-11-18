@@ -31,7 +31,7 @@ const description = Joi.string()
   .label("Description");
 
 const goals = Joi.array()
-  .max(3)
+  .max(2)
   .unique()
   .items(
     Joi.string()

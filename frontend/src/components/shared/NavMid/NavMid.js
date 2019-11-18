@@ -11,7 +11,6 @@ const NavMid = props => {
 
   const {
     backText,
-    customNav,
     midContent,
     backAction,
     rightBtnText,

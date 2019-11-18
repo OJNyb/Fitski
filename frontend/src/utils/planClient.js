@@ -1,6 +1,8 @@
 import axios from "axios";
 import { Types } from "mongoose";
+import { createWeek, createWeekIds, createWeekdayIds } from "./planUtils";
 import {
+  EDIT_PLAN,
   ADD_WEEK,
   COPY_WEEK,
   REPEAT_WEEK,
@@ -14,66 +16,26 @@ import {
 
 const { ObjectId } = Types;
 
-// TODO: What if it fails
-
-function createDays() {
-  let days = [];
-
-  for (let i = 0; i < 7; i++) {
-    const _id = new ObjectId().toHexString();
-    days.push({ _id });
-  }
-  return { days };
+function activatePlan(activatePlan, planId, startDate) {
+  activatePlan(planId);
+  axios
+    .post(`/history/activate/${planId}`, { startDate })
+    .then(res => console.log(res))
+    .catch(err => console.log(err.response));
 }
 
-// const newIds = [
-//   {
-//     dayId,
-//     exercises: [
-//       {
-//         exerId,
-//         setIds: []
-//       }
-//     ]
-//   }
-// ];
-
-function createWeekIds(copyWeek) {
-  const days = createWeekdayIds(copyWeek);
-  const weekId = new ObjectId().toHexString();
-
-  return { weekId, days };
+function deactivatePlan(deactivatePlan, planId) {
+  deactivatePlan();
+  axios
+    .post(`/history/deactivate/${planId}`)
+    .then(res => console.log(res))
+    .catch(err => console.log(err));
 }
 
-function createWeekdayIds(copyWeek) {
-  const { days } = copyWeek;
-  const newIds = [];
-  for (let i = 0; i < days.length; i++) {
-    const day = days[i];
-    const { exercises: copyExercises } = day;
-    const exercises = [];
-    console.log(copyExercises);
-    for (let i = 0; i < copyExercises.length; i++) {
-      const exercise = copyExercises[i];
-      const { sets } = exercise;
-      const setIds = [];
-      for (let i = 0; i < sets.length; i++) {
-        setIds.push(new ObjectId().toHexString());
-      }
-      const exerId = new ObjectId().toHexString();
-      exercises.push({ exerId, setIds });
-    }
-    const dayId = new ObjectId().toHexString();
-    newIds.push({ dayId, exercises });
-  }
+function editPlan(dispatch, planId, values) {
+  dispatch({ type: EDIT_PLAN, payload: { planId, values } });
 
-  return newIds;
-}
-
-function createWeek() {
-  const _id = new ObjectId().toHexString();
-  const { days } = createDays();
-  return { _id, days };
+  axios.post(`/plan/${planId}`, values);
 }
 
 function addWeeks(dispatch, planId, numberOfWeeks = 1) {
@@ -290,6 +252,9 @@ function deleteSet(dispatch, planId, weekId, dayId, exerId, setId) {
     .catch(err => console.error(err.response));
 }
 export {
+  activatePlan,
+  deactivatePlan,
+  editPlan,
   addWeeks,
   copyWeek,
   repeatWeek,

@@ -80,20 +80,6 @@
   padding: 2px 12px;
 }
 
-/* ACTIVATE PLAN */
-.activate-plan-span {
-  color: #353232;
-  font-weight: 300;
-  font-size: 14px;
-}
-
-.activate-plan-date {
-  color: #a60000;
-  font-weight: 300;
-  margin: 0;
-  font-size: 30px;
-}
-
 .bs-activate-plan-cal-contaioner {
   position: absolute;
   top: 70px;

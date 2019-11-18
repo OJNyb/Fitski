@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ensureDecimal } from "../../../utils/ensureDecimal";
 import useSetLoading from "../../../hooks/useSetLoading";
 
@@ -11,9 +11,19 @@ const TrackView = ({
   onDeleteSet
 }) => {
   const [selectedSet, setSelectedSet] = useState({});
-  const { reps: dReps, weight: dWeight } = sets[sets.length - 1];
-  const [weight, setWeight] = useState(ensureDecimal(dWeight));
-  const [reps, setReps] = useState(dReps);
+  const [weight, setWeight] = useState(ensureDecimal(0));
+  const [reps, setReps] = useState(0);
+
+  useEffect(() => {
+    function setInitialInput() {
+      if (sets.length) {
+        const { reps: dReps, weight: dWeight } = sets[sets.length - 1];
+        setWeight(dWeight);
+        setReps(dReps);
+      }
+    }
+    setInitialInput();
+  }, [exerId, sets]);
 
   useSetLoading(false);
 

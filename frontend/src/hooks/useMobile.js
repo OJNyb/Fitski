@@ -1,12 +1,12 @@
-import { useState, useEffect } from "react";
+import { useState, useLayoutEffect } from "react";
 import useWindowWidth from "./useWindowWidth";
 
 function useMobile() {
   const width = useWindowWidth();
 
-  const [isMobile, setIsMobile] = useState(0);
+  const [isMobile, setIsMobile] = useState(true);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     function checkWidth() {
       if (width <= 768) {
         setIsMobile(true);

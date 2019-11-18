@@ -7,6 +7,7 @@ import useSetLoading from "../../hooks/useSetLoading";
 import moment from "moment";
 import { findLastOccurenceOfExercise } from "../../utils/findAllOccurencesOfExercise";
 import useTitle from "../../hooks/useTitle";
+import CalendarMuscleGroupCircle from "./CalendarMuscleGroupCircle";
 
 import {
   addDay,
@@ -66,7 +67,6 @@ const History = () => {
   }
 
   function handleAddExercise(exercise) {
-    console.log(currentDay);
     const { _id: exerciseId } = exercise;
     if (dayIndex === -1) {
       let x = findLastOccurenceOfExercise(days, exerciseId);
@@ -131,7 +131,11 @@ const History = () => {
 
         let circles = muscleGroups.map(x => {
           let color = addMGC(x);
-          return <div className={"calendar-circle " + color} key={x} />;
+          return (
+            <div>
+              <CalendarMuscleGroupCircle fill={color} />
+            </div>
+          );
         });
 
         return <div className="calendar-circle-container">{circles}</div>;

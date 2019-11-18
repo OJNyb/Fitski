@@ -6,6 +6,8 @@ import { Types } from "mongoose";
 import { Redirect } from "react-router-dom";
 import CustomCheckbox from "../shared/Form/CustomCheckbox";
 import CustomRadio from "../shared/Form/CustomRadio";
+import MobileInput from "../shared/Form/MobileInput";
+
 import useNavRedDehaze from "../../hooks/useNavRedDehaze";
 
 import "./createPlan.css";
@@ -64,7 +66,7 @@ const CreatePlan = () => {
         {({ errors, touched, isSubmitting }) => (
           <>
             <h2>Create plan</h2>
-            <Form className="create-plan-form">
+            {/* <Form className="create-plan-form">
               <div className="create-plan-name-input-wrapper">
                 <Field
                   name="name"
@@ -136,6 +138,75 @@ const CreatePlan = () => {
               >
                 Create
               </button>
+            </Form> */}
+            <Form className="stretch flex-col width-100p border-box padding-10-0">
+              <Field
+                name="name"
+                component={MobileInput}
+                label="Name"
+                maxLength={30}
+                autoComplete="off"
+              />
+              <Field
+                name="description"
+                component={MobileInput}
+                label="Description"
+                textarea={true}
+                maxLength={1000}
+              />
+
+              <div className="flex-center-space-bw border-box padding-10-15 width-80p">
+                <div className="flex-col">
+                  <span className="font-13 black font-w-500">Goal</span>
+                  <Field
+                    component={CustomCheckbox}
+                    text="Gain strength"
+                    name="gainStrength"
+                  />
+
+                  <Field
+                    component={CustomCheckbox}
+                    text="Gain muscle"
+                    name="gainMuscle"
+                  />
+
+                  <Field
+                    component={CustomCheckbox}
+                    text="Lose weight"
+                    name="loseWeight"
+                  />
+                </div>
+                <div>
+                  <span>Difficulty</span>
+
+                  <Field
+                    component={CustomRadio}
+                    text="Beginner"
+                    name="difficulty"
+                    valueski="Beginner"
+                  />
+
+                  <Field
+                    component={CustomRadio}
+                    text="Intermediate"
+                    name="difficulty"
+                    valueski="Intermediate"
+                  />
+
+                  <Field
+                    component={CustomRadio}
+                    text="Advanced"
+                    name="difficulty"
+                    valueski="Advanced"
+                  />
+                </div>
+              </div>
+
+              <div className="margin-15">
+                <button className="mobile-modal-submit-btn" type="submit">
+                  Create
+                </button>
+              </div>
             </Form>
           </>
         )}

@@ -7,6 +7,7 @@ import usePlan from "../hooks/usePlan";
 import Plan from "./Plan/Plan";
 import EditWeek from "./EditWeek/EditWeek";
 import Overview from "./Plan/PlanOverview";
+import PlanEdit from "./Plan/PlanEdit";
 
 const PlanHOC = () => {
   const { plan_id: planId } = useParams();
@@ -21,8 +22,6 @@ const PlanHOC = () => {
     return <p>Error... Check console.</p>;
   }
 
-  console.log(state);
-
   if (!woPlan) {
     return <p>Oh noes</p>;
   }
@@ -31,6 +30,7 @@ const PlanHOC = () => {
     <PlanContext.Provider value={{ state, dispatch }}>
       <Switch>
         <Route exact path="/plans/:plan_id" component={Plan} />
+        <Route exact path="/plans/:plan_id/edit" component={PlanEdit} />
         <Route exact path="/plans/:plan_id/overview" component={Overview} />
         <Route exact path="/plans/:plan_id/:week_id" component={EditWeek} />
       </Switch>

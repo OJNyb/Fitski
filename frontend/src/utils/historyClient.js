@@ -13,13 +13,6 @@ import {
 
 const { ObjectId } = Types;
 
-function activatePlan(planId, startDate) {
-  axios
-    .post(`/history/activate/${planId}`, { startDate })
-    .then(res => console.log(res))
-    .catch(err => console.log(err));
-}
-
 function addDay(dispatch, date, exercise, values) {
   const dayId = new ObjectId().toHexString();
   const exerId = new ObjectId().toHexString();
@@ -284,7 +277,6 @@ function copyDay(dispatch, dayToCopy, formattedDate) {
 }
 
 export {
-  activatePlan,
   addDay,
   deleteDay,
   addExercise,

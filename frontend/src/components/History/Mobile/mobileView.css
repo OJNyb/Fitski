@@ -34,11 +34,10 @@
 }
 
 /* VIEW */
-.history-mobile-add-container p {
-  text-align: center;
-  margin-top: 40px;
+.history-mobile-container {
+  max-width: 500px;
+  margin: 0 auto;
 }
-
 .history-empty-log-btn-container {
   display: flex;
   flex-direction: column;

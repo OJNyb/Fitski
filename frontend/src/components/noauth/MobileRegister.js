@@ -93,6 +93,7 @@ const Register = () => {
                   name="email"
                   label="Email"
                   component={MobileInput}
+                  autoComplete="email"
                 />
 
                 <Field
@@ -100,6 +101,7 @@ const Register = () => {
                   name="username"
                   label="Username"
                   component={MobileInput}
+                  autoComplete="username"
                 />
 
                 <Field
@@ -107,6 +109,7 @@ const Register = () => {
                   name="password"
                   label="Password"
                   component={MobileInput}
+                  autoComplete="new-password"
                 />
 
                 <Field
@@ -114,6 +117,7 @@ const Register = () => {
                   name="confirmPassword"
                   label="Confirm password"
                   component={MobileInput}
+                  autoComplete="new-password"
                 />
 
                 <div className="margin-15">

@@ -33,6 +33,8 @@ function planReducer(state, action) {
     case SET_EXERCISES: {
       const { exercises } = payload;
 
+      exercises.sort((a, b) => (a.name > b.name ? 1 : -1));
+
       return {
         ...state,
         exercises,

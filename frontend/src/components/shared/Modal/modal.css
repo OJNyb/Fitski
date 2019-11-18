@@ -83,19 +83,6 @@
   font-size: 14px;
 }
 
-.mobile-modal-submit-btn {
-  padding: 13px;
-  width: 100%;
-  font-size: 14px;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  background-color: #a60000;
-  color: #fff;
-  height: 47px;
-  border-radius: 0;
-}
-
 .modal-mobile-delete-btn-container {
   padding-bottom: 30px;
 }

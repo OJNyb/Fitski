@@ -56,6 +56,10 @@ const activatePlan = Joi.object().keys({
   startDate: date.label("Start date")
 });
 
+const deactivatePlan = Joi.object().keys({
+  plan_id: planId
+});
+
 const custom = Joi.boolean().label("custom");
 
 const formattedDate = Joi.number()
@@ -141,6 +145,7 @@ const copyDay = Joi.object().keys({
 
 module.exports = {
   "post/history/activate/:plan_id": activatePlan,
+  "post/history/deactivate/:plan_id": deactivatePlan,
   "post/history": addDay,
   "delete/history/:day_id": deleteDay,
   "post/history/exercise/:day_id": addExercise,

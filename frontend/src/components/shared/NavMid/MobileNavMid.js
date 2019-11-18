@@ -10,7 +10,8 @@ const MobileNavMid = ({
   actionMenuChildren,
   rightBtnText,
   rightBtnAction,
-  rightBtnIcon
+  rightBtnIcon,
+  rightBtnOutlined
 }) => {
   const [showActionModal, setShowActionModal] = useState(false);
 
@@ -20,7 +21,8 @@ const MobileNavMid = ({
         actionMenuChildren.unshift({
           action: rightBtnAction,
           text: rightBtnText,
-          icon: rightBtnIcon
+          icon: rightBtnIcon,
+          outlined: rightBtnOutlined
         });
       }
     }

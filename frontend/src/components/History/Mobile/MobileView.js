@@ -250,7 +250,7 @@ const MobileView = ({
       <div>
         {bottomNavContent}
 
-        <div className="history-mobile-add-container">{view}</div>
+        <div className="history-mobile-container pb-50">{view}</div>
       </div>
     </>
   );

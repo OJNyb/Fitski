@@ -4,37 +4,23 @@
   padding-top: 30px;
 }
 
-.calendar-circle {
-  margin: 1px;
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
-}
-
 .calendar-circle-container {
   bottom: 0px;
-  margin: 0 auto;
   display: flex;
   justify-content: center;
 }
 
-.log-group-red {
-  background-color: rgb(255, 34, 34);
+.calendar-circle-container svg {
+  box-sizing: border-box;
+  overflow: auto;
 }
-.log-group-green {
-  background-color: green;
-}
-.log-group-purple {
-  background-color: rgb(196, 0, 196);
-}
-.log-group-blue {
-  background-color: rgb(22, 22, 218);
-}
-.log-group-light-blue {
-  background-color: skyblue;
-}
-.log-group-yellow {
-  background-color: rgb(255, 217, 0);
+
+.calendar-circle-container > div {
+  margin: 1px;
+  display: flex;
+  align-items: center;
+  min-width: 6px;
+  min-height: 6px;
 }
 
 /* RIGHT SIDE */

@@ -1,23 +1,19 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import useSetLoading from "../../../hooks/useSetLoading";
-import ActivatePlanModal from "../../Plan/ActivatePlanModal";
 
 import Plus20 from "../../shared/SVGs/Plus20";
 import MobilePlanCard from "./MobileCard";
 import useNavRedDehaze from "../../../hooks/useNavRedDehaze";
 import MobileNavMidContainer from "../../shared/NavMid/MobileNavMidContainer";
 
-const PlansMobile = ({ woPlans }) => {
+const PlansMobile = ({
+  woPlans,
+  handleActivateClick,
+  handleDeactivateClick
+}) => {
   useSetLoading(false);
   useNavRedDehaze();
-  const [showModal, setShowModal] = useState(false);
-
-  function handleActivateClick(e, planId) {
-    console.log(e);
-    e.preventDefault();
-    setShowModal(planId);
-  }
 
   let view;
   if (woPlans.length) {
@@ -26,6 +22,7 @@ const PlansMobile = ({ woPlans }) => {
         key={plan._id}
         plan={plan}
         onActivateClick={handleActivateClick}
+        onDeactivateClick={handleDeactivateClick}
       />
     ));
     view = (
@@ -35,16 +32,6 @@ const PlansMobile = ({ woPlans }) => {
     );
   } else {
     view = <NoPlans />;
-  }
-
-  let modal = null;
-  if (showModal) {
-    modal = (
-      <ActivatePlanModal
-        planId={showModal}
-        hideModal={() => setShowModal(false)}
-      />
-    );
   }
 
   return (
@@ -65,7 +52,6 @@ const PlansMobile = ({ woPlans }) => {
         }
       />
 
-      {modal}
       <div className="mobile-nav-icon-container"></div>
 
       {view}

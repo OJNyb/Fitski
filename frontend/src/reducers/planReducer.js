@@ -8,7 +8,6 @@ import {
   REPEAT_WEEK,
   DELETE_WEEK,
   ADD_EXERCISE,
-  // EDIT_EXERCISE,
   DELETE_EXERCISE,
   ADD_SET,
   EDIT_SET,
@@ -38,6 +37,20 @@ function planReducer(state, action) {
     }
     case SET_PLAN: {
       const { woPlan } = payload;
+      return {
+        ...state,
+        woPlan,
+        isPending: false
+      };
+    }
+
+    case EDIT_PLAN: {
+      const { values } = payload;
+      let { woPlan } = state;
+      woPlan = {
+        ...woPlan,
+        ...values
+      };
       return {
         ...state,
         woPlan,
@@ -119,7 +132,6 @@ function planReducer(state, action) {
 
       for (let i = 0; i < newIds.length; i++) {
         const newWeekIds = newIds[i];
-        console.log(newWeekIds);
         const { weekId, days: newDayIds } = newWeekIds;
         const newDays = [];
 

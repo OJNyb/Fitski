@@ -117,13 +117,11 @@ const SetColumn = ({ set, index }) => {
 
 const EditColumn = ({ set, index, exerId, onDeleteSet, handleEditSet }) => {
   const { reps, _id: setId } = set;
-  console.log(set);
   const [inputReps, setInputReps] = useState(reps || 0);
   const isDeleted = useRef(false);
   const isClosed = useRef(false);
-
   const repsRef = useRef();
-  const lastRepsReqRef = useRef();
+  const lastRepsReqRef = useRef(reps);
 
   useEffect(() => {
     return () => {
@@ -147,22 +145,21 @@ const EditColumn = ({ set, index, exerId, onDeleteSet, handleEditSet }) => {
     setTimeout(() => {
       const { current } = repsRef;
       if (current === value && !isClosed.current) {
-        console.log("ga333y");
         onExerciseEdit();
       }
     }, 5000);
   }
 
   function onExerciseEdit() {
-    console.log("gaay");
     const { current: currentReps } = repsRef;
+
     if (currentReps && currentReps !== lastRepsReqRef.current) {
       handleEditSet(exerId, setId, currentReps);
+      lastRepsReqRef.current = currentReps;
     }
   }
 
   function onInputBlur() {
-    console.log(document.activeElement);
     onExerciseEdit();
   }
 

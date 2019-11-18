@@ -13,24 +13,6 @@ const validateRequest = SchemaValidator(true);
 
 const createErrorObject = require("../../utils/createErrorObject");
 
-function createDays() {
-  let days = [];
-  let dayIdArray = [];
-
-  for (let i = 0; i < 7; i++) {
-    const _id = Types.ObjectId();
-    dayIdArray.push(_id);
-    days.push({ restDay: false, _id });
-  }
-  return { days, dayIdArray };
-}
-
-function createWeek() {
-  const _id = Types.ObjectId();
-  const { days, dayIdArray } = createDays();
-  return { _id, days, dayIdArray };
-}
-
 // TODOS:
 // Error handling, scaling,  validation
 
@@ -82,7 +64,7 @@ router.post("/", ensureSignedIn, validateRequest, async (req, res, next) => {
 
   newWOPlan
     .save()
-    .then(() => res.json({ _id, message: "success" }))
+    .then(() => res.json({ message: "success" }))
     .catch(next);
 });
 
@@ -98,25 +80,29 @@ router.post(
   async (req, res, next) => {
     const { body } = req;
 
-    const { name, description, categories, woPlan } = body;
+    const { name, goals, difficulty, description, woPlan } = body;
+    console.log(goals);
 
-    let field;
-    let patch;
+    let update = {};
 
     if (name) {
-      field = "name";
-      patch = name;
-    } else if (description) {
-      field = "description";
-      patch = description;
-    } else if (categories) {
-      field = "categories";
-      patch = categories;
+      update["name"] = name;
     }
+    if (description) {
+      update["description"] = description;
+    }
+    if (difficulty) {
+      update["difficulty"] = difficulty;
+    }
+    if (goals) {
+      update["goals"] = goals;
+    }
+
+    console.log(update);
 
     woPlan
       .updateOne({
-        $set: { [`${field}`]: patch }
+        $set: update
       })
       .then(reski => {
         if (reski.nModified) {
@@ -310,7 +296,7 @@ router.post(
         $push: {
           weeks: {
             $each: newWeeks,
-            $position: copyWeekIndex
+            $position: copyWeekIndex + 1
           }
         }
       })
