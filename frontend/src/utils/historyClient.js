@@ -5,6 +5,7 @@ import {
   DELETE_DAY,
   ADD_EXERCISE,
   DELETE_EXERCISE,
+  DELETE_EXERCISES,
   ADD_SET,
   EDIT_SET,
   DELETE_SET,
@@ -142,6 +143,33 @@ function deleteExercise(dispatch, dayId, exerId) {
     });
 }
 
+function deleteExercises(dispatch, dayId, exerIds) {
+  dispatch({
+    type: DELETE_EXERCISES,
+    payload: { dayId, exerIds }
+  });
+
+  console.log(exerIds);
+  axios
+    .delete(`/history/exercise/${dayId}`, {
+      data: { exerciseIds: exerIds }
+    })
+    .then(res => {
+      const { data } = res;
+      const { message } = data;
+      if (message !== "success") {
+        // throw
+      }
+    })
+    .catch(err => {
+      dispatch({
+        type: "DELETE_DAY_FAILED",
+        payload: { dayId }
+      });
+      console.error(err.response);
+    });
+}
+
 function addSet(dispatch, values, dayId, exerId) {
   const setId = new ObjectId().toHexString();
 
@@ -243,8 +271,6 @@ function copyDay(dispatch, dayToCopy, formattedDate) {
   const newDayId = new ObjectId().toHexString();
   const newIds = getNewExerciseIds(exercises);
 
-  console.log(newIds);
-
   dispatch({
     type: COPY_DAY,
     payload: { dayToCopy, newDayId, newIds, formattedDate }
@@ -281,6 +307,7 @@ export {
   deleteDay,
   addExercise,
   deleteExercise,
+  deleteExercises,
   addSet,
   editSet,
   deleteSet,

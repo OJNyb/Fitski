@@ -34,7 +34,7 @@ const NavigationMenu = ({ marginTop }) => {
         {/* <NavLink to="/profile" className="nav-item red-hover">
         <img
           className="nav-sidebar-avatar"
-          src="https://pbs.twimg.com/profile_images/971421611030171658/ldC9VK6w_400x400.jpg"
+          src={`/image/avatar/${avatar}_sm.jpg`} alt="Profile pic"
           alt="avatar"
         />
         <span className="nav-span">Profile</span>

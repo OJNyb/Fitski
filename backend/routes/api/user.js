@@ -28,14 +28,11 @@ const createErrorObject = require("../../utils/createErrorObject");
 router.post("/register", ensureSignedOut, validateRequest, (req, res, next) => {
   const { body, session } = req;
 
-  const avatar =
-    "https://pbs.twimg.com/profile_images/971421611030171658/ldC9VK6w_400x400.jpg";
-
   const _id = Types.ObjectId();
 
   const newUser = new User({
     _id,
-    avatar,
+    avatar: "default",
     ...body
   });
 

@@ -299,7 +299,7 @@ nav section {
 }
 
 .mobile-nav-icon-container {
-  position: absolute;
+  position: fixed;
   top: 0;
   right: 0;
   z-index: 9999;

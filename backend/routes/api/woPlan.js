@@ -81,8 +81,6 @@ router.post(
     const { body } = req;
 
     const { name, goals, difficulty, description, woPlan } = body;
-    console.log(goals);
-
     let update = {};
 
     if (name) {
@@ -97,8 +95,6 @@ router.post(
     if (goals) {
       update["goals"] = goals;
     }
-
-    console.log(update);
 
     woPlan
       .updateOne({

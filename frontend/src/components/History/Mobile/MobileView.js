@@ -9,17 +9,9 @@ import React, {
 import { NavContext } from "../../../context/navContext";
 import useSetLoading from "../../../hooks/useSetLoading";
 import { IS_RED, SHOW_NONE, SHOW_DEHAZE } from "../../../types/navTypes";
-import {
-  displayDate,
-  incrementDate,
-  decrementDate
-} from "../../../utils/formatHistoryDate";
 
-import TrackNav from "./TrackNav";
 import MobileDayView from "./MobileDayView";
-import NavigateDays from "./NavigateDays";
 import SetLoading from "../../SetLoading";
-import Plus20 from "../../shared/SVGs/Plus20";
 
 import "./mobileView.css";
 const loadExerciseView = () => import("./ExerciseView");
@@ -43,18 +35,15 @@ const MobileView = ({
   handleDeleteSet,
   handleAddExercise,
   displayGroupCircle,
-  handleDeleteExercise
+  handleDeleteExercises
 }) => {
   const [showHistory, setShowHistory] = useState(false);
   const [showExercise, setShowExercise] = useState(false);
   const [showExercises, setShowExercises] = useState(false);
   const [showCopyView, setShowCopyView] = useState(false);
-
-  const [exerciseView, setExerciseView] = useState("track");
   const { dispatch } = useContext(NavContext);
-  useSetLoading(false);
 
-  const { _d } = date;
+  useSetLoading(false);
 
   useLayoutEffect(() => {
     function setDouble() {
@@ -81,12 +70,12 @@ const MobileView = ({
     setShowExercises(false);
   }
 
-  function onExerciseClick() {
+  function handleExercisesClick() {
     setShowHistory(false);
     setShowExercises(true);
   }
 
-  function onCalendarClick() {
+  function handleCalendarClick() {
     setShowExercises(false);
     setShowHistory(true);
   }
@@ -121,14 +110,13 @@ const MobileView = ({
       </Suspense>
     );
   } else if (showExercise) {
-    currentExercise = currentDay.exercises.filter(
-      x => x._id === showExercise
-    )[0];
+    const { exercises } = currentDay;
+    currentExercise = exercises.filter(x => x._id === showExercise)[0];
     view = (
       <Suspense fallback={<SetLoading />}>
         <ExerciseView
-          view={exerciseView}
           exer={currentExercise}
+          setShowExercise={setShowExercise}
           historyDays={historyDays}
           handleAddSet={handleAddSet}
           handleEditSet={handleEditSet}
@@ -149,107 +137,23 @@ const MobileView = ({
   } else {
     view = (
       <MobileDayView
+        date={date}
         onCopyDayClick={handleCopyDayClick}
         dayIndex={dayIndex}
         currentDay={currentDay}
-        handleAddSet={handleAddSet}
-        handleEditSet={handleEditSet}
-        handleDeleteSet={handleDeleteSet}
+        onDateChange={onDateChange}
         setShowExercise={setShowExercise}
         setShowExercises={setShowExercises}
-        setShowCopyView={setShowCopyView}
-        handleDeleteExercise={handleDeleteExercise}
+        onCalendarClick={handleCalendarClick}
+        onExercisesClick={handleExercisesClick}
+        handleDeleteExercises={handleDeleteExercises}
       />
-    );
-  }
-
-  let topNavContent = null;
-  if (showExercise) {
-    topNavContent = (
-      <TrackNav
-        exerciseName={currentExercise.exercise.name}
-        setShowExercise={setShowExercise}
-      />
-    );
-  } else if (!showExercises && !showHistory) {
-    topNavContent = (
-      <div className="mobile-nav-icon-container flex-ai-center border-box">
-        <button
-          className="white-material-btn padding-5"
-          onClick={onCalendarClick}
-        >
-          <i className="material-icons material-icons-22">calendar_today</i>
-        </button>
-        <button
-          className="white-material-btn padding-5"
-          onClick={onExerciseClick}
-        >
-          {/* <i className="material-icons material-icons-30">add</i> */}
-          <Plus20 fill={"#fff"} />
-        </button>
-      </div>
-    );
-  }
-
-  let bottomNavContent = null;
-  if (showExercise) {
-    bottomNavContent = (
-      <>
-        <div className="width-100p flex-center-space-bw color-white border-box history-mobile-exercise-header">
-          <div
-            className={
-              "history-mobile-exercise-header-item flex-center" +
-              (exerciseView === "track"
-                ? " history-mobile-exercise-header-active"
-                : "")
-            }
-            onClick={() => setExerciseView("track")}
-          >
-            Track
-          </div>
-          <div
-            className={
-              "history-mobile-exercise-header-item flex-center" +
-              (exerciseView === "history"
-                ? " history-mobile-exercise-header-active"
-                : "")
-            }
-            onClick={() => setExerciseView("history")}
-          >
-            History
-          </div>
-          <div
-            className={
-              "history-mobile-exercise-header-item flex-center" +
-              (exerciseView === "graph"
-                ? " history-mobile-exercise-header-active"
-                : "")
-            }
-            onClick={() => setExerciseView("graph")}
-          >
-            Graph
-          </div>
-        </div>
-      </>
-    );
-  } else if (!showHistory && !showExercises && !showCopyView) {
-    bottomNavContent = (
-      <div className="bc-d9 width-100p flex-center-space-bw color-white padding-0 border-box height-6vh">
-        <NavigateDays
-          centerText={displayDate(_d)}
-          leftArrowAction={() => onDateChange(decrementDate(_d))}
-          rightArrowAction={() => onDateChange(incrementDate(_d))}
-        />
-      </div>
     );
   }
 
   return (
     <>
-      {topNavContent}
       <div>
-        {bottomNavContent}
-
         <div className="history-mobile-container pb-50">{view}</div>
       </div>
     </>

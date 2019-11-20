@@ -1,27 +1,49 @@
-import React from "react";
+import React, { useState, useLayoutEffect } from "react";
 import { ensureDecimal } from "../../../utils/ensureDecimal";
+import useLongPressAndClick from "../../../hooks/useLongPressAndClick";
 
 import "../../../styles/exerciseCard.css";
 import "../editDay.css";
 
 const MobileExerciseCard = ({
   exercise,
-  onAddSet,
-  setShowExercise,
-  onDeleteExercise
+  onCardHold,
+  onCardClick,
+  selectedExercises
 }) => {
+  const [isActive, setIsActive] = useState(false);
   const {
-    exercise: { name, _id: exerciseId },
+    exercise: { name },
     sets,
     _id: exerId
   } = exercise;
+  const { onTouchEnd, onTouchStart, onTouchMove } = useLongPressAndClick(
+    () => onCardHold(exerId),
+    () => onCardClick(exerId)
+  );
+
+  useLayoutEffect(() => {
+    function setActive() {
+      if (selectedExercises.indexOf(exerId) > -1) {
+        setIsActive(true);
+      } else {
+        setIsActive(false);
+      }
+    }
+    setActive();
+  }, [selectedExercises, exerId]);
 
   let setDisplay = sets.map(set => <SetColumn set={set} key={set._id} />);
 
   return (
     <div
-      className="history-add-card margin-10"
-      onClick={() => setShowExercise(exerId)}
+      className={
+        "history-add-card margin-10" +
+        (isActive ? " history-add-card-active" : "")
+      }
+      onTouchStart={onTouchStart}
+      onTouchEnd={onTouchEnd}
+      onTouchMove={onTouchMove}
     >
       <div className="history-exercise-name">
         <span className="black">{name}</span>

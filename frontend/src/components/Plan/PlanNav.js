@@ -16,7 +16,7 @@ const PlanNav = ({ planId, isActive, planName, setShowModal }) => {
 
   if (isActive) {
     rightBtnText = "Deactivate";
-    rightBtnIcon = "stop";
+    rightBtnIcon = "block";
     rightBtnAction = () => setShowModal("deactivate");
   } else {
     rightBtnText = "Activate";
@@ -32,7 +32,7 @@ const PlanNav = ({ planId, isActive, planName, setShowModal }) => {
         rightBtnText={rightBtnText}
         rightBtnIcon={rightBtnIcon}
         rightBtnAction={rightBtnAction}
-        rightBtnOutlined={true}
+        rightBtnOutlined={false}
         actionMenuChildren={[
           {
             link: true,

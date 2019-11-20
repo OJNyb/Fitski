@@ -19,6 +19,10 @@ const Logout = lazy(() => import("./components/Logout"));
 const History = lazy(() => import("./components/History/History"));
 const Settings = lazy(() => import("./components/Settings/Settings"));
 const NoMatch = lazy(() => import("./components/NoMatch"));
+const TermsAndConditions = lazy(() =>
+  import("./components/Terms/TermsAndConditions")
+);
+const PrivacyPolicy = lazy(() => import("./components/Terms/PrivacyPolicy"));
 
 function App() {
   const { state: exerciseState, dispatch: exerciseDispatch } = useExercises();
@@ -70,6 +74,9 @@ function App() {
               <Route path="/register">
                 <Redirect to="/plans" />
               </Route>
+              <Route exact path="/terms" component={TermsAndConditions} />
+              <Route exact path="/privacy-policy" component={PrivacyPolicy} />
+
               <Route path="*" component={NoMatch} />
             </Switch>
           </Suspense>

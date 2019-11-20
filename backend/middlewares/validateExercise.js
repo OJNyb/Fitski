@@ -46,8 +46,7 @@ async function validateDeleteExercises(req, res, next) {
   const defaultExercisesToDelete = [];
   const customExercisesToDelete = [];
 
-  exerciseIds.forEach((x, y) => {
-    console.log(StandardExerciseIds.indexOf(x));
+  exerciseIds.forEach(x => {
     if (StandardExerciseIds.indexOf(x) === -1) {
       customExercisesToDelete.push(x);
     } else {
@@ -59,9 +58,6 @@ async function validateDeleteExercises(req, res, next) {
     const exercises = await UserExercise.find({
       _id: { $in: customExercisesToDelete }
     });
-
-    console.log(customExercisesToDelete);
-    console.log(exercises);
 
     if (!exercises.length) {
       return res

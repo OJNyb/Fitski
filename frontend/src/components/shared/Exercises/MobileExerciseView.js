@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import useLongPress from "../../../hooks/useLongPress";
+import React, { useRef, useState } from "react";
+import useLongPressAndClick from "../../../hooks/useLongPressAndClick";
 
 import MobileExercisesNav from "./MobileExercisesNav";
 import useSetLoading from "../../../hooks/useSetLoading";
@@ -75,6 +75,7 @@ const MobileExerciseView = ({
     );
   }
 
+  let exerciseDisplay;
   if (!exercisesToShow) exerciseDisplay = <p>No exercise with that name</p>;
 
   const shouldShowExercises =
@@ -101,12 +102,15 @@ const MobileExerciseView = ({
     }
   }
 
-  let exerciseDisplay;
   const selectedIds = selectedExercises.map(x => x._id);
   if (shouldShowExercises) {
     const onClick = selectedExercises.length
-      ? x => handleSelectExercise(x)
+      ? x => {
+          handleSelectExercise(x);
+          console.log("click");
+        }
       : x => {
+          console.log("click");
           onAddExercise(x);
           closeExercises();
         };
@@ -133,12 +137,14 @@ const MobileExerciseView = ({
         handleAddCustomExercise={handleAddCustomExercise}
       />
 
-      <SelectedNavBar
-        setShowEditModal={setShowEditModal}
-        selectedExercises={selectedExercises}
-        setSelectedExercises={setSelectedExercises}
-        setShowDeleteModal={setShowDeleteModal}
-      />
+      {selectedExercises.length > 0 && (
+        <SelectedNavBar
+          setShowEditModal={setShowEditModal}
+          selectedExercises={selectedExercises}
+          setSelectedExercises={setSelectedExercises}
+          setShowDeleteModal={setShowDeleteModal}
+        />
+      )}
       <div className="mobile-exercises-container">
         <div className="mobile-exercises-head">
           <i className="material-icons">search</i>
@@ -164,16 +170,17 @@ const MuscleGroupItem = ({ mg, onClick }) => {
 
 const ExerciseItem = ({ onClick, exercise, selected, onSelectExercise }) => {
   const { name } = exercise;
-  const { onTouchEnd, onTouchStart, onTouchMove } = useLongPress(() =>
-    onSelectExercise(exercise)
+  const { onTouchEnd, onTouchStart, onTouchMove } = useLongPressAndClick(
+    () => onSelectExercise(exercise),
+    () => onClick(exercise)
   );
+
   return (
     <div
       className={
         "mobile-exercise-item" +
         (selected ? " mobile-exercise-item-selected" : "")
       }
-      onClick={() => onClick(exercise)}
       onTouchStart={onTouchStart}
       onTouchEnd={onTouchEnd}
       onTouchMove={onTouchMove}
@@ -189,37 +196,31 @@ const SelectedNavBar = ({
   setShowDeleteModal,
   setSelectedExercises
 }) => {
-  let editExerciseNav;
   let text = selectedExercises.length > 1 ? "exercises" : "exercise";
-  if (selectedExercises.length) {
-    editExerciseNav = (
-      <div className="width-100p flex-center-space-bw fixed exercises-mobile-selected-container">
-        <div className="flex-ai-center exercises-mobile-check-n-span-wrapper">
-          <button
-            className="padding-5"
-            onClick={() => setSelectedExercises([])}
-          >
-            <i className="material-icons-outlined">check</i>
-          </button>
-          <span className="exercises-mobile-selected-exercises-span black font-w-500 font-14">
-            {selectedExercises.length} {text}
-          </span>
-        </div>
 
-        <div className="flex-ai-center">
-          {selectedExercises.length === 1 && (
-            <button onClick={() => setShowEditModal(true)}>
-              <i className="material-icons-outlined">edit</i>
-            </button>
-          )}
-          <button onClick={() => setShowDeleteModal(true)}>
-            <i className="material-icons-outlined">delete</i>
-          </button>
-        </div>
+  return (
+    <div className="width-100p flex-center-space-bw fixed exercises-mobile-selected-container">
+      <div className="flex-ai-center exercises-mobile-check-n-span-wrapper">
+        <button className="padding-5" onClick={() => setSelectedExercises([])}>
+          <i className="material-icons-outlined">check</i>
+        </button>
+        <span className="exercises-mobile-selected-exercises-span black font-w-500 font-14">
+          {selectedExercises.length} {text}
+        </span>
       </div>
-    );
-  }
-  return <>{editExerciseNav}</>;
+
+      <div className="flex-ai-center">
+        {selectedExercises.length === 1 && (
+          <button className="padding-5" onClick={() => setShowEditModal(true)}>
+            <i className="material-icons-outlined">edit</i>
+          </button>
+        )}
+        <button className="padding-5" onClick={() => setShowDeleteModal(true)}>
+          <i className="material-icons-outlined">delete</i>
+        </button>
+      </div>
+    </div>
+  );
 };
 
 export default MobileExerciseView;

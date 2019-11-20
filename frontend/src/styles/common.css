@@ -167,11 +167,6 @@
   line-height: 1;
 }
 
-.font-fam-oswald {
-  font-family: "Oswald", sans-serif;
-  line-height: 1;
-}
-
 .line-height-11 {
   line-height: 1.1;
 }
@@ -488,6 +483,10 @@
 
 .pt-5 {
   padding-top: 5px;
+}
+
+.pt-6vh {
+  padding-top: 6vh;
 }
 
 .padding-15 {

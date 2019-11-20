@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { ensureDecimal } from "../../../utils/ensureDecimal";
 import useSetLoading from "../../../hooks/useSetLoading";
+import Plus20 from "../../shared/SVGs/Plus20";
+import Minus20 from "../../shared/SVGs/Minus20";
 
 const TrackView = ({
   sets,
@@ -22,7 +24,16 @@ const TrackView = ({
         setReps(dReps);
       }
     }
+    function setInitialSet() {
+      if (sets) {
+        const index = sets.map(x => x.weight).indexOf(0.0);
+        if (index > -1) {
+          onItemClick(sets[index]._id);
+        }
+      }
+    }
     setInitialInput();
+    setInitialSet();
   }, [exerId, sets]);
 
   useSetLoading(false);
@@ -33,7 +44,7 @@ const TrackView = ({
     if (setId === selectedSet._id) {
       return setSelectedSet({});
     }
-    let set = sets.filter(x => x._id === setId)[0];
+    const set = sets.filter(x => x._id === setId)[0];
     const { reps, weight } = set;
 
     setReps(reps || 0);
@@ -47,7 +58,15 @@ const TrackView = ({
 
   function onUpdateClick() {
     onEditSet({ reps, weight }, exerId, setId);
-    setSelectedSet({});
+    let index = sets.map(x => x._id).indexOf(setId);
+    if (index > -1) {
+      const nextSet = sets[index + 1];
+      if (nextSet && nextSet.weight === 0) {
+        setSelectedSet(nextSet);
+      } else {
+        setSelectedSet({});
+      }
+    }
   }
 
   function onClearClick() {
@@ -158,7 +177,7 @@ const TrackInput = ({ label, onDecrement, onIncrement, onChange, value }) => {
       </div>
       <div className="history-mobile-exercise-input-box">
         <button onClick={onDecrement}>
-          <i className="material-icons">remove</i>
+          <Minus20 fill={"#fff"} />
         </button>
         <div className="history-mobile-exercise-input-shiizz">
           <input
@@ -170,7 +189,7 @@ const TrackInput = ({ label, onDecrement, onIncrement, onChange, value }) => {
           <div className="border-with-sides"></div>
         </div>
         <button onClick={onIncrement}>
-          <span>+</span>
+          <Plus20 fill={"#fff"} />
         </button>
       </div>
     </div>

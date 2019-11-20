@@ -14,6 +14,7 @@ import {
   deleteDay,
   addExercise,
   deleteExercise,
+  deleteExercises,
   addSet,
   editSet,
   deleteSet,
@@ -98,6 +99,15 @@ const History = () => {
     }
   }
 
+  function handleDeleteExercises(exerIds) {
+    const { notes, exercises } = currentDay;
+    if (!notes && exercises.length - exerIds.length === 0) {
+      deleteDay(dispatch, dayId);
+    } else {
+      deleteExercises(dispatch, dayId, exerIds);
+    }
+  }
+
   function handleAddSet(exerId, exerciseId, values) {
     if (!values) {
       let x = findLastOccurenceOfExercise(days, exerciseId);
@@ -147,17 +157,17 @@ const History = () => {
   if (isMobile) {
     view = (
       <MobileView
+        historyDays={days}
         date={moment(date)}
         dayIndex={dayIndex}
         currentDay={currentDay}
-        historyDays={days}
         handleAddSet={handleAddSet}
         handleEditSet={handleEditSet}
+        onDateChange={handleDateChange}
         handleDeleteSet={handleDeleteSet}
         handleAddExercise={handleAddExercise}
-        onDateChange={handleDateChange}
         displayGroupCircle={displayGroupCircle}
-        handleDeleteExercise={handleDeleteExercise}
+        handleDeleteExercises={handleDeleteExercises}
         handleCopyDay={handleCopyDay}
       />
     );

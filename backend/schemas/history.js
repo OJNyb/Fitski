@@ -4,21 +4,15 @@ const Joi = require("./joi");
 
 // AD
 
-const planId = Joi.string()
-  .objectId()
-  .label("Workout plan ID");
+const _id = Joi.string().objectId();
 
-const dayId = Joi.string()
-  .objectId()
-  .label("Day ID");
+const planId = _id.label("Workout plan ID");
 
-const exerciseId = Joi.string()
-  .objectId()
-  .label("Exercise ID");
+const dayId = _id.label("Day ID");
 
-const setId = Joi.string()
-  .objectId()
-  .label("Set ID");
+const exerciseId = _id.label("Exercise ID");
+
+const setId = _id.label("Set ID");
 
 const notes = Joi.string()
   .min(1)
@@ -106,6 +100,11 @@ const deleteExercise = Joi.object().keys({
   exercise_id: exerciseId
 });
 
+const deleteExercises = Joi.object().keys({
+  day_id: dayId,
+  exerciseIds: Joi.array().items(exerciseId)
+});
+
 const addSet = Joi.object().keys({
   unit,
   day_id: dayId,
@@ -149,6 +148,7 @@ module.exports = {
   "post/history": addDay,
   "delete/history/:day_id": deleteDay,
   "post/history/exercise/:day_id": addExercise,
+  "delete/history/exercise/:day_id": deleteExercises,
   "delete/history/exercise/:day_id/:exercise_id": deleteExercise,
   "post/history/exercise/:day_id/:exercise_id": addSet,
   "post/history/exercise/:day_id/:exercise_id/:set_id": editSet,

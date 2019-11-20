@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 const PlanCard = ({ plan, isMobile }) => {
   const { _id, name, user, goal, weeks, createdAt } = plan;
   const { username: author, avatar } = user;
+  const avatarUrl = `/image/avatar/${avatar}_sm.jpg`;
 
   let created = displayDate(new Date(createdAt));
   console.log(user);
@@ -13,8 +14,8 @@ const PlanCard = ({ plan, isMobile }) => {
       <div className="plans-plan-name">{name}</div>
       <div className="plans-plan-goal">Gain muscle</div>
       <div className="plans-plan-author">
-        <div style={{ backgroundImage: `url(${avatar})` }}>
-          <img src={avatar} />
+        <div style={{ backgroundImage: `url(${avatarUrl})` }}>
+          <img src={avatarUrl} alt="Profile pic" />
         </div>
         <span>{author}</span>
       </div>

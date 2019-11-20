@@ -50,14 +50,16 @@ const Plan = () => {
     setShowModal(false);
   }
 
-  function handleActivateSubmit(planId, startDate) {
+  function handleActivateSubmit(startDate) {
+    console.log(startDate);
     activatePlan(aPlan, planId, startDate);
     setShowModal(false);
   }
 
-  function handleDeactivateSubmit(e, planId) {
+  function handleDeactivateSubmit(e) {
     e.preventDefault();
     deactivatePlan(dPlan, planId);
+    setShowModal(false);
   }
 
   let modal;
@@ -73,8 +75,14 @@ const Plan = () => {
     } else if (showModal === "delete") {
       modal = <DeletePlanModal planId={planId} hideModal={hideModal} />;
     } else if (showModal === "activate") {
-      modal = <ActivatePlanModal planId={planId} hideModal={hideModal} />;
-    } else if (showModal === "dectivate") {
+      modal = (
+        <ActivatePlanModal
+          planId={planId}
+          hideModal={hideModal}
+          onActivateSubmit={handleActivateSubmit}
+        />
+      );
+    } else if (showModal === "deactivate") {
       modal = (
         <ConfirmModal
           hideModal={hideModal}

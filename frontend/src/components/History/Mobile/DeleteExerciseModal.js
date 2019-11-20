@@ -1,14 +1,20 @@
 import React from "react";
-import MobileModal from "../Modal/MobileModal";
+import MobileModal from "../../shared/Modal/MobileModal";
 
 const DeleteExerciseModal = ({
+  exercises,
   onDeleteSubmit,
   selectedExercises,
   setShowDeleteModal
 }) => {
-  let ExercisesToDeleteView = selectedExercises.map(x => (
+  const exercisesToShow = exercises.filter(
+    x => selectedExercises.indexOf(x._id) > -1
+  );
+
+  let ExercisesToDeleteView = exercisesToShow.map(x => (
     <ExerciseItem exercise={x} key={x._id} />
   ));
+
   let children = (
     <div className="flex-col-cen width-100p">
       {ExercisesToDeleteView}
@@ -30,8 +36,10 @@ const DeleteExerciseModal = ({
 };
 
 const ExerciseItem = ({ exercise }) => {
-  const { name } = exercise;
-  return <div className="black font-16">{name}</div>;
+  const {
+    exercise: { name }
+  } = exercise;
+  return <span className="black font-16">{name}</span>;
 };
 
 export default DeleteExerciseModal;

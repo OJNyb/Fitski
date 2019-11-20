@@ -6,6 +6,7 @@ const connectRedis = require("connect-redis");
 const bodyParser = require("body-parser");
 
 const user = require("./routes/api/user");
+const image = require("./routes/api/image");
 const woPlan = require("./routes/api/woPlan");
 const history = require("./routes/api/history");
 const exercise = require("./routes/api/exercise");
@@ -69,6 +70,7 @@ const {
     // Use Routes
     app.use("/api/user", user);
     app.use("/api/plan", woPlan);
+    app.use("/api/image", image);
     app.use("/api/history", history);
     app.use("/api/exercise", exercise);
 

@@ -1,7 +1,7 @@
 const History = require("../models/History");
 const createErrorObject = require("../utils/createErrorObject");
 
-async function validateWOPlan(req, res, next) {
+async function validateHistory(req, res, next) {
   const { body, params, session } = req;
 
   const { userId } = session;
@@ -14,8 +14,6 @@ async function validateWOPlan(req, res, next) {
   }
 
   body.history = history;
-
-  console.log(dayId);
 
   const { days } = history;
   const dayIndex = days.map(x => x.id).indexOf(dayId);
@@ -38,4 +36,4 @@ async function validateWOPlan(req, res, next) {
   next();
 }
 
-module.exports = validateWOPlan;
+module.exports = validateHistory;

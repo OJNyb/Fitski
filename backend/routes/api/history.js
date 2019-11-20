@@ -176,27 +176,27 @@ router.post(
     const yestarday = new Date().setDate(date.getDate() - 1);
 
     const { days } = history;
-    let dateFilter;
+    let dateFilter = {
+      $gte: formattedDate
+    };
     let currentDayIndex = days.map(x => x.date).indexOf(formattedDate);
     if (currentDayIndex > -1) {
       let x = days[currentDayIndex].exercises
         .map(x => x.sets)
-        .map(x => x.weight);
+        .map(x => x.map(x => x.weight))
+        .reduce((acc, curr) => acc.concat(curr), [])
+        .reduce((acc, curr) => (acc += curr), 0);
       // .reduce(
       //   (accu, curr) =>
       //     (accu += curr.reduce((accu, curr) => (accu += curr), 0)),
       //   0
       // );
-      console.log(x);
-    } else {
-      dateFilter = {
-        $gte: formattedDate
-      };
+      if (x > 0) {
+        dateFilter = {
+          $gt: formattedDate
+        };
+      }
     }
-
-    dateFilter = {
-      $gte: formattedDate
-    };
 
     history
       .updateOne({
@@ -407,6 +407,41 @@ router.delete(
         },
         {
           arrayFilters: [{ "d._id": dayId }]
+        }
+      )
+      .then(() => {
+        return res.json({ message: "success" });
+      })
+
+      .catch(next);
+  }
+);
+
+// @route DELETE api/history/exercise/:day_id/
+// @desc Delete exercises
+// @access Private
+router.delete(
+  "/exercise/:day_id/",
+  ensureSignedIn,
+  validateRequest,
+  validateHistory,
+  async (req, res, next) => {
+    const { body, params } = req;
+    const { history, exerciseIds } = body;
+    const { day_id: dayId } = params;
+
+    history
+      .updateOne(
+        {
+          $pull: {
+            "days.$[d].exercises": {
+              _id: { $in: exerciseIds }
+            }
+          }
+        },
+        {
+          arrayFilters: [{ "d._id": dayId }],
+          multi: true
         }
       )
       .then(() => {

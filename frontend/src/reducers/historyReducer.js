@@ -6,6 +6,7 @@ import {
   DELETE_DAY,
   ADD_EXERCISE,
   DELETE_EXERCISE,
+  DELETE_EXERCISES,
   ADD_SET,
   EDIT_SET,
   DELETE_SET,
@@ -142,25 +143,6 @@ function historyReducer(state, action) {
       };
     }
 
-    // case EDIT_EXERCISE: {
-    //   const { values, dayId, exerId } = payload;
-    //   const { history } = state;
-    //   const { days } = history;
-
-    //   let day = days.find(x => x._id === dayId);
-
-    //   let { exercises } = day;
-
-    //   let exerciseIndex = exercises.map(x => x._id).indexOf(exerId);
-
-    //   exercises[exerciseIndex] = { ...exercises[exerciseIndex], ...values };
-
-    //   return {
-    //     ...state,
-    //     history
-    //   };
-    // }
-
     case DELETE_EXERCISE: {
       const { dayId, exerId } = payload;
       const { history } = state;
@@ -183,6 +165,37 @@ function historyReducer(state, action) {
       }
 
       let exercises = day.exercises.filter(x => x._id !== exerId);
+
+      day.exercises = exercises;
+
+      return {
+        ...state,
+        history
+      };
+    }
+
+    case DELETE_EXERCISES: {
+      const { dayId, exerIds } = payload;
+      const { history } = state;
+      if (!history) {
+        return {
+          ...state
+        };
+      }
+      const { days } = history;
+      if (!days) {
+        return {
+          ...state
+        };
+      }
+      let day = days.find(x => x._id === dayId);
+      if (!day) {
+        return {
+          ...state
+        };
+      }
+
+      let exercises = day.exercises.filter(x => exerIds.indexOf(x._id) === -1);
 
       day.exercises = exercises;
 

@@ -37,6 +37,9 @@
 .history-mobile-container {
   max-width: 500px;
   margin: 0 auto;
+  height: 93vh;
+  box-sizing: border-box;
+  overflow: visible;
 }
 .history-empty-log-btn-container {
   display: flex;
@@ -48,10 +51,22 @@
 }
 
 /* HISTORY */
-
 .history-mobile-empty-log-container {
   height: 87vh;
   justify-content: space-between;
   padding: 10px;
   box-sizing: border-box;
+}
+
+.history-add-card-active {
+  background-color: #f8d4d4 !important;
+}
+
+.history-mobile-selected-check-n-span-wrapper span {
+  border-left: 1px solid #fff;
+  padding-left: 20px;
+}
+
+.history-mobile-selected-check-n-span-wrapper button {
+  margin-right: 13px;
 }

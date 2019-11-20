@@ -6,7 +6,7 @@ function useLongPress(callback = () => {}, ms = 300) {
   useEffect(() => {
     let timerId;
     if (startLongPress) {
-      timerId = setTimeout(callback, ms);
+      timerId = setTimeout(() => callback(startLongPress), ms);
     } else {
       clearTimeout(timerId);
     }
@@ -16,10 +16,12 @@ function useLongPress(callback = () => {}, ms = 300) {
     };
   }, [startLongPress]);
 
-  const start = useCallback(() => {
-    setStartLongPress(true);
+  console.log(startLongPress);
+  const start = useCallback(e => {
+    e.persist();
+    setStartLongPress(e);
   }, []);
-  const stop = useCallback(() => {
+  const stop = useCallback(e => {
     setStartLongPress(false);
   }, []);
 

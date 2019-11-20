@@ -1,18 +1,18 @@
-var _ = require("lodash");
-var fs = require("fs");
-var path = require("path");
-var Jimp = require("jimp");
-var crypto = require("crypto");
-var mkdirp = require("mkdirp");
-var concat = require("concat-stream");
-var streamifier = require("streamifier");
+const _ = require("lodash");
+const fs = require("fs");
+const path = require("path");
+const Jimp = require("jimp");
+const crypto = require("crypto");
+const mkdirp = require("mkdirp");
+const concat = require("concat-stream");
+const streamifier = require("streamifier");
 
 // Configure UPLOAD_PATH
 // process.env.AVATAR_STORAGE contains uploads/avatars
-var UPLOAD_PATH = path.resolve(__dirname, "..", process.env.AVATAR_STORAGE);
+const UPLOAD_PATH = path.resolve(__dirname, "..", process.env.AVATAR_STORAGE);
 
 // create a multer storage engine
-var AvatarStorage = function(options) {
+const AvatarStorage = function(options) {
   // this serves as a constructor
   // this serves as a constructor
   function AvatarStorage(opts) {
@@ -128,9 +128,6 @@ var AvatarStorage = function(options) {
     // return the output stream
     return output;
   };
-  // this creates a Writable stream for a filepath
-  AvatarStorage.prototype._createOutputStream = function(filepath, cb) {};
-
   // this processes the Jimp image buffer
   // this processes the Jimp image buffer
   AvatarStorage.prototype._processImage = function(image, cb) {
@@ -213,17 +210,18 @@ var AvatarStorage = function(options) {
         // scale the image based on the size
         switch (size) {
           case "sm":
-            image = clone.clone().scale(0.3);
+            image = clone.clone().contain(96, 96);
             break;
           case "md":
-            image = clone.clone().scale(0.7);
+            image = clone.clone().contain(200, 200);
             break;
           case "lg":
-            image = clone.clone();
+            image = clone.clone().contain(400, 400);
             break;
         }
 
         // return an object of the stream and the Jimp image
+
         return {
           stream: outputStream,
           image: image
@@ -253,7 +251,8 @@ var AvatarStorage = function(options) {
   };
 
   // multer requires this for handling the uploaded file
-  AvatarStorage.prototype._handleFile = function(req, file, cb) {
+  AvatarStorage.prototype._handleFile = function(_req, file, cb) {
+    console.log(cb.toString());
     // create a reference for this to use in local functions
     var that = this;
 
@@ -292,7 +291,6 @@ var AvatarStorage = function(options) {
     if (this.options.responsive) {
       pathsplit = _path.split("/");
       matches = pathsplit.pop().match(/^(.+?)_.+?\.(.+)$/i);
-
       if (matches) {
         paths = _.map(["lg", "md", "sm"], function(size) {
           return (
@@ -311,9 +309,6 @@ var AvatarStorage = function(options) {
       fs.unlink(_path, cb);
     });
   };
-
-  // multer requires this for destroying file
-  AvatarStorage.prototype._removeFile = function(req, file, cb) {};
 
   // create a new instance with the passed options and return it
   return new AvatarStorage(options);
