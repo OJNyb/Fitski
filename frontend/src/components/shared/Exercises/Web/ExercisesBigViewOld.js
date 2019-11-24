@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import useSetLoading from "../../../hooks/useSetLoading";
+import useSetLoading from "../../../../hooks/useSetLoading";
 
 import "./bsExerciseView.css";
 

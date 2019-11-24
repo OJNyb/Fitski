@@ -56,7 +56,7 @@ const MobileNavMid = ({
   if (backText) {
     backTextDisplay = (
       <div className="nav-mid-header-item">
-        <h2 className="nav-h2 font-18 color-white">{backText}</h2>
+        <h2 className="nav-h2 m-l-3 font-18 color-white">{backText}</h2>
       </div>
     );
   }

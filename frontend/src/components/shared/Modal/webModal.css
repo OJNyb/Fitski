@@ -1,0 +1,41 @@
+.modal-content {
+  width: 25%;
+  min-width: 224px;
+  position: relative;
+  margin: 15% auto;
+  padding: 0 10px 15px;
+  border: 1px solid #c29292;
+  border-radius: 4px;
+}
+
+.modal-header {
+  border-bottom: 1px solid silver;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.modal-content h2 {
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.close-modal-btn {
+  display: flex;
+  position: absolute;
+  top: 6px;
+  right: 8px;
+
+  padding: 0;
+
+  cursor: pointer;
+}
+
+.close-modal-btn i {
+  font-size: 22px;
+}
+
+.bs-modal-submit-btn {
+  padding: 10px 40%;
+  margin-top: 20px;
+}

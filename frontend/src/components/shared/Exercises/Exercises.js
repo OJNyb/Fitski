@@ -10,10 +10,8 @@ import {
 
 import SetLoading from "../../SetLoading";
 
-import "./exerciseTable.css";
-
-const ExercisesBigView = lazy(() => import("./ExercisesBigView"));
-const MobileExerciseView = lazy(() => import("./MobileExerciseView"));
+const ExercisesBigView = lazy(() => import("./Web/ExercisesBigView"));
+const MobileExerciseView = lazy(() => import("./Mobile/MobileExerciseView"));
 
 const Exercises = ({ handleAddExercise, closeExercises }) => {
   const { state, dispatch } = useContext(ExerciseContext);
@@ -25,6 +23,11 @@ const Exercises = ({ handleAddExercise, closeExercises }) => {
   const isMobile = useMobile();
 
   const { exercises, isPending, isRejected } = state;
+
+  let length;
+  if (exercises) {
+    length = exercises.length;
+  }
 
   useEffect(() => {
     function filterExercises() {
@@ -53,7 +56,7 @@ const Exercises = ({ handleAddExercise, closeExercises }) => {
     }
 
     filterExercises();
-  }, [search, muscleGroup, isMobile, exercises.length, exercises, edit]);
+  }, [search, muscleGroup, isMobile, length, exercises, edit]);
 
   function handleAddCustomExercise(name, category) {
     addExercise(dispatch, name, category);
@@ -107,6 +110,9 @@ const Exercises = ({ handleAddExercise, closeExercises }) => {
       exercisesToShow={exercisesToShow}
       handleSearchChange={handleSearchChange}
       handleSelectChange={handleSelectChange}
+      handleEditExercise={handleEditExercise}
+      handleDeleteExercises={handleDeleteExercises}
+      handleAddCustomExercise={handleAddCustomExercise}
     />
   );
 

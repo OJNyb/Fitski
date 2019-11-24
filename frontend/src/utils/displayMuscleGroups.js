@@ -7,8 +7,6 @@ function formatMuscleGroups(exercises) {
     }
   });
 
-  console.log(exercises);
-
   return muscleGroup
     .reduce((accu, curr) => {
       if (accu.indexOf(curr) === -1) {

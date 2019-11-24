@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
-import { NavContext } from "../../../context/navContext";
-import Plus20 from "../SVGs/Plus20";
+import { NavContext } from "../../../../context/navContext";
+import Plus20 from "../../SVGs/Plus20";
 
 import AddExerciseModal from "./AddExerciseModal";
 

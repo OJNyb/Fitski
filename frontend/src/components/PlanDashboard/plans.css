@@ -155,7 +155,7 @@
   border: 1px solid rgb(230, 230, 230);
   cursor: pointer;
   transition: background-color 0.15s;
-  color: rgb(146, 84, 84);
+  color: rgb(94, 53, 53);
   box-shadow: 1px 1px 4px 0 rgba(0, 0, 0, 0.11);
   margin: 0 auto 10px;
 }
@@ -175,8 +175,8 @@
 }
 
 .plans-plan-author div {
-  height: 22px;
-  width: 22px;
+  height: 26px;
+  width: 26px;
 
   background-size: cover;
   background-repeat: no-repeat;
@@ -196,8 +196,8 @@
   left: 0;
   bottom: 0;
   border-radius: 50%;
-  width: 22px;
-  height: 22px;
+  width: 26px;
+  height: 26px;
 }
 
 .plans-cards-container .plans-plan-created,

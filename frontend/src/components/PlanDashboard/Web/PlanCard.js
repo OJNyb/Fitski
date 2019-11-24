@@ -3,16 +3,17 @@ import { displayDate } from "../../../utils/formatHistoryDate";
 import { Link } from "react-router-dom";
 
 const PlanCard = ({ plan, isMobile }) => {
-  const { _id, name, user, goal, weeks, createdAt } = plan;
+  const { _id, name, user, goals, weeks, createdAt } = plan;
   const { username: author, avatar } = user;
   const avatarUrl = `/image/avatar/${avatar}_sm.jpg`;
 
+  const goalDisplay = goals.join(", ");
+
   let created = displayDate(new Date(createdAt));
-  console.log(user);
   return (
     <Link to={`/plans/${_id}`} className="plans-plan-card">
       <div className="plans-plan-name">{name}</div>
-      <div className="plans-plan-goal">Gain muscle</div>
+      <div className="plans-plan-goal">{goalDisplay}</div>
       <div className="plans-plan-author">
         <div style={{ backgroundImage: `url(${avatarUrl})` }}>
           <img src={avatarUrl} alt="Profile pic" />

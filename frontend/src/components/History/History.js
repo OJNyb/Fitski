@@ -142,7 +142,7 @@ const History = () => {
         let circles = muscleGroups.map(x => {
           let color = addMGC(x);
           return (
-            <div>
+            <div key={x}>
               <CalendarMuscleGroupCircle fill={color} />
             </div>
           );
@@ -163,7 +163,7 @@ const History = () => {
         currentDay={currentDay}
         handleAddSet={handleAddSet}
         handleEditSet={handleEditSet}
-        onDateChange={handleDateChange}
+        handleDateChange={handleDateChange}
         handleDeleteSet={handleDeleteSet}
         handleAddExercise={handleAddExercise}
         displayGroupCircle={displayGroupCircle}
@@ -181,7 +181,7 @@ const History = () => {
         handleEditSet={handleEditSet}
         showExercises={showExercises}
         handleDeleteSet={handleDeleteSet}
-        onDateChange={handleDateChange}
+        handleDateChange={handleDateChange}
         setShowExercises={setShowExercises}
         handleAddExercise={handleAddExercise}
         displayGroupCircle={displayGroupCircle}

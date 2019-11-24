@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 
 import DayView from "./DayView";
-import { SingleDatePicker } from "react-dates";
 import Exercises from "../../shared/Exercises/Exercises";
 import useSetLoading from "../../../hooks/useSetLoading";
+import WebCalendar from "../../shared/Calendar/WebCalendar";
 
 const WebView = ({
   date,
   dayIndex,
   currentDay,
-  onDateChange,
+  handleDateChange,
   handleAddSet,
   handleEditSet,
   handleDeleteSet,
@@ -20,23 +20,20 @@ const WebView = ({
   const [focused, setFocused] = useState(false);
   useSetLoading(false);
 
+  function handleDateClick(date) {
+    handleDateChange(date);
+    setFocused(false);
+  }
+
   return (
     <div className="log-container">
       <div className="log-left-container">
-        <SingleDatePicker
+        <WebCalendar
           date={date}
           focused={focused}
-          id="your_unique_id"
-          onDateChange={date => onDateChange(date)}
+          onDateClick={handleDateClick}
+          displayGroupCircle={displayGroupCircle}
           onFocusChange={({ focused }) => setFocused(focused)}
-          isOutsideRange={() => false}
-          renderDayContents={({ _d: date }) => {
-            return (
-              <div>
-                {date.getDate()} {displayGroupCircle(date)}
-              </div>
-            );
-          }}
         />
         <WebViewLeft
           dayIndex={dayIndex}

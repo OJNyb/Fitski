@@ -28,7 +28,7 @@ const MobileView = ({
   dayIndex,
   currentDay,
   historyDays,
-  onDateChange,
+  handleDateChange,
   handleAddSet,
   handleEditSet,
   handleCopyDay,
@@ -91,11 +91,10 @@ const MobileView = ({
     view = (
       <CalendarView
         date={date}
-        onDateChange={onDateChange}
         setShowCalendar={setShowHistory}
         displayGroupCircle={displayGroupCircle}
         onDayClick={date => {
-          onDateChange(date);
+          handleDateChange(date);
           setShowHistory(false);
         }}
       />
@@ -141,7 +140,7 @@ const MobileView = ({
         onCopyDayClick={handleCopyDayClick}
         dayIndex={dayIndex}
         currentDay={currentDay}
-        onDateChange={onDateChange}
+        onDateChange={handleDateChange}
         setShowExercise={setShowExercise}
         setShowExercises={setShowExercises}
         onCalendarClick={handleCalendarClick}

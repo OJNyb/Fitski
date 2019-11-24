@@ -11,3 +11,5 @@ const CopyDayModal = ({ setShowModal, historyDays, handleCopyDay }) => {
 
   return <BigViewModal header={"Copy day"} children={children} />;
 };
+
+export default CopyDayModal;

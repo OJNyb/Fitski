@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import MobileModal from "../Modal/MobileModal";
+import MobileModal from "../../Modal/MobileModal";
 
 const muscleGroupArray = [
   "Shoulders",

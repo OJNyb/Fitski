@@ -1,6 +1,9 @@
 import React from "react";
 import useSetLoading from "../../../hooks/useSetLoading";
 
+import "./modal.css";
+import "./webModal.css";
+
 const BigViewModal = ({ header, children, toggleModal }) => {
   useSetLoading(false);
 

@@ -17,20 +17,19 @@
 .header-logo-container {
   min-width: 250px;
   border-right: 1px solid rgba(0, 0, 0, 0.1);
-  display: flex;
-  justify-content: center;
-  align-items: center;
+}
 
-  color: #392828;
-  font-size: 28px;
+.header-logo-container h1 {
+  margin-right: 39px;
 }
 
 .header-logo-container i {
   margin-right: 5px;
+  margin-top: 6px;
+  font-size: 34px;
+  color: #a60000;
 }
-.header-logo {
-  font-size: inherit;
-}
+
 .header-user {
   width: 200px;
   display: flex;
@@ -39,7 +38,7 @@
   border-left: 1px solid rgba(0, 0, 0, 0.1);
 }
 .header-name {
-  font-size: 14px;
+  font-size: 16px;
   margin-left: 10px;
   color: rgba(0, 0, 0, 0.75);
   font-weight: 400;
@@ -47,7 +46,9 @@
 
 .header-avatar {
   border-radius: 50%;
-  width: 30px;
+  width: 40px;
+  height: 40px;
+  border: 1px solid #a600002d;
 }
 
 /** Sidebar **/
@@ -93,11 +94,8 @@ nav section {
   padding: 8px 20px 8px 10px;
   margin-top: 0;
   border-radius: 9999px;
-  display: flex;
-
   font-weight: 400;
   color: #846262;
-
   transition-property: background-color;
   transition-duration: 0.2s;
 }
@@ -109,7 +107,11 @@ nav section {
 
 .nav-icon {
   margin-right: 10px;
-  font-size: 19px;
+  font-size: 22px;
+}
+
+.nav-span {
+  height: 17px;
 }
 
 .nav-sidebar-avatar {
@@ -135,7 +137,7 @@ nav section {
 .nav-mid-web-header-container {
   left: 250px;
   top: 6px;
-  width: calc(100% - 200px - 250px - 30px);
+  width: calc(100% - 200px - 250px);
   height: 60px;
 }
 
@@ -152,7 +154,6 @@ nav section {
 .nav-h2 {
   font-weight: 500;
   margin-top: 0;
-  margin-left: 3px;
   margin-bottom: 1px;
 }
 
@@ -268,7 +269,7 @@ nav section {
   position: fixed;
   width: 200%;
   height: 100%;
-  transition: left 0.2s;
+  transition: all 0.2s;
 }
 
 .mobile-nav-more-container {
@@ -302,7 +303,7 @@ nav section {
   position: fixed;
   top: 0;
   right: 0;
-  z-index: 9999;
+  z-index: 5000;
   padding-top: calc(3.5vh - 16px);
   padding-right: 5px;
 }
@@ -311,4 +312,20 @@ nav section {
 .mobile-nav-icon-container a {
   min-height: 32px;
   margin-right: 7px;
+}
+
+.mobile-nav-header {
+  width: 251px;
+  background: #fff;
+  box-shadow: inset -7px 0 20px -7px rgba(0, 0, 0, 0.11);
+  margin-bottom: -1px;
+}
+
+.mobile-nav-header h1 {
+  margin-right: 33px;
+}
+
+.mobile-nav-header i {
+  margin-top: 6px;
+  margin-right: 3px;
 }

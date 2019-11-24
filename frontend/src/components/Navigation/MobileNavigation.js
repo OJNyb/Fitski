@@ -44,16 +44,23 @@ const MobileNavigation = () => {
       </div>
 
       <div
-        className="mobile-nav-menu-container"
+        className="mobile-nav-menu-container fixed top-0"
         onClick={() => setShowNavbar(false)}
         style={{
           left: showNavbar ? 0 : "-100%",
           backgroundColor: showNavbar
-            ? "rgba(235, 209, 209, 0.5)"
+            ? "rgba(57, 34, 34, 0.59)"
             : "transparent",
-          zIndex: showNavbar ? 998 : -1
+          zIndex: showNavbar ? 9999 : -1
         }}
       >
+        <div className="mobile-nav-header padding-15 border-box flex-col-cen">
+          <div className="flex-ai-center tc">
+            <i className="material-icons font-30">fitness_center</i>
+            <h1 className="margin-0 tc line-height-11">Fitnut</h1>
+          </div>
+          <span className="tc font-12 line-height-11">Beta v0.01</span>
+        </div>
         <NavigationMenu />
       </div>
     </>

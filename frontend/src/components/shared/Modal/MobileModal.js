@@ -1,5 +1,6 @@
 import React from "react";
 import "./modal.css";
+import "./mobileModal.css";
 import useSetLoading from "../../../hooks/useSetLoading";
 
 const MobileModal = ({ header, children, toggleModal }) => {

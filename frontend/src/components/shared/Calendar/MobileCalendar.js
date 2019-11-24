@@ -6,6 +6,7 @@ import "react-dates/initialize";
 
 import "./MobileCalendar.css";
 import "react-dates/lib/css/_datepicker.css";
+import "./Calendar.css";
 
 const CalendarView = ({
   date,

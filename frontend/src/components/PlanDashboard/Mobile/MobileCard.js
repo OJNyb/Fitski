@@ -5,7 +5,7 @@ import "./plansMobile.css";
 
 const MobilePlanCard = ({ plan, onActivateClick, onDeactivateClick }) => {
   const { _id: planId, name, user, goals, weeks, description, active } = plan;
-  const { username: author, avatar } = user;
+  const { username, avatar } = user;
   const avatarUrl = `/image/avatar/${avatar}_sm.jpg`;
 
   const goalDisplay = goals.join(", ");
@@ -52,7 +52,7 @@ const MobilePlanCard = ({ plan, onActivateClick, onDeactivateClick }) => {
           <div className="flex-col">
             <span className="black line-height-12">{name}</span>
             <span className="font-w-300 font-14 line-height-11">
-              <span className="tc">@OJNyb</span> | {goalDisplay} |{" "}
+              <span className="tc">@{username}</span> | {goalDisplay} |{" "}
               {weeks.length} weeks
             </span>
             <span className="font-w-300 font-14 line-height-11"></span>

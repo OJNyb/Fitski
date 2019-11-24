@@ -281,6 +281,11 @@
   align-items: center;
 }
 
+.flex-ai-start {
+  display: flex;
+  align-items: flex-start;
+}
+
 .flex-col-cen {
   display: flex;
   align-items: center;
@@ -360,6 +365,10 @@
 
 .m-l-10 {
   margin-left: 10px;
+}
+
+.m-l-3 {
+  margin-left: 3px;
 }
 
 .m-r-10 {
@@ -610,6 +619,10 @@
 .space-after::after {
   content: "i";
   color: transparent;
+}
+
+.bb-1-tc {
+  border-bottom: 1px solid #a60000;
 }
 
 .mobile-modal-submit-btn {

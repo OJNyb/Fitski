@@ -1,12 +1,11 @@
 import React, { useRef, useState } from "react";
-import useLongPressAndClick from "../../../hooks/useLongPressAndClick";
+import useLongPressAndClick from "../../../../hooks/useLongPressAndClick";
 
 import MobileExercisesNav from "./MobileExercisesNav";
-import useSetLoading from "../../../hooks/useSetLoading";
+import useSetLoading from "../../../../hooks/useSetLoading";
 import AddExerciseModal from "./AddExerciseModal";
-import DeleteExerciseModal from "./DeleteExerciseModal";
+import DeleteExerciseModal from "../DeleteExerciseModal";
 
-import "./exerciseTable.css";
 import "./mobileExerciseView.css";
 
 const muscleGroupArray = [

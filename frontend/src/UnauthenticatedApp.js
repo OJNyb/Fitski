@@ -7,6 +7,10 @@ const Landing = lazy(() => import("./components/noauth/Landing"));
 const Login = lazy(() => import("./components/noauth/MobileLogin"));
 const Register = lazy(() => import("./components/noauth/MobileRegister"));
 const NoMatch = lazy(() => import("./components/NoMatch"));
+const TermsAndConditions = lazy(() =>
+  import("./components/Terms/TermsAndConditions")
+);
+const PrivacyPolicy = lazy(() => import("./components/Terms/PrivacyPolicy"));
 
 const UnauthenticatedApp = () => {
   return (
@@ -27,6 +31,8 @@ const UnauthenticatedApp = () => {
         <Route exact path="/signup">
           <Redirect to="/login" />
         </Route>
+        <Route exact path="/terms" component={TermsAndConditions} />
+        <Route exact path="/privacy-policy" component={PrivacyPolicy} />
         <Route path="*" component={NoMatch} />
       </Switch>
     </Suspense>

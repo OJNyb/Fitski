@@ -3,7 +3,6 @@ import useSetLoading from "../../hooks/useSetLoading";
 
 const TermsAndConditions = () => {
   useSetLoading(false);
-  console.log("gay");
   return (
     <>
       <h2>
