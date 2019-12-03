@@ -4,6 +4,9 @@ const { Types } = require("mongoose");
 
 // Model
 const WOPlan = require("../../models/WOPlan");
+const User = require("../../models/User");
+const PlanAccess = require("../../models/PlanAccess");
+const UserAccess = require("../../models/UserAccess");
 
 // Validation
 const { ensureSignedIn } = require("../../middlewares/auth");
@@ -19,11 +22,43 @@ const createErrorObject = require("../../utils/createErrorObject");
 // @route GET api/plan
 // @desc Get current users workout plans
 // @access Private
-router.get("/", ensureSignedIn, (req, res) => {
+router.get("/", ensureSignedIn, async (req, res, next) => {
   const { userId } = req.session;
-  WOPlan.find({ user: userId })
-    .populate("user")
-    .then(woPlans => res.json(woPlans));
+  UserAccess.findOne({ user: userId })
+    .then(access => {
+      const { plans } = access;
+      const accessedPlansIds = plans.map(x => x.woPlan);
+      WOPlan.find({
+        $or: [{ user: userId }, { _id: { $in: accessedPlansIds } }]
+      })
+        .populate("user")
+        .then(woPlans => res.json(woPlans))
+        .catch(next);
+    })
+    .catch(next);
+});
+
+// @route GET api/plan/user/:username
+// @desc Get user workout plans
+// @access Private
+router.get("/user/:username", ensureSignedIn, async (req, res, next) => {
+  const { params } = req;
+  const { username } = params;
+
+  User.findOne({ username })
+    .then(user => {
+      if (!user) {
+        return res
+          .status(404)
+          .json(createErrorObject(["No user with that username"]));
+      }
+      const { _id: userId } = user;
+      WOPlan.find({ user: userId, access: "public" })
+        .populate("user")
+        .then(woPlans => res.json(woPlans))
+        .catch(next);
+    })
+    .catch(next);
 });
 
 // @route GET api/plan/:plan_id
@@ -34,13 +69,36 @@ router.get(
   "/:plan_id",
   ensureSignedIn,
   validateRequest,
-  validateWOPlan,
-  async (req, res) => {
+  async (req, res, next) => {
     //  const { woPlan } = body;
-    const { plan_id } = req.params;
-    const woPlan = await WOPlan.findById(plan_id).populate(
-      "weeks.days.exercises.exercise user"
-    );
+    const { session, params } = req;
+    const { userId } = session;
+    const { plan_id: planId } = params;
+
+    try {
+      var woPlan = await WOPlan.findById(planId).populate(
+        "weeks.days.exercises.exercise user"
+      );
+      var access = await PlanAccess.findOne({ woPlan: planId });
+    } catch (err) {
+      return next(err);
+    }
+
+    if (!woPlan) {
+      return res
+        .status(404)
+        .json(createErrorObject(["No workout plan with this ID"]));
+    }
+
+    if (
+      woPlan.user._id.toString() !== userId &&
+      access.whitelist.map(x => x.user.toString()).indexOf(userId) === -1 &&
+      woPlan.access === "private"
+    ) {
+      return res
+        .status(403)
+        .json(createErrorObject(["You are not authorized to view this plan"]));
+    }
 
     res.json(woPlan);
   }
@@ -62,10 +120,20 @@ router.post("/", ensureSignedIn, validateRequest, async (req, res, next) => {
     ...body
   });
 
-  newWOPlan
-    .save()
-    .then(() => res.json({ message: "success" }))
-    .catch(next);
+  const newPlanAccess = new PlanAccess({
+    woPlan: _id
+  });
+
+  try {
+    var x = await newWOPlan.save();
+    var y = await newPlanAccess.save();
+  } catch (err) {
+    next(err);
+  }
+
+  if (x && y) {
+    res.json({ message: "success" });
+  }
 });
 
 // @route POST api/plan/:plan_id
@@ -80,20 +148,23 @@ router.post(
   async (req, res, next) => {
     const { body } = req;
 
-    const { name, goals, difficulty, description, woPlan } = body;
+    const { name, goal, access, difficulty, description, woPlan } = body;
     let update = {};
 
     if (name) {
       update["name"] = name;
+    }
+    if (goal) {
+      update["goal"] = goal;
+    }
+    if (access) {
+      update["access"] = access;
     }
     if (description) {
       update["description"] = description;
     }
     if (difficulty) {
       update["difficulty"] = difficulty;
-    }
-    if (goals) {
-      update["goals"] = goals;
     }
 
     woPlan

@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
 import useSetLoading from "../../hooks/useSetLoading";
 import { PlanContext } from "../../context/planContext";
 import useNavRedBack from "../../hooks/useNavRedBack";
@@ -15,16 +15,15 @@ const Overview = () => {
     name,
     user,
     description,
-    goals,
+    goal,
     weeks,
     difficulty
   } = woPlan;
   useNavRedBack(`/plans/${planId}`);
   useTitle(`${name}`);
+
   useSetLoading(false);
-  const [edit, setEdit] = useState(false);
-  const { avatar, username } = user;
-  const goalsDisplay = goals.join(", ");
+  const { username } = user;
 
   return (
     <>
@@ -52,7 +51,7 @@ const Overview = () => {
         </div>
         <div>
           <Label label={"Goals"} />
-          <Content content={goalsDisplay} />
+          <Content content={goal} />
         </div>
         <div>
           <Label label={"Difficulty"} />

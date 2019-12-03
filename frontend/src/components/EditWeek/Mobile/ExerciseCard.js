@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, useCallback } from "react";
 import { withRouter } from "react-router-dom";
 
 import "../../../styles/exerciseCard.css";
@@ -123,12 +123,21 @@ const EditColumn = ({ set, index, exerId, onDeleteSet, handleEditSet }) => {
   const repsRef = useRef();
   const lastRepsReqRef = useRef(reps);
 
+  const onExerciseEdit = useCallback(() => {
+    const { current: currentReps } = repsRef;
+
+    if (currentReps && currentReps !== lastRepsReqRef.current) {
+      handleEditSet(exerId, setId, currentReps);
+      lastRepsReqRef.current = currentReps;
+    }
+  }, [setId, exerId, repsRef, handleEditSet]);
+
   useEffect(() => {
     return () => {
       if (!isDeleted.current) onExerciseEdit();
       isClosed.current = true;
     };
-  }, []);
+  }, [onExerciseEdit]);
 
   function onRepsChange(e) {
     const { target } = e;
@@ -148,15 +157,6 @@ const EditColumn = ({ set, index, exerId, onDeleteSet, handleEditSet }) => {
         onExerciseEdit();
       }
     }, 5000);
-  }
-
-  function onExerciseEdit() {
-    const { current: currentReps } = repsRef;
-
-    if (currentReps && currentReps !== lastRepsReqRef.current) {
-      handleEditSet(exerId, setId, currentReps);
-      lastRepsReqRef.current = currentReps;
-    }
   }
 
   function onInputBlur() {

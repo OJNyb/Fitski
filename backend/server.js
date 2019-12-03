@@ -8,8 +8,10 @@ const bodyParser = require("body-parser");
 const user = require("./routes/api/user");
 const image = require("./routes/api/image");
 const woPlan = require("./routes/api/woPlan");
+const explore = require("./routes/api/explore");
 const history = require("./routes/api/history");
 const exercise = require("./routes/api/exercise");
+const feedback = require("./routes/api/feedback");
 
 const createErrorObject = require("./utils/createErrorObject");
 
@@ -31,7 +33,8 @@ const {
 
       .connect(mongoURI, {
         useNewUrlParser: true,
-        useFindAndModify: false
+        useFindAndModify: false,
+        useCreateIndex: true
       })
 
       .then(() => console.log("MongoDB Connected"))
@@ -71,12 +74,17 @@ const {
     app.use("/api/user", user);
     app.use("/api/plan", woPlan);
     app.use("/api/image", image);
+    app.use("/api/explore", explore);
     app.use("/api/history", history);
     app.use("/api/exercise", exercise);
+    app.use("/api/feedback", feedback);
 
     app.use(function(err, req, res, next) {
       console.log(err);
       console.error(err.stack);
+      if (err.isCustom) {
+        res.status(400).json(err);
+      }
       if (err.noRes) return;
 
       res.status(500).json(createErrorObject(["Something gnarly happened"]));

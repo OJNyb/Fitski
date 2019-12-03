@@ -19,7 +19,7 @@ const WOPlanSchema = new Schema(
       type: ObjectId,
       ref: "user"
     },
-    goals: Array,
+    goal: String,
     access: {
       type: String,
       default: "owner"
@@ -60,6 +60,8 @@ const WOPlanSchema = new Schema(
 WOPlanSchema.methods.isOwner = function(userId) {
   return userId === this.user.toString();
 };
+
+WOPlanSchema.index({ name: "text", goal: "text", description: "text" });
 
 const WOPlan = model("woPlan", WOPlanSchema);
 

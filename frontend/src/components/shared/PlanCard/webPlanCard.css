@@ -1,0 +1,78 @@
+/* Plan card */
+
+.plans-web-container {
+  width: 80%;
+  margin: auto;
+}
+
+.plans-cards-header {
+  padding: 12px 20px;
+  font-size: 14px;
+}
+
+.plans-cards-header {
+  font-weight: 400;
+  color: #a60000;
+}
+
+.plans-plan-card {
+  margin-bottom: 10px;
+  padding: 12px 20px;
+  border-radius: 3px;
+  font-size: 14px;
+  cursor: pointer;
+  color: rgb(94, 53, 53);
+  background-color: white;
+  border: 1px solid rgb(230, 230, 230);
+  box-shadow: 1px 1px 4px 0 rgba(0, 0, 0, 0.11);
+  transition: background-color 0.15s;
+}
+
+.plans-cards-header > div,
+.plans-plan-card > div,
+.plans-plan-card > a {
+  flex: 1;
+}
+
+.plans-plan-card:hover {
+  background-color: rgb(243, 235, 235);
+}
+
+.plans-plan-author a {
+  color: rgb(94, 53, 53);
+}
+
+.plans-plan-author a:hover {
+  color: #a60000;
+}
+
+.plans-plan-author div {
+  height: 26px;
+  width: 26px;
+
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+
+  overflow: hidden;
+  border-radius: 50%;
+  border: 1.5px solid #a60000;
+  margin-right: 7px;
+  position: relative;
+}
+
+.plans-plan-author img {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  border-radius: 50%;
+  width: 26px;
+  height: 26px;
+}
+
+.plans-cards-container .plans-plan-created,
+.plans-cards-container .plans-cards-header-created {
+  flex: 0.6;
+}

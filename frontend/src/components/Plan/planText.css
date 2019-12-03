@@ -8,10 +8,8 @@
   transition: color 0.15s;
 }
 
-.plan-week-container h1:hover {
-  font-size: 30px;
-  margin: 0;
-  color: #a60000;
+.plan-text-week-header-link:hover {
+  color: #d90000;
 }
 
 .plan-days-container {

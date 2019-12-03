@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useParams, useHistory } from "react-router-dom";
 
 import CopyModal from "./CopyModal";
-import DeleteModal from "./DeleteModal";
+import DeleteModal from "./DeleteWeekModal";
 import RepeatModal from "./RepeatModal";
 
 import NavMid from "../shared/NavMid/NavMid";

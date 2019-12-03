@@ -49,8 +49,6 @@ const EditWeek = ({ match: { params } }) => {
   }
 
   function handleDeleteExercise(exerId) {
-    console.log("edit gay");
-
     deleteExercise(dispatch, planId, weekId, dayId, exerId);
   }
 
@@ -59,7 +57,6 @@ const EditWeek = ({ match: { params } }) => {
       reps = findLastOccurenceOfExercisePlan(weeks, exerciseId).reps;
     }
 
-    console.log(reps);
     if (!reps) {
       reps = 0;
     }

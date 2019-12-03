@@ -1,26 +1,19 @@
-import React from "react";
-import { useAxios } from "../hooks/useAxios";
-
-import Loading from "./shared/SVGs/Loading";
+import { useEffect } from "react";
+import { useAuth } from "../context/authContext";
 
 const Logout = () => {
-  const { state } = useAxios("/user/logout");
+  const { logout } = useAuth();
+  useEffect(() => {
+    function logoutski() {
+      logout()
+        .then(() => window.location.reload())
+        .catch(err => console.log(err));
+    }
 
-  const { data, error, isPending, isRejected } = state;
+    logoutski();
+  }, [logout]);
 
-  if (isPending) {
-    return <Loading />;
-  }
-
-  if (isRejected) {
-    return <p>Error... check console</p>;
-  }
-
-  if (data && data.message === "success") {
-    return (window.location.href = "/");
-  }
-
-  return <p>Loading..</p>;
+  return null;
 };
 
 export default Logout;

@@ -16,16 +16,19 @@ const NavigationMenu = ({ marginTop }) => {
         </NavLink>
 
         <NavLink
-          to="/history"
+          to="/calendar"
           className="nav-item flex-ai-center line-height-11"
         >
-          <i className="material-icons nav-icon">bar_chart</i>
-          <span className="nav-span">History</span>
+          <i className="material-icons nav-icon">calendar_today</i>
+          <span className="nav-span">Calendar</span>
         </NavLink>
-        {/* <NavLink to="/browse" className="nav-item">
-        <i className="material-icons nav-icon">supervised_user_circle</i>
-        <span className="nav-span">Browse</span>
-      </NavLink> */}
+        <NavLink
+          to="/explore"
+          className="nav-item flex-ai-center line-height-11"
+        >
+          <i className="material-icons nav-icon">supervised_user_circle</i>
+          <span className="nav-span">Explore</span>
+        </NavLink>
         <NavLink
           to="/create-plan"
           className="nav-item flex-ai-center line-height-11"

@@ -4,6 +4,8 @@ import WebExerciseCard from "./WebExerciseCard";
 import Exercises from "../../shared/Exercises/Exercises";
 import useSetLoading from "../../../hooks/useSetLoading";
 
+import "./webEditWeek.css";
+
 const WebEditWeek = ({
   currentWeek,
   handleEditSet,

@@ -1,14 +1,17 @@
 import React, { useState } from "react";
 import { Form, Field, Formik } from "formik";
 import { useAuth } from "../../context/authContext";
+import useSetLoading from "../../hooks/useSetLoading";
+import { Link } from "react-router-dom";
 
 import MobileInput from "../shared/Form/MobileInput";
-import useSetLoading from "../../hooks/useSetLoading";
 
 import "./signXError.css";
+import "./mobileSignX.css";
 
 const Login = () => {
   const [loginErr, setLoginErr] = useState(false);
+
   const { login } = useAuth();
   useSetLoading(false);
 
@@ -44,7 +47,6 @@ const Login = () => {
       >
         {({ errors, values, isSubmitting }) => (
           <>
-            {errors && !setLoginErr && setLoginErr(true)}
             <div
               className={
                 "sign-x-alert-message" + (loginErr ? " sign-x-alert-show" : "")
@@ -94,6 +96,15 @@ const Login = () => {
           </>
         )}
       </Formik>
+      <div className="flex-ai-center margin-top-10">
+        <Link to="/forgot" className="tc">
+          Forgot password?
+        </Link>
+        <span className="color-gray margin-5">·</span>
+        <Link to="/register" className="tc">
+          Sign up for Fitnut
+        </Link>
+      </div>
     </div>
   );
 };

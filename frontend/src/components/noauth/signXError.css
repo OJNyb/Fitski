@@ -1,8 +1,3 @@
-.landing-mobile-sign-x-form button {
-  min-height: 46px;
-  font-weight: bold;
-}
-
 .form-error-container {
   width: 206px;
   margin-bottom: 5px;
@@ -54,10 +49,6 @@
   margin-left: 10px;
   color: rgb(140, 130, 130);
   width: 220px;
-}
-
-.landing-sign-x-form div {
-  position: relative;
 }
 
 .sign-x-alert-message {

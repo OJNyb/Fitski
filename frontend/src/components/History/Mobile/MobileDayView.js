@@ -141,7 +141,9 @@ const MobileDayView = ({
         </button>
       </div>
       {bottomNavContent}
-      <div className="pt-6vh">{view}</div>
+      <div className="pt-6vh history-mobile-body-container margin-a">
+        {view}
+      </div>
     </>
   );
 };

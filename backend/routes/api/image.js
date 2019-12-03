@@ -48,9 +48,9 @@ const fileFilter = function(req, file, cb) {
   } else {
     // throw error for invalid files
     cb(
-      new Error(
+      createErrorObject([
         "Invalid file type. Only jpg, png and gif image files are allowed."
-      )
+      ])
     );
   }
 };
@@ -102,10 +102,17 @@ router.get("/avatar/:filename", function(req, res, next) {
 router.post(
   "/avatar",
   ensureSignedIn,
+  validateRequest,
   upload.single(process.env.AVATAR_FIELD),
   async function(req, res, next) {
     const { app, file, session, storage, baseUrl, protocol, hostname } = req;
     const { userId } = session;
+
+    if (!file) {
+      return res
+        .status(400)
+        .json(createErrorObject(["Avatar field is required"]));
+    }
 
     const { filename } = file;
 
@@ -142,10 +149,6 @@ router.post(
       )
 
       .catch(next);
-
-    res.json({
-      images: files
-    });
   }
 );
 

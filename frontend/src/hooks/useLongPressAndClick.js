@@ -31,19 +31,19 @@ function useLongPress(
     return () => {
       clearTimeout(timerId);
     };
-  }, [startLongPress, cancelled]);
+  }, [ms, type, holdCallback, clickCallback, startLongPress, cancelled]);
 
   const start = useCallback(() => {
     setStartLongPress(true);
     setCancelled(false);
   }, []);
-  const stop = useCallback(e => {
+  const stop = useCallback(() => {
     setStartLongPress(false);
   }, []);
-  const cancel = useCallback(e => {
+  const cancel = useCallback(() => {
     setStartLongPress(false);
     setCancelled(true);
-  });
+  }, []);
 
   return {
     onTouchEnd: stop,

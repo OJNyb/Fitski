@@ -1,13 +1,15 @@
 const express = require("express");
-const router = express.Router();
 const { Types } = require("mongoose");
-
 const { SESS_NAME } = require("../../config/keys");
+const crypto = require("crypto");
+const nodemailer = require("nodemailer");
 
 // Models
 const User = require("../../models/User");
 const History = require("../../models/History");
-const UserExercise = require("../../models/UserExercise");
+const WOPlan = require("../../models/WOPlan");
+const UserAccess = require("../../models/UserAccess");
+const PlanAccess = require("../../models/PlanAccess");
 const DefaultExerciseDelete = require("../../models/DefaultExerciseDelete");
 
 // Validation
@@ -18,7 +20,9 @@ const validateRequest = SchemaValidator(true);
 const createMongoError = require("../../utils/createMongoError");
 const createErrorObject = require("../../utils/createErrorObject");
 
-// TODOS: Delete user, share user on nutulator & bitness
+const { MAILGUN_EMAIL, MAILGUN_PASSWORD } = process.env;
+
+const router = express.Router();
 
 // @route POST api/user/register
 // @desc Register user
@@ -44,12 +48,17 @@ router.post("/register", ensureSignedOut, validateRequest, (req, res, next) => {
     user: _id
   });
 
+  const newUserAccess = new UserAccess({
+    user: _id
+  });
+
   newUser
     .save()
     .then(async user => {
       try {
         await newHistory.save();
         await newDefaultExerciseDelete.save();
+        await newUserAccess.save();
       } catch (err) {
         try {
           newUser.remove();
@@ -64,10 +73,15 @@ router.post("/register", ensureSignedOut, validateRequest, (req, res, next) => {
       return res.json({ message: "success" });
     })
     .catch(err => {
-      if (err.name === "ValidationError") {
+      const { name, error } = err;
+
+      if (name === "ValidationError") {
         return res.status(400).json(createMongoError(err));
+      } else if (name === "preSaveError") {
+        res.status(409).json(createErrorObject([error]));
+      } else {
+        next(err);
       }
-      next(err);
     });
 });
 
@@ -82,34 +96,17 @@ router.post(
     const { body, session } = req;
 
     const { userId } = session;
-    const { name, email, username, password, defaultUnit } = body;
 
-    let field;
-    let patch;
-
-    if (name) {
-      field = "name";
-      patch = name;
-    } else if (email) {
-      field = "email";
-      patch = email;
-    } else if (username) {
-      field = "username";
-      patch = username;
-    } else if (password) {
-      field = "password";
-      patch = password;
-    } else if (defaultUnit) {
-      field = "defaultUnit";
-      patch = defaultUnit;
-    }
     User.findByIdAndUpdate(userId, {
-      $set: { [field]: patch }
+      $set: { ...body }
     })
       .then(() => res.json({ message: "success" }))
       .catch(err => {
-        if (err.name === "ValidationError") {
+        const { name, error } = err;
+        if (name === "ValidationError") {
           return res.status(400).json(createMongoError(err));
+        } else if (name === "preSaveError") {
+          res.status(409).json(createErrorObject([error]));
         } else {
           next(err);
         }
@@ -195,10 +192,233 @@ router.get("/logout", ensureSignedIn, (req, res, next) => {
 router.get("/me", ensureSignedIn, async (req, res) => {
   const user = await User.findById(req.session.userId);
   if (!user) {
-    res.status(500).json("Server error");
+    return res.status(500).json("Server error");
   }
   delete user.password;
   res.status(200).json(user);
 });
+
+// @route GET api/user/:username
+// @desc Get user
+// @access Private
+router.get("/user/:username", ensureSignedIn, async (req, res) => {
+  const { params } = req;
+  const { username } = params;
+  const user = await User.findOne({ username }, "avatar username email bio");
+  if (!user) {
+    return res
+      .status(404)
+      .json(createErrorObject(["No user with that username"]));
+  }
+  res.status(200).json(user);
+});
+
+// @route POST api/user/forgot
+// @desc Forgot password
+// @access Private
+router.post(
+  "/forgot",
+  ensureSignedOut,
+  validateRequest,
+  async (req, res, next) => {
+    const { body } = req;
+
+    const { email } = body;
+
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res
+        .status(404)
+        .json(
+          createErrorObject(["No account with that email address exists."])
+        );
+    }
+
+    crypto.randomBytes(20, function(err, buf) {
+      let token = buf.toString("hex");
+
+      user
+        .updateOne({
+          $set: {
+            resetPasswordToken: token,
+            resetPasswordExpires: Date.now() + 3600000
+          }
+        })
+        .then(() => {
+          const smtpTransport = nodemailer.createTransport({
+            port: 587,
+            host: "smtp.eu.mailgun.org",
+            secure: false,
+            auth: {
+              user: MAILGUN_EMAIL,
+              pass: MAILGUN_PASSWORD
+            }
+          });
+          const mailOptions = {
+            to: user.email,
+            from: "postmaster@mg.fitnut.no",
+            subject: "Fitnut Password Reset",
+            text: `Hello,\n\nWe've recieved a request to reset your password\n\nIf you didn't make the request, just ignore this message.\n\nOtherwise, you can reset your password clicking this link:\n\nhttp://localhost:3000/reset/${token}\n\nThanks,\nChad\n`
+          };
+          smtpTransport.sendMail(mailOptions, function(err) {
+            if (err) {
+              next(err);
+            } else {
+              return res.status(200).json({ message: "success" });
+            }
+          });
+        })
+        .catch(next);
+    });
+  }
+);
+
+// @route POST api/user/reset/:token
+// @desc Reset password
+// @access Private
+router.post(
+  "/reset/:token",
+  ensureSignedOut,
+  validateRequest,
+  async (req, res) => {
+    const { body, params } = req;
+    const { token } = params;
+    const { password } = body;
+
+    let user = await User.findOne({
+      resetPasswordToken: token,
+      resetPasswordExpires: { $gt: Date.now() }
+    });
+
+    if (!user) {
+      return res
+        .status(404)
+        .json(
+          createErrorObject(["Password reset token is invalid or has expired."])
+        );
+    }
+
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpires = undefined;
+    user.password = password;
+
+    user.save().then(() => {
+      const smtpTransport = nodemailer.createTransport({
+        port: 587,
+        host: "smtp.eu.mailgun.org",
+        secure: false,
+        auth: {
+          user: MAILGUN_EMAIL,
+          pass: MAILGUN_PASSWORD
+        }
+      });
+      const mailOptions = {
+        to: user.email,
+        from: "Fitnut",
+        subject: "Your password has been changed",
+        text: `Hello,\n\nThis is a confirmation that the password for your account ${user.email} has just been changed.\n`
+      };
+      smtpTransport.sendMail(mailOptions, function(err) {
+        if (err)
+          res
+            .status(500)
+            .json(
+              createErrorObject(["Something wen't wrong, please try again"])
+            );
+        res.status(200).json({ message: "success" });
+      });
+    });
+  }
+);
+
+// @route GET api/user/access
+// @desc Get user accessed plans
+// @access Private
+router.get("/access", ensureSignedIn, async (req, res, next) => {
+  const { session } = req;
+  const { userId } = session;
+  UserAccess.findOne({ user: userId })
+    .then(access => {
+      res.json(access);
+    })
+    .catch(next);
+});
+
+// @route GET api/user/access/:plan_id
+// @desc Add plan to user access
+// @access Private
+router.post(
+  "/access/:plan_id",
+  ensureSignedIn,
+  validateRequest,
+  async (req, res, next) => {
+    const { params, session } = req;
+    const { plan_id: planId } = params;
+    const { userId } = session;
+
+    WOPlan.findById(planId)
+      .then(plan => {
+        if (!plan) {
+          return res
+            .status(404)
+            .json(createErrorObject(["No plan with this ID"]));
+        }
+        if (plan.access !== "public") {
+          return res
+            .status(403)
+            .json(createErrorObject(["You don't have access to this plan"]));
+        }
+
+        UserAccess.updateOne(
+          { user: userId },
+          { $push: { plans: { woPlan: planId } } }
+        )
+          .then(() => {
+            PlanAccess.updateOne(
+              { woPlan: planId },
+              { $push: { whitelist: { user: userId } } }
+            )
+              .then(() => {
+                res.json({ message: "success" });
+              })
+              .catch(next);
+          })
+          .catch(next);
+      })
+      .catch(next);
+  }
+);
+
+// @route GET api/user/access/:plan_id
+// @desc Remove plan from user access
+// @access Private
+router.delete(
+  "/access/:plan_id",
+  ensureSignedIn,
+  validateRequest,
+  async (req, res, next) => {
+    const { params, session } = req;
+    const { plan_id: planId } = params;
+    const { userId } = session;
+    PlanAccess.updateOne(
+      { woPlan: planId },
+      {
+        $pull: { whitelist: { user: userId } }
+      }
+    )
+      .then(() => {
+        UserAccess.updateOne(
+          { user: userId },
+          { $pull: { plans: { woPlan: planId } } }
+        )
+          .then(access => {
+            res.json(access);
+          })
+          .catch(next);
+      })
+      .catch(next);
+  }
+);
 
 module.exports = router;

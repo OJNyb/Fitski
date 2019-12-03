@@ -1,7 +1,7 @@
 import { IS_LOADING, IS_SETTLED } from "../types/loadingTypes";
 
 function loadingReducer(state, action) {
-  const { type, payload } = action;
+  const { type } = action;
 
   switch (type) {
     case IS_LOADING: {

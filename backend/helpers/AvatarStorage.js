@@ -130,7 +130,7 @@ const AvatarStorage = function(options) {
   };
   // this processes the Jimp image buffer
   // this processes the Jimp image buffer
-  AvatarStorage.prototype._processImage = function(image, cb) {
+  AvatarStorage.prototype._processImage = async function(image, cb) {
     // create a reference for this to use in local functions
     var that = this;
 
@@ -144,7 +144,7 @@ const AvatarStorage = function(options) {
     var mime = Jimp.MIME_PNG;
 
     // create a clone of the Jimp image
-    var clone = image.clone();
+    var clone = image.clone().background(0xffffffff);
 
     // fetch the Jimp image dimensions
     var width = clone.bitmap.width;
@@ -160,6 +160,7 @@ const AvatarStorage = function(options) {
       case "png":
       default:
         mime = Jimp.MIME_PNG;
+
         break;
     }
 
@@ -210,13 +211,13 @@ const AvatarStorage = function(options) {
         // scale the image based on the size
         switch (size) {
           case "sm":
-            image = clone.clone().contain(96, 96);
+            image = clone.clone().contain(36, 36);
             break;
           case "md":
-            image = clone.clone().contain(200, 200);
+            image = clone.clone().contain(96, 96);
             break;
           case "lg":
-            image = clone.clone().contain(400, 400);
+            image = clone.clone().contain(128, 128);
             break;
         }
 
@@ -252,7 +253,6 @@ const AvatarStorage = function(options) {
 
   // multer requires this for handling the uploaded file
   AvatarStorage.prototype._handleFile = function(_req, file, cb) {
-    console.log(cb.toString());
     // create a reference for this to use in local functions
     var that = this;
 

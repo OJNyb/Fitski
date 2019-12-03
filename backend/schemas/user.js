@@ -1,4 +1,9 @@
-const Joi = require("joi");
+const Joi = require("./joi");
+
+const planId = Joi.string()
+  .objectId()
+  .required()
+  .label("Workout plan ID");
 
 const email = Joi.string()
   .email()
@@ -11,6 +16,12 @@ const username = Joi.string()
 const name = Joi.string()
   .max(30)
   .label("Name");
+
+const bio = Joi.string()
+  .allow("")
+  .max(160)
+  .label("Bio");
+
 const password = Joi.string()
   .regex(/^(.{0,7}|[^0-9]*|[^A-Z]*|[^a-z]*)$/, { invert: true })
   .label("Password")
@@ -53,9 +64,10 @@ const editUser = Joi.object()
       .min(0)
       .max(30),
     password,
-    confirmPassword
+    confirmPassword,
+    bio
   })
-  .or("name", "defaultUnit", "email", "username", "password")
+  .or("name", "defaultUnit", "email", "username", "password", "bio")
   .and("password", "confirmPassword")
   .options({
     language: {
@@ -65,8 +77,30 @@ const editUser = Joi.object()
     }
   });
 
+const forgotPassword = Joi.object().keys({
+  email: email.required()
+});
+
+const resetPassword = Joi.object().keys({
+  token: Joi.string(),
+  password: password.required(),
+  confirmPassword: confirmPassword.required()
+});
+
+const addPlan = Joi.object().keys({
+  plan_id: planId
+});
+
+const removePlan = Joi.object().keys({
+  plan_id: planId
+});
+
 module.exports = {
   "post/user/login": signIn,
   "post/user/register": signUp,
-  "post/user/edit": editUser
+  "post/user/edit": editUser,
+  "post/user/forgot": forgotPassword,
+  "post/user/reset/:token": resetPassword,
+  "post/user/access/:plan_id": addPlan,
+  "delete/user/access/:plan_id": removePlan
 };

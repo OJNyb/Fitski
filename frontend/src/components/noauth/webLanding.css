@@ -1,0 +1,160 @@
+.landing-container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  overflow: hidden;
+}
+
+.landing-inner-container {
+  display: flex;
+  position: relative;
+  left: -30vw;
+
+  transition: left 0.5s;
+}
+
+.landing-left {
+  left: 0;
+}
+
+.landing-wrapper {
+  height: 100vh;
+  position: relative;
+
+  display: flex;
+}
+
+.landing-right-width {
+  width: 50vw;
+
+  align-items: center;
+  justify-content: center;
+}
+
+.landing-input {
+  width: auto;
+  margin: 0;
+  background-color: #fff;
+  border: 1px solid #d4dce2;
+  border-radius: 3px;
+
+  font-weight: 400;
+}
+
+.landing-input:focus {
+  border: 1px solid rgb(169, 169, 169);
+}
+
+/* SIGN-X */
+
+.sign-x-container {
+  width: 30vw;
+  background-color: rgba(255, 255, 255, 0.9);
+  justify-content: center;
+  color: rgba(0, 0, 0, 0.8);
+
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding-top: 40px;
+}
+
+.landing-sign-x-form {
+  justify-content: flex-start;
+  width: 218px;
+  position: relative;
+}
+
+.landing-sign-x-form > div {
+  width: 100%;
+  position: relative;
+}
+
+.landing-sign-x-form input {
+  margin: 15px 0 5px;
+  padding: 8px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.landing-sign-x-form button {
+  padding: 10px;
+  margin-top: 14px;
+  width: 100%;
+  font-size: 14px;
+  border-radius: 3px;
+}
+
+.landing-log-in-existing-btn-container {
+  position: absolute;
+  bottom: 80px;
+}
+
+.landing-log-in-existing-btn-container button {
+  padding: 8px;
+  border-radius: 3px;
+  font-size: 14px;
+}
+
+/* ICON */
+
+.landing-icon-conatiner {
+  position: relative;
+  top: -92vh;
+  left: 0vw;
+}
+
+.landing-icon {
+  font-size: 1400px;
+  color: #a60000;
+  z-index: 0;
+  position: absolute;
+  top: 40vh;
+}
+
+.landing-image-container {
+  overflow: hidden;
+  background-color: #a60000db;
+  transition: width 0.5s;
+}
+
+.landing-image-transition {
+  width: 70vw;
+}
+
+/* RIGHT SIDE */
+.landing-overview-container {
+  background-color: white;
+}
+
+.landing-login-container {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  top: 20px;
+}
+
+.landing-login-form {
+  margin: 0 auto;
+  padding: 12px 20px 0;
+
+  max-width: 600px;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.landing-login-input-container {
+  margin-right: 12px;
+}
+
+.landing-login-input {
+  padding: 12px;
+}
+
+.landing-login-button {
+  padding: 0 12px;
+  font-size: 13px;
+  font-weight: 900;
+}

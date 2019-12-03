@@ -79,7 +79,7 @@ const ExerciseView = ({
           </div>
         </div>
       </>
-      <div className="history-mobile-exercise-body">{viewDisplay}</div>
+      <div className="history-mobile-exercise-body flex-col">{viewDisplay}</div>
     </>
   );
 };

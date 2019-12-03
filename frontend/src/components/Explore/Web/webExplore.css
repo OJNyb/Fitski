@@ -1,0 +1,39 @@
+.explore-web-search-container {
+  background-color: rgb(252, 246, 246);
+  border: 1px solid rgb(240, 232, 232);
+  width: 400px;
+  height: 35px;
+  padding: 0 15px;
+  border-radius: 2px;
+  position: relative;
+}
+
+.explore-web-search-container:focus-within {
+  background-color: #fff;
+  border: 1px solid #ddcdcd;
+}
+
+.explore-web-search-container input {
+  width: calc(100% - 18px - 10px);
+}
+
+.explore-web-search-container svg rect {
+  fill: #877878;
+}
+
+.explore-web-search-container svg {
+  position: absolute;
+  right: 10px;
+}
+
+.explore-web-search-container svg circle {
+  stroke: #877878;
+}
+
+.explore-web-search-container:focus-within rect {
+  fill: #a60000;
+}
+
+.explore-web-search-container:focus-within circle {
+  stroke: #a60000;
+}

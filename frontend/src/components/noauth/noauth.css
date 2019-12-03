@@ -1,84 +1,10 @@
-.landing-container {
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  overflow: hidden;
-}
-
-.landing-inner-container {
-  display: flex;
-  position: relative;
-  left: -30vw;
-
-  transition: left 0.5s;
-}
-
-.landing-left {
-  left: 0;
-}
-
-.landing-wrapper {
-  height: 100vh;
-  position: relative;
-
-  display: flex;
-}
-
-.landing-right-width {
-  width: 50vw;
-
-  align-items: center;
-  justify-content: center;
-}
-
-.landing-input {
-  width: auto;
-  margin: 0;
-  background-color: #fff;
-  border: 1px solid #d4dce2;
-  border-radius: 3px;
-
-  font-weight: 400;
-}
-
-.landing-input:focus {
-  border: 1px solid rgb(169, 169, 169);
-}
-
-/* ICON */
-
-.landing-icon-conatiner {
-  position: relative;
-  top: -92vh;
-  left: 0vw;
-}
-
-.landing-icon {
-  font-size: 1400px;
-  color: #a60000;
-  z-index: 0;
-  position: absolute;
-  top: 40vh;
-}
-
-/* LEFT SIDE */
-.landing-image-container {
-  overflow: hidden;
-  background-color: #a60000db;
-
-  transition: width 0.5s;
-}
-
+/* IMAGE TEXT */
 .landing-img-text-container {
   color: white;
 }
 
 .landing-img-text-item {
-  display: flex;
-  align-items: center;
   margin-bottom: 40px;
-  font-weight: 700;
-  font-size: 18px;
 }
 
 .landing-img-text-item:last-child {
@@ -87,47 +13,6 @@
 
 .landing-img-text-item i {
   margin-right: 20px;
-}
-
-.landing-image-transition {
-  width: 70vw;
-}
-
-/* RIGHT SIDE */
-.landing-overview-container {
-  background-color: white;
-}
-
-.landing-login-container {
-  position: absolute;
-  width: 100%;
-  left: 0;
-  top: 20px;
-}
-
-.landing-login-form {
-  margin: 0 auto;
-  padding: 12px 20px 0;
-
-  max-width: 600px;
-
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-}
-
-.landing-login-input-container {
-  margin-right: 12px;
-}
-
-.landing-login-input {
-  padding: 12px;
-}
-
-.landing-login-button {
-  padding: 0 12px;
-  font-size: 13px;
-  font-weight: 900;
 }
 
 .landing-signup-container {
@@ -139,6 +24,7 @@
   font-size: 38px;
 }
 
+/* SIGNUP CONTAINER */
 .landing-signup-container h1 {
   font-size: 28px;
   margin: 20px 0 0 0;
@@ -159,83 +45,4 @@
   margin-bottom: 16px;
   height: 35px;
   width: 100%;
-}
-
-/* SIGN X */
-
-.sign-x-container {
-  width: 30vw;
-  background-color: rgba(255, 255, 255, 0.9);
-  justify-content: center;
-  color: rgba(0, 0, 0, 0.8);
-
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  padding-top: 40px;
-}
-
-.landing-sign-x-form {
-  justify-content: flex-start;
-}
-
-.landing-sign-x-form input {
-  margin: 5px;
-  margin-top: 15px;
-
-  padding: 8px;
-  width: 200px;
-}
-
-.landing-sign-x-form button {
-  padding: 10px;
-  margin-top: 14px;
-  width: 95%;
-  font-size: 14px;
-  border-radius: 3px;
-}
-
-.landing-log-in-existing-btn-container {
-  position: absolute;
-  bottom: 80px;
-}
-
-.landing-log-in-existing-btn-container button {
-  padding: 8px;
-  border-radius: 3px;
-  font-size: 14px;
-}
-
-/* MOBILE */
-.mobile-landing-container {
-  width: calc(100% - 30px);
-  max-width: 380px;
-}
-
-.landing-icon-conatiner-small {
-  background-color: #a60000bb;
-  position: relative;
-  overflow: hidden;
-}
-
-.landing-icon-small {
-  position: absolute;
-  top: -10vh;
-  right: -50vh;
-  height: 140vh;
-  font-size: 100vh;
-  color: #a60000;
-  z-index: -1;
-}
-
-.mobile-sign-x-button-down-container {
-  padding: 39px 15px 30px;
-  justify-content: center;
-}
-
-.mobile-sign-x-link-down {
-  min-height: 37px;
-  font-weight: bold;
-  font-size: 14px;
-  max-width: 180px;
 }

@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import CalendarView from "../../shared/Calendar/MobileCalendar";
 import MobileModal from "../../shared/Modal/MobileModal";
-import { ensureDecimal } from "../../../utils/ensureDecimal";
 import {
   displayDate,
   formatHistoryDate,
   reverseHistoryDate
 } from "../../../utils/formatHistoryDate";
+
+import { ExerciseText } from "../ExerciseText";
 
 const CopyDayVIew = ({
   date,
@@ -64,7 +65,7 @@ const SelectedDayModal = ({
 
   if (exercises) {
     const exercisesList = exercises.map(x => (
-      <ExerciseItem key={x._id} exercise={x} />
+      <ExerciseText key={x._id} exercise={x} />
     ));
     children = (
       <div className="width-100p border-box padding-0-10-77">
@@ -93,40 +94,6 @@ const SelectedDayModal = ({
       children={children}
       toggleModal={() => setShowSelectedDay(false)}
     />
-  );
-};
-
-const ExerciseItem = ({ exercise }) => {
-  const {
-    exercise: { name },
-    sets
-  } = exercise;
-  let setsView = sets.map(x => {
-    return <Column key={x._id} set={x} />;
-  });
-  return (
-    <div className="history-mobile-exercise-history-day-container">
-      <div className="history-mobile-exercise-input-header color-gray font-w-500 font-14">
-        {name}
-      </div>
-      {setsView}
-    </div>
-  );
-};
-
-const Column = ({ set }) => {
-  const { reps, weight } = set;
-  return (
-    <div className="history-mobile-exercise-history-column">
-      <div className="history-mobile-exercise-list-label-wrapper">
-        <b className="color-gray mr-1">{ensureDecimal(weight)}</b>
-        <span className="black font-12 font-w-300">kgs</span>
-      </div>
-      <div className="history-mobile-exercise-list-label-wrapper">
-        <b className="color-gray mr-1">{reps}</b>
-        <span className="black font-12 font-w-300">reps</span>
-      </div>
-    </div>
   );
 };
 

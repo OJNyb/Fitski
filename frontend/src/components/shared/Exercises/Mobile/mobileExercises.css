@@ -1,0 +1,106 @@
+/* NAV */
+.mobile-exercise-nav-items {
+  width: 100%;
+  margin-left: 10px;
+}
+
+.mobile-exercise-nav-items i {
+  font-size: 30px;
+}
+
+.exercises-mobile-selected-container {
+  top: 7vh;
+  z-index: 2;
+  background-color: #fff;
+  border-bottom: 2px solid #a60000;
+  height: 6vh;
+  padding: 0 0px;
+  box-sizing: border-box;
+}
+
+.exercises-mobile-check-n-span-wrapper button {
+  margin: 0 14px !important;
+}
+
+.exercises-mobile-selected-exercises-span {
+  border-left: 1px solid #a60000;
+  padding-left: 20px;
+}
+
+.exercises-mobile-selected-container button {
+  margin: 3px;
+  color: #a60000;
+}
+
+/* BODY */
+.mobile-exercises-container {
+  width: 100%;
+}
+
+.mobile-exercises-head {
+  display: flex;
+  padding: 10px;
+  background-color: rgb(251, 247, 247);
+  position: fixed;
+  width: calc(100% - 20px);
+  height: 28px;
+}
+
+.mobile-exercises-head i {
+  color: gray;
+}
+
+.mobile-exercises-search-wrapper {
+  width: 90%;
+  margin-left: 3px;
+  position: relative;
+}
+
+.mobile-exercises-head input {
+  width: 100%;
+  margin: 0 0 0 10px;
+  padding-bottom: 4px;
+  font-size: 18px;
+  background-color: inherit;
+  outline: none;
+  border: 0;
+}
+
+.mobile-exercises-head .border-with-sides {
+  margin-top: -2px;
+}
+
+.mobile-exercises-head:focus-within .border-with-sides {
+  border-color: #a60000;
+}
+
+.mobile-exercises-body {
+  padding-top: 48px;
+}
+.mobile-exercise-item {
+  padding: 10px;
+  border-bottom: 1px solid silver;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.9);
+}
+
+.mobile-exercise-item-selected {
+  background-color: rgb(240, 166, 166);
+  border-color: #fff;
+  color: black;
+}
+
+.add-exercise-category-item-wrapper {
+  margin-left: -1px;
+  padding: 10px 10px;
+  font-size: 16px;
+  color: #14171a;
+  cursor: pointer;
+  flex: 1 35%;
+  justify-content: center;
+}
+
+.mobile-exercise-nav-wrapper {
+  width: calc(100% - 42px);
+  padding: 0 10px 0 2px;
+}

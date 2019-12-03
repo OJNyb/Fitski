@@ -8,18 +8,19 @@ import Plan from "./Plan/Plan";
 import EditWeek from "./EditWeek/EditWeek";
 import Overview from "./Plan/PlanOverview";
 import PlanEdit from "./Plan/PlanEdit";
+import useSetLoading from "../hooks/useSetLoading";
 
 const PlanHOC = () => {
   const { plan_id: planId } = useParams();
   const { state, dispatch } = usePlan(planId);
-  const { woPlan, isPending, isRejected } = state;
+  const { woPlan, isPending, isRejected, error } = state;
 
   if (isPending) {
     return null;
   }
 
   if (isRejected) {
-    return <p>Error... Check console.</p>;
+    return <ErrorMessage error={error} />;
   }
 
   if (!woPlan) {
@@ -38,4 +39,8 @@ const PlanHOC = () => {
   );
 };
 
+const ErrorMessage = ({ error }) => {
+  useSetLoading(false);
+  return <p className="text-center padding-10 ">{error}</p>;
+};
 export default PlanHOC;

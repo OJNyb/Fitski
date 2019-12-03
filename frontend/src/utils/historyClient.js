@@ -9,8 +9,11 @@ import {
   ADD_SET,
   EDIT_SET,
   DELETE_SET,
-  COPY_DAY
+  COPY_DAY,
+  REQUEST_FAILED
 } from "../types/historyTypes";
+import { isSuccessful } from "./errorHandling";
+import { getNewExerciseIds } from "./historyUtils";
 
 const { ObjectId } = Types;
 
@@ -37,21 +40,18 @@ function addDay(dispatch, date, exercise, values) {
       ...values
     })
     .then(res => {
-      const { data } = res;
-      const { message } = data;
-      if (message !== "success") {
+      let isSucc = isSuccessful(res);
+      if (!isSucc) {
         dispatch({
-          type: "ADD_DAY_FAILED",
-          payload: { dayId }
+          type: REQUEST_FAILED
         });
       }
     })
     .catch(err => {
       dispatch({
-        type: "ADD_DAY_FAILED",
-        payload: { dayId }
+        type: REQUEST_FAILED,
+        payload: { err }
       });
-      console.error(err.response);
     });
 }
 
@@ -64,21 +64,18 @@ function deleteDay(dispatch, dayId) {
   axios
     .delete(`/history/${dayId}`)
     .then(res => {
-      const { data } = res;
-      const { message } = data;
-      if (message !== "success") {
+      let isSucc = isSuccessful(res);
+      if (!isSucc) {
         dispatch({
-          type: "DELETE_DAY_FAILED",
-          payload: { dayId }
+          type: REQUEST_FAILED
         });
       }
     })
     .catch(err => {
       dispatch({
-        type: "DELETE_DAY_FAILED",
-        payload: { dayId }
+        type: REQUEST_FAILED,
+        payload: { err }
       });
-      console.error(err.response);
     });
 }
 
@@ -101,21 +98,18 @@ function addExercise(dispatch, dayId, exercise) {
       exerciseId: exercise._id
     })
     .then(res => {
-      const { data } = res;
-      const { message } = data;
-      if (message !== "success") {
+      let isSucc = isSuccessful(res);
+      if (!isSucc) {
         dispatch({
-          type: "ADD_EXERCISE_FAILED",
-          payload: { dayId }
+          type: REQUEST_FAILED
         });
       }
     })
     .catch(err => {
       dispatch({
-        type: "ADD_EXERCISE_FAILED",
-        payload: { dayId }
+        type: REQUEST_FAILED,
+        payload: { err }
       });
-      console.error(err.response);
     });
 }
 
@@ -128,18 +122,18 @@ function deleteExercise(dispatch, dayId, exerId) {
   axios
     .delete(`/history/exercise/${dayId}/${exerId}`)
     .then(res => {
-      const { data } = res;
-      const { message } = data;
-      if (message !== "success") {
-        // throw
+      let isSucc = isSuccessful(res);
+      if (!isSucc) {
+        dispatch({
+          type: REQUEST_FAILED
+        });
       }
     })
     .catch(err => {
       dispatch({
-        type: "DELETE_DAY_FAILED",
-        payload: { dayId }
+        type: REQUEST_FAILED,
+        payload: { err }
       });
-      console.error(err.response);
     });
 }
 
@@ -149,24 +143,23 @@ function deleteExercises(dispatch, dayId, exerIds) {
     payload: { dayId, exerIds }
   });
 
-  console.log(exerIds);
   axios
     .delete(`/history/exercise/${dayId}`, {
       data: { exerciseIds: exerIds }
     })
     .then(res => {
-      const { data } = res;
-      const { message } = data;
-      if (message !== "success") {
-        // throw
+      let isSucc = isSuccessful(res);
+      if (!isSucc) {
+        dispatch({
+          type: REQUEST_FAILED
+        });
       }
     })
     .catch(err => {
       dispatch({
-        type: "DELETE_DAY_FAILED",
-        payload: { dayId }
+        type: REQUEST_FAILED,
+        payload: { err }
       });
-      console.error(err.response);
     });
 }
 
@@ -181,21 +174,18 @@ function addSet(dispatch, values, dayId, exerId) {
   axios
     .post(`/history/exercise/${dayId}/${exerId}`, { setId, ...values })
     .then(res => {
-      const { data } = res;
-      const { message } = data;
-      if (message !== "success") {
+      let isSucc = isSuccessful(res);
+      if (!isSucc) {
         dispatch({
-          type: "ADD_SET_FAILED",
-          payload: { dayId }
+          type: REQUEST_FAILED
         });
       }
     })
     .catch(err => {
       dispatch({
-        type: "ADD_SET_FAILED",
-        payload: { dayId }
+        type: REQUEST_FAILED,
+        payload: { err }
       });
-      console.error(err.response);
     });
 }
 
@@ -209,21 +199,18 @@ function editSet(dispatch, values, dayId, exerId, setId) {
   axios
     .post(`/history/exercise/${dayId}/${exerId}/${setId}`, values)
     .then(res => {
-      const { data } = res;
-      const { message } = data;
-      if (message !== "success") {
+      let isSucc = isSuccessful(res);
+      if (!isSucc) {
         dispatch({
-          type: "EDIT_SET_FAILED",
-          payload: { dayId, exerId }
+          type: REQUEST_FAILED
         });
       }
     })
     .catch(err => {
       dispatch({
-        type: "EDIT_SET_FAILED",
-        payload: { err, dayId, exerId }
+        type: REQUEST_FAILED,
+        payload: { err }
       });
-      console.error(err.response);
     });
 }
 
@@ -236,34 +223,19 @@ function deleteSet(dispatch, dayId, exerId, setId) {
   axios
     .delete(`/history/exercise/${dayId}/${exerId}/${setId}`)
     .then(res => {
-      const { data } = res;
-      const { message } = data;
-      if (message !== "success") {
-        // throw
+      let isSucc = isSuccessful(res);
+      if (!isSucc) {
+        dispatch({
+          type: REQUEST_FAILED
+        });
       }
     })
     .catch(err => {
       dispatch({
-        type: "DELETE_SET_FAILED",
-        payload: { dayId }
+        type: REQUEST_FAILED,
+        payload: { err }
       });
-      console.error(err.response);
     });
-}
-
-function getNewExerciseIds(exercises) {
-  const newIds = [];
-  for (let i = 0; i < exercises.length; i++) {
-    const exerId = new ObjectId().toHexString();
-    const setIds = [];
-    const { sets } = exercises[i];
-    for (let i = 0; i < sets.length; i++) {
-      setIds.push(new ObjectId().toHexString());
-    }
-    newIds.push({ exerId, setIds });
-  }
-
-  return newIds;
 }
 
 function copyDay(dispatch, dayToCopy, formattedDate) {
@@ -284,21 +256,18 @@ function copyDay(dispatch, dayToCopy, formattedDate) {
       formattedDate
     })
     .then(res => {
-      const { data } = res;
-      const { message } = data;
-      if (message !== "success") {
+      let isSucc = isSuccessful(res);
+      if (!isSucc) {
         dispatch({
-          type: "COPY_DAY_FAILED",
-          payload: { newDayId }
+          type: REQUEST_FAILED
         });
       }
     })
     .catch(err => {
       dispatch({
-        type: "COPY_DAY_FAILED",
-        payload: { newDayId }
+        type: REQUEST_FAILED,
+        payload: { err }
       });
-      console.error(err.response);
     });
 }
 

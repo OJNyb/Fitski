@@ -151,36 +151,8 @@ router.patch(
   }
 );
 
-// // @route GET api/exercise
-// // @desc Delete exercise
-// // @access Private
-// router.delete(
-//   "/:exercise_id",
-//   ensureSignedIn,
-//   validateRequest,
-//   validateDeleteExercise,
-//   async (req, res, next) => {
-//     const { body } = req;
-//     const { exercise } = body;
-
-//     if (exercise._id)
-//       exercise
-//         .updateOne({
-//           $set: { isDeleted: true }
-//         })
-//         .then(reski => {
-//           if (reski.nModified) {
-//             res.json({ message: "success" });
-//           } else {
-//             res.status(404).json(createErrorObject(["Couldn't apply update"]));
-//           }
-//         })
-//         .catch(next);
-//   }
-// );
-
 // @route GET api/exercise
-// @desc Delete custom exercises
+// @desc Delete exercises
 // @access Private
 router.delete(
   "/",

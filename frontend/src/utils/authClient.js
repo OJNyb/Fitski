@@ -1,5 +1,17 @@
 import axios from "axios";
 
+function getUser() {
+  return axios
+    .get("/user/me")
+    .then(res => {
+      return res.data;
+    })
+    .catch(err => {
+      console.log(err.response);
+      return Promise.reject(err);
+    });
+}
+
 function login(values) {
   return axios
     .post("/user/login", {
@@ -9,6 +21,21 @@ function login(values) {
       return res.data;
     })
     .catch(err => {
+      return Promise.reject(err.response.data);
+    });
+}
+
+function logout(values) {
+  return axios
+    .get("/user/logout", {
+      ...values
+    })
+    .then(res => {
+      console.log(res);
+      return Promise.resolve(res.data);
+    })
+    .catch(err => {
+      console.log(err);
       return Promise.reject(err.response.data);
     });
 }
@@ -26,4 +53,4 @@ const register = values => {
     });
 };
 
-export { login, register };
+export { login, logout, getUser, register };

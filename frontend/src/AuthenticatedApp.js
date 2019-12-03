@@ -11,6 +11,7 @@ import Navigation from "./components/Navigation/Navigation";
 
 import "./App.css";
 import "./styles/common.css";
+import useWindowWidth from "./hooks/useWindowWidth";
 
 const CreatePlan = lazy(() => import("./components/CreatePlan/CreatePlan.js"));
 const Plans = lazy(() => import("./components/PlanDashboard/Plans"));
@@ -18,7 +19,10 @@ const PlanHOC = lazy(() => import("./components/PlanHOC"));
 const Logout = lazy(() => import("./components/Logout"));
 const History = lazy(() => import("./components/History/History"));
 const Settings = lazy(() => import("./components/Settings/Settings"));
+const Profile = lazy(() => import("./components/Profile/Profile"));
+const Explore = lazy(() => import("./components/Explore/Explore"));
 const NoMatch = lazy(() => import("./components/NoMatch"));
+
 const TermsAndConditions = lazy(() =>
   import("./components/Terms/TermsAndConditions")
 );
@@ -27,6 +31,7 @@ const PrivacyPolicy = lazy(() => import("./components/Terms/PrivacyPolicy"));
 function App() {
   const { state: exerciseState, dispatch: exerciseDispatch } = useExercises();
   const isMobile = useMobile();
+  const winWidth = useWindowWidth();
 
   const { state, dispatch } = useNav();
 
@@ -35,15 +40,20 @@ function App() {
   let minHeight;
   let width;
 
-  if (!isMobile) {
-    marginTop = "66px";
-    marginLeft = "251px";
-    minHeight = "calc(100vh - 66px)";
-    width = "calc(100% - 251px)";
-  } else if (isMobile) {
+  if (isMobile) {
     marginTop = "7vh";
     minHeight = "93vh";
     width = "calc(100%)";
+  } else {
+    marginTop = "66px";
+    minHeight = "calc(100vh - 66px)";
+    if (winWidth < 1200) {
+      marginLeft = 0;
+      width = "100%";
+    } else {
+      width = "calc(100% - 251px)";
+      marginLeft = "251px";
+    }
   }
 
   return (
@@ -66,7 +76,9 @@ function App() {
               <Route exact path="/progress" component={CreatePlan} />
               <Route exact path="/create-plan" component={CreatePlan} />
               <Route exact path="/settings" component={Settings} />
-              <Route exact path="/history" component={History} />
+              <Route exact path="/calendar" component={History} />
+              <Route exact path="/explore" component={Explore} />
+              <Route path="/profile/:username" component={Profile} />
               <Route path="/plans/:plan_id" component={PlanHOC} />
               <Route path="/login">
                 <Redirect to="/plans" />
@@ -77,11 +89,11 @@ function App() {
               <Route exact path="/terms" component={TermsAndConditions} />
               <Route exact path="/privacy-policy" component={PrivacyPolicy} />
 
+              <Route exact path="/logout" component={Logout} />
               <Route path="*" component={NoMatch} />
             </Switch>
           </Suspense>
         </ExerciseContext.Provider>
-        <Route exact path="/logout" component={Logout} />
       </main>
     </NavContext.Provider>
   );

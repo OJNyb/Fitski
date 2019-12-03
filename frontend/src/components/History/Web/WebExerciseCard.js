@@ -11,7 +11,6 @@ const ExerciseCard = ({
   onAddSet,
   handleEditSet,
   handleDeleteSet,
-  setShowExercise,
   onDeleteExercise
 }) => {
   const {

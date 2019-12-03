@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
+import { NavContext } from "../../../context/navContext";
 import MobileModal from "../Modal/MobileModal";
 import { Link } from "react-router-dom";
 import MobileNavMidContainer from "./MobileNavMidContainer";
@@ -14,6 +15,9 @@ const MobileNavMid = ({
   rightBtnOutlined
 }) => {
   const [showActionModal, setShowActionModal] = useState(false);
+  const {
+    state: { showDehaze }
+  } = useContext(NavContext);
 
   useEffect(() => {
     function addRightBtnToActionMenu() {
@@ -27,7 +31,13 @@ const MobileNavMid = ({
       }
     }
     addRightBtnToActionMenu();
-  }, [actionMenuChildren]);
+  }, [
+    rightBtnIcon,
+    rightBtnAction,
+    rightBtnOutlined,
+    rightBtnText,
+    actionMenuChildren
+  ]);
 
   function handleMoreActionClick() {
     setShowActionModal(true);
@@ -56,7 +66,13 @@ const MobileNavMid = ({
   if (backText) {
     backTextDisplay = (
       <div className="nav-mid-header-item">
-        <h2 className="nav-h2 m-l-3 font-18 color-white">{backText}</h2>
+        <h2
+          className={
+            "nav-h2 m-l-3 font-18 color-white " + (showDehaze ? "mb-2" : "mb-1")
+          }
+        >
+          {backText}
+        </h2>
       </div>
     );
   }

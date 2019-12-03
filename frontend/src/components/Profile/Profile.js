@@ -1,13 +1,191 @@
-import React from "react";
+import React, { lazy, useState, Suspense, useLayoutEffect } from "react";
+import { useParams } from "react-router-dom";
+import useMobile from "../../hooks/useMobile";
+import useProfile from "../../hooks/useProfile";
+import SetLoading from "../SetLoading";
+import useProfilePlans from "../../hooks/useProfilePlans";
+import useUserAccess from "../../hooks/useUserAccess";
+import { addPlan } from "../../utils/userAccessClient";
+import { editUser } from "../../utils/userClient";
 
-const Profile = ({}) => {
+import { useAuth } from "../../context/authContext";
+import { activatePlan, deactivatePlan } from "../../utils/userClient";
+import EditProfileModal from "./EditProfileModal";
+
+const WebProfile = lazy(() => import("./Web/WebProfile"));
+const MobileProfile = lazy(() => import("./Mobile/MobileProfile"));
+const loadConfirmModal = () => import("../shared/Modal/ConfirmModal");
+const loadActivateModal = () => import("../shared/Modal/ActivatePlanModal");
+const ActivatePlanModal = lazy(loadActivateModal);
+const ConfirmModal = lazy(loadConfirmModal);
+
+const Profile = () => {
+  const { username } = useParams();
+  const { state, dispatch } = useProfile(username);
+  const { state: planState } = useProfilePlans(username);
+  const { state: accessState, dispatch: accessDispatch } = useUserAccess();
+  const { state: userState, dispatch: userDispatch } = useAuth();
+  const isMobile = useMobile();
+  const [isSelf, setIsSelf] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+
+  const { user } = userState;
+
+  const { _id: userId } = user;
+
+  const {
+    woPlans,
+    isPending: plansPending,
+    isRejected: plansRejected
+  } = planState;
+  const {
+    accessedPlans,
+    isPending: accessPending,
+    isRejected: accessRejected
+  } = accessState;
+  const { profile, isPending, isRejected } = state;
+
+  useLayoutEffect(() => {
+    if (profile) {
+      if (userId === profile._id) {
+        setIsSelf(true);
+      } else {
+        setIsSelf(false);
+      }
+    }
+  }, [userId, profile]);
+
+  useLayoutEffect(() => {
+    if (profile) {
+      if (userId === profile._id) {
+        setIsSelf(true);
+      } else {
+        setIsSelf(false);
+      }
+    }
+  }, [userId, profile]);
+
+  function handleActivateClick(e, planId) {
+    e.stopPropagation();
+    setShowModal({ planId, modal: "activate" });
+  }
+
+  function handleActivateSubmit(startDate) {
+    const { planId } = showModal;
+    activatePlan(userDispatch, planId, startDate);
+    setShowModal(false);
+  }
+
+  function handleDeactivateClick(e, planId) {
+    e.stopPropagation();
+    setShowModal({ planId, modal: "deactivate" });
+  }
+
+  function handleDeactivateSubmit(e) {
+    const { planId } = showModal;
+    e.stopPropagation();
+    deactivatePlan(userDispatch, planId);
+    setShowModal(false);
+  }
+
+  function handleGetClick(e, planId) {
+    e.stopPropagation();
+    addPlan(accessDispatch, planId);
+  }
+
+  function handleEditProfile(values) {
+    const { description: oldDescription } = user;
+    const { avatar, description } = values;
+    if (!avatar) delete values.avatar;
+    if (description === oldDescription) delete values.description;
+
+    if (Object.keys(values).length) {
+      editUser(userDispatch, dispatch, values);
+    }
+    setShowModal(false);
+  }
+
+  if (isPending || plansPending || accessPending) {
+    return null;
+  }
+
+  if (isRejected || plansRejected || accessRejected) {
+    return <p>Woops... Try refreshing the page</p>;
+  }
+
+  if (!profile) {
+    return <p>No profile found with that username</p>;
+  }
+
+  let modal = null;
+  if (showModal) {
+    if (showModal.modal === "deactivate") {
+      modal = (
+        <ConfirmModal
+          hideModal={() => setShowModal(false)}
+          header={"Deactivate plan"}
+          onSubmit={handleDeactivateSubmit}
+          text={"Are you sure you want to deactivate this plan?"}
+        />
+      );
+    } else if (showModal.modal === "activate") {
+      modal = (
+        <ActivatePlanModal
+          planId={showModal.planId}
+          onActivateSubmit={handleActivateSubmit}
+          hideModal={() => setShowModal(false)}
+        />
+      );
+    } else if (showModal.modal === "edit") {
+      const { bio, avatar } = user;
+      modal = (
+        <EditProfileModal
+          bio={bio}
+          avatar={avatar}
+          onSubmit={handleEditProfile}
+          hideModal={() => setShowModal(false)}
+        />
+      );
+    }
+  }
+
+  let view;
+  if (isMobile) {
+    view = (
+      <MobileProfile
+        isSelf={isSelf}
+        profile={profile}
+        woPlans={woPlans}
+        accessedPlans={accessedPlans}
+        handleGetClick={handleGetClick}
+        setShowModal={setShowModal}
+        handleActivateClick={handleActivateClick}
+        handleDeactivateClick={handleDeactivateClick}
+        handleEditProfile={handleEditProfile}
+      />
+    );
+  } else {
+    view = (
+      <WebProfile
+        isSelf={isSelf}
+        profile={profile}
+        woPlans={woPlans}
+        setShowModal={setShowModal}
+        accessedPlans={accessedPlans}
+        handleGetClick={handleGetClick}
+        handleActivateClick={handleActivateClick}
+        handleDeactivateClick={handleDeactivateClick}
+        onEditProfile={handleEditProfile}
+      />
+    );
+  }
+
   return (
-    <div>
-      <ul>
-        <li>Profile:</li>
-
-        <li>Training programs, current training programs, shared workouts,</li>
-      </ul>
-    </div>
+    <>
+      <Suspense fallback={<SetLoading />}>{view}</Suspense>
+      <Suspense fallback={<SetLoading />}>{modal}</Suspense>
+    </>
   );
 };
+
+export default Profile;

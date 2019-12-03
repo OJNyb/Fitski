@@ -1,5 +1,4 @@
-import React, { useRef, useState, useEffect } from "react";
-import TrashBin from "../../shared/SVGs/TrashBin";
+import React, { useRef, useState, useEffect, useCallback } from "react";
 
 const WebExerciseColumn = ({
   set,
@@ -14,6 +13,26 @@ const WebExerciseColumn = ({
   const lastRepsReqRef = useRef();
   const isDeleted = useRef(false);
   const isClosed = useRef(false);
+
+  const onEditSet = useCallback(() => {
+    let reps;
+
+    const { current: currentReps } = repsRef;
+
+    if (currentReps && currentReps !== lastRepsReqRef.current) {
+      if (inputReps % 1 !== 0) {
+        return alert("Reps must be a whole number");
+      }
+
+      if (reps !== currentReps && currentReps !== "") {
+        reps = currentReps;
+      }
+      if (currentReps === "") {
+        reps = 0;
+      }
+      handleEditSet(exerId, setId, reps);
+    }
+  }, [setId, exerId, inputReps, handleEditSet]);
 
   function onInputBlur() {
     onEditSet();
@@ -38,38 +57,19 @@ const WebExerciseColumn = ({
       if (!isDeleted.current) onEditSet();
       isClosed.current = true;
     };
-  }, []);
+  }, [onEditSet]);
 
-  function onEditSet() {
-    let reps;
-
-    const { current: currentReps } = repsRef;
-
-    if (currentReps && currentReps !== lastRepsReqRef.current) {
-      if (inputReps % 1 !== 0) {
-        return alert("Reps must be a whole number");
-      }
-
-      if (reps !== currentReps && currentReps !== "") {
-        reps = currentReps;
-      }
-      if (currentReps === "") {
-        reps = 0;
-      }
-      handleEditSet(exerId, setId, reps);
-    }
-  }
   return (
     <div className="add-card-column flex-center-space-bw padding-0-20">
       <button
-        className="add-card-remove-btn theme-btn-no-border"
+        className="add-card-remove-btn theme-btn-no-border flex-center"
         onClick={() => {
           isDeleted.current = true;
           onDeleteSet(exerId, setId);
         }}
         tabIndex="-1"
       >
-        <TrashBin />
+        <i className="material-icons">remove</i>
       </button>
       <span className="black font-14 font-w-500">{index + 1}</span>
       <ExerciseForm

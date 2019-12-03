@@ -10,11 +10,13 @@ import {
   ADD_SET,
   EDIT_SET,
   DELETE_SET,
-  COPY_DAY
+  COPY_DAY,
+  REQUEST_FAILED
 } from "../types/historyTypes";
 
 import { formatHistoryDate } from "../utils/formatHistoryDate";
 import { ensureDecimal } from "../utils/ensureDecimal";
+import Axios from "axios";
 
 // TODO: If !DAY/day/woplan
 
@@ -68,8 +70,6 @@ function historyReducer(state, action) {
           }
         }
       }
-
-      console.log(insertIndex);
 
       const newDay = {
         date: formattedDate,
@@ -343,7 +343,7 @@ function historyReducer(state, action) {
 
     case COPY_DAY: {
       const { dayToCopy, newDayId, newIds, formattedDate } = payload;
-      const { date, exercises } = dayToCopy;
+      const { exercises } = dayToCopy;
       const { history } = state;
       const { days } = history;
       let insertIndex;
@@ -389,19 +389,16 @@ function historyReducer(state, action) {
       };
     }
 
-    case DELETE_DAY: {
-      const { dayId } = payload;
-      const { history } = state;
+    case REQUEST_FAILED: {
+      let err;
+      if (payload) {
+        err = payload.err;
+      }
 
-      const { days } = history;
-
-      const dayIndex = days.map(x => x._id).indexOf(dayId);
-
-      days.splice(dayIndex, 1);
-
+      Axios.post("/feedback/history/error", { err });
+      window.location.reload(true);
       return {
-        ...state,
-        history
+        ...state
       };
     }
 

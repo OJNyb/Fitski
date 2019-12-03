@@ -1,4 +1,5 @@
 const WOPlan = require("../models/WOPlan");
+
 const createErrorObject = require("../utils/createErrorObject");
 
 async function validateWOPlan(req, res, next) {
@@ -12,7 +13,11 @@ async function validateWOPlan(req, res, next) {
     exercise_id: exerciseId
   } = params;
 
-  const woPlan = await WOPlan.findById(planId);
+  try {
+    var woPlan = await WOPlan.findById(planId);
+  } catch (err) {
+    return next(err);
+  }
 
   if (!woPlan) {
     return res

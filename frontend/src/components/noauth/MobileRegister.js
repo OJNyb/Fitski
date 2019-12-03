@@ -3,8 +3,10 @@ import { Formik, Form, Field } from "formik";
 import useSetLoading from "../../hooks/useSetLoading";
 import MobileInput from "../shared/Form/MobileInput";
 import { useAuth } from "../../context/authContext";
+import Disclaimer from "./Disclaimer";
 
 import "./signXError.css";
+import "./mobileSignX.css";
 
 const Register = () => {
   const { register } = useAuth();
@@ -119,10 +121,12 @@ const Register = () => {
                   component={MobileInput}
                   autoComplete="new-password"
                 />
-
+                <div className="padding-0-15">
+                  <Disclaimer />
+                </div>
                 <div className="margin-15">
                   <button
-                    className="theme-btn-filled width-100p  border-box"
+                    className="theme-btn-filled width-100p border-box"
                     type="submit"
                     disabled={
                       isSubmitting ||
@@ -130,7 +134,7 @@ const Register = () => {
                       !values.email.length
                     }
                   >
-                    Create account
+                    Create Account
                   </button>
                 </div>
               </Form>

@@ -43,7 +43,6 @@ router.post(
   "/activate/:plan_id",
   ensureSignedIn,
   validateRequest,
-  validateWOPlan,
   async (req, res, next) => {
     const { body, params, session } = req;
 
@@ -53,6 +52,11 @@ router.post(
 
     let history = await History.findOne({ user: userId });
     let woPlan = await WOPlan.findById(planId);
+    if (!woPlan) {
+      return res
+        .status(404)
+        .json(createErrorObject(["No workout plan with this ID"]));
+    }
 
     const { user, weeks } = woPlan;
 
@@ -73,6 +77,10 @@ router.post(
     let newDays = [];
 
     let date = new Date(startDate);
+
+    if (weeks.length === 0) {
+      return res.status(200).json({ message: "success" });
+    }
 
     weeks.forEach(week =>
       week.days.forEach(day => {
@@ -114,6 +122,10 @@ router.post(
         date.setDate(date.getDate() + 1);
       })
     );
+
+    if (newDays.length === 0) {
+      return res.status(200).json({ message: "success" });
+    }
 
     const formattedStartDate = formatHistoryDate(new Date(startDate));
     const endDate = reverseHistoryDate(newDays[newDays.length - 1].date);

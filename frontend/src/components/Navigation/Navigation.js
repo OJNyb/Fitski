@@ -4,7 +4,7 @@ import useMobile from "../../hooks/useMobile";
 import SetLoading from "../SetLoading";
 
 const MobileNavigation = lazy(() => import("./MobileNavigation"));
-const BigScreenNavigation = lazy(() => import("./BigScreenNavigation"));
+const WebNavigation = lazy(() => import("./WebNavigation"));
 
 const Navigation = () => {
   const isMobile = useMobile();
@@ -13,7 +13,7 @@ const Navigation = () => {
   if (isMobile) {
     view = <MobileNavigation />;
   } else {
-    view = <BigScreenNavigation />;
+    view = <WebNavigation />;
   }
 
   return <Suspense fallback={<SetLoading />}>{view}</Suspense>;

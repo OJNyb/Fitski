@@ -6,7 +6,7 @@ import SetLoading from "../../SetLoading";
 import "./modal.css";
 
 const MobileModal = lazy(() => import("./MobileModal"));
-const BigViewModal = lazy(() => import("./BigViewModal"));
+const WebModal = lazy(() => import("./WebModal"));
 
 const Modal = props => {
   const isMobile = useMobile();
@@ -15,7 +15,7 @@ const Modal = props => {
   if (isMobile) {
     view = <MobileModal {...props} />;
   } else {
-    view = <BigViewModal {...props} />;
+    view = <WebModal {...props} />;
   }
 
   return <Suspense fallback={<SetLoading />}>{view}</Suspense>;

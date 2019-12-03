@@ -1,0 +1,91 @@
+.edit-profile-form {
+  width: 300px;
+}
+
+.edit-profile-form textarea {
+  width: 300px;
+  height: 70px;
+}
+
+.edit-profile-zoom-wrapper i:first-child {
+  font-size: 14px;
+}
+
+.edit-profile-zoom-wrapper i:last-child {
+  font-size: 18px;
+}
+
+.edit-profile-zoom-bar {
+  width: 228px;
+  height: 4px;
+  margin: 14px;
+  border-radius: 2px;
+}
+
+.edit-profile-zoom-thumb-container {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  transition: background-color 0.2s;
+}
+
+.edit-profile-zoom-thumb-container:hover {
+  background-color: #a6000046;
+}
+
+.edit-profile-zoom-thumb {
+  background-color: #a60000;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  transition: transform 0.2s;
+  margin: auto;
+}
+
+.edit-profile-zoom-thumb-active {
+  transform: scale(1.2);
+}
+
+.edit-profile-img-container {
+  width: 128px;
+  height: 128px;
+  border-radius: 50%;
+  border: 2px solid #a60000;
+  cursor: pointer;
+}
+
+.edit-profile-img-container * {
+  width: 128px;
+  height: 128px;
+  position: absolute;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.edit-profile-img-container img {
+  width: 128px;
+  height: 128px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.edit-profile-img-container i {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: rgb(253, 249, 249);
+  z-index: 2;
+}
+
+.edit-profile-img-container div {
+  background-color: rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  transition: background-color 0.2s;
+}
+.edit-profile-img-container:hover div {
+  background-color: rgba(70, 1, 1, 0.2);
+}
+
+.hidden {
+  display: none;
+}

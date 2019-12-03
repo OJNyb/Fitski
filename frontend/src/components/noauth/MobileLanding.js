@@ -3,7 +3,10 @@ import { Link } from "react-router-dom";
 import LandingImageText from "./LandingImageText";
 import useSetLoading from "../../hooks/useSetLoading";
 
-const MobileLanding = ({}) => {
+import "./mobileLanding.css";
+import "./mobileSignX.css";
+
+const MobileLanding = () => {
   useSetLoading(false);
 
   return (

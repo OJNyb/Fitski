@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { ensureDecimal } from "../../../utils/ensureDecimal";
 import useSetLoading from "../../../hooks/useSetLoading";
 import Plus20 from "../../shared/SVGs/Plus20";
@@ -15,6 +15,21 @@ const TrackView = ({
   const [selectedSet, setSelectedSet] = useState({});
   const [weight, setWeight] = useState(ensureDecimal(0));
   const [reps, setReps] = useState(0);
+
+  const onItemClick = useCallback(
+    setId => {
+      if (setId === selectedSet._id) {
+        return setSelectedSet({});
+      }
+      const set = sets.filter(x => x._id === setId)[0];
+      const { reps, weight } = set;
+
+      setReps(reps || 0);
+      setWeight(weight || 0);
+      setSelectedSet(set);
+    },
+    [sets, selectedSet._id]
+  );
 
   useEffect(() => {
     function setInitialInput() {
@@ -34,23 +49,11 @@ const TrackView = ({
     }
     setInitialInput();
     setInitialSet();
-  }, [exerId, sets]);
+  }, [exerId, sets, onItemClick]);
 
   useSetLoading(false);
 
   const { _id: setId } = selectedSet;
-
-  function onItemClick(setId) {
-    if (setId === selectedSet._id) {
-      return setSelectedSet({});
-    }
-    const set = sets.filter(x => x._id === setId)[0];
-    const { reps, weight } = set;
-
-    setReps(reps || 0);
-    setWeight(weight || 0);
-    setSelectedSet(set);
-  }
 
   function onSaveClick() {
     onAddSet(exerId, exerciseId, { reps, weight });
@@ -171,11 +174,11 @@ const CDButton = ({ text, setId, onClick }) => {
 
 const TrackInput = ({ label, onDecrement, onIncrement, onChange, value }) => {
   return (
-    <div className="history-mobile-exercise-input-wrapper">
-      <div className="history-mobile-exercise-input-header font-w-700 font-13 color-gray">
+    <div className="history-mobile-exercise-input-wrapper flex-col">
+      <div className="history-exercise-input-header font-w-700 font-13 color-gray">
         {label}:
       </div>
-      <div className="history-mobile-exercise-input-box">
+      <div className="history-mobile-exercise-input-box flex-center font-24">
         <button onClick={onDecrement}>
           <Minus20 fill={"#fff"} />
         </button>

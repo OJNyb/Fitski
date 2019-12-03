@@ -1,8 +1,12 @@
+.modal-content-container {
+  min-height: 95vh;
+  padding: 50px 0 100px;
+  box-sizing: border-box;
+}
+
 .modal-content {
-  width: 25%;
   min-width: 224px;
   position: relative;
-  margin: 15% auto;
   padding: 0 10px 15px;
   border: 1px solid #c29292;
   border-radius: 4px;

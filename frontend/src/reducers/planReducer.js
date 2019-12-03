@@ -11,8 +11,10 @@ import {
   DELETE_EXERCISE,
   ADD_SET,
   EDIT_SET,
-  DELETE_SET
+  DELETE_SET,
+  REQUEST_FAILED
 } from "../types/planTypes";
+import axios from "axios";
 
 // TODO: If !week/day/woplan
 
@@ -20,11 +22,27 @@ function planReducer(state, action) {
   const { type, payload } = action;
   switch (type) {
     case IS_REJECTED: {
+      const { error } = payload;
+      if (error) {
+        const { data } = error;
+        if (data) {
+          const { error: err } = data;
+          if (err) {
+            const { details } = err;
+            if (details) {
+              var { message } = details[0];
+            }
+          }
+        }
+      }
+
+      if (!message) message = "An error occured, please refresh the page...";
+
       return {
         ...state,
+        error: message,
         isRejected: true,
-        isPending: false,
-        error: payload.error
+        isPending: false
       };
     }
     case IS_PENDING: {
@@ -361,6 +379,19 @@ function planReducer(state, action) {
       return {
         ...state,
         woPlan
+      };
+    }
+
+    case REQUEST_FAILED: {
+      let err;
+      if (payload) {
+        err = payload.err;
+      }
+
+      axios.post("/feedback/plan/error", { err });
+      window.location.reload(true);
+      return {
+        ...state
       };
     }
 

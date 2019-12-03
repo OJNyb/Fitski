@@ -13,13 +13,13 @@ const Landing = () => {
 
   if (isMobile) {
     return (
-      <Suspense fallback={SetLoading}>
+      <Suspense fallback={<SetLoading />}>
         <MobileLanding />
       </Suspense>
     );
   } else {
     return (
-      <Suspense fallback={SetLoading}>
+      <Suspense fallback={<SetLoading />}>
         <BigScreenLanding />
       </Suspense>
     );

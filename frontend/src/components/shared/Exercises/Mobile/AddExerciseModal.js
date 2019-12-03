@@ -1,5 +1,6 @@
 import React, { useRef, useState } from "react";
 import MobileModal from "../../Modal/MobileModal";
+import Label from "../AddModalLabel";
 
 const muscleGroupArray = [
   "Shoulders",
@@ -53,7 +54,7 @@ const AddEditModal = ({
     ));
 
     categoryDropDown = (
-      <div className="add-exercise-category-items-container" style={style}>
+      <div className="exercises-mobile-category-items-container" style={style}>
         {items}
       </div>
     );
@@ -70,7 +71,7 @@ const AddEditModal = ({
       >
         <div className="margin-a width-80p">
           <div className="margin-0-0-20">
-            <div className="mobile-exercises-add-label">NAME:</div>
+            <Label text={"NAME"} />
             <div className="width-90p margin-5-a fw-bc-theme">
               <input
                 className="padding-0-5 font-17 black"
@@ -83,7 +84,7 @@ const AddEditModal = ({
 
           {categoryDropDown}
           <div className="margin-0-0-20">
-            <div className="mobile-exercises-add-label">CATEGORY:</div>
+            <Label text={"CATEGORY"} />
             <div
               className="width-90p margin-5-a fw-bc-theme custom-select-upwards"
               onClick={e => {

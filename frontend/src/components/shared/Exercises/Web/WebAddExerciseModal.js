@@ -1,14 +1,7 @@
 import React, { useRef, useState } from "react";
-import Modal from "../../Modal/BigViewModal";
-
-const muscleGroupArray = [
-  "Shoulders",
-  "Triceps",
-  "Biceps",
-  "Chest",
-  "Legs",
-  "Back"
-];
+import Modal from "../../Modal/WebModal";
+import Label from "../AddModalLabel";
+import MuscleGroupDropdown from "./MuscleGroupDropdown";
 
 const AddEditModal = ({
   header,
@@ -31,31 +24,15 @@ const AddEditModal = ({
   }
   let categoryDropDown;
   if (showCategories) {
-    const { current } = categoryContainer;
-
-    const { offsetTop, offsetLeft, offsetHeight, offsetWidth } = current;
-    const style = {
-      top: offsetTop + offsetHeight - 120 + 2 + "px",
-      left: offsetLeft + "px",
-      width: offsetWidth + "px"
-    };
-
-    const items = muscleGroupArray.map(x => (
-      <CategoryItem
-        key={x}
-        mG={x}
-        onClick={e => {
-          e.stopPropagation();
-          setCategory(x);
+    categoryDropDown = (
+      <MuscleGroupDropdown
+        muscleGroup={[category]}
+        hideDropdown={() => setShowCategories(false)}
+        onMuscleGroupCheck={m => {
+          setCategory(m);
           setShowCategories(false);
         }}
       />
-    ));
-
-    categoryDropDown = (
-      <div className="add-exercise-category-items-container" style={style}>
-        {items}
-      </div>
     );
   }
 
@@ -106,25 +83,6 @@ const AddEditModal = ({
     );
   }
   return <Modal children={children} header={header} toggleModal={hideModal} />;
-};
-
-const Label = ({ text }) => {
-  return (
-    <div className="mobile-exercises-add-label color-gray bb-1-tc width-100p font-14">
-      <b>{text}:</b>
-    </div>
-  );
-};
-
-const CategoryItem = ({ mG, onClick }) => {
-  return (
-    <div
-      className="flex-ai-center add-exercise-category-item-wrapper"
-      onClick={onClick}
-    >
-      {mG}
-    </div>
-  );
 };
 
 export default AddEditModal;

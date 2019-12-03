@@ -1,0 +1,158 @@
+.edit-week-mobile-head-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin: 10px;
+}
+
+.edit-week-mobile-date-btn {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 3px;
+  justify-content: center;
+  color: rgb(65, 55, 55);
+}
+
+.edit-week-mobile-date-btn > span {
+  font-size: 12px;
+  line-height: 11px;
+}
+
+.edit-week-mobile-date-btn div span {
+  font-size: 24px;
+}
+
+.edit-week-mobile-date-btn div button,
+.edit-week-mobile-date-btn div a {
+  padding: 0 6px;
+}
+
+.edit-week-mobile-date-btn div a {
+  display: flex;
+}
+
+.edit-week-mobile-date-container {
+  display: flex;
+  align-items: center;
+  width: 30%;
+  justify-content: space-around;
+}
+
+/* EXERCISE CARD */
+.edit-week-mobile-add-card {
+  width: 90%;
+  margin: 10px auto;
+  background-color: #fff;
+  border-radius: 3px;
+  border: 1px solid rgb(238, 227, 227);
+}
+
+.edit-week-mobile-add-card-active {
+  border-color: #a60000;
+}
+
+.edit-week-mobile-add-card-active .history-exercise-name {
+  background-color: #a60000;
+  color: white;
+}
+
+.edit-week-mobile-add-card-active .history-exercise-name * {
+  color: white;
+}
+
+.edit-week-mobile-card-body {
+  position: relative;
+  padding: 4px 0;
+  font-family: "Oswald", sans-serif;
+}
+
+.edit-week-mobile-card-column {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 20px 4px 50%;
+}
+
+.edit-week-mobile-edit-card-col {
+  padding: 4px 10px 4px 50%;
+}
+
+.edit-week-mobile-reps-btn {
+  color: #7c6f6f;
+  padding: 4px;
+  background-color: rgb(243, 235, 235);
+
+  border-radius: 2px;
+}
+
+.edit-week-mobile-reps-btn i {
+  font-size: 20px;
+}
+
+.edit-week-mobile-reps-input-wrapper {
+  position: relative;
+  height: 22px;
+  margin: 0 8px;
+}
+
+.edit-week-mobile-reps-input-wrapper input {
+  height: 20px;
+  padding: 0;
+  width: 30px;
+  background-color: transparent;
+  border: 1px solid transparent;
+  text-align: center;
+  font-size: 20px;
+  font-family: "Oswald", sans-serif;
+  font-weight: 500;
+}
+
+.edit-week-mobile-reps-input-wrapper .border-with-sides {
+  margin-top: -1px;
+}
+
+.edit-week-mobile-reps-input-wrapper:focus-within .border-with-sides {
+  border-color: #a60000;
+}
+
+.edit-week-card-rep-index {
+  color: rgb(82, 68, 68);
+  font-weight: 500;
+}
+
+.edit-week-card-rep-label {
+  margin-left: 1px;
+  font-size: 12px;
+  color: #808080;
+}
+
+.edit-week-mobile-set-delete-btn {
+  position: absolute;
+  left: 15px;
+  color: #d90000;
+  font-weight: 500;
+}
+
+.height-20 {
+  height: 20px;
+}
+
+/* COPY MODAL */
+.edit-week-mobile-copy-week-selected-week-container {
+  padding-top: 40px;
+  height: 50vh;
+  overflow-y: scroll;
+}
+
+.edit-week-mobile-copy-week-day-header {
+  border-bottom: 1.5px solid #a60000;
+  margin-bottom: 5px;
+}
+
+.edit-week-copy-select-week-wrapper {
+  width: calc(100% - 20px);
+}

@@ -1,4 +1,4 @@
-import { useEffect, useReducer } from "react";
+import { useRef, useEffect, useReducer } from "react";
 import axios from "axios";
 
 import plansReducer from "../reducers/plansReducer";
@@ -6,13 +6,14 @@ import { SET_PLANS, IS_PENDING, IS_REJECTED } from "../types/plansTypes";
 
 const initialState = {
   woPlans: null,
-  isPending: false,
+  isPending: true,
   isRejected: false,
   error: null
 };
 
 const usePlans = () => {
   const [state, dispatch] = useReducer(plansReducer, initialState);
+  const timesTried = useRef(1);
 
   useEffect(() => {
     let isCancelled = false;
@@ -28,10 +29,15 @@ const usePlans = () => {
         })
         .catch(err => {
           if (!isCancelled) {
-            dispatch({
-              type: IS_REJECTED,
-              payload: { error: err.response }
-            });
+            if (timesTried.current < 3) {
+              timesTried.current += 1;
+              fetchData();
+            } else {
+              dispatch({
+                type: IS_REJECTED,
+                payload: { error: err.response }
+              });
+            }
           }
         });
     }

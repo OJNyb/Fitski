@@ -1,0 +1,20 @@
+.mobile-landing-container {
+  width: calc(100% - 30px);
+  max-width: 380px;
+}
+
+.landing-icon-conatiner-small {
+  background-color: #a60000bb;
+  position: relative;
+  overflow: hidden;
+}
+
+.landing-icon-small {
+  position: absolute;
+  top: -10vh;
+  right: -50vh;
+  height: 140vh;
+  font-size: 100vh;
+  color: #a60000;
+  z-index: -1;
+}

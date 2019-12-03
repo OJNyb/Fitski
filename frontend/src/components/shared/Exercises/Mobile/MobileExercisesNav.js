@@ -1,5 +1,4 @@
-import React, { useState, useContext } from "react";
-import { NavContext } from "../../../../context/navContext";
+import React, { useState } from "react";
 import Plus20 from "../../SVGs/Plus20";
 
 import AddExerciseModal from "./AddExerciseModal";
@@ -10,9 +9,6 @@ const MobileExercisesNav = ({
   handleAddCustomExercise
 }) => {
   const [showModal, setShowModal] = useState(false);
-  const {
-    state: { isWhite }
-  } = useContext(NavContext);
 
   return (
     <div className="fixed z-max height-7vh width-100p top-0 padding-s-10 flex-ai-center bc-a6 color-white stretch">

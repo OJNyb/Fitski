@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 
 const MobileNavigation = () => {
   const {
-    state: { isWhite, backLink, showNone, showDehaze }
+    state: { backLink, showNone, showDehaze }
   } = useContext(NavContext);
   const [showNavbar, setShowNavbar] = useState(false);
 
@@ -57,9 +57,9 @@ const MobileNavigation = () => {
         <div className="mobile-nav-header padding-15 border-box flex-col-cen">
           <div className="flex-ai-center tc">
             <i className="material-icons font-30">fitness_center</i>
-            <h1 className="margin-0 tc line-height-11">Fitnut</h1>
+            <h1 className="margin-0 black line-height-11">Fitnut</h1>
           </div>
-          <span className="tc font-12 line-height-11">Beta v0.01</span>
+          <span className="color-gray font-12 line-height-11">Beta v0.01</span>
         </div>
         <NavigationMenu />
       </div>

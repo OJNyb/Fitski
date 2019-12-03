@@ -4,7 +4,7 @@ import useMobile from "../../hooks/useMobile";
 
 import "./planText.css";
 
-const PlanText = ({ week, index, planId }) => {
+const PlanText = ({ week, index, isSelf, planId }) => {
   const { days, _id: weekId } = week;
 
   let exercises = days
@@ -21,13 +21,24 @@ const PlanText = ({ week, index, planId }) => {
     daysDisplay = <p className="margin-0">Rest Week</p>;
   }
 
-  return (
-    <div className="plan-week-container flex-col-cen">
+  let weekHeader;
+  if (isSelf) {
+    weekHeader = (
       <Link to={`/plans/${planId}/${weekId}`}>
-        <h1 className="theme-btn-hover tc font-fam-babas font-40">
+        <h1 className="tc font-fam-babas font-40 plan-text-week-header-link">
           WEEK {index + 1}
         </h1>
       </Link>
+    );
+  } else {
+    weekHeader = (
+      <h1 className="tc font-fam-babas font-40">WEEK {index + 1}</h1>
+    );
+  }
+
+  return (
+    <div className="plan-week-container flex-col-cen">
+      {weekHeader}
       <div className="plan-days-container">{daysDisplay}</div>
     </div>
   );
@@ -120,37 +131,25 @@ const ExerciseMobile = ({ name, length, setText, displayReps }) => {
         {" - "}
       </div>
 
-      {/* <span>
-        <span className="mr-1">{length || 0}</span>
-        <span className="font-w-400 color-light-gray font-12">{setText}</span>
-      </span>
-      <span>
-        <span className="mr-1">{displayReps || 0}</span>
-        <span className="font-w-400 color-light-gray font-12">reps</span>
-      </span> */}
       <span className="font-15">
         {length || 0} {setText} of {displayReps || 0} reps
       </span>
-      {/* <span className="plan-exercise-volume">
-      {sets || 0} x {reps || 0}
-    </span> */}
     </div>
   );
 };
 
 const ExerciseWeb = ({ name, length, setText, displayReps }) => {
   return (
-    <div className="plan-exercise-container plan-web-exercise-container flex-center-space-bw">
-      <div className="font-15 font-w-500">
-        {name} -{" "}
-        <div className="inline-block">
-          <b>{length || 0}</b> {setText} of <b>{displayReps || 0}</b> reps
+    <div className="plan-exercise-container plan-web-exercise-container flex-center-space-bw color-gray">
+      <div className="inline-block">
+        <div className="font-15">
+          <span className="font-w-500">{name} - </span>
+
+          <span className="font-15">
+            {length || 0} {setText} of {displayReps || 0} reps
+          </span>
         </div>
       </div>
-
-      {/* <span className="plan-exercise-volume">
-      {sets || 0} x {reps || 0}
-    </span> */}
     </div>
   );
 };

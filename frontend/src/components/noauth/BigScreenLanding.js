@@ -5,6 +5,8 @@ import Login from "./Login";
 import LandingImageText from "./LandingImageText";
 import useSetLoading from "../../hooks/useSetLoading";
 
+import "./webLanding.css";
+
 const BigScreenLanding = () => {
   const [login, setLogin] = useState(false);
   const [signUp, setSignUp] = useState(false);

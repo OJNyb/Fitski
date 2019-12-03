@@ -3,17 +3,21 @@ import { Link } from "react-router-dom";
 import NavMidActionMenu from "./NavMidActionMenu";
 
 import "./mobileNav.css";
+import useWindowWidth from "../../../hooks/useWindowWidth";
 
 const WebNavMid = props => {
   const [showActionMenu, setShowActionMenu] = useState(false);
   const moreBtn = useRef(null);
+  const winWidth = useWindowWidth();
   const {
     backText,
     midContent,
     backAction,
     rightBtnText,
-    rightBtnIcon,
     rightBtnAction,
+    rightBtnFilled,
+    rightLinkTo,
+    rightLinkText,
     actionMenuChildren
   } = props;
 
@@ -35,8 +39,18 @@ const WebNavMid = props => {
     window.removeEventListener("click", onWindowClick);
   }
 
+  let width;
+  if (winWidth >= 1200) {
+    width = "calc(100% - 200px - 250px)";
+  } else {
+    width = "calc(100% - 250px";
+  }
+
   return (
-    <div className="nav-mid-web-header-container fixed z-max flex-center-space-bw padding-0-15 border-box">
+    <div
+      style={{ width }}
+      className="nav-mid-web-header-container fixed z-mid-max flex-center-space-bw padding-0-15 border-box"
+    >
       {backText && (
         <div className="nav-mid-header-item">
           {backAction && (
@@ -48,7 +62,7 @@ const WebNavMid = props => {
             </button>
           )}
 
-          <h2 className="nav-h2 m-l-10 font-21">{backText}</h2>
+          <h2 className="nav-h2 mb-1 m-l-10 font-21">{backText}</h2>
         </div>
       )}
 
@@ -67,13 +81,21 @@ const WebNavMid = props => {
           </button>
         )}
 
-        {(rightBtnText || rightBtnIcon) && (
+        {rightBtnText && (
           <button
-            className="nav-mid-header-text-btn theme-btn"
+            className={
+              "nav-mid-header-text-btn " +
+              (rightBtnFilled ? "theme-btn-filled" : "theme-btn")
+            }
             onClick={rightBtnAction}
           >
-            {rightBtnText || rightBtnIcon}
+            {rightBtnText}
           </button>
+        )}
+        {rightLinkText && (
+          <Link className="nav-mid-header-text-btn theme-btn" to={rightLinkTo}>
+            {rightLinkText}
+          </Link>
         )}
       </div>
 

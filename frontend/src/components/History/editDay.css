@@ -43,12 +43,12 @@
   padding: 2px;
 }
 
-.add-card-column button svg {
+.add-card-column i {
   color: transparent;
   transition: color 0.2s;
 }
 
-.add-card-column:hover svg {
+.add-card-column:hover i {
   color: #a60000c0;
 }
 

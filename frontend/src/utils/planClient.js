@@ -1,6 +1,7 @@
 import axios from "axios";
 import { Types } from "mongoose";
 import { createWeek, createWeekIds, createWeekdayIds } from "./planUtils";
+import { isSuccessful } from "../utils/errorHandling";
 import {
   EDIT_PLAN,
   ADD_WEEK,
@@ -11,31 +12,31 @@ import {
   DELETE_EXERCISE,
   ADD_SET,
   EDIT_SET,
-  DELETE_SET
+  DELETE_SET,
+  REQUEST_FAILED
 } from "../types/planTypes";
 
 const { ObjectId } = Types;
 
-function activatePlan(activatePlan, planId, startDate) {
-  activatePlan(planId);
-  axios
-    .post(`/history/activate/${planId}`, { startDate })
-    .then(res => console.log(res))
-    .catch(err => console.log(err.response));
-}
-
-function deactivatePlan(deactivatePlan, planId) {
-  deactivatePlan();
-  axios
-    .post(`/history/deactivate/${planId}`)
-    .then(res => console.log(res))
-    .catch(err => console.log(err));
-}
-
 function editPlan(dispatch, planId, values) {
   dispatch({ type: EDIT_PLAN, payload: { planId, values } });
 
-  axios.post(`/plan/${planId}`, values);
+  axios
+    .post(`/plan/${planId}`, values)
+    .then(res => {
+      let isSucc = isSuccessful(res);
+      if (!isSucc) {
+        dispatch({
+          type: REQUEST_FAILED
+        });
+      }
+    })
+    .catch(err => {
+      dispatch({
+        type: REQUEST_FAILED,
+        payload: { err }
+      });
+    });
 }
 
 function addWeeks(dispatch, planId, numberOfWeeks = 1) {
@@ -54,16 +55,19 @@ function addWeeks(dispatch, planId, numberOfWeeks = 1) {
   axios
     .post(`/plan/week/${planId}`, { weekArray })
     .then(res => {
-      const { data } = res;
-      const { message } = data;
-      if (message !== "success") {
+      let isSucc = isSuccessful(res);
+      if (!isSucc) {
         dispatch({
-          type: "ADD_WEEK_FAILED",
-          payload: { planId, weekArray }
+          type: REQUEST_FAILED
         });
       }
     })
-    .catch(err => console.error(err.response));
+    .catch(err => {
+      dispatch({
+        type: REQUEST_FAILED,
+        payload: { err }
+      });
+    });
 }
 
 function copyWeek(dispatch, planId, weekId, copyWeek) {
@@ -77,16 +81,19 @@ function copyWeek(dispatch, planId, weekId, copyWeek) {
       copyWeekId: copyWeek._id
     })
     .then(res => {
-      const { data } = res;
-      const { message } = data;
-      if (message !== "success") {
+      let isSucc = isSuccessful(res);
+      if (!isSucc) {
         dispatch({
-          type: "COPY_WEEK_FAILED",
-          payload: { weekId }
+          type: REQUEST_FAILED
         });
       }
     })
-    .catch(err => console.error(err.response));
+    .catch(err => {
+      dispatch({
+        type: REQUEST_FAILED,
+        payload: { err }
+      });
+    });
 }
 
 function repeatWeek(dispatch, planId, timesToRepeat, copyWeek) {
@@ -103,16 +110,19 @@ function repeatWeek(dispatch, planId, timesToRepeat, copyWeek) {
       copyWeekId: copyWeek._id
     })
     .then(res => {
-      const { data } = res;
-      const { message } = data;
-      if (message !== "success") {
+      let isSucc = isSuccessful(res);
+      if (!isSucc) {
         dispatch({
-          type: "COPY_WEEK_FAILED",
-          payload: { newIds }
+          type: REQUEST_FAILED
         });
       }
     })
-    .catch(err => console.error(err.response));
+    .catch(err => {
+      dispatch({
+        type: REQUEST_FAILED,
+        payload: { err }
+      });
+    });
 }
 
 function deleteWeek(dispatch, planId, weekId) {
@@ -125,16 +135,19 @@ function deleteWeek(dispatch, planId, weekId) {
   axios
     .delete(`/plan/week/${planId}/${weekId}`)
     .then(res => {
-      const { data } = res;
-      const { message } = data;
-      if (message !== "success") {
+      let isSucc = isSuccessful(res);
+      if (!isSucc) {
         dispatch({
-          type: "COPY_WEEK_FAILED",
-          payload: { weekId }
+          type: REQUEST_FAILED
         });
       }
     })
-    .catch(err => console.error(err.response));
+    .catch(err => {
+      dispatch({
+        type: REQUEST_FAILED,
+        payload: { err }
+      });
+    });
 }
 
 function addExercise(dispatch, planId, weekId, dayId, exercise, reps) {
@@ -156,16 +169,19 @@ function addExercise(dispatch, planId, weekId, dayId, exercise, reps) {
       custom
     })
     .then(res => {
-      const { data } = res;
-      const { message } = data;
-      if (message !== "success") {
+      let isSucc = isSuccessful(res);
+      if (!isSucc) {
         dispatch({
-          type: "ADD_EXERCISE_FAILED",
-          payload: { weekId, dayId, exerId }
+          type: REQUEST_FAILED
         });
       }
     })
-    .catch(err => console.error(err.response));
+    .catch(err => {
+      dispatch({
+        type: REQUEST_FAILED,
+        payload: { err }
+      });
+    });
 }
 
 function deleteExercise(dispatch, planId, weekId, dayId, exerId) {
@@ -178,13 +194,19 @@ function deleteExercise(dispatch, planId, weekId, dayId, exerId) {
   axios
     .delete(`/plan/exercise/${planId}/${weekId}/${dayId}/${exerId}`)
     .then(res => {
-      const { data } = res;
-      const { message } = data;
-      if (message !== "success") {
-        console.log("todo");
+      let isSucc = isSuccessful(res);
+      if (!isSucc) {
+        dispatch({
+          type: REQUEST_FAILED
+        });
       }
     })
-    .catch(console.error);
+    .catch(err => {
+      dispatch({
+        type: REQUEST_FAILED,
+        payload: { err }
+      });
+    });
 }
 
 function addSet(dispatch, reps, planId, weekId, dayId, exerId) {
@@ -202,17 +224,22 @@ function addSet(dispatch, reps, planId, weekId, dayId, exerId) {
       setId
     })
     .then(res => {
-      const { data } = res;
-      const { message } = data;
-      if (message !== "success") {
-        console.log("todo");
+      let isSucc = isSuccessful(res);
+      if (!isSucc) {
+        dispatch({
+          type: REQUEST_FAILED
+        });
       }
     })
-    .catch(err => console.error(err.response));
+    .catch(err => {
+      dispatch({
+        type: REQUEST_FAILED,
+        payload: { err }
+      });
+    });
 }
 
 function editSet(dispatch, reps, planId, weekId, dayId, exerId, setId) {
-  console.log("editting");
   const payload = { weekId, dayId, exerId, setId, reps };
   dispatch({
     type: EDIT_SET,
@@ -224,13 +251,19 @@ function editSet(dispatch, reps, planId, weekId, dayId, exerId, setId) {
       reps
     })
     .then(res => {
-      const { data } = res;
-      const { message } = data;
-      if (message !== "success") {
-        console.log("todo");
+      let isSucc = isSuccessful(res);
+      if (!isSucc) {
+        dispatch({
+          type: REQUEST_FAILED
+        });
       }
     })
-    .catch(err => console.error(err.response));
+    .catch(err => {
+      dispatch({
+        type: REQUEST_FAILED,
+        payload: { err }
+      });
+    });
 }
 
 function deleteSet(dispatch, planId, weekId, dayId, exerId, setId) {
@@ -243,17 +276,21 @@ function deleteSet(dispatch, planId, weekId, dayId, exerId, setId) {
   axios
     .delete(`/plan/exercise/${planId}/${weekId}/${dayId}/${exerId}/${setId}`)
     .then(res => {
-      const { data } = res;
-      const { message } = data;
-      if (message !== "success") {
-        console.log("todo");
+      let isSucc = isSuccessful(res);
+      if (!isSucc) {
+        dispatch({
+          type: REQUEST_FAILED
+        });
       }
     })
-    .catch(err => console.error(err.response));
+    .catch(err => {
+      dispatch({
+        type: REQUEST_FAILED,
+        payload: { err }
+      });
+    });
 }
 export {
-  activatePlan,
-  deactivatePlan,
   editPlan,
   addWeeks,
   copyWeek,

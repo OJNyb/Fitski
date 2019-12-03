@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 const NavActionMenu = ({ children, hideActionMenu, moreBtn }) => {
   const [offsetLeft, setOffsetLeft] = useState(0);
@@ -27,7 +28,7 @@ const NavActionMenu = ({ children, hideActionMenu, moreBtn }) => {
   }
 
   let items = children.map(x => (
-    <NavMidActionMenuItem element={x} key={x.action} />
+    <NavMidActionMenuItem element={x} key={x.text} />
   ));
 
   return (
@@ -42,7 +43,7 @@ const NavActionMenu = ({ children, hideActionMenu, moreBtn }) => {
 };
 
 const NavMidActionMenuItem = ({ element }) => {
-  const { icon, text, action, outlined, customClass } = element;
+  const { icon, text, action, outlined, customClass, link, to } = element;
 
   const divClass =
     "nav-action-menu-item" + (customClass ? `${customClass}` : "");
@@ -50,10 +51,23 @@ const NavMidActionMenuItem = ({ element }) => {
   const iconClass =
     "nav-action-menu-icon material-icons" + (outlined ? "-outlined" : "");
 
-  return (
-    <div className={divClass} onClick={action}>
+  const iconText = (
+    <>
       <i className={iconClass}>{icon}</i>
       <span>{text}</span>
+    </>
+  );
+
+  if (link) {
+    return (
+      <Link to={to} className={divClass}>
+        {iconText}
+      </Link>
+    );
+  }
+  return (
+    <div className={divClass} onClick={action}>
+      {iconText}
     </div>
   );
 };

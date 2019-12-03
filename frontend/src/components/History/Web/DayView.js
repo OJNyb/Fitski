@@ -6,6 +6,7 @@ const DayView = ({
   dayIndex,
   currentDay,
   handleAddSet,
+  onCopyClick,
   handleEditSet,
   handleDeleteSet,
   handleDeleteExercise
@@ -36,7 +37,10 @@ const DayView = ({
     return (
       <div className="history-empty-log-container">
         <p>Workout Log Empty</p>
-        <button className="theme-btn-filled history-big-screen-copy-btn">
+        <button
+          onClick={onCopyClick}
+          className="theme-btn-filled history-big-screen-copy-btn"
+        >
           Copy Previous Workout
         </button>
         <p className="theme-faded history-big-screen-add-p margin-top-10">

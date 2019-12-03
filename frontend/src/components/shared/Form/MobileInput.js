@@ -28,7 +28,7 @@ const MobileInput = ({
   if (textarea) {
     input = (
       <textarea
-        className="width-100p border-box font-18"
+        className="width-100p border-box font-16 black"
         {...field}
         onChange={onInputChange}
       />
@@ -38,7 +38,7 @@ const MobileInput = ({
       <input
         autoComplete={autoComplete}
         type={type}
-        className="width-100p border-box font-18"
+        className="width-100p border-box font-16 black"
         {...field}
         onChange={onInputChange}
       />
@@ -78,7 +78,6 @@ const InputError = ({ error, touched }) => {
   } else {
     return <div />;
   }
-  return null;
 };
 
 export default MobileInput;

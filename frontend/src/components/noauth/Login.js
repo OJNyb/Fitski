@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { Formik, Field } from "formik";
+import { Formik, Field, Form } from "formik";
 import { useAuth } from "../../context/authContext";
+import { getErrorMessage } from "../../utils/errorHandling";
 
 import "./signXError.css";
 
@@ -28,23 +29,24 @@ const Login = () => {
         return errors;
       }}
       onSubmit={(values, { setSubmitting }) => {
-        login(values).catch(() => {
+        login(values).catch(err => {
           // TODO: If err.status !== 404 ???
-          setLoginErr(true);
+          console.log(err);
+          const { message } = getErrorMessage(err)[0];
+          setLoginErr(message);
           setSubmitting(false);
         });
       }}
     >
-      {({ errors, handleSubmit, isSubmitting }) => (
+      {({ isSubmitting }) => (
         <>
-          {errors && !setLoginErr && setLoginErr(true)}
           <div
             className={
               "sign-x-alert-message" + (loginErr ? " sign-x-alert-show" : "")
             }
           >
             <div className="sign-x-message">
-              <p>Incorrect username or password</p>
+              <p>{loginErr}</p>
               <button
                 className="sign-x-error-close"
                 onClick={() => setLoginErr(false)}
@@ -56,24 +58,20 @@ const Login = () => {
 
           <h2>Login</h2>
 
-          <form
-            onSubmit={e => {
-              e.preventDefault();
-              handleSubmit();
-            }}
-            className="landing-sign-x-form flex-col flex-center"
-          >
+          <Form className="landing-sign-x-form flex-col flex-center">
             <Field
               type="email"
               name="email"
               placeholder="Email"
               className="landing-input"
+              autoComplete="email"
             />
             <Field
               type="password"
               name="password"
               placeholder="Password"
               className="landing-input"
+              autoComplete="password"
             />
 
             <button
@@ -83,7 +81,7 @@ const Login = () => {
             >
               Log in
             </button>
-          </form>
+          </Form>
         </>
       )}
     </Formik>

@@ -32,3 +32,32 @@
   display: flex;
   flex-direction: column;
 }
+
+/* EXERCISE TEXT */
+
+.history-exercise-input-header {
+  border-bottom: 1.5px solid #a60000;
+  margin-bottom: 7px;
+}
+
+.history-exercise-text-row {
+  display: flex;
+  padding: 0 8px 5px 30%;
+  justify-content: space-between;
+}
+
+.history-mobile-exercise-list-kg-reps {
+  flex: 0.75 75%;
+  justify-content: space-between;
+}
+
+.history-mobile-exercise-list-label-wrapper:first-child {
+  display: flex;
+  align-items: center;
+  flex: 0.35 35%;
+  justify-content: flex-end;
+}
+
+.history-mobile-exercise-history-body {
+  padding-top: 10px;
+}

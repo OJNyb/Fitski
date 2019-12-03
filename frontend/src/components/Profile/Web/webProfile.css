@@ -1,0 +1,9 @@
+.profile-web-info-container {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.profile-web-info-container img {
+  width: 128px;
+  height: 128px;
+}

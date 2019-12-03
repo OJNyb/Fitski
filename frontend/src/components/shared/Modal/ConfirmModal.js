@@ -4,7 +4,7 @@ import Modal from "./Modal";
 const ConfirmModal = ({ text, header, onSubmit, hideModal }) => {
   let children = (
     <div className="width-100p padding-s-10 border-box flex-col-cen relative">
-      <p>{text}</p>
+      <p className="text-center">{text}</p>
       <div className="flex-ai-center modal-mobile-delete-btn-container">
         <button
           className="theme-btn-filled mobile-modal-delete-btn padding-5 margin-0-10"
@@ -12,7 +12,10 @@ const ConfirmModal = ({ text, header, onSubmit, hideModal }) => {
         >
           Confirm
         </button>
-        <button className="cancel-btn" onClick={hideModal}>
+        <button
+          className="cancel-btn padding-5 margin-0-10"
+          onClick={hideModal}
+        >
           Cancel
         </button>
       </div>

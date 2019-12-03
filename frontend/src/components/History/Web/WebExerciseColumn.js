@@ -1,6 +1,5 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, useCallback } from "react";
 import { ensureDecimal } from "../../../utils/ensureDecimal";
-import TrashBin from "../../shared/SVGs/TrashBin";
 
 const WebExerciseColumn = ({
   reps,
@@ -20,43 +19,7 @@ const WebExerciseColumn = ({
   const lastRepsReqRef = useRef();
   const lastWeightReqRef = useRef();
 
-  function onInputBlur() {
-    onEditSet();
-  }
-
-  function onChange(e) {
-    const { target } = e;
-    let { name, value } = target;
-
-    if (name === "reps") {
-      setInputReps(value);
-      repsRef.current = value;
-      setTimeout(() => {
-        const { current } = repsRef;
-        if (current === value) {
-          onEditSet();
-        }
-      }, 5000);
-    } else if (name === "weight") {
-      console.log(value);
-      setInputWeight(value);
-      weightRef.current = value;
-      setTimeout(() => {
-        const { current } = weightRef;
-        if (current === value) {
-          onEditSet();
-        }
-      }, 5000);
-    }
-  }
-
-  useEffect(() => {
-    return () => {
-      if (!isDeleted.current) onEditSet();
-    };
-  }, []);
-
-  function onEditSet() {
+  const onEditSet = useCallback(() => {
     let values = {};
 
     const { current: currentReps } = repsRef;
@@ -96,18 +59,55 @@ const WebExerciseColumn = ({
     }
 
     handleEditSet(values, exerId, setId);
+  }, [reps, weight, setId, exerId, inputReps, handleEditSet]);
+
+  function onInputBlur() {
+    onEditSet();
   }
+
+  function onChange(e) {
+    const { target } = e;
+    let { name, value } = target;
+
+    if (name === "reps") {
+      setInputReps(value);
+      repsRef.current = value;
+      setTimeout(() => {
+        const { current } = repsRef;
+        if (current === value) {
+          onEditSet();
+        }
+      }, 5000);
+    } else if (name === "weight") {
+      console.log(value);
+      setInputWeight(value);
+      weightRef.current = value;
+      setTimeout(() => {
+        const { current } = weightRef;
+        if (current === value) {
+          onEditSet();
+        }
+      }, 5000);
+    }
+  }
+
+  useEffect(() => {
+    return () => {
+      if (!isDeleted.current) onEditSet();
+    };
+  }, [onEditSet]);
+
   return (
     <>
       <button
-        className="add-card-remove-btn theme-btn-no-border"
+        className="add-card-remove-btn theme-btn-no-border flex-center"
         onClick={() => {
           isDeleted.current = true;
           onDeleteSet(exerId, setId);
         }}
         tabIndex="-1"
       >
-        <TrashBin />
+        <i className="material-icons">remove</i>
       </button>
       <ExerciseForm
         onChange={onChange}

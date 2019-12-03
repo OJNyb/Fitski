@@ -1,35 +1,51 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, {
+  lazy,
+  useState,
+  useLayoutEffect,
+  useContext,
+  Suspense
+} from "react";
 import useTitle from "../../hooks/useTitle";
 import useMobile from "../../hooks/useMobile";
 import { useAuth } from "../../context/authContext";
-import { useUser } from "../../context/userContext";
 import { PlanContext } from "../../context/planContext";
-import { activatePlan, deactivatePlan } from "../../utils/planClient";
+import { activatePlan, deactivatePlan } from "../../utils/userClient";
+import { addPlan } from "../../utils/userAccessClient";
+import useUserAccess from "../../hooks/useUserAccess";
 
 import PlanNav from "./PlanNav";
-import PlanText from "./PlanText";
-import MobilePlan from "./Mobile/Plan";
 import AddWeeksModal from "./AddWeeksModal";
 import DeletePlanModal from "./DeletePlanModal";
-import ActivatePlanModal from "./ActivatePlanModal";
+import ActivatePlanModal from "../shared/Modal/ActivatePlanModal";
 import ConfirmModal from "../shared/Modal/ConfirmModal";
-
+import SetLoading from "../SetLoading";
 import "./plan.css";
+
+const MobilePlan = lazy(() => import("./Mobile/MobilePlan"));
+const WebPlan = lazy(() => import("./Web/WebPlan"));
 
 const Plan = () => {
   const isMobile = useMobile();
   const {
     state: { woPlan }
   } = useContext(PlanContext);
-  const currUser = useUser();
-  const { activatePlan: aPlan, deactivatePlan: dPlan } = useAuth();
+  const { state: userState, dispatch: userDispatch } = useAuth();
   const [isActive, setIsActive] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const { activeWOPlan } = currUser;
-  const { user, name, weeks, _id: planId } = woPlan;
+  const [isSelf, setIsSelf] = useState(false);
+  const { user: currUser } = userState;
+  const { _id: userId, activeWOPlan } = currUser;
+  const { name, _id: planId } = woPlan;
+  const { state: accessState, dispatch: accessDispatch } = useUserAccess();
+  const { accessedPlans, isPending: accessPending } = accessState;
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     function setActive() {
+      if (userId === woPlan.user._id) {
+        setIsSelf(true);
+      } else {
+        setIsSelf(false);
+      }
       if (activeWOPlan) {
         const { woPlan, endDate } = activeWOPlan;
         if (woPlan === planId && new Date(endDate) > new Date()) {
@@ -40,9 +56,7 @@ const Plan = () => {
       }
     }
     setActive();
-  }, [planId, activeWOPlan]);
-
-  console.log(isActive);
+  }, [planId, woPlan, userId, setIsSelf, activeWOPlan]);
 
   useTitle(name);
 
@@ -51,15 +65,23 @@ const Plan = () => {
   }
 
   function handleActivateSubmit(startDate) {
-    console.log(startDate);
-    activatePlan(aPlan, planId, startDate);
+    activatePlan(userDispatch, planId, startDate);
     setShowModal(false);
   }
 
   function handleDeactivateSubmit(e) {
     e.preventDefault();
-    deactivatePlan(dPlan, planId);
+    deactivatePlan(userDispatch, planId);
     setShowModal(false);
+  }
+
+  function handleGetClick(e, planId) {
+    e.stopPropagation();
+    addPlan(accessDispatch, planId);
+  }
+
+  if (accessPending) {
+    return null;
   }
 
   let modal;
@@ -73,7 +95,7 @@ const Plan = () => {
         />
       );
     } else if (showModal === "delete") {
-      modal = <DeletePlanModal planId={planId} hideModal={hideModal} />;
+      modal = <DeletePlanModal woPlan={woPlan} hideModal={hideModal} />;
     } else if (showModal === "activate") {
       modal = (
         <ActivatePlanModal
@@ -94,38 +116,14 @@ const Plan = () => {
     }
   }
 
-  let weeksDisplay;
-  if (weeks.length) {
-    weeksDisplay = weeks.map((week, index) => {
-      return (
-        <PlanText week={week} index={index} planId={planId} key={week._id} />
-      );
-    });
-  } else {
-    weeksDisplay = (
-      <div className="plan-week-container flex-col-cen">
-        <p>Wah gwan! Looks like there's no weeks</p>
-        <button
-          className="theme-btn-filled"
-          onClick={() => setShowModal("addWeeks")}
-        >
-          Add weeks
-        </button>
-      </div>
-    );
-  }
-
   let view;
   if (isMobile) {
-    view = <MobilePlan woPlan={woPlan} setShowModal={setShowModal} />;
+    view = (
+      <MobilePlan woPlan={woPlan} setShowModal={setShowModal} isSelf={isSelf} />
+    );
   } else {
     view = (
-      <div style={{ padding: "10px 0 50px" }}>
-        <h1 className="plan-name black">{name}</h1>
-        {/* <p className="plan-description-label black">Description</p>
-    <p className="plan-description">{description}</p> */}
-        {weeksDisplay}
-      </div>
+      <WebPlan woPlan={woPlan} setShowModal={setShowModal} isSelf={isSelf} />
     );
   }
 
@@ -133,14 +131,17 @@ const Plan = () => {
     <>
       <PlanNav
         planId={planId}
+        isSelf={isSelf}
         planName={name}
-        setShowModal={setShowModal}
         isMobile={isMobile}
         isActive={isActive}
+        setShowModal={setShowModal}
+        accessedPlans={accessedPlans}
+        onGetClick={handleGetClick}
       />
-      {view}
+      <Suspense fallback={<SetLoading />}>{view}</Suspense>
+
       {modal}
-      <button className="theme-btn">Active</button>
     </>
   );
 };

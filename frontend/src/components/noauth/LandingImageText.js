@@ -1,20 +1,20 @@
 import React from "react";
 
-const LandingImageText = ({}) => {
+const LandingImageText = () => {
   return (
-    <div className="landing-img-text-container">
-      <div className="landing-img-text-item">
-        <i className="material-icons">search</i>
-        <span>Get with a program</span>
-      </div>
-      <div className="landing-img-text-item">
-        <i className="material-icons">show_chart</i>
-        <span>Keep tabs on your gains</span>
-      </div>
-      <div className="landing-img-text-item">
-        <i className="material-icons-outlined">fitness_center</i>
-        <span>Watch as you get shredded</span>
-      </div>
+    <div className="color-white">
+      <TextItem icon={"search"} text={"Get with a program"} />
+      <TextItem icon={"show_chart"} text={"Keep tabs on your gains"} />
+      <TextItem icon={"fitness_center"} text={"Watch as you get shredded"} />
+    </div>
+  );
+};
+
+const TextItem = ({ icon, text }) => {
+  return (
+    <div className="landing-img-text-item flex-ai-center">
+      <i className="material-icons">{icon}</i>
+      <b className="font-18">{text}</b>
     </div>
   );
 };

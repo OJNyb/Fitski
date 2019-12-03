@@ -35,10 +35,9 @@ const History = () => {
   const [formattedDate, setFormattedDate] = useState(
     formatHistoryDate(new Date())
   );
-  const [showExercises, setShowExercises] = useState(false);
-  const { history, error, isPending, isRejected } = state;
+  const { history, isPending, isRejected } = state;
   const isMobile = useMobile();
-  useTitle("Fitnut - History");
+  useTitle("Fitnut - Calendar");
 
   useSetLoading(isPending);
 
@@ -174,19 +173,18 @@ const History = () => {
   } else {
     view = (
       <WebView
+        historyDays={days}
         date={moment(date)}
         dayIndex={dayIndex}
         currentDay={currentDay}
         handleAddSet={handleAddSet}
         handleEditSet={handleEditSet}
-        showExercises={showExercises}
+        handleCopyDay={handleCopyDay}
         handleDeleteSet={handleDeleteSet}
         handleDateChange={handleDateChange}
-        setShowExercises={setShowExercises}
         handleAddExercise={handleAddExercise}
         displayGroupCircle={displayGroupCircle}
         handleDeleteExercise={handleDeleteExercise}
-        handleCopyDay={handleCopyDay}
       />
     );
   }

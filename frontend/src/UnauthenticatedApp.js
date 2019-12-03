@@ -6,6 +6,9 @@ import SetLoading from "./components/SetLoading";
 const Landing = lazy(() => import("./components/noauth/Landing"));
 const Login = lazy(() => import("./components/noauth/MobileLogin"));
 const Register = lazy(() => import("./components/noauth/MobileRegister"));
+const ForgotPassword = lazy(() => import("./components/noauth/ForgotPassword"));
+const ResetPassword = lazy(() => import("./components/noauth/ResetPassword"));
+
 const NoMatch = lazy(() => import("./components/NoMatch"));
 const TermsAndConditions = lazy(() =>
   import("./components/Terms/TermsAndConditions")
@@ -19,6 +22,8 @@ const UnauthenticatedApp = () => {
         <Route exact path="/" component={Landing} />
         <Route exact path="/login" component={Login} />
         <Route exact path="/register" component={Register} />
+        <Route exact path="/forgot" component={ForgotPassword} />
+        <Route exact path="/reset/:token" component={ResetPassword} />
         <Route exact path="/history">
           <Redirect to="/login" />
         </Route>
@@ -29,6 +34,9 @@ const UnauthenticatedApp = () => {
           <Redirect to="/login" />
         </Route>
         <Route exact path="/signup">
+          <Redirect to="/login" />
+        </Route>
+        <Route exact path="/logout">
           <Redirect to="/login" />
         </Route>
         <Route exact path="/terms" component={TermsAndConditions} />

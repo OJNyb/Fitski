@@ -1,24 +1,12 @@
-import { useState, useLayoutEffect } from "react";
-import useWindowWidth from "./useWindowWidth";
+import { useContext } from "react";
+import { ViewContext } from "../context/viewContext";
 
 function useMobile() {
-  const width = useWindowWidth();
-
-  const [isMobile, setIsMobile] = useState(true);
-
-  useLayoutEffect(() => {
-    function checkWidth() {
-      if (width <= 768) {
-        setIsMobile(true);
-      } else {
-        setIsMobile(false);
-      }
-    }
-
-    checkWidth();
-  }, [width]);
-
-  return isMobile;
+  const context = useContext(ViewContext);
+  if (context === undefined) {
+    throw new Error(`useMobile must be used within a ViewProvider`);
+  }
+  return context;
 }
 
 export default useMobile;

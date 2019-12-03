@@ -10,49 +10,30 @@
   cursor: pointer;
   background-color: #fff;
   color: #a56e6e;
-  margin-bottom: 2px;
+  margin-bottom: 3px;
 }
 
 .history-mobile-exercise-header-active {
   color: #a60000;
   border-bottom: 2px solid #a60000;
-  height: calc(6vh - 1px);
-  margin-bottom: 0 !important;
+  margin-bottom: 1px !important;
 }
 
 .history-mobile-exercise-body {
-  display: flex;
-  flex-direction: column;
   color: rgb(111, 91, 91);
   padding: 0 15px;
+  max-width: 400px;
+  margin: auto;
 }
 
 .history-mobile-exercise-input-wrapper {
-  display: flex;
-  flex-direction: column;
   margin-top: 20px;
-}
-
-.history-mobile-exercise-input-header {
-  border-bottom: 1.5px solid #a60000;
-  margin-bottom: 7px;
-}
-
-.history-mobile-exercise-input-box {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 24px;
 }
 
 .history-mobile-exercise-input-box button {
   background-color: rgb(224, 215, 215);
-  height: 34px;
-  color: white;
-  font-size: 28px;
-  padding: 0 14px;
-  border-bottom: 0.5px solid gray;
-  font-weight: 300;
+  padding: 7px 14px;
+  border-bottom: 0.5px solid rgb(158, 143, 143);
   border-radius: 2px;
 }
 
@@ -76,7 +57,7 @@
   border: none;
   width: 100%;
   background-color: transparent;
-  font-family: "Barlow", sans-serif;
+  font-family: "Barlow", "Oswald", sans-serif;
   font-size: 26px;
   font-weight: 800;
   outline: none;
@@ -131,30 +112,4 @@
   -o-transform: scale(-1, 1);
   -ms-transform: scale(-1, 1);
   transform: scale(-1, 1);
-}
-
-.history-mobile-exercise-list-kg-reps {
-  flex: 0.75 75%;
-  justify-content: space-between;
-}
-
-.history-mobile-exercise-list-label-wrapper:first-child {
-  display: flex;
-  align-items: center;
-  flex: 0.35 35%;
-  justify-content: flex-end;
-}
-
-/* EXERCISE HISTORY */
-.history-mobile-exercise-history-body {
-  padding-top: 10px;
-}
-.history-mobile-exercise-history-day-container {
-  margin-top: 10px;
-}
-
-.history-mobile-exercise-history-column {
-  display: flex;
-  padding: 0 8px 5px 30%;
-  justify-content: space-between;
 }

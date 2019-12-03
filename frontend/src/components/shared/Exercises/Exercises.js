@@ -10,7 +10,9 @@ import {
 
 import SetLoading from "../../SetLoading";
 
-const ExercisesBigView = lazy(() => import("./Web/ExercisesBigView"));
+import "./exercises.css";
+
+const ExercisesBigView = lazy(() => import("./Web/WebExercisesView"));
 const MobileExerciseView = lazy(() => import("./Mobile/MobileExerciseView"));
 
 const Exercises = ({ handleAddExercise, closeExercises }) => {
@@ -48,7 +50,9 @@ const Exercises = ({ handleAddExercise, closeExercises }) => {
       } else {
         let regex = RegExp(search, "i");
         exercisesToShow = exercises.filter(x => {
-          return regex.test(x.name) && x.muscleGroup === muscleGroup;
+          return (
+            regex.test(x.name) && muscleGroup.indexOf(x.muscleGroup) !== -1
+          );
         });
       }
 

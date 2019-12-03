@@ -3,6 +3,7 @@ import { Formik, Form, Field } from "formik";
 import { useAuth } from "../../context/authContext";
 
 import "./signXError.css";
+import Disclaimer from "./Disclaimer";
 
 const Register = () => {
   const { register } = useAuth();
@@ -83,21 +84,9 @@ const Register = () => {
             <h2>Sign up</h2>
 
             <Form className="landing-sign-x-form flex-col flex-center">
-              {/* <div>
-                <Field
-                  type="name"
-                  name="name"
-                  placeholder="Name"
-                  className={
-                    "landing-input" +
-                    (errors.name && touched.name ? " error-input-border" : "")
-                  }
-                />
-                <InputError error={errors.name} touched={touched.name} />
-              </div> */}
-
               <div>
                 <Field
+                  autoComplete="email"
                   type="email"
                   name="email"
                   placeholder="Email"
@@ -108,9 +97,9 @@ const Register = () => {
                 />
                 <InputError error={errors.email} touched={touched.email} />
               </div>
-
               <div>
                 <Field
+                  autoComplete="username"
                   type="username"
                   name="username"
                   placeholder="Username"
@@ -132,6 +121,7 @@ const Register = () => {
                   type="password"
                   name="password"
                   placeholder="Password"
+                  autoComplete="new-password"
                   className={
                     "landing-input" +
                     (errors.password && touched.password
@@ -144,12 +134,12 @@ const Register = () => {
                   touched={touched.password}
                 />
               </div>
-
               <div>
                 <Field
                   type="password"
                   name="confirmPassword"
                   placeholder="Confirm password"
+                  autoComplete="new-password"
                   className={
                     "landing-input" +
                     (errors.confirmPassword && touched.confirmPassword
@@ -162,13 +152,13 @@ const Register = () => {
                   touched={touched.confirmPassword}
                 />
               </div>
-
+              <Disclaimer />
               <button
                 type="submit"
                 disabled={isSubmitting}
                 className="theme-btn-filled"
               >
-                Sign up
+                Create Account
               </button>
             </Form>
           </>

@@ -10,6 +10,7 @@ const EDIT_SET = "EDIT_SET";
 const ADD_SET = "ADD_SET";
 const DELETE_SET = "DELETE_SET";
 const COPY_DAY = "COPY_DAY";
+const REQUEST_FAILED = "REQUEST_FAILED";
 
 export {
   IS_PENDING,
@@ -23,5 +24,6 @@ export {
   ADD_SET,
   EDIT_SET,
   DELETE_SET,
-  COPY_DAY
+  COPY_DAY,
+  REQUEST_FAILED
 };

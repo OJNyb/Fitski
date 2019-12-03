@@ -6,7 +6,7 @@ import ExerciseCard from "./ExerciseCard";
 import Exercises from "../../shared/Exercises/Exercises";
 import { Link } from "react-router-dom";
 
-import "./EditWeekMobile.css";
+import "./mobileEditWeek.css";
 
 const MobileEditWeek = ({
   weeks,

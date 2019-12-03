@@ -17,7 +17,7 @@ const PlanEdit = () => {
     dispatch,
     state: { woPlan }
   } = useContext(PlanContext);
-  const { name, goals, difficulty, description, _id: planId } = woPlan;
+  const { name, goal, difficulty, description, _id: planId } = woPlan;
   useTitle(name);
   useSetLoading(false);
   useNavRedBack(`/plans/${planId}`);
@@ -28,34 +28,25 @@ const PlanEdit = () => {
       <Formik
         initialValues={{
           name,
-          gainMuscle: goals.indexOf("Gain muscle") > -1,
-          loseWeight: goals.includes("Lose weight"),
-          gainStrength: goals.includes("Gain strength"),
+          goal,
           difficulty,
           description
         }}
         validate={values => {
           let errors = {};
-          const {
-            name,
-            gainMuscle,
-            loseWeight,
-            gainStrength,
-            description
-          } = values;
+          const { name, goal, description } = values;
           if (!name) {
             errors.name = "Name is required";
           } else if (name.length > 30) {
             errors.name = "Name must be shorter than 30 characters";
           }
 
+          if (goal.length > 20) {
+            errors.length = "Goal must be shorter than 20 characters";
+          }
           if (description.length > 1000) {
             errors.description =
               "Description must be shorter than 1000 characters";
-          }
-
-          if (gainMuscle && loseWeight && gainStrength) {
-            errors.goals = "Plan can only have a maximum of 2 goals";
           }
 
           return errors;
@@ -63,29 +54,24 @@ const PlanEdit = () => {
         onSubmit={values => {
           const {
             name: fName,
-            description: fDesc,
-            gainMuscle,
-            gainStrength,
-            loseWeight,
-            difficulty: fDiff
+            goal: fGoal,
+            difficulty: fDiff,
+            description: fDesc
           } = values;
-          let fGoals = [];
-          if (gainMuscle) fGoals.push("Gain muscle");
-          if (gainStrength) fGoals.push("Gain strength");
-          if (loseWeight) fGoals.push("Lose weight");
+
           let update = {};
           if (name !== fName) {
             update.name = fName;
+          }
+
+          if (goal !== fGoal) {
+            update.goal = fGoal;
           }
           if (description !== fDesc) {
             update.description = fDesc;
           }
           if (fDiff !== difficulty) {
             update.difficulty = fDiff;
-          }
-
-          if (JSON.stringify(fGoals) !== JSON.stringify(goals)) {
-            update.goals = fGoals;
           }
 
           if (Object.keys(update).length) {

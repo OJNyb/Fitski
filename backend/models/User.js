@@ -8,24 +8,19 @@ const UserSchema = new Schema(
   {
     name: String,
     avatar: String,
+    resetPasswordToken: String,
+    resetPasswordExpires: Date,
+    bio: String,
     password: {
       type: String,
       select: false
     },
     defaultUnit: String,
     email: {
-      type: String,
-      validate: {
-        validator: email => User.doesntExist({ email }),
-        message: () => "Email has already been taken."
-      }
+      type: String
     },
     username: {
-      type: String,
-      validate: {
-        validator: username => User.doesntExist({ username }),
-        message: () => "Username has already been taken."
-      }
+      type: String
     },
     activeWOPlan: {
       woPlan: {
@@ -45,6 +40,34 @@ UserSchema.pre("save", async function() {
   }
 });
 
+UserSchema.pre("save", async function(next) {
+  if (this.isModified("email")) {
+    const { email } = this;
+    let doesntExist = await User.doesntExist({ email });
+    if (!doesntExist) {
+      return next({
+        name: "preSaveError",
+        error: "Email has already been taken."
+      });
+    }
+    next();
+  }
+});
+
+UserSchema.pre("save", async function(next) {
+  if (this.isModified("username")) {
+    const { username } = this;
+    let doesntExist = await User.doesntExist({ username });
+    if (!doesntExist) {
+      return next({
+        name: "preSaveError",
+        error: "Username has already been taken."
+      });
+    }
+    next();
+  }
+});
+
 UserSchema.methods.matchesPassword = function(password) {
   return compare(password, this.password);
 };
@@ -52,6 +75,8 @@ UserSchema.methods.matchesPassword = function(password) {
 UserSchema.statics.doesntExist = async function(options) {
   return (await this.where(options).countDocuments()) === 0;
 };
+
+UserSchema.index({ username: "text" });
 
 const User = model("user", UserSchema);
 module.exports = User;

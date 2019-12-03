@@ -38,7 +38,7 @@ const MobileExerciseCard = ({
   return (
     <div
       className={
-        "history-add-card margin-10" +
+        "history-add-card margin-10 pointer" +
         (isActive ? " history-add-card-active" : "")
       }
       onTouchStart={onTouchStart}
@@ -47,27 +47,6 @@ const MobileExerciseCard = ({
     >
       <div className="history-exercise-name">
         <span className="black">{name}</span>
-
-        {/* <div className="add-card-btn-container">
-          <button
-            className="theme-btn-no-border"
-            onClick={e => {
-              e.stopPropagation();
-              onAddSet(exerId, exerciseId);
-            }}
-          >
-            <i className="material-icons ">add</i>
-          </button>
-          <button
-            className="add-card-remove-btn theme-btn-no-border"
-            onClick={e => {
-              e.stopPropagation();
-              onDeleteExercise(exerId);
-            }}
-          >
-            <i className="material-icons ">delete_outline</i>
-          </button>
-        </div>*/}
       </div>
 
       <div className="add-card-body">{setDisplay}</div>

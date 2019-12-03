@@ -1,44 +1,13 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import CreatePlanModal from "./CreatePlanModal";
+import React from "react";
 import NavMid from "../../shared/NavMid/NavMid";
 
-const PlansNav = ({ isMobile, dispatch }) => {
-  const [showModal, setShowModal] = useState(false);
-
-  let modal;
-  if (showModal) {
-    modal = (
-      <CreatePlanModal
-        dispatch={dispatch}
-        hideModal={() => setShowModal(false)}
-      />
-    );
-  }
-
+const PlansNav = () => {
   return (
-    <>
-      {(isMobile && (
-        <NavMid
-          customNav={
-            <div className="mobile-nav-more-container">
-              <Link to="/create-plan" className="theme-btn padding-4-12">
-                {/* <i className="material-icons">more_vert</i> */}
-                Create plan
-              </Link>
-            </div>
-          }
-        />
-      )) || (
-        <NavMid
-          backText={"Plans"}
-          rightBtnText={"Create plan"}
-          rightBtnAction={() => setShowModal("createPlan")}
-        />
-      )}
-
-      {modal}
-    </>
+    <NavMid
+      backText={"Plans"}
+      rightLinkTo={"/create-plan"}
+      rightLinkText={"Create plan"}
+    />
   );
 };
 

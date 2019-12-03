@@ -1,0 +1,16 @@
+.mobile-sign-x-button-down-container {
+  padding: 39px 15px 30px;
+  justify-content: center;
+}
+
+.mobile-sign-x-link-down {
+  min-height: 37px;
+  font-weight: bold;
+  font-size: 14px;
+  max-width: 180px;
+}
+
+.landing-mobile-sign-x-form button {
+  min-height: 46px;
+  font-weight: bold;
+}
