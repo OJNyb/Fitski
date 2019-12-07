@@ -186,9 +186,10 @@ const EditProfileModal = ({ bio, avatar, onSubmit, hideModal }) => {
 
   return (
     <Modal
-      header={"Edit Profile"}
       children={children}
+      header={"Edit Profile"}
       toggleModal={hideModal}
+      onlyHideOnBtnClick={true}
     />
   );
 };

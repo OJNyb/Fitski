@@ -4,11 +4,20 @@ import useSetLoading from "../../../hooks/useSetLoading";
 import "./modal.css";
 import "./webModal.css";
 
-const BigViewModal = ({ header, children, toggleModal }) => {
+const BigViewModal = ({
+  header,
+  children,
+  toggleModal,
+  onlyHideOnBtnClick
+}) => {
   useSetLoading(false);
 
   return (
-    <div id="myModal" className="modal" onClick={toggleModal}>
+    <div
+      id="myModal"
+      className="modal"
+      onClick={onlyHideOnBtnClick ? () => null : () => toggleModal()}
+    >
       <div className="flex-center modal-content-container">
         <div className="modal-content" onClick={e => e.stopPropagation()}>
           <div className="modal-header padding-10">

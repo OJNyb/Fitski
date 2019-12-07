@@ -126,28 +126,6 @@
   border-color: rgb(207, 192, 192);
 }
 
-.exercises-body::-webkit-scrollbar {
-  width: 10px;
-  z-index: 99;
-}
-
-/* Track */
-.exercises-body::-webkit-scrollbar-track {
-  background: #e4dddd;
-  z-index: 99;
-}
-
-/* Handle */
-.exercises-body::-webkit-scrollbar-thumb {
-  background: #888;
-  z-index: 99;
-}
-
-/* Handle on hover */
-.exercises-body::-webkit-scrollbar-thumb:hover {
-  background: rgb(92, 87, 87);
-}
-
 .exercises-item {
   padding: 7px 10px;
   border-bottom: 1px solid rgb(207, 192, 192);

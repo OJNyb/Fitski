@@ -7,18 +7,23 @@ import React, {
 } from "react";
 import useTitle from "../../hooks/useTitle";
 import useMobile from "../../hooks/useMobile";
+import { editPlan } from "../../utils/planClient";
 import { useAuth } from "../../context/authContext";
+import useUserAccess from "../../hooks/useUserAccess";
+import { NavContext } from "../../context/navContext";
+import { addPlan } from "../../utils/userAccessClient";
 import { PlanContext } from "../../context/planContext";
 import { activatePlan, deactivatePlan } from "../../utils/userClient";
-import { addPlan } from "../../utils/userAccessClient";
-import useUserAccess from "../../hooks/useUserAccess";
 
 import PlanNav from "./PlanNav";
+import EditPlanModal from "./EditPlanModal";
 import AddWeeksModal from "./AddWeeksModal";
 import DeletePlanModal from "./DeletePlanModal";
+import RemovePlanModal from "./RemovePlanModal";
 import ActivatePlanModal from "../shared/Modal/ActivatePlanModal";
 import ConfirmModal from "../shared/Modal/ConfirmModal";
 import SetLoading from "../SetLoading";
+
 import "./plan.css";
 
 const MobilePlan = lazy(() => import("./Mobile/MobilePlan"));
@@ -27,7 +32,8 @@ const WebPlan = lazy(() => import("./Web/WebPlan"));
 const Plan = () => {
   const isMobile = useMobile();
   const {
-    state: { woPlan }
+    state: { woPlan },
+    dispatch
   } = useContext(PlanContext);
   const { state: userState, dispatch: userDispatch } = useAuth();
   const [isActive, setIsActive] = useState(false);
@@ -35,9 +41,10 @@ const Plan = () => {
   const [isSelf, setIsSelf] = useState(false);
   const { user: currUser } = userState;
   const { _id: userId, activeWOPlan } = currUser;
-  const { name, _id: planId } = woPlan;
+  const { name, goal, access, difficulty, description, _id: planId } = woPlan;
   const { state: accessState, dispatch: accessDispatch } = useUserAccess();
   const { accessedPlans, isPending: accessPending } = accessState;
+  const { state: navState, dispatch: navDispatch } = useContext(NavContext);
 
   useLayoutEffect(() => {
     function setActive() {
@@ -75,9 +82,39 @@ const Plan = () => {
     setShowModal(false);
   }
 
-  function handleGetClick(e, planId) {
-    e.stopPropagation();
+  function handleGetClick() {
     addPlan(accessDispatch, planId);
+  }
+
+  function handleEditSubmit(values) {
+    const {
+      name: vName,
+      goal: vGoal,
+      access: vAccess,
+      difficulty: vDifficulty,
+      description: vDescription
+    } = values;
+    if (name === vName) {
+      delete values.name;
+    }
+    if (goal === vGoal) {
+      delete values.goal;
+    }
+    if (access === vAccess) {
+      delete values.access;
+    }
+    if (difficulty === vDifficulty) {
+      delete values.difficulty;
+    }
+    if (description === vDescription) {
+      delete values.description;
+    }
+
+    if (Object.keys(values).length) {
+      editPlan(dispatch, planId, values);
+    }
+
+    hideModal();
   }
 
   if (accessPending) {
@@ -96,6 +133,8 @@ const Plan = () => {
       );
     } else if (showModal === "delete") {
       modal = <DeletePlanModal woPlan={woPlan} hideModal={hideModal} />;
+    } else if (showModal === "remove") {
+      modal = <RemovePlanModal woPlan={woPlan} hideModal={hideModal} />;
     } else if (showModal === "activate") {
       modal = (
         <ActivatePlanModal
@@ -113,13 +152,27 @@ const Plan = () => {
           text={"Are you sure you want to deactivate this plan?"}
         />
       );
+    } else if (showModal === "edit") {
+      modal = (
+        <EditPlanModal
+          plan={woPlan}
+          hideModal={hideModal}
+          onSubmit={handleEditSubmit}
+        />
+      );
     }
   }
 
   let view;
   if (isMobile) {
     view = (
-      <MobilePlan woPlan={woPlan} setShowModal={setShowModal} isSelf={isSelf} />
+      <MobilePlan
+        woPlan={woPlan}
+        setShowModal={setShowModal}
+        isSelf={isSelf}
+        navState={navState}
+        navDispatch={navDispatch}
+      />
     );
   } else {
     view = (
@@ -135,6 +188,8 @@ const Plan = () => {
         planName={name}
         isMobile={isMobile}
         isActive={isActive}
+        navState={navState}
+        navDispatch={navDispatch}
         setShowModal={setShowModal}
         accessedPlans={accessedPlans}
         onGetClick={handleGetClick}

@@ -8,7 +8,7 @@ import React, {
 } from "react";
 import { NavContext } from "../../../context/navContext";
 import useSetLoading from "../../../hooks/useSetLoading";
-import { IS_RED, SHOW_NONE, SHOW_DEHAZE } from "../../../types/navTypes";
+import { SHOW_NONE, SHOW_DEHAZE } from "../../../types/navTypes";
 
 import MobileDayView from "./MobileDayView";
 import SetLoading from "../../SetLoading";
@@ -49,7 +49,6 @@ const MobileView = ({
     function setDouble() {
       if (!showHistory && !showExercise) {
         dispatch({ type: SHOW_DEHAZE });
-        dispatch({ type: IS_RED });
       } else {
         dispatch({ type: SHOW_NONE });
       }

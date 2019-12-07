@@ -1,82 +1,113 @@
-import React, { useContext } from "react";
-import useSetLoading from "../../hooks/useSetLoading";
-import { PlanContext } from "../../context/planContext";
-import useNavRedBack from "../../hooks/useNavRedBack";
-import useTitle from "../../hooks/useTitle";
-import MobileNavMidContainer from "../shared/NavMid/MobileNavMidContainer";
+import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
+import { NavContext } from "../../context/navContext";
+import { setBackLink } from "../../utils/setBackLink";
 
-const Overview = () => {
+const Overview = ({ woPlan }) => {
+  const [showOverview, setShowOverview] = useState(false);
+  const [showDescription, setShowDescription] = useState(false);
+  const { state, dispatch } = useContext(NavContext);
+
   const {
-    state: { woPlan }
-  } = useContext(PlanContext);
-  const {
-    _id: planId,
     name,
-    user,
-    description,
     goal,
     weeks,
-    difficulty
+    difficulty,
+    description,
+    _id: planId,
+    user: author
   } = woPlan;
-  useNavRedBack(`/plans/${planId}`);
-  useTitle(`${name}`);
 
-  useSetLoading(false);
-  const { username } = user;
+  const { avatar, username, _id: authorId } = author;
 
+  function onLinkClick() {
+    if (state[authorId]) return;
+    setBackLink(dispatch, authorId, null, null, planId);
+  }
   return (
     <>
-      <MobileNavMidContainer
-        children={
-          <>
-            <h2 className="margin-0 nav-h2 font-18 color-white">Overview</h2>
-            <Link
-              to={`/plans/${planId}/edit`}
-              className="white-material-btn padding-5"
-            >
-              <i className="material-icons-outlined">edit</i>
-            </Link>
-          </>
-        }
-      />
-      <div className="padding-10">
-        <div>
-          <Label label={"Name"} />
-          <Content content={name} />
-        </div>
-        <div>
-          <Label label={"Author"} />
-          <Content content={username} />
-        </div>
-        <div>
-          <Label label={"Goals"} />
-          <Content content={goal} />
-        </div>
-        <div>
-          <Label label={"Difficulty"} />
-          <Content content={difficulty} />
-        </div>
-        <div>
-          <Label label={"Length"} />
-          <Content
-            content={`${weeks.length} ${weeks.length === 1 ? "week" : "weeks"}`}
-          />
-        </div>
-        <div>
-          <Label label={"Description"} />
-          <Content content={description} />
-        </div>
+      <h2 className="color-gray text-center">{name}</h2>
+      <div className="plan-overview-category-container">
+        <CategoryHeader
+          header={"Overview"}
+          rotateIcon={showOverview}
+          onClick={() => setShowOverview(!showOverview)}
+        />
+        {showOverview && (
+          <div className="pt-10 flex-col-cen">
+            <div className="plan-overview-autho-container">
+              <img src={`/image/avatar/${avatar}_sm.jpg`} alt="Avatar" />
+              <div className="flex-col">
+                <span className="font-w-300 font-14 black">Author</span>
+                <Link
+                  to={`/profile/${username}`}
+                  className="tc line-height-11"
+                  onClick={onLinkClick}
+                >
+                  {username}
+                </Link>
+              </div>
+            </div>
+            <div>
+              <Label label={"Length"} />
+              <Content
+                content={`${weeks.length} ${
+                  weeks.length === 1 ? "week" : "weeks"
+                }`}
+              />
+            </div>
+            <div>
+              <Label label={"Difficulty"} />
+              <Content content={difficulty} />
+            </div>
+            <div>
+              <Label label={"Goal"} />
+              <Content content={goal} />
+            </div>
+          </div>
+        )}
+      </div>
+
+      <div className="plan-overview-category-container">
+        <CategoryHeader
+          header={"Description"}
+          rotateIcon={showDescription}
+          onClick={() => setShowDescription(!showDescription)}
+        />
+
+        {showDescription && (
+          <div className="flex-col-cen">
+            <p className="margin-0 pt-10 font-w-300 font-18 line-height-12 black">
+              {description}
+            </p>
+          </div>
+        )}
       </div>
     </>
   );
 };
 
+const CategoryHeader = ({ header, rotateIcon, onClick }) => {
+  return (
+    <div className="plan-overview-header-wrapper color-gray" onClick={onClick}>
+      {header}
+      <i
+        className={
+          "material-icons-round plan-overview-arrow-icon" +
+          (rotateIcon ? " rotate-180" : "")
+        }
+      >
+        keyboard_arrow_down
+      </i>
+    </div>
+  );
+};
+
 const Label = ({ label }) => {
-  return <span className="black font-18">{label}: </span>;
+  return <span className="black font-16">{label}: </span>;
 };
 const Content = ({ content }) => {
-  return <span className="color-gray font-w-300 font-18">{content}</span>;
+  return <span className="black font-w-300 font-16">{content}</span>;
 };
 
 export default Overview;

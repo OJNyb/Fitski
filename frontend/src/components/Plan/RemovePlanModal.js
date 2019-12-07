@@ -3,13 +3,12 @@ import axios from "axios";
 import { useHistory } from "react-router-dom";
 import ConfirmModal from "../shared/Modal/ConfirmModal";
 
-const DeletePlanModal = ({ woPlan, hideModal }) => {
+const RemovePlanModal = ({ woPlan, hideModal }) => {
   const { name, _id: planId } = woPlan;
   const { push } = useHistory();
-
   function onSubmit() {
     axios
-      .delete(`/plan/${planId}`)
+      .delete(`/user/access/${planId}`)
       .then(res => {
         const { data } = res;
         const { message } = data;
@@ -26,16 +25,16 @@ const DeletePlanModal = ({ woPlan, hideModal }) => {
     <ConfirmModal
       text={
         <>
-          Are you sure you want to delete
+          Are you sure you want to remove
           <br />
           <span className="font-w-500">{name}?</span>
         </>
       }
-      header={"Delete plan"}
+      header={"Remove plan"}
       hideModal={hideModal}
       onSubmit={onSubmit}
     />
   );
 };
 
-export default DeletePlanModal;
+export default RemovePlanModal;

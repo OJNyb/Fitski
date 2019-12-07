@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useLayoutEffect } from "react";
 import useSetLoading from "../../../hooks/useSetLoading";
+import { SHOW_BACK, SHOW_DEHAZE } from "../../../types/navTypes";
 
 import PlanCard from "../../shared/PlanCard/MobilePlanCard";
 import MobileNavMidContainer from "../../shared/NavMid/MobileNavMidContainer";
@@ -10,7 +11,8 @@ const Profile = ({
   isSelf,
   woPlans,
   profile,
-  setEditView,
+  navState,
+  navDispatch,
   setShowModal,
   accessedPlans,
   handleGetClick,
@@ -18,7 +20,20 @@ const Profile = ({
   handleDeactivateClick
 }) => {
   useSetLoading(false);
-  const { avatar, username } = profile;
+  const { avatar, username, _id: profileId } = profile;
+
+  useLayoutEffect(() => {
+    function setNav() {
+      let to = navState[profileId];
+      if (to && navState.backLink !== to)
+        navDispatch({ type: SHOW_BACK, payload: { backLink: to } });
+      else if (!navState.showDehaze && !to) navDispatch({ type: SHOW_DEHAZE });
+    }
+
+    setNav();
+  }, [navDispatch, profileId, navState]);
+
+  console.log(navState);
 
   let cards = woPlans.map(plan => {
     let hasAccess = false;

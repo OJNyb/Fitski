@@ -64,15 +64,16 @@ function planReducer(state, action) {
 
     case EDIT_PLAN: {
       const { values } = payload;
-      let { woPlan } = state;
-      woPlan = {
+      const { woPlan } = state;
+      console.log(woPlan);
+      const newPlan = {
         ...woPlan,
         ...values
       };
+      console.log(newPlan);
       return {
         ...state,
-        woPlan,
-        isPending: false
+        woPlan: newPlan
       };
     }
 

@@ -10,7 +10,9 @@ const History = require("../../models/History");
 const WOPlan = require("../../models/WOPlan");
 const UserAccess = require("../../models/UserAccess");
 const PlanAccess = require("../../models/PlanAccess");
+const PlanTrend = require("../../models/PlanTrend");
 const DefaultExerciseDelete = require("../../models/DefaultExerciseDelete");
+const { formatHistoryDate } = require("../../utils/formatHistoryDate");
 
 // Validation
 const { ensureSignedIn, ensureSignedOut } = require("../../middlewares/auth");
@@ -352,13 +354,13 @@ router.post(
   "/access/:plan_id",
   ensureSignedIn,
   validateRequest,
-  async (req, res, next) => {
+  (req, res, next) => {
     const { params, session } = req;
     const { plan_id: planId } = params;
     const { userId } = session;
 
     WOPlan.findById(planId)
-      .then(plan => {
+      .then(async plan => {
         if (!plan) {
           return res
             .status(404)
@@ -370,21 +372,27 @@ router.post(
             .json(createErrorObject(["You don't have access to this plan"]));
         }
 
-        UserAccess.updateOne(
-          { user: userId },
-          { $push: { plans: { woPlan: planId } } }
-        )
-          .then(() => {
-            PlanAccess.updateOne(
-              { woPlan: planId },
-              { $push: { whitelist: { user: userId } } }
-            )
-              .then(() => {
-                res.json({ message: "success" });
-              })
-              .catch(next);
-          })
-          .catch(next);
+        let newPlanTrend = new PlanTrend({
+          woPlan: planId,
+          date: formatHistoryDate(new Date())
+        });
+
+        try {
+          await UserAccess.updateOne(
+            { user: userId },
+            { $push: { plans: { woPlan: planId } } }
+          );
+          await PlanAccess.updateOne(
+            { woPlan: planId },
+            { $push: { whitelist: { user: userId } } }
+          );
+
+          await newPlanTrend.save();
+        } catch (e) {
+          next(e);
+        }
+
+        res.json({ message: "success" });
       })
       .catch(next);
   }
@@ -401,23 +409,24 @@ router.delete(
     const { params, session } = req;
     const { plan_id: planId } = params;
     const { userId } = session;
-    PlanAccess.updateOne(
-      { woPlan: planId },
-      {
-        $pull: { whitelist: { user: userId } }
-      }
-    )
-      .then(() => {
-        UserAccess.updateOne(
-          { user: userId },
-          { $pull: { plans: { woPlan: planId } } }
-        )
-          .then(access => {
-            res.json(access);
-          })
-          .catch(next);
-      })
-      .catch(next);
+
+    try {
+      await PlanAccess.updateOne(
+        { woPlan: planId },
+        {
+          $pull: { whitelist: { user: userId } }
+        }
+      );
+      await UserAccess.updateOne(
+        { user: userId },
+        { $pull: { plans: { woPlan: planId } } }
+      );
+      await PlanTrend.deleteOne({ user: userId, woPlan: planId });
+    } catch (e) {
+      next(e);
+    }
+
+    res.json({ message: "success" });
   }
 );
 

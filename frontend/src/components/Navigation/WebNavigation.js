@@ -1,4 +1,4 @@
-import React, { useState, useLayoutEffect } from "react";
+import React, { useState, useEffect, useLayoutEffect } from "react";
 
 import NavigationMenu from "./NavigationMenu";
 import { useUser } from "../../context/userContext";
@@ -25,6 +25,24 @@ const BigScreenNavigation = () => {
   } else {
     logo = <BigScreenLogo />;
   }
+
+  useEffect(() => {
+    function clickListener(e) {
+      if (width < 1200 && e.target.id !== "ss-more-btn") {
+        setShowMenu(false);
+      }
+    }
+    function addClickListener() {
+      window.addEventListener("click", clickListener);
+    }
+
+    if (width < 1200) {
+      addClickListener();
+    }
+    return () => {
+      window.removeEventListener("click", clickListener);
+    };
+  }, [width]);
 
   return (
     <>
@@ -53,7 +71,9 @@ const SmallScreenLogo = ({ showMenu, setShowMenu }) => {
         className="small-screen-dehaze-button"
         onClick={() => setShowMenu(!showMenu)}
       >
-        <i className="material-icons font-20 color-gray">dehaze</i>
+        <i id="ss-more-btn" className="material-icons font-20 color-gray">
+          dehaze
+        </i>
       </button>
 
       <div className="flex-col-cen">

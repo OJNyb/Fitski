@@ -161,7 +161,7 @@ const ExercisesBigView = ({
             />
           )}
         </div>
-        <div className="exercises-body">
+        <div className="exercises-body custom-scrollbar">
           <div></div>
           <div>{exercisesDisplay}</div>
         </div>

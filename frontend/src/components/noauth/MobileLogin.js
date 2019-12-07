@@ -78,6 +78,7 @@ const Login = () => {
                 label="Password"
                 autoComplete="current-password"
               />
+              {console.log("gay")}
 
               <div className="margin-15">
                 <button

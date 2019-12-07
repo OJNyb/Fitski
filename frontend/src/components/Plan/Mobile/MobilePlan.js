@@ -4,13 +4,17 @@ import PlanText from "../PlanText";
 import NoWeeks from "./NoWeeks";
 import "./planMobile.css";
 import useSetLoading from "../../../hooks/useSetLoading";
-import useNavRedBack from "../../../hooks/useNavRedBack";
-import Overview from "./MobileOverview";
+import useNavBack from "../../../hooks/useNavBack";
+import Overview from "../PlanOverview";
 
-const MobilePlan = ({ woPlan, isSelf, setShowModal }) => {
+const MobilePlan = ({ woPlan, isSelf, navState, setShowModal }) => {
   const { weeks, _id: planId } = woPlan;
   useSetLoading(false);
-  useNavRedBack("/plans");
+  let to = navState[planId];
+  if (!to) {
+    to = "/plans";
+  }
+  useNavBack(to);
 
   let weeksDisplay;
   if (weeks.length) {

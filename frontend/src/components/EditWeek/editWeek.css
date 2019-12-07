@@ -1,27 +1,22 @@
-/* ACTION MODALS */
-
-/* Copy week */
-.copy-week-weeks-container {
-  margin-bottom: 30px;
-  min-height: 100px;
-  max-height: 200px;
+/* COPY MODAL */
+.edit-week-copy-week-selected-week-container {
+  height: 50vh;
   overflow-y: auto;
+  margin-top: 33px;
+  padding-right: 10px;
+  min-width: 250px;
 }
 
-.copy-week-item {
-  margin: 2px;
-  padding: 2px;
-  cursor: pointer;
+.edit-week-mobile-copy-week-selected-week-container {
+  margin-bottom: 49px;
 }
 
-.copy-week-item-active {
-  font-weight: 500;
+.edit-week-copy-week-day-header {
+  border-bottom: 1.5px solid #a60000;
+  margin-bottom: 5px;
 }
 
-.copy-week-confirm-btn {
-  padding: 3px 8px;
-
-  right: 10px;
-  bottom: 10px;
+.edit-week-copy-select-week-wrapper {
+  width: calc(100% - 20px);
   position: absolute;
 }

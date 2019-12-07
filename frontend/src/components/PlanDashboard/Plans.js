@@ -2,12 +2,13 @@ import React, { lazy, useState, Suspense } from "react";
 import usePlans from "../../hooks/usePlans";
 import useMobile from "../../hooks/useMobile";
 import { useAuth } from "../../context/authContext";
-import ConfirmModal from "../shared/Modal/ConfirmModal";
-import ActivatePlanModal from "../shared/Modal/ActivatePlanModal";
-
-import SetLoading from "../SetLoading";
+import useCleanNavState from "../../hooks/useCleanNavState";
 import useTitle from "../../hooks/useTitle";
 import { activatePlan, deactivatePlan } from "../../utils/userClient";
+
+import ActivatePlanModal from "../shared/Modal/ActivatePlanModal";
+import ConfirmModal from "../shared/Modal/ConfirmModal";
+import SetLoading from "../SetLoading";
 
 const MobilePlans = lazy(() => import("./Mobile/MobilePlans"));
 const WebPlans = lazy(() => import("./Web/WebPlans"));
@@ -19,6 +20,7 @@ const Plans = () => {
   const [showModal, setShowModal] = useState(false);
   const { isPending, isRejected, woPlans } = state;
   useTitle("Fitnut - Plans");
+  useCleanNavState();
 
   function handleActivateClick(e, planId) {
     e.preventDefault();

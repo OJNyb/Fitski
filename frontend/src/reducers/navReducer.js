@@ -1,29 +1,15 @@
 import {
   SHOW_NONE,
-  IS_WHITE,
-  IS_RED,
   SHOW,
   SHOW_BACK,
-  SHOW_DEHAZE
+  SHOW_DEHAZE,
+  CLEAN_STATE,
+  SET_PLAN_BACKLINK
 } from "../types/navTypes";
 
 function navReducer(state, action) {
   const { type, payload } = action;
   switch (type) {
-    case IS_WHITE: {
-      return {
-        ...state,
-        isWhite: true
-      };
-    }
-
-    case IS_RED: {
-      return {
-        ...state,
-        isWhite: false
-      };
-    }
-
     case SHOW_DEHAZE: {
       return {
         ...state,
@@ -54,6 +40,23 @@ function navReducer(state, action) {
       return {
         ...state,
         showNone: false
+      };
+    }
+
+    case SET_PLAN_BACKLINK: {
+      return {
+        ...state,
+        ...payload
+      };
+    }
+
+    case CLEAN_STATE: {
+      const { showNone, backLink, showDehaze } = state;
+      return {
+        showNone,
+        backLink,
+        showDehaze,
+        search: null
       };
     }
 

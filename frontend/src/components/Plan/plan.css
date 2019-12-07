@@ -1,50 +1,3 @@
-/* OVERVIEW */
-
-.plan-name {
-  text-align: center;
-  margin: 0px;
-  font-weight: 400;
-}
-
-.plan-author-container {
-  display: flex;
-  position: absolute;
-  top: 100px;
-  left: 300px;
-}
-
-.plan-author-container div {
-  margin-left: 2px;
-  margin-top: -4px;
-}
-
-.plan-author-label {
-  font-size: 14px;
-  font-weight: 500;
-}
-
-.plan-author-uname {
-  margin-top: 50px;
-}
-
-.plan-author-container img {
-  width: 34px;
-  height: 34px;
-
-  border-radius: 50%;
-}
-
-.plan-description-label {
-  text-align: center;
-  font-weight: 500;
-  margin: 0;
-}
-
-.plan-description {
-  margin: 0;
-  text-align: center;
-}
-
 /* BODY */
 .plan-week-container button {
   border-radius: 3px;
@@ -52,8 +5,63 @@
   font-size: 16px;
 }
 
+/* Overview */
+.plan-overview-category-container {
+  max-width: 500px;
+  width: 84%;
+  margin: 0 auto;
+}
+
+.plan-overview-header-wrapper {
+  border-bottom: 1px solid silver;
+  text-align: center;
+  padding: 7px;
+  font-size: 16px;
+  font-weight: 500;
+  position: relative;
+  cursor: pointer;
+}
+
+.plan-overview-arrow-icon {
+  position: absolute;
+  right: 0px;
+  top: 6px;
+  font-size: 24px;
+}
+
+.plan-overview-autho-container {
+  display: flex;
+  align-items: flex-start;
+}
+
+.plan-overview-autho-container img {
+  width: 38px;
+  height: 38px;
+  border-radius: 5px;
+  margin-right: 3px;
+}
+
+.plan-overview-autho-container span {
+  line-height: 1;
+}
+
 /* ACTION MODALS  */
 .bs-activate-plan-cal-container {
   position: absolute;
   top: 75px;
+}
+
+.edit-plan-modal-form {
+  width: 100vw;
+  max-width: 400px;
+}
+
+.edit-plan-input-wrapper {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.edit-plan-modal-radio-container {
+  display: flex;
+  justify-content: space-around;
 }

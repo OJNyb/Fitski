@@ -114,8 +114,10 @@ const Week = ({ week }) => {
   return (
     <div
       className={
-        "edit-week-mobile-copy-week-selected-week-container " +
-        (isMobile ? "padding-0-10-77" : "")
+        "edit-week-copy-week-selected-week-container custom-scrollbar" +
+        (isMobile
+          ? " padding-0-10-77 edit-week-mobile-copy-week-selected-week-container"
+          : "")
       }
     >
       {dayView}
@@ -129,7 +131,7 @@ const Day = ({ day, index }) => {
   let exerciseView = exercises.map(x => <Exercise exercise={x} key={x._id} />);
   return (
     <div className="margin-top-10">
-      <div className="edit-week-mobile-copy-week-day-header black font-w-700 font-14">
+      <div className="edit-week-copy-week-day-header black font-w-700 font-14">
         DAY {index + 1}
       </div>
       {exerciseView}
@@ -160,8 +162,8 @@ const Exercise = ({ exercise }) => {
 
   return (
     <div className="padding-5 flex-ai-center color-gray">
-      <span className="font-w-500 space-after">{name}</span> - {sets.length}{" "}
-      sets of {displayReps || 0} reps
+      <span className="font-w-500 space-after font-14">{name}</span> -{" "}
+      {sets.length} sets of {displayReps || 0} reps
     </div>
   );
 };

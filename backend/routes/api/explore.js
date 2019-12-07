@@ -1,16 +1,32 @@
 const express = require("express");
 const router = express.Router();
+var CronJob = require("cron").CronJob;
+const { formatHistoryDate } = require("../../utils/formatHistoryDate");
+
 // Model
 const WOPlan = require("../../models/WOPlan");
 const User = require("../../models/User");
-const PlanAccess = require("../../models/PlanAccess");
-const UserAccess = require("../../models/UserAccess");
+const PlanTrend = require("../../models/PlanTrend");
 
 // Validation
 const { ensureSignedIn } = require("../../middlewares/auth");
-// const validateWOPlan = require("../../middlewares/validateWOPlan");
-// const SchemaValidator = require("../../middlewares/SchemaValidator");
-// const validateRequest = SchemaValidator(true);
+
+new CronJob(
+  "5 0 * * * *",
+  function() {
+    console.log("You will see this message every day ") + new Date();
+    PlanTrend.deleteMany({
+      date: {
+        $lt: formatHistoryDate(
+          new Date(new Date().setMonth(new Date().getMonth() - 1))
+        )
+      }
+    }).catch(err => console.error(err));
+  },
+  null,
+  true,
+  "Europe/Oslo"
+);
 
 function escapeRegExp(string) {
   return string.replace(/[.*+?^${}()|[\]\\]/gi, "\\$&");
@@ -48,6 +64,28 @@ router.get("/search", ensureSignedIn, async (req, res, next) => {
   }
 
   res.status(200).json({ results: [...queryPlans, ...userPlans] });
+});
+
+// @route GET api/plan/trending
+// @desc Get trending workout plans
+// @access Private
+router.get("/trending/", ensureSignedIn, async (req, res, next) => {
+  const { query } = req;
+  const { skip } = query;
+
+  PlanTrend.aggregate([
+    { $group: { _id: "$woPlan", number: { $sum: 1 } } },
+    { $sort: { number: -1 } },
+    { $skip: Number(skip) || 0 },
+    { $limit: 40 }
+  ])
+    .then(plans =>
+      WOPlan.find({ _id: { $in: plans.map(x => x._id) } })
+        .populate("user")
+        .then(woPlans => res.json(woPlans))
+        .catch(next)
+    )
+    .catch(next);
 });
 
 module.exports = router;

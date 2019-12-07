@@ -6,9 +6,8 @@ import WorkoutPlans from "../../shared/PlanCard/WebWorkoutPlans";
 
 import "./webExplore.css";
 
-const Explore = ({ plans, search, onSearchChange }) => {
+const Explore = ({ plans, search, reachedEnd, onSearchChange }) => {
   useSetLoading(false);
-  console.log(plans);
   return (
     <>
       <ExploreNav
@@ -16,7 +15,8 @@ const Explore = ({ plans, search, onSearchChange }) => {
         search={search}
         onSearchChange={onSearchChange}
       />
-      <WorkoutPlans woPlans={plans} />
+      <WorkoutPlans woPlans={plans} search={search} />
+      {reachedEnd && <p>You've reached the end...</p>}
     </>
   );
 };

@@ -1,32 +1,36 @@
-import React, { useState, useLayoutEffect } from "react";
+import React, { useState, useContext, useLayoutEffect } from "react";
 import { Link, Redirect } from "react-router-dom";
 import { useUser } from "../../../context/userContext";
+import { NavContext } from "../../../context/navContext";
+import { setBackLink } from "../../../utils/setBackLink";
 
 import "./mobilePlanCard.css";
 
 const MobilePlanCard = ({
   plan,
+  search,
+  profile,
   hasAccess = true,
   onGetClick,
   onActivateClick,
   onDeactivateClick
 }) => {
-  const { _id: planId, name, goal, weeks, description, user } = plan;
+  const { name, goal, weeks, description, _id: planId, user: author } = plan;
   const [redirect, setRedirect] = useState(false);
   const [isActive, setIsActive] = useState(false);
+  const { state, dispatch } = useContext(NavContext);
   const me = useUser();
   const { activeWOPlan = {} } = me;
+  const { _id: authorId, username } = author;
+  const isSelf = authorId === me._id;
 
-  const isSelf = user._id === me._id;
-  let avatar, username;
+  let avatar;
   if (isSelf) {
-    let { avatar: a, username: uN } = me;
+    let { avatar: a } = me;
     avatar = a;
-    username = uN;
   } else {
-    let { avatar: a, username: uN } = user;
+    let { avatar: a } = author;
     avatar = a;
-    username = uN;
   }
 
   const avatarUrl = `/image/avatar/${avatar}_sm.jpg`;
@@ -42,7 +46,15 @@ const MobilePlanCard = ({
   }, [activePlan, endDate, planId]);
 
   if (redirect) {
+    if (!state[planId]) {
+      setBackLink(dispatch, planId, profile, search);
+    }
     return <Redirect to={`/plans/${planId}`} />;
+  }
+
+  function onLinkClick(e) {
+    e.stopPropagation();
+    setBackLink(dispatch, authorId, profile, search);
   }
 
   let descDisplay = description;
@@ -104,7 +116,7 @@ const MobilePlanCard = ({
             <span className="font-w-300 font-14 line-height-11">
               <Link
                 to={`/profile/${username}`}
-                onClick={e => e.stopPropagation()}
+                onClick={onLinkClick}
                 className="tc padding-5 mobile-plan-card-link"
               >
                 @{username}

@@ -1,4 +1,10 @@
-import React, { lazy, useState, Suspense, useLayoutEffect } from "react";
+import React, {
+  lazy,
+  useState,
+  Suspense,
+  useContext,
+  useLayoutEffect
+} from "react";
 import { useParams } from "react-router-dom";
 import useMobile from "../../hooks/useMobile";
 import useProfile from "../../hooks/useProfile";
@@ -7,11 +13,11 @@ import useProfilePlans from "../../hooks/useProfilePlans";
 import useUserAccess from "../../hooks/useUserAccess";
 import { addPlan } from "../../utils/userAccessClient";
 import { editUser } from "../../utils/userClient";
-
 import { useAuth } from "../../context/authContext";
 import { activatePlan, deactivatePlan } from "../../utils/userClient";
-import EditProfileModal from "./EditProfileModal";
+import { NavContext } from "../../context/navContext";
 
+import EditProfileModal from "./EditProfileModal";
 const WebProfile = lazy(() => import("./Web/WebProfile"));
 const MobileProfile = lazy(() => import("./Mobile/MobileProfile"));
 const loadConfirmModal = () => import("../shared/Modal/ConfirmModal");
@@ -28,6 +34,7 @@ const Profile = () => {
   const isMobile = useMobile();
   const [isSelf, setIsSelf] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const { state: navState, dispatch: navDispatch } = useContext(NavContext);
 
   const { user } = userState;
 
@@ -156,6 +163,8 @@ const Profile = () => {
         isSelf={isSelf}
         profile={profile}
         woPlans={woPlans}
+        navState={navState}
+        navDispatch={navDispatch}
         accessedPlans={accessedPlans}
         handleGetClick={handleGetClick}
         setShowModal={setShowModal}
@@ -170,6 +179,8 @@ const Profile = () => {
         isSelf={isSelf}
         profile={profile}
         woPlans={woPlans}
+        navState={navState}
+        navDispatch={navDispatch}
         setShowModal={setShowModal}
         accessedPlans={accessedPlans}
         handleGetClick={handleGetClick}

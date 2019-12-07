@@ -4,11 +4,11 @@ import PlanCard from "./WebPlanCard";
 
 import "./webPlanCard.css";
 
-const WorkoutPlans = ({ woPlans, profile }) => {
+const WorkoutPlans = ({ woPlans, profile, search }) => {
   let cardView;
   if (woPlans.length) {
     cardView = woPlans.map(plan => (
-      <PlanCard key={plan._id} plan={plan} profile={profile} />
+      <PlanCard key={plan._id} plan={plan} profile={profile} search={search} />
     ));
   } else {
     cardView = <p className="text-center">No workout plans</p>;

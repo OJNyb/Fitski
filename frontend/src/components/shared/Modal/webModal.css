@@ -27,11 +27,9 @@
 .close-modal-btn {
   display: flex;
   position: absolute;
-  top: 6px;
+  top: 7.5px;
   right: 8px;
-
-  padding: 0;
-
+  padding: 3px;
   cursor: pointer;
 }
 

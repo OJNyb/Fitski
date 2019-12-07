@@ -19,6 +19,8 @@ const MobileInput = ({
     };
   }
 
+  if (value === undefined || value === null) return null;
+
   const { touched, errors } = form;
   let error = errors[name];
   let touch = touched[name];

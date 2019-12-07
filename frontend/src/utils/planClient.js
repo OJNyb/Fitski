@@ -32,10 +32,11 @@ function editPlan(dispatch, planId, values) {
       }
     })
     .catch(err => {
-      dispatch({
-        type: REQUEST_FAILED,
-        payload: { err }
-      });
+      console.log(err.response);
+      // dispatch({
+      //   type: REQUEST_FAILED,
+      //   payload: { err }
+      // });
     });
 }
 

@@ -1,13 +1,12 @@
 import { useLayoutEffect, useContext } from "react";
 
 import { NavContext } from "../context/navContext";
-import { IS_WHITE, SHOW_BACK } from "../types/navTypes";
+import { SHOW_BACK } from "../types/navTypes";
 
-function useNavWhiteSingleBack(backLink) {
+function useNavRedBack(backLink) {
   const { dispatch } = useContext(NavContext);
   useLayoutEffect(() => {
     function setNav() {
-      dispatch({ type: IS_WHITE });
       dispatch({ type: SHOW_BACK, payload: { backLink } });
     }
 
@@ -15,4 +14,4 @@ function useNavWhiteSingleBack(backLink) {
   }, [dispatch, backLink]);
 }
 
-export default useNavWhiteSingleBack;
+export default useNavRedBack;

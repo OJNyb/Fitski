@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import useSetLoading from "../../../hooks/useSetLoading";
 
 import Plus20 from "../../shared/SVGs/Plus20";
-import useNavRedDehaze from "../../../hooks/useNavRedDehaze";
+import useNavDehaze from "../../../hooks/useNavDehaze";
 import MobileNavMidContainer from "../../shared/NavMid/MobileNavMidContainer";
 import PlanCard from "../../shared/PlanCard/MobilePlanCard";
 
@@ -13,7 +13,7 @@ const PlansMobile = ({
   handleDeactivateClick
 }) => {
   useSetLoading(false);
-  useNavRedDehaze();
+  useNavDehaze();
 
   let view;
   if (woPlans.length) {

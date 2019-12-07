@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import useSetLoading from "../../../hooks/useSetLoading";
-import useNavWhiteBack from "../../../hooks/useNavWhiteBack";
+import useNavBack from "../../../hooks/useNavBack";
 
 import ExerciseCard from "./ExerciseCard";
 import Exercises from "../../shared/Exercises/Exercises";
@@ -24,7 +24,7 @@ const MobileEditWeek = ({
   const [showExercises, setShowExercises] = useState(false);
   const [activeExercise, setActiveExercise] = useState(null);
   useSetLoading(false);
-  useNavWhiteBack(`/plans/${planId}`);
+  useNavBack(`/plans/${planId}`);
 
   const { days, _id: weekId } = currentWeek;
   const currentDay = days[currentDayIndex];

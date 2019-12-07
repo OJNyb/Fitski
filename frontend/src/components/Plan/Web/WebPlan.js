@@ -3,8 +3,7 @@ import React from "react";
 import PlanText from "../PlanText";
 import useSetLoading from "../../../hooks/useSetLoading";
 
-import MobileOverview from "../Mobile/MobileOverview";
-import "../Mobile/planMobile.css";
+import PlanOverview from "../PlanOverview";
 
 const WebPlan = ({ woPlan, isSelf, setShowModal }) => {
   useSetLoading(false);
@@ -41,7 +40,7 @@ const WebPlan = ({ woPlan, isSelf, setShowModal }) => {
     <div style={{ padding: "10px 0 50px" }}>
       {/* <p className="plan-description-label black">Description</p>
 <p className="plan-description">{description}</p> */}
-      <MobileOverview woPlan={woPlan} />
+      <PlanOverview woPlan={woPlan} />
       {weeksDisplay}
     </div>
   );

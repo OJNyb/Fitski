@@ -1,5 +1,6 @@
 import React, { useState, useLayoutEffect } from "react";
 import { Redirect, withRouter } from "react-router-dom";
+import { SET_PLAN_BACKLINK } from "../../types/navTypes";
 
 import NavMid from "../shared/NavMid/NavMid";
 
@@ -8,27 +9,15 @@ const PlanNav = ({
   planId,
   isActive,
   planName,
+  navState,
+  navDispatch,
+  onGetClick,
   setShowModal,
-  accessedPlans,
-  onGetClick
+  accessedPlans
 }) => {
   const [redirect, setRedirect] = useState(false);
 
-  let actionMenuChildren = [
-    {
-      link: true,
-      icon: "description",
-      text: "Overview",
-      to: `/plans/${planId}/overview`,
-      outlined: true
-    }
-    // {
-    //   icon: "edit",
-    //   text: "Edit plan",
-    //   action: () => setShowModal("edit"),
-    //   outlined: true
-    // },
-  ];
+  let actionMenuChildren = [];
 
   useLayoutEffect(() => {
     if (isSelf) {
@@ -39,17 +28,41 @@ const PlanNav = ({
           action: () => setShowModal("addWeeks")
         },
         {
+          icon: "edit",
+          text: "Edit plan",
+          action: () => setShowModal("edit"),
+          outlined: true
+        },
+        {
           icon: "delete_outline",
           text: "Delete plan",
           action: () => setShowModal("delete"),
           customClass: " delete-color"
         }
       );
+    } else {
+      //  actionMenuChildren
+      if (!isSelf && accessedPlans.indexOf(planId) !== -1) {
+        actionMenuChildren.push({
+          icon: "delete_outline",
+          text: "Remove plan",
+          action: () => setShowModal("remove"),
+          customClass: " delete-color"
+        });
+      }
     }
-  }, [isSelf, setShowModal, actionMenuChildren]);
+  }, [isSelf, setShowModal, actionMenuChildren, accessedPlans, planId]);
 
   if (redirect) {
-    return <Redirect to="/plans" />;
+    let to = navState[planId];
+
+    if (to) {
+      navDispatch({ type: SET_PLAN_BACKLINK, payload: { [planId]: null } });
+    } else {
+      to = "/plans";
+    }
+
+    return <Redirect to={to} />;
   }
 
   let rightBtnText;

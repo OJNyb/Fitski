@@ -16,23 +16,6 @@ const PlanFilter = ({
   setAuthorFilter
 }) => {
   const [showFilters, setShowFilters] = useState(false);
-  function onInputChange(e, index) {
-    const {
-      target: { value }
-    } = e;
-
-    if (value < 0 || value > 50 || value % 1 !== 0) return;
-
-    if (index) {
-      if (value < weekFilter[0]) return;
-    } else {
-      if (value > weekFilter[1]) return;
-    }
-
-    let newWeekFilter = weekFilter.concat();
-    newWeekFilter[index] = value;
-    setWeekFilter(newWeekFilter);
-  }
 
   function onGoalChange(index) {
     let newGoalFilter = goalFilter.concat();

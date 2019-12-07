@@ -5,11 +5,10 @@ import navReducer from "../reducers/navReducer";
 // TODO: If !week/day/woplan
 
 const initialState = {
-  isDouble: false,
-  isWhite: false,
   showNone: false,
   backLink: null,
-  showDehaze: true
+  showDehaze: true,
+  search: null
 };
 
 const useNav = () => {

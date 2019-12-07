@@ -1,30 +1,39 @@
-import React, { useState } from "react";
-import { displayDate } from "../../../utils/formatHistoryDate";
+import React, { useState, useContext } from "react";
 import { Link, Redirect } from "react-router-dom";
+import { NavContext } from "../../../context/navContext";
+import { setBackLink } from "../../../utils/setBackLink";
+import { displayDate } from "../../../utils/formatHistoryDate";
 
 import "./webPlanCard.css";
 
-const PlanCard = ({ plan, profile }) => {
+const PlanCard = ({ plan, profile, search }) => {
   const [redirect, setRedirect] = useState(false);
-  const { _id, name, user, goal, weeks, createdAt } = plan;
-  const { username: author, avatar: uAvatar } = user;
+  const { name, goal, weeks, createdAt, _id: planId, user: author } = plan;
+  const { username, avatar: uAvatar, _id: authorId } = author;
+  const { state, dispatch } = useContext(NavContext);
 
-  let avatar;
+  let avatar = uAvatar;
   if (profile) {
     const { avatar: pAvatar } = profile;
     avatar = pAvatar;
-  } else {
-    avatar = uAvatar;
   }
   const avatarUrl = `/image/avatar/${avatar}_sm.jpg`;
 
   if (redirect) {
-    return <Redirect to={`/plans/${_id}`} />;
+    if (!state[planId]) {
+      setBackLink(dispatch, planId, profile, search);
+    }
+    return <Redirect to={`/plans/${planId}`} />;
   }
 
   let goalDisplay = goal;
   if (!goal || !goal.length) {
     goalDisplay = "N/A";
+  }
+
+  function onLinkClick(e) {
+    e.stopPropagation();
+    setBackLink(dispatch, authorId, profile, search);
   }
 
   let created = displayDate(new Date(createdAt));
@@ -37,14 +46,14 @@ const PlanCard = ({ plan, profile }) => {
       <div className="plans-plan-goal">{goalDisplay}</div>
       <div className="plans-plan-author flex-ai-center">
         <Link
-          to={`/profile/${author}`}
+          to={`/profile/${username}`}
           className="flex-ai-center"
-          onClick={e => e.stopPropagation()}
+          onClick={onLinkClick}
         >
           <div style={{ backgroundImage: `url(${avatarUrl})` }}>
             <img src={avatarUrl} alt="Profile pic" />
           </div>
-          <span>{author}</span>
+          <span>{username}</span>
         </Link>
       </div>
       <div className="plans-plan-length">{weeks.length} weeks</div>

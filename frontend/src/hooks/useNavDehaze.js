@@ -1,13 +1,12 @@
 import { useLayoutEffect, useContext } from "react";
 
 import { NavContext } from "../context/navContext";
-import { IS_WHITE, SHOW_DEHAZE } from "../types/navTypes";
+import { SHOW_DEHAZE } from "../types/navTypes";
 
-function useNavWhiteSingleBack() {
+function useNavRedDehaze() {
   const { dispatch } = useContext(NavContext);
   useLayoutEffect(() => {
     function setNav() {
-      dispatch({ type: IS_WHITE });
       dispatch({ type: SHOW_DEHAZE });
     }
 
@@ -15,4 +14,4 @@ function useNavWhiteSingleBack() {
   }, [dispatch]);
 }
 
-export default useNavWhiteSingleBack;
+export default useNavRedDehaze;

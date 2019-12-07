@@ -6,7 +6,7 @@ import SetLoading from "../SetLoading";
 import "./noauth.css";
 
 const MobileLanding = lazy(() => import("./MobileLanding"));
-const BigScreenLanding = lazy(() => import("./BigScreenLanding"));
+const WebLanding = lazy(() => import("./WebLanding"));
 
 const Landing = () => {
   const isMobile = useMobile();
@@ -20,7 +20,7 @@ const Landing = () => {
   } else {
     return (
       <Suspense fallback={<SetLoading />}>
-        <BigScreenLanding />
+        <WebLanding />
       </Suspense>
     );
   }
