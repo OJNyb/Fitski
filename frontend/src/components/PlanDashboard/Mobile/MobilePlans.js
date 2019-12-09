@@ -3,9 +3,11 @@ import { Link } from "react-router-dom";
 import useSetLoading from "../../../hooks/useSetLoading";
 
 import Plus20 from "../../shared/SVGs/Plus20";
+import Search from "../../shared/SVGs/SearchThick";
 import useNavDehaze from "../../../hooks/useNavDehaze";
 import MobileNavMidContainer from "../../shared/NavMid/MobileNavMidContainer";
 import PlanCard from "../../shared/PlanCard/MobilePlanCard";
+import MobileEmpty from "../../shared/MobileEmpty";
 
 const PlansMobile = ({
   woPlans,
@@ -61,19 +63,21 @@ const PlansMobile = ({
 
 const NoPlans = () => {
   return (
-    <div className="flex-col-cen fixed width-100p plan-mobile-empty-plan-container">
-      <span className="color-gray">
-        Looks like you don't have any workout plans
-      </span>
-      <div className="flex-col-cen">
-        <Link to="/create-plan">
-          <Plus20 fill={"#a60000"} />
-        </Link>
-        <span className="color-light-gray font-14 margin-5">
-          Create Workout Plan
-        </span>
-      </div>
-    </div>
+    <MobileEmpty
+      text={"You don't have any workout plans"}
+      children={[
+        {
+          text: "Find A Workout Plan",
+          icon: <Search stroke={"#a60000"} />,
+          to: "/explore"
+        },
+        {
+          text: "Create Workout Plan",
+          icon: <Plus20 fill={"#a60000"} />,
+          to: "/create-plan"
+        }
+      ]}
+    />
   );
 };
 

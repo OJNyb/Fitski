@@ -22,7 +22,7 @@ const Overview = ({ woPlan }) => {
 
   function onLinkClick() {
     if (state[authorId]) return;
-    setBackLink(dispatch, authorId, null, null, planId);
+    setBackLink(dispatch, authorId, { planId });
   }
   return (
     <>

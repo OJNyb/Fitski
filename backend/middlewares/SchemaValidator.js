@@ -18,7 +18,7 @@ module.exports = (useJoiError = false) => {
 
   // return the validation middleware
   return (req, res, next) => {
-    let { body, params, route, method, baseUrl } = req;
+    let { body, params, query, route, method, baseUrl } = req;
     const { path } = route;
     method = method.toLowerCase();
 
@@ -38,7 +38,7 @@ module.exports = (useJoiError = false) => {
       if (_schema) {
         // Validate req.body using the schema and validation options
         return Joi.validate(
-          { ...body, ...params },
+          { ...body, ...params, ...query },
           _schema,
           _validationOptions,
           (err, data) => {

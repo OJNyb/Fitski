@@ -1,17 +1,22 @@
 .explore-mobile-search-container {
   width: 100%;
   background-color: white;
-  height: 5vh;
-  border-radius: 4px;
+  height: 4.5vh;
+  border-radius: 99px;
+  position: relative;
 }
 
 .explore-mobile-search-container input {
-  width: calc(100% - 18px - 10px - 10px);
-  padding: 0 10px;
-  font-size: 18px;
+  width: calc(90% - 18px - 10px - 10px);
+  padding: 0 20px;
+  font-size: 15px;
 }
 
 .explore-mobile-search-container svg {
   position: absolute;
-  right: 7px;
+  right: 12px;
+}
+
+.explore-mobile-cards-container {
+  padding-top: calc(6vh + 2px);
 }

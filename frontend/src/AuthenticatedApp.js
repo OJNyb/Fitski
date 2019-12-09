@@ -47,7 +47,7 @@ function App() {
   } else {
     marginTop = "66px";
     minHeight = "calc(100vh - 66px)";
-    if (winWidth < 1200) {
+    if (winWidth < 1000) {
       marginLeft = 0;
       width = "100%";
     } else {

@@ -123,12 +123,11 @@ router.post("/", ensureSignedIn, validateRequest, async (req, res, next) => {
   const newPlanAccess = new PlanAccess({
     woPlan: _id
   });
-
   try {
     var x = await newWOPlan.save();
     var y = await newPlanAccess.save();
   } catch (err) {
-    next(err);
+    return next(err);
   }
 
   if (x && y) {

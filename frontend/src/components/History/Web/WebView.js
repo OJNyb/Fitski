@@ -52,7 +52,7 @@ const WebView = ({
     <>
       {modal}
       <div className="log-container">
-        <div className="log-left-container">
+        <div className="flex-col-cen">
           <WebCalendar
             date={date}
             focused={focused}
@@ -71,7 +71,7 @@ const WebView = ({
           />
         </div>
 
-        <div className="log-right-container">
+        <div className="flex-col-cen">
           <Exercises handleAddExercise={handleAddExercise} />
         </div>
       </div>

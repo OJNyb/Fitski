@@ -1,5 +1,5 @@
 /* FILTER */
-.explore-filter-container {
+/* .explore-filter-container {
   padding: 5px;
 }
 
@@ -25,7 +25,6 @@
   right: -80px;
 }
 
-/* length */
 .explore-filter-length-input-container {
   margin-bottom: 20px;
   justify-content: space-around;
@@ -99,4 +98,23 @@
 
 .explore-filter-goal-input-wrapper input {
   font-size: 18px;
+} */
+
+/* NAV */
+
+.explore-category-nav-container {
+  border-bottom: 1px solid rgb(223, 208, 208);
+  position: fixed;
+  background-color: #fff;
+}
+
+.explore-category-nav-container button {
+  flex: 1;
+  height: 6vh;
+  font-weight: 500;
+  font-size: 16px;
+}
+
+.explore-category-nav-active {
+  border-bottom: 2px solid #a60000;
 }

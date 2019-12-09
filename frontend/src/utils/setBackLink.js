@@ -1,13 +1,15 @@
 import { SET_PLAN_BACKLINK } from "../types/navTypes";
 
-export function setBackLink(dispatch, id, profile, search, planId) {
+export function setBackLink(dispatch, id, args) {
+  const { profile, search, planId, searchCategory } = args;
+  console.log(args);
   let payload;
   if (profile) {
     const { username } = profile;
     if (profile._id === id) return;
     payload = { [id]: `/profile/${username}` };
-  } else if (search) {
-    payload = { [id]: "/explore", search };
+  } else if (search || search === "") {
+    payload = { [id]: "/explore", search, searchCategory };
   } else if (planId) {
     payload = { [id]: `/plans/${planId}` };
   } else {

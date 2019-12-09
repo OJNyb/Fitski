@@ -10,8 +10,9 @@ const MobilePlanCard = ({
   plan,
   search,
   profile,
-  hasAccess = true,
+  category,
   onGetClick,
+  hasAccess = true,
   onActivateClick,
   onDeactivateClick
 }) => {
@@ -47,20 +48,28 @@ const MobilePlanCard = ({
 
   if (redirect) {
     if (!state[planId]) {
-      setBackLink(dispatch, planId, profile, search);
+      setBackLink(dispatch, planId, {
+        profile,
+        search,
+        searchCategory: category
+      });
     }
     return <Redirect to={`/plans/${planId}`} />;
   }
 
   function onLinkClick(e) {
     e.stopPropagation();
-    setBackLink(dispatch, authorId, profile, search);
+    setBackLink(dispatch, authorId, {
+      profile,
+      search,
+      searchCategory: category
+    });
   }
 
   let descDisplay = description;
 
   if (!description || description.length === 0) {
-    descDisplay = "No description for this plan";
+    descDisplay = "This plan doesn't have a description";
   } else if (description.length > 150) {
     descDisplay = description.slice(0, 150) + "...";
   }
@@ -106,7 +115,7 @@ const MobilePlanCard = ({
     >
       <div className="flex-stretch plans-mobile-plan-author margin-0-5">
         <div style={{ backgroundImage: `url(${avatarUrl})` }}>
-          <img src={avatarUrl} alt="Profile pic" />
+          <img src={avatarUrl} alt="Avatar" />
         </div>
       </div>
       <div className="flex-col margin-0-5 border-box width-100p">

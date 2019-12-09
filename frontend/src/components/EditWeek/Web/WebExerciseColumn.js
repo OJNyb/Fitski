@@ -10,7 +10,7 @@ const WebExerciseColumn = ({
   const { reps, _id: setId } = set;
   const [inputReps, setInputReps] = useState(reps || 0);
   const repsRef = useRef();
-  const lastRepsReqRef = useRef();
+  const lastRepsReqRef = useRef(reps);
   const isDeleted = useRef(false);
   const isClosed = useRef(false);
 
@@ -20,7 +20,7 @@ const WebExerciseColumn = ({
     const { current: currentReps } = repsRef;
 
     if (currentReps && currentReps !== lastRepsReqRef.current) {
-      if (inputReps % 1 !== 0) {
+      if (currentReps % 1 !== 0) {
         return alert("Reps must be a whole number");
       }
 
@@ -30,9 +30,10 @@ const WebExerciseColumn = ({
       if (currentReps === "") {
         reps = 0;
       }
+      lastRepsReqRef.current = currentReps;
       handleEditSet(exerId, setId, reps);
     }
-  }, [setId, exerId, inputReps, handleEditSet]);
+  }, [setId, exerId, handleEditSet]);
 
   function onInputBlur() {
     onEditSet();
@@ -83,10 +84,17 @@ const WebExerciseColumn = ({
   );
 };
 
-const ExerciseForm = ({ index, setId, onChange, inputReps, onInputBlur }) => {
+const ExerciseForm = ({ setId, onChange, inputReps, onInputBlur }) => {
+  const inputEl = useRef(null);
+
   return (
     <div className="">
-      <form>
+      <form
+        onSubmit={e => {
+          e.preventDefault();
+          inputEl.current.blur();
+        }}
+      >
         <label
           htmlFor={`reps-${setId}`}
           className="padding-5 flex-ai-center font-12 font-w-300 color-gray"
@@ -95,6 +103,7 @@ const ExerciseForm = ({ index, setId, onChange, inputReps, onInputBlur }) => {
             name="reps"
             id={`reps-${setId}`}
             type="number"
+            ref={inputEl}
             value={inputReps}
             onChange={onChange}
             onBlur={onInputBlur}

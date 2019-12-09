@@ -1,6 +1,6 @@
 .log-container {
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
   padding-top: 30px;
 }
 
@@ -21,16 +21,6 @@
   align-items: center;
   min-width: 6px;
   min-height: 6px;
-}
-
-/* RIGHT SIDE */
-.log-left-container,
-.log-right-container {
-  width: 40%;
-  min-width: 400px;
-  align-items: center;
-  display: flex;
-  flex-direction: column;
 }
 
 /* EXERCISE TEXT */

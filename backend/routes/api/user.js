@@ -1,9 +1,9 @@
 const express = require("express");
 const { Types } = require("mongoose");
-const { SESS_NAME } = require("../../config/keys");
 const crypto = require("crypto");
 const nodemailer = require("nodemailer");
 
+const { SESS_NAME } = process.env;
 // Models
 const User = require("../../models/User");
 const History = require("../../models/History");

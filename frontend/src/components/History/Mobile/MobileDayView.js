@@ -9,6 +9,7 @@ import MobileExerciseCard from "./MobileExerciseCard";
 import Plus20 from "../../shared/SVGs/Plus20";
 import NavigateDays from "./NavigateDays";
 import DeleteExerciseModal from "./DeleteExerciseModal";
+import MobileEmpty from "../../shared/MobileEmpty";
 
 const MobileDayView = ({
   date,
@@ -105,20 +106,35 @@ const MobileDayView = ({
     });
   } else {
     view = (
-      <div className="history-mobile-empty-log-container flex-col-cen">
-        <div />
-        <p className="color-light-gray">Workout Log Empty</p>
-        <div className="history-empty-log-btn-container history-mobile-empty-log-btn-container">
-          <button onClick={onExercisesClick}>
-            <Plus20 fill={"#a60000"} />
-            <span className="color-light-gray">Start New Workout</span>
-          </button>
-          <button className="theme-btn-no-border" onClick={onCopyDayClick}>
-            <i className="material-icons-outlined">file_copy</i>
-            <span className="color-light-gray">Copy Previous Workout</span>
-          </button>
-        </div>
-      </div>
+      <MobileEmpty
+        text={"Workout Log Empty"}
+        children={[
+          {
+            text: "Start New Workout",
+            icon: <Plus20 fill={"#a60000"} />,
+            onClick: onExercisesClick
+          },
+          {
+            text: "Copy Previous Workout",
+            icon: <i className="material-icons-outlined">file_copy</i>,
+            onClick: onCopyDayClick
+          }
+        ]}
+      />
+      // <div className="history-mobile-empty-log-container flex-col-cen">
+      //   <div />
+      //   <p className="color-light-gray">Workout Log Empty</p>
+      //   <div className="history-empty-log-btn-container history-mobile-empty-log-btn-container">
+      //     <button onClick={onExercisesClick}>
+      //       <Plus20 fill={"#a60000"} />
+      //       <span className="color-light-gray">Start New Workout</span>
+      //     </button>
+      //     <button className="theme-btn-no-border" onClick={onCopyDayClick}>
+      //       <i className="material-icons-outlined">file_copy</i>
+      //       <span className="color-light-gray">Copy Previous Workout</span>
+      //     </button>
+      //   </div>
+      // </div>
     );
   }
 

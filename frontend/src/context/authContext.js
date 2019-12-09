@@ -14,8 +14,10 @@ function AuthProvider(props) {
   if (isRejected) {
     if (error.status !== 403) {
       return (
-        <div style={{ color: "red" }}>
-          <p>Uh oh... There's a problem. Try refreshing the app.</p>
+        <div>
+          <p className="black text-center">
+            Can't connect to the server, try refreshing the page.
+          </p>
         </div>
       );
     }

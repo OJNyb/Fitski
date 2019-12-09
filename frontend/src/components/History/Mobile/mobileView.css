@@ -1,22 +1,6 @@
 /* MOBILE NAV */
-.mobile-double-nav-container {
-  display: flex;
-  height: 14vh;
-  flex-direction: column;
-}
-
-.mobile-double-nav-container > div {
-  display: flex;
-  align-items: center;
-}
-
-.mobile-end-container {
-  justify-content: flex-end;
-  height: 7.5vh;
-}
-
 .mobile-nav-calendar-container {
-  width: calc(100vw + 1px);
+  width: 100vw;
   height: 6.5vh;
   margin-left: -45px;
   justify-content: space-between;
@@ -43,22 +27,6 @@
   height: 93vh;
   box-sizing: border-box;
   overflow: visible;
-}
-.history-empty-log-btn-container {
-  display: flex;
-  flex-direction: column;
-}
-
-.history-empty-log-btn-container button {
-  margin-bottom: 10px;
-}
-
-/* HISTORY */
-.history-mobile-empty-log-container {
-  height: 87vh;
-  justify-content: space-between;
-  padding: 10px;
-  box-sizing: border-box;
 }
 
 .history-add-card-active {

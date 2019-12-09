@@ -1,11 +1,12 @@
 import React from "react";
 
 import PlanText from "../PlanText";
-import NoWeeks from "./NoWeeks";
 import "./planMobile.css";
 import useSetLoading from "../../../hooks/useSetLoading";
 import useNavBack from "../../../hooks/useNavBack";
 import Overview from "../PlanOverview";
+import MobileEmpty from "../../shared/MobileEmpty";
+import Plus20 from "../../shared/SVGs/Plus20";
 
 const MobilePlan = ({ woPlan, isSelf, navState, setShowModal }) => {
   const { weeks, _id: planId } = woPlan;
@@ -31,11 +32,26 @@ const MobilePlan = ({ woPlan, isSelf, navState, setShowModal }) => {
       );
     });
   } else {
-    weeksDisplay = <NoWeeks isSelf={isSelf} setShowModal={setShowModal} />;
+    weeksDisplay = (
+      <MobileEmpty
+        text={"Workout Plan Empty"}
+        children={
+          isSelf
+            ? [
+                {
+                  text: "Start Adding Weeks",
+                  icon: <Plus20 fill={"#a60000"} />,
+                  onClick: () => setShowModal("addWeeks")
+                }
+              ]
+            : []
+        }
+      />
+    );
   }
   return (
     <div style={{ padding: "10px 0 50px" }}>
-      {weeks.length && <Overview woPlan={woPlan} />}
+      {!!weeks.length && <Overview woPlan={woPlan} />}
       {weeksDisplay}
     </div>
   );

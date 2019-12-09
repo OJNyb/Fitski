@@ -6,7 +6,7 @@ import { displayDate } from "../../../utils/formatHistoryDate";
 
 import "./webPlanCard.css";
 
-const PlanCard = ({ plan, profile, search }) => {
+const PlanCard = ({ plan, profile, search, category }) => {
   const [redirect, setRedirect] = useState(false);
   const { name, goal, weeks, createdAt, _id: planId, user: author } = plan;
   const { username, avatar: uAvatar, _id: authorId } = author;
@@ -21,7 +21,11 @@ const PlanCard = ({ plan, profile, search }) => {
 
   if (redirect) {
     if (!state[planId]) {
-      setBackLink(dispatch, planId, profile, search);
+      setBackLink(dispatch, planId, {
+        profile,
+        search,
+        searchCategory: category
+      });
     }
     return <Redirect to={`/plans/${planId}`} />;
   }
@@ -33,7 +37,11 @@ const PlanCard = ({ plan, profile, search }) => {
 
   function onLinkClick(e) {
     e.stopPropagation();
-    setBackLink(dispatch, authorId, profile, search);
+    setBackLink(dispatch, authorId, {
+      profile,
+      search,
+      searchCategory: category
+    });
   }
 
   let created = displayDate(new Date(createdAt));
@@ -51,7 +59,7 @@ const PlanCard = ({ plan, profile, search }) => {
           onClick={onLinkClick}
         >
           <div style={{ backgroundImage: `url(${avatarUrl})` }}>
-            <img src={avatarUrl} alt="Profile pic" />
+            <img src={avatarUrl} alt="Avatar" />
           </div>
           <span>{username}</span>
         </Link>

@@ -1,0 +1,23 @@
+.mobile-empty-container {
+  height: 93vh;
+  position: fixed;
+  top: 7vh;
+  width: 100vw;
+  justify-content: space-between;
+  padding: 15% 0;
+  box-sizing: border-box;
+}
+
+.mobile-empty-container button:first-child,
+.mobile-empty-container a:first-child {
+  margin-bottom: 20px;
+}
+
+.mobile-empty-container i {
+  color: #a60000;
+}
+
+.mobile-empty-container span {
+  margin-top: 5px;
+  font-size: 14px;
+}

@@ -25,7 +25,7 @@ const {
   REDIS_HOST,
   REDIS_PORT,
   REDIS_PASSWORD
-} = require("./config/keys");
+} = process.env;
 
 (async () => {
   try {

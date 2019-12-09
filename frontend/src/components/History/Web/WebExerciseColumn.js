@@ -13,11 +13,10 @@ const WebExerciseColumn = ({
   const [inputWeight, setInputWeight] = useState(ensureDecimal(weight) || 0);
   const isDeleted = useRef(false);
 
-  const repsRef = useRef();
-  const weightRef = useRef();
-  const lastSetsReqRef = useRef();
-  const lastRepsReqRef = useRef();
-  const lastWeightReqRef = useRef();
+  const repsRef = useRef(reps);
+  const weightRef = useRef(weight);
+  const lastRepsReqRef = useRef(reps);
+  const lastWeightReqRef = useRef(weight);
 
   const onEditSet = useCallback(() => {
     let values = {};
@@ -26,40 +25,31 @@ const WebExerciseColumn = ({
     const { current: currentWeight } = weightRef;
 
     if (currentReps && currentReps !== lastRepsReqRef.current) {
-      if (inputReps % 1 !== 0) {
+      if (currentReps % 1 !== 0) {
         return alert("Reps must be a whole number");
       }
-
-      if (reps !== currentReps && currentReps !== "") {
-        values.reps = currentReps;
-      }
-      if (currentReps === "") {
-        values.reps = 0;
-      }
+      values.reps = currentReps;
     }
 
     if (currentWeight && currentWeight !== lastWeightReqRef.current) {
-      if (weight !== currentWeight && currentWeight !== "") {
-        values.weight = currentWeight;
-      }
-      if (currentWeight === "") {
-        values.weight = 0;
-      }
+      values.weight = currentWeight;
     }
 
     if (!Object.keys(values).length) return;
-    const { sets: vSets, reps: vReps } = values;
+    const { weight: vWeight, reps: vReps } = values;
 
-    if (vSets) {
-      lastSetsReqRef.current = vSets;
+    if (vWeight) {
+      lastWeightReqRef.current = vWeight;
     }
 
     if (vReps) {
       lastRepsReqRef.current = vReps;
     }
 
+    console.log(values);
+
     handleEditSet(values, exerId, setId);
-  }, [reps, weight, setId, exerId, inputReps, handleEditSet]);
+  }, [setId, exerId, handleEditSet]);
 
   function onInputBlur() {
     onEditSet();
@@ -79,7 +69,6 @@ const WebExerciseColumn = ({
         }
       }, 5000);
     } else if (name === "weight") {
-      console.log(value);
       setInputWeight(value);
       weightRef.current = value;
       setTimeout(() => {
@@ -127,8 +116,16 @@ const ExerciseForm = ({
   inputReps,
   onInputBlur
 }) => {
+  const repsInputEl = useRef(null);
+  const weightInputEl = useRef(null);
+
+  function onSubmit(e) {
+    e.preventDefault();
+    repsInputEl.current.blur();
+    weightInputEl.current.blur();
+  }
   return (
-    <form className="flex-ai-center width-100p">
+    <form className="flex-ai-center width-100p" onSubmit={onSubmit}>
       <div className="history-row">
         <label
           htmlFor={`weight-${setId}`}
@@ -138,6 +135,7 @@ const ExerciseForm = ({
             name="weight"
             id={`weight-${setId}`}
             type="number"
+            ref={weightInputEl}
             value={inputWeight}
             onChange={onChange}
             onBlur={onInputBlur}
@@ -157,6 +155,7 @@ const ExerciseForm = ({
             name="reps"
             id={`reps-${setId}`}
             type="number"
+            ref={repsInputEl}
             value={inputReps}
             onChange={onChange}
             onBlur={onInputBlur}

@@ -1,4 +1,11 @@
-import React, { lazy, useState, useEffect, Suspense, useContext } from "react";
+import React, {
+  lazy,
+  useRef,
+  useState,
+  useEffect,
+  Suspense,
+  useContext
+} from "react";
 import useMobile from "../../hooks/useMobile";
 import { useAuth } from "../../context/authContext";
 import { makeRequestCreator } from "../../utils/makeRequestCreator";
@@ -7,7 +14,6 @@ import useTitle from "../../hooks/useTitle";
 import useCleanNavState from "../../hooks/useCleanNavState";
 import { NavContext } from "../../context/navContext";
 import { activatePlan, deactivatePlan } from "../../utils/userClient";
-import axios from "axios";
 
 import ConfirmModal from "../shared/Modal/ConfirmModal";
 import ActivatePlanModal from "../shared/Modal/ActivatePlanModal";
@@ -15,102 +21,137 @@ import ActivatePlanModal from "../shared/Modal/ActivatePlanModal";
 import "./explore.css";
 
 const searchReq = makeRequestCreator();
+const trendingReq = makeRequestCreator();
+
 const WebExplore = lazy(() => import("./Web/WebExplore"));
 const MobileExplore = lazy(() => import("./Mobile/MobileExplore"));
-
-let trendingPlans;
 
 const Explore = () => {
   const { state: navState } = useContext(NavContext);
   const isMobile = useMobile();
   const { dispatch: userDispatch } = useAuth();
+
   const [search, setSearch] = useState(navState.search || "");
+  const prevSearch = useRef("");
+  const keepOldPlans = useRef(true);
+  const [noMatch, setNoMatch] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [reachedEnd, setReachedEnd] = useState(false);
-  const [plans, setPlans] = useState([]);
-  const [filter, setFilter] = useState({ goal: "", length: [0, 50] });
+  const [results, setResults] = useState([]);
+  // const [filter, setFilter] = useState({ goal: "", length: [0, 50] });
+  const isCancelled = useRef(false);
+  //  const skip = useRef(0);
+  const [skip, setSkip] = useState(0);
+  const [category, setCategory] = useState(navState.searchCategory || "plans");
+
+  console.log(navState);
 
   useTitle("Fitnut - Explore");
   useCleanNavState();
 
   useEffect(() => {
-    let isCancelled = false;
     async function fetchData() {
       if (search.length) {
-        const { isCancelled: isReqCancelled, results } = await searchReq(
-          `/explore/search?query=${search}`
+        let req;
+        if (category === "plans") {
+          req = `/explore/search?search=${search}&skip=${skip}`;
+        } else {
+          req = `/explore/users/search?username=${search}&skip=${skip}`;
+        }
+
+        const { error, isCancelled: isReqCancelled, results } = await searchReq(
+          req
         );
-        if (!isCancelled && !isReqCancelled) {
-          setPlans(results);
+        if (error) {
+          return console.log(error);
+        }
+
+        if (!isCancelled.current || !isReqCancelled) {
+          if (results.length === 0) {
+            if (results.length) {
+              setReachedEnd(true);
+            } else {
+              setNoMatch(true);
+            }
+          } else {
+            if (keepOldPlans.current) {
+              setResults(p => [...p, ...results]);
+            } else {
+              setResults(results);
+            }
+            prevSearch.current = search;
+          }
+        } else if (isReqCancelled && !isCancelled.current) {
+          setResults([]);
         }
       } else {
-        if (!trendingPlans) {
-          try {
-            var res = await axios.get("explore/trending", {
-              params: {
-                skip: 0
-              }
-            });
-          } catch (err) {
-            console.log(err);
-          } finally {
-            trendingPlans = res.data;
-          }
+        if (category === "people") return;
+        const {
+          error,
+          isCancelled: isReqCancelled,
+          results
+        } = await trendingReq(`/explore/trending?skip=${skip}`);
+        if (error) {
+          return console.log(error);
         }
-        if (!isCancelled) {
-          setPlans(trendingPlans);
+        if (!isCancelled.current || !isReqCancelled) {
+          if (results.length === 0) {
+            setReachedEnd(true);
+          } else {
+            if (keepOldPlans.current) {
+              setResults(p => [...p, ...results]);
+            } else {
+              setResults(results);
+            }
+            prevSearch.current = search;
+          }
+        } else if (isReqCancelled && !isCancelled.current) {
+          setResults([]);
         }
       }
     }
     fetchData();
 
     return () => {
-      isCancelled = true;
+      isCancelled.current = true;
     };
-  }, [search]);
+  }, [skip, search, category]);
 
   useEffect(() => {
-    let skip = 0;
-    let isCancelled;
-
     function fetchMore(e) {
       if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
-        skip += 40;
-        if (skip > 3000) {
-          fetchData();
-        }
+        keepOldPlans.current = true;
+        setSkip(s => (s += 40));
+        console.log("gay");
       }
     }
 
     window.addEventListener("scroll", fetchMore);
-
-    async function fetchData() {
-      try {
-        var res = await axios.get("explore/trending", {
-          params: {
-            skip,
-            filter
-          }
-        });
-      } catch (err) {
-        console.log(err);
-      }
-
-      if (res.data.length === 0) {
-        setReachedEnd(true);
-      } else if (!isCancelled) {
-        setPlans(p => [...p, res.data]);
-      }
-    }
     return () => {
-      isCancelled = true;
       window.removeEventListener("scroll", fetchMore);
     };
   }, []);
 
+  function handlePeopleClick() {
+    setCategory("people");
+    setSkip(0);
+    setResults([]);
+  }
+
+  function handlePlanClick() {
+    setCategory("plans");
+    setSkip(0);
+    setResults([]);
+  }
+
   function handleSearchChange(e) {
     const { target } = e;
     const { value } = target;
+    setSkip(0);
+    setReachedEnd(false);
+    setResults([]);
+    setNoMatch(false);
+    keepOldPlans.current = false;
     setSearch(value);
   }
 
@@ -163,12 +204,14 @@ const Explore = () => {
   if (isMobile) {
     view = (
       <MobileExplore
-        plans={plans}
+        results={results}
         search={search}
-        filter={filter}
-        setFilter={setFilter}
+        category={category}
+        noMatch={noMatch}
         reachedEnd={reachedEnd}
         onSearchChange={handleSearchChange}
+        handlePlanClick={handlePlanClick}
+        handlePeopleClick={handlePeopleClick}
         handleActivateClick={handleActivateClick}
         handleDeactivateClick={handleDeactivateClick}
       />
@@ -176,12 +219,14 @@ const Explore = () => {
   } else {
     view = (
       <WebExplore
-        plans={plans}
         search={search}
-        filter={filter}
-        setFilter={setFilter}
+        noMatch={noMatch}
+        results={results}
+        category={category}
         reachedEnd={reachedEnd}
         onSearchChange={handleSearchChange}
+        handlePlanClick={handlePlanClick}
+        handlePeopleClick={handlePeopleClick}
       />
     );
   }

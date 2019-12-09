@@ -191,7 +191,7 @@ const GoalDropdown = ({ filter, onHide, setFilter }) => {
       <input
         value={goal}
         onChange={e => setGoal(e.target.value)}
-        placeholder="Use keywords"
+        placeholder="Keywords"
       />
     </div>
   );

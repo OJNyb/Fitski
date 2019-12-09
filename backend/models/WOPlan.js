@@ -61,7 +61,11 @@ WOPlanSchema.methods.isOwner = function(userId) {
   return userId === this.user.toString();
 };
 
-WOPlanSchema.index({ name: "text", goal: "text", description: "text" });
+WOPlanSchema.index({
+  name: "text",
+  goal: "text",
+  description: "text"
+});
 
 const WOPlan = model("woPlan", WOPlanSchema);
 
