@@ -1,10 +1,10 @@
 .mobile-empty-container {
-  height: 93vh;
+  height: 87vh;
   position: fixed;
-  top: 7vh;
+  top: 13vh;
   width: 100vw;
   justify-content: space-between;
-  margin: 15% 0;
+  padding: 10% 0 15%;
   box-sizing: border-box;
 }
 

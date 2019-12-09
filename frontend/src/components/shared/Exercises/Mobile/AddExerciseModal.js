@@ -72,14 +72,14 @@ const AddEditModal = ({
         <div className="margin-a width-80p">
           <div className="margin-0-0-20">
             <Label text={"NAME"} />
-            <div className="width-90p margin-5-a fw-bc-theme">
+            <label className="width-90p margin-5-a fw-bc-theme">
               <input
                 className="padding-0-5 font-17 black"
                 value={name}
                 onChange={e => setName(e.target.value)}
               />
               <div className="border-with-sides" />
-            </div>
+            </label>
           </div>
 
           {categoryDropDown}

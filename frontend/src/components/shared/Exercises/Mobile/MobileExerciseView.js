@@ -3,7 +3,7 @@ import useLongPressAndClick from "../../../../hooks/useLongPressAndClick";
 
 import MobileExercisesNav from "./MobileExercisesNav";
 import useSetLoading from "../../../../hooks/useSetLoading";
-import AddExerciseModal from "./AddExerciseModal";
+import AddEditExerciseModal from "./AddExerciseModal";
 import DeleteExerciseModal from "../DeleteExerciseModal";
 
 import "./mobileExercises.css";
@@ -52,7 +52,7 @@ const MobileExerciseView = ({
     const { name, muscleGroup, custom } = selectedExercises[0];
 
     modal = (
-      <AddExerciseModal
+      <AddEditExerciseModal
         initName={name}
         buttonText={"Edit"}
         header={"Edit Exercise"}
