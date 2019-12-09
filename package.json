@@ -8,7 +8,7 @@
     "server": "cd backend&&nodemon server.js",
     "client": "npm start --prefix frontend",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "build": "concurrently \"npm i\" \"cd frontend&&npm i\""
+    "buildDev": "concurrently \"npm i\" \"cd frontend&&npm i\""
   },
   "author": "",
   "license": "ISC",
