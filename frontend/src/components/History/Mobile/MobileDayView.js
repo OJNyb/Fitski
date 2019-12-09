@@ -10,6 +10,7 @@ import Plus20 from "../../shared/SVGs/Plus20";
 import NavigateDays from "./NavigateDays";
 import DeleteExerciseModal from "./DeleteExerciseModal";
 import MobileEmpty from "../../shared/MobileEmpty";
+import { useUser } from "../../../context/userContext";
 
 const MobileDayView = ({
   date,
@@ -24,6 +25,8 @@ const MobileDayView = ({
 }) => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedExercises, setSelectedExercises] = useState([]);
+  const user = useUser();
+  const { defaultUnit } = user;
 
   const { _d } = date;
 
@@ -96,6 +99,7 @@ const MobileDayView = ({
           <MobileExerciseCard
             key={exercise._id}
             exercise={exercise}
+            defaultUnit={defaultUnit}
             onCardClick={handleCardClick}
             onCardHold={handleCardHold}
             setShowExercise={setShowExercise}
@@ -121,20 +125,6 @@ const MobileDayView = ({
           }
         ]}
       />
-      // <div className="history-mobile-empty-log-container flex-col-cen">
-      //   <div />
-      //   <p className="color-light-gray">Workout Log Empty</p>
-      //   <div className="history-empty-log-btn-container history-mobile-empty-log-btn-container">
-      //     <button onClick={onExercisesClick}>
-      //       <Plus20 fill={"#a60000"} />
-      //       <span className="color-light-gray">Start New Workout</span>
-      //     </button>
-      //     <button className="theme-btn-no-border" onClick={onCopyDayClick}>
-      //       <i className="material-icons-outlined">file_copy</i>
-      //       <span className="color-light-gray">Copy Previous Workout</span>
-      //     </button>
-      //   </div>
-      // </div>
     );
   }
 

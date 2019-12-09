@@ -61,10 +61,27 @@ nav section {
   height: 17px;
 }
 
-.nav-sidebar-avatar {
-  height: 21px;
+.nav-sidebar-avatar-container {
   border-radius: 50%;
   margin-right: 10px;
+  position: relative;
+  height: 21px;
+  width: 21px;
+  border: 1.5px solid #fff;
+}
+
+.nav-sidebar-avatar {
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  position: absolute;
+  border-radius: 50%;
+}
+
+.active .nav-sidebar-avatar-container {
+  background-color: #a60000;
+  border-color: #a60000;
 }
 
 .active {

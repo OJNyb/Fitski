@@ -6,6 +6,7 @@ const WebExerciseColumn = ({
   setId,
   exerId,
   weight,
+  defaultUnit,
   onDeleteSet,
   handleEditSet
 }) => {
@@ -101,6 +102,7 @@ const WebExerciseColumn = ({
       <ExerciseForm
         onChange={onChange}
         inputReps={inputReps}
+        defaultUnit={defaultUnit}
         inputWeight={inputWeight}
         onInputBlur={onInputBlur}
         setId={setId}
@@ -112,9 +114,10 @@ const WebExerciseColumn = ({
 const ExerciseForm = ({
   setId,
   onChange,
-  inputWeight,
   inputReps,
-  onInputBlur
+  inputWeight,
+  onInputBlur,
+  defaultUnit
 }) => {
   const repsInputEl = useRef(null);
   const weightInputEl = useRef(null);
@@ -142,7 +145,7 @@ const ExerciseForm = ({
             onFocus={e => e.target.select()}
             className="black font-14 mr-1 web-card-input"
           />
-          kg
+          {defaultUnit}
         </label>
       </div>
 

@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import "./MobileEmpty.css";
 
 const MobileEmpty = ({ text, children }) => {
-  const buttons = children.map(x => <MobileBtn el={x} key={x.action} />);
+  const buttons = children.map(x => <MobileBtn el={x} key={x.text} />);
   return (
     <div className="mobile-empty-container flex-col-cen">
       <div />

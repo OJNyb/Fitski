@@ -114,9 +114,9 @@ router.get(
   ensureSignedIn,
   validateRequest,
   async (req, res, next) => {
-    const {
-      query: { skip, username }
-    } = req;
+    const { query } = req;
+
+    const { skip, username } = query;
 
     console.log(username);
     console.log(skip);

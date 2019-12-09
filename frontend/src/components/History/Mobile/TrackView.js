@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { ensureDecimal } from "../../../utils/ensureDecimal";
 import useSetLoading from "../../../hooks/useSetLoading";
+import { useUser } from "../../../context/userContext";
+
 import Plus20 from "../../shared/SVGs/Plus20";
 import Minus20 from "../../shared/SVGs/Minus20";
 
@@ -15,6 +17,8 @@ const TrackView = ({
   const [selectedSet, setSelectedSet] = useState({});
   const [weight, setWeight] = useState(ensureDecimal(0));
   const [reps, setReps] = useState(0);
+  const user = useUser();
+  const { defaultUnit } = user;
 
   const onItemClick = useCallback(
     setId => {
@@ -40,7 +44,7 @@ const TrackView = ({
       }
     }
     function setInitialSet() {
-      if (sets) {
+      if (sets && !Object.keys(selectedSet).length) {
         const index = sets.map(x => x.weight).indexOf(0.0);
         if (index > -1) {
           onItemClick(sets[index]._id);
@@ -87,6 +91,7 @@ const TrackView = ({
       key={x._id}
       set={x}
       index={y}
+      defaultUnit={defaultUnit}
       selectedSetId={setId}
       onItemClick={onItemClick}
       onCommentClick={() => console.log("c")}
@@ -109,7 +114,7 @@ const TrackView = ({
   return (
     <>
       <TrackInput
-        label={"WEIGHT (kg)"}
+        label={`WEIGHT (${defaultUnit})`}
         onChange={onWeightChange}
         onDecrement={() => {
           if (weight - 2.5 >= 0) {
@@ -202,6 +207,7 @@ const TrackInput = ({ label, onDecrement, onIncrement, onChange, value }) => {
 const TrackListItem = ({
   set,
   index,
+  defaultUnit,
   onItemClick,
   selectedSetId,
   onCommentClick
@@ -229,7 +235,7 @@ const TrackListItem = ({
           <span>
             <b className="mr-1">{ensureDecimal(weight)}</b>
             <span className="font-12 color-gray font-w-400 color-light-gray">
-              kg
+              {defaultUnit}
             </span>
           </span>
         </div>

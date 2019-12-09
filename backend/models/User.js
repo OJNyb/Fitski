@@ -15,7 +15,10 @@ const UserSchema = new Schema(
       type: String,
       select: false
     },
-    defaultUnit: String,
+    defaultUnit: {
+      type: String,
+      default: "kg"
+    },
     email: {
       type: String
     },

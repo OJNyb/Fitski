@@ -1,56 +1,69 @@
-import React from "react";
-import { Link } from "react-router-dom";
-// import axios from "axios";
-import { useUser } from "../../context/userContext";
+import React, { useState } from "react";
+import { useAuth } from "../../context/authContext";
+import useSetLoading from "../../hooks/useSetLoading";
+import { editUser } from "../../utils/userClient";
+
+import NavMid from "../shared/NavMid/NavMid";
+
+import "./settings.css";
+import useMobile from "../../hooks/useMobile";
 
 const Settings = () => {
-  const user = useUser();
+  const isMobile = useMobile();
 
-  const { defaultUnit } = user;
-
-  console.log(user);
-
-  console.log(navigator.geolocation.getCurrentPosition(e => console.log(e)));
-  return (
-    <div className="settings-container">
-      <div className="settings-menu">
-        <Link to="account">Account</Link>
-        <Link to="general">General</Link>
-      </div>
-      <div className="settings-content">
-        <section>
-          <h6>General</h6>
-        </section>
-        <section>
-          <h6>Date & Time</h6>
-        </section>
-      </div>
-      <div>Timezones & weight unit & delete account for now</div>
-      <form>
-        Weight unit:
-        <select value={defaultUnit}>
-          <option value="kgs">kgs</option>
-          <option value="lbs">lbs</option>
-        </select>
-      </form>
-    </div>
-  );
+  if (isMobile) {
+    return <MobileSettings />;
+  } else {
+    return <WebSettings />;
+  }
 };
 
-// const SettingsContent = ({ title }) => {
-//   return (
-//     <section>
-//       <h6>Date & Time</h6>
-//       <form>
-//         <label>Time zone</label>
-//         <select>
-//           <option>arse</option>
-//         </select>
-//         <label>Date format</label>
-//         <label>Time format</label>
-//       </form>
-//     </section>
-//   );
-// };
+const MobileSettings = () => {
+  useSetLoading(false);
+  return <SettingsForm />;
+};
+
+const WebSettings = () => {
+  useSetLoading(false);
+  return <SettingsForm />;
+};
+
+const SettingsForm = () => {
+  const { state, dispatch } = useAuth();
+  useSetLoading(false);
+  const { user } = state;
+  const { defaultUnit } = user;
+  const [unit, setUnit] = useState(defaultUnit);
+
+  function onChange(e) {
+    setUnit(e.target.value);
+  }
+
+  function onSubmit(e) {
+    e.preventDefault();
+    editUser(dispatch, null, { defaultUnit: unit });
+  }
+  return (
+    <>
+      <NavMid backText={"Settings"} />
+      <div className="padding-15">
+        <form className="flex-col-cen" onSubmit={onSubmit}>
+          Weight unit
+          <select value={unit} onChange={onChange}>
+            <option value="kg">kg</option>
+            <option value="lbs">lbs</option>
+          </select>
+          <button
+            type="submit"
+            disabled={unit === defaultUnit}
+            className="theme-btn-filled settings-submit-btn"
+          >
+            Apply
+          </button>
+        </form>
+      </div>
+    </>
+  );
+};
 
 export default Settings;

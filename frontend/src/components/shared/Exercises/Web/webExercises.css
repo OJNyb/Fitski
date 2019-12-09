@@ -18,13 +18,21 @@
   justify-content: space-between;
   padding: 0px 5px 2px;
   height: 25px;
-  border-bottom: 1px solid silver;
+  border-bottom: 1px solid rgb(185, 173, 173);
   margin-bottom: 10px;
   position: relative;
 }
 
 .exercise-search-container:focus-within {
   border-color: #a60000;
+}
+
+.exercise-search-container svg circle {
+  stroke: rgb(185, 173, 173);
+}
+
+.exercise-search-container svg rect {
+  fill: rgb(185, 173, 173);
 }
 
 .exercise-search-container:focus-within svg circle {
@@ -39,7 +47,7 @@
   padding: 0;
   border: 0;
   outline: none;
-  font-size: 18px;
+  font-size: 16px;
   border-radius: 0;
   background-color: inherit;
   width: 100%;

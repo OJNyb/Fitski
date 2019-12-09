@@ -5,13 +5,13 @@ import { NavContext } from "./context/navContext";
 import useNav from "./hooks/useNav";
 import useExercises from "./hooks/useExercises";
 import useMobile from "./hooks/useMobile";
+import useWindowWidth from "./hooks/useWindowWidth";
 
 import SetLoading from "./components/SetLoading";
 import Navigation from "./components/Navigation/Navigation";
 
 import "./App.css";
 import "./styles/common.css";
-import useWindowWidth from "./hooks/useWindowWidth";
 
 const CreatePlan = lazy(() => import("./components/CreatePlan/CreatePlan.js"));
 const Plans = lazy(() => import("./components/PlanDashboard/Plans"));

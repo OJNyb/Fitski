@@ -1,10 +1,10 @@
 import React from "react";
 
 import PlanCard from "./WebPlanCard";
-
+import LoadingSpinner from "../SVGs/LoadingSpinner";
 import "./webPlanCard.css";
 
-const WorkoutPlans = ({ woPlans, profile, search, category }) => {
+const WorkoutPlans = ({ woPlans, profile, search, category, isPending }) => {
   let cardView;
   if (woPlans.length) {
     cardView = woPlans.map(plan => (
@@ -31,6 +31,7 @@ const WorkoutPlans = ({ woPlans, profile, search, category }) => {
         <div className="plans-cards-header-created">Created</div>
       </div>
       {cardView}
+      {isPending && <LoadingSpinner />}
     </div>
   );
 };

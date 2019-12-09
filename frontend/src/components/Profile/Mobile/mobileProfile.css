@@ -6,3 +6,7 @@
 .mobile-profile-picture {
   border-radius: 0;
 }
+
+.profile-mobile-plans-header {
+  border-bottom: 1px solid rgb(219, 201, 201);
+}

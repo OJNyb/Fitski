@@ -47,20 +47,4 @@ const Day = ({ day }) => {
   );
 };
 
-// const Column = ({ set }) => {
-//   const { reps, weight } = set;
-//   return (
-//     <div className="history-mobile-exercise-history-column">
-//       <div className="history-mobile-exercise-list-label-wrapper">
-//         <b className="color-gray mr-1">{ensureDecimal(weight)}</b>
-//         <span className="black font-12 font-w-300">kg</span>
-//       </div>
-//       <div className="history-mobile-exercise-list-label-wrapper">
-//         <b className="color-gray mr-1">{reps}</b>
-//         <span className="black font-12 font-w-300">reps</span>
-//       </div>
-//     </div>
-//   );
-// };
-
 export default HistoryView;

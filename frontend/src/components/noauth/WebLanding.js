@@ -1,18 +1,27 @@
 import React, { useState } from "react";
+import { Redirect } from "react-router-dom";
 
 import Register from "./Register";
 import Login from "./Login";
 import LandingImageText from "./LandingImageText";
 import useSetLoading from "../../hooks/useSetLoading";
+import { useAuth } from "../../context/authContext";
 
 import "./webLanding.css";
 
 const BigScreenLanding = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [login, setLogin] = useState(false);
   const [signUp, setSignUp] = useState(false);
   const [showSignX, setShowSignX] = useState(false);
-
+  const { login: loginReq } = useAuth();
+  const [redirect, setRedirect] = useState(false);
   useSetLoading(false);
+
+  if (redirect) {
+    return <Redirect to={"/login?err=true"} />;
+  }
 
   function showLogin() {
     !showSignX && setShowSignX(true);
@@ -24,6 +33,15 @@ const BigScreenLanding = () => {
     !showSignX && setShowSignX(true);
     setSignUp(true);
     setLogin(false);
+  }
+
+  function onLogin(e) {
+    e.preventDefault();
+    loginReq({ email, password }).catch(e => {
+      // TODO: If err.status !== 404 ???
+      console.log(e);
+      setRedirect(true);
+    });
   }
   return (
     <>
@@ -73,13 +91,16 @@ const BigScreenLanding = () => {
 
           <div className="landing-overview-container landing-wrapper landing-right-width">
             <div className="landing-login-container">
-              <form className="landing-login-form">
+              <form className="landing-login-form" onSubmit={onLogin}>
                 <div className="landing-login-input-container">
                   <input
                     className="landing-input landing-login-input"
                     type="email"
                     name="email"
                     placeholder="Email"
+                    autoComplete="email"
+                    value={email}
+                    onChange={e => setEmail(e.target.value)}
                   />
                 </div>
                 <div className="landing-login-input-container">
@@ -88,6 +109,9 @@ const BigScreenLanding = () => {
                     type="password"
                     name="password"
                     placeholder="Password"
+                    autoComplete="password"
+                    value={password}
+                    onChange={e => setPassword(e.target.value)}
                   />
                 </div>
 

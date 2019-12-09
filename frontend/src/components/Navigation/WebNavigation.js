@@ -55,7 +55,7 @@ const BigScreenNavigation = () => {
               src={`/image/avatar/${user.avatar}_sm.jpg`}
               alt="avatar"
             />
-            <p className="header-name">{username}</p>
+            <p className="header-name color-gray">{username}</p>
           </div>
         )}
         {showMenu && <NavigationMenu marginTop={true} />}

@@ -2,7 +2,7 @@ import { SET_PLAN_BACKLINK } from "../types/navTypes";
 
 export function setBackLink(dispatch, id, args) {
   const { profile, search, planId, searchCategory } = args;
-  console.log(args);
+
   let payload;
   if (profile) {
     const { username } = profile;

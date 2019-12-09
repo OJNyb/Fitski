@@ -27,10 +27,11 @@ function planReducer(state, action) {
       };
     }
     case SET_PLANS: {
-      const { woPlans } = payload;
+      const { woPlans } = state;
+      const { woPlans: newPlans } = payload;
       return {
         ...state,
-        woPlans,
+        woPlans: [...woPlans, ...newPlans],
         isPending: false
       };
     }

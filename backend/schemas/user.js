@@ -62,7 +62,8 @@ const editUser = Joi.object()
     username,
     defaultUnit: Joi.string()
       .min(0)
-      .max(30),
+      .max(3)
+      .label("defaultUnit"),
     password,
     confirmPassword,
     bio

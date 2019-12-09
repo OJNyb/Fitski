@@ -24,7 +24,7 @@ const UnauthenticatedApp = () => {
         <Route exact path="/register" component={Register} />
         <Route exact path="/forgot" component={ForgotPassword} />
         <Route exact path="/reset/:token" component={ResetPassword} />
-        <Route exact path="/history">
+        <Route exact path="/calendar">
           <Redirect to="/login" />
         </Route>
         <Route path="/plans">
@@ -33,8 +33,11 @@ const UnauthenticatedApp = () => {
         <Route exact path="/create-plan">
           <Redirect to="/login" />
         </Route>
-        <Route exact path="/signup">
+        <Route exact path="/explore">
           <Redirect to="/login" />
+        </Route>
+        <Route exact path="/signup">
+          <Redirect to="/register" />
         </Route>
         <Route exact path="/logout">
           <Redirect to="/login" />

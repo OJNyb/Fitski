@@ -40,7 +40,7 @@ const WebNavMid = props => {
   }
 
   let width;
-  if (winWidth >= 1200) {
+  if (winWidth >= 1000) {
     width = "calc(100% - 200px - 250px)";
   } else {
     width = "calc(100% - 250px";

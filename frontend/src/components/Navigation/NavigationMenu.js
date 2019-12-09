@@ -1,78 +1,58 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
+import { useUser } from "../../context/userContext";
 
 const NavigationMenu = ({ marginTop }) => {
+  const user = useUser();
+  const { avatar, username } = user;
   return (
     <nav style={{ marginTop: marginTop && "61px" }}>
       <section>
         <h3 className="nav-header">DASHBOARD</h3>
-        {/* <NavLink to="/active" className="nav-item">
-        <i className="material-icons nav-icon">play_arrow</i>
-        <span className="nav-span">Active plan</span>
-      </NavLink> */}
-        <NavLink to="/plans" className="nav-item flex-ai-center line-height-11">
-          <i className="material-icons nav-icon">view_list</i>
-          <span className="nav-span">Plans</span>
-        </NavLink>
 
-        <NavLink
-          to="/calendar"
-          className="nav-item flex-ai-center line-height-11"
-        >
-          <i className="material-icons nav-icon">calendar_today</i>
-          <span className="nav-span">Calendar</span>
-        </NavLink>
-        <NavLink
-          to="/explore"
-          className="nav-item flex-ai-center line-height-11"
-        >
-          <i className="material-icons nav-icon">supervised_user_circle</i>
-          <span className="nav-span">Explore</span>
-        </NavLink>
-        <NavLink
+        <NavItem to="/plans" icon="view_list" text="Plans" />
+        <NavItem to="/calendar" icon="calendar_today" text="Calendar" />
+        <NavItem to="/explore" icon="supervised_user_circle" text="Explore" />
+
+        {/* <NavLink
           to="/create-plan"
           className="nav-item flex-ai-center line-height-11"
         >
           <i className="material-icons nav-icon">library_add</i>
           <span className="nav-span">Create plan</span>
-        </NavLink>
+        </NavLink> */}
       </section>
 
       <section className="nav-account-container">
         <h3 className="nav-header">ACCOUNT</h3>
-        {/* <NavLink to="/profile" className="nav-item">
-        <img
-          className="nav-sidebar-avatar"
-          src={`/image/avatar/${avatar}_sm.jpg`} alt="Profile pic"
-          alt="avatar"
-        />
-        <span className="nav-span">Profile</span>
-      </NavLink> */}
         <NavLink
-          to="/settings"
+          exact={true}
+          to={`/profile/${username}`}
           className="nav-item flex-ai-center line-height-11"
         >
-          <i className="material-icons nav-icon ">settings</i>
-          <span className="nav-span">Settings</span>
+          <div className="nav-sidebar-avatar-container">
+            <img
+              className="nav-sidebar-avatar"
+              src={`/image/avatar/${avatar}_sm.jpg`}
+              alt="avatar"
+            />
+          </div>
+          <span className="nav-span">Profile</span>
         </NavLink>
-        {/* <NavLink to="/reset" className="nav-item">
-<i className="material-icons nav-icon">replay</i>
-<span className="nav-span">Reset week</span>
-</NavLink> */}
-        {/* <NavLink to="/pause" className="nav-item">
-<i className="material-icons nav-icon">pause_circle_outline</i>
-<span className="nav-span">Pause</span>
-</NavLink> */}
-        <NavLink
-          to="/logout"
-          className="nav-item flex-ai-center line-height-11"
-        >
-          <i className="material-icons nav-icon">power_settings_new</i>
-          <span className="nav-span">Logout</span>
-        </NavLink>
+
+        <NavItem to="/settings" icon="settings" text="Settings" />
+        <NavItem to="/logout" icon="power_settings_new" text="Logout" />
       </section>
     </nav>
   );
 };
 
+const NavItem = ({ to, icon, text }) => {
+  return (
+    <NavLink to={to} className="nav-item flex-ai-center line-height-11">
+      <i className="material-icons nav-icon">{icon}</i>
+      <span className="nav-span">{text}</span>
+    </NavLink>
+  );
+};
 export default NavigationMenu;

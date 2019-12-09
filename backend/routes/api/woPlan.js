@@ -23,7 +23,9 @@ const createErrorObject = require("../../utils/createErrorObject");
 // @desc Get current users workout plans
 // @access Private
 router.get("/", ensureSignedIn, async (req, res, next) => {
-  const { userId } = req.session;
+  const { query, session } = req;
+  const { skip } = query;
+  const { userId } = session;
   UserAccess.findOne({ user: userId })
     .then(access => {
       const { plans } = access;
@@ -31,6 +33,8 @@ router.get("/", ensureSignedIn, async (req, res, next) => {
       WOPlan.find({
         $or: [{ user: userId }, { _id: { $in: accessedPlansIds } }]
       })
+        .skip(Number(skip) || 0)
+        .limit(40)
         .populate("user")
         .then(woPlans => res.json(woPlans))
         .catch(next);
@@ -42,7 +46,8 @@ router.get("/", ensureSignedIn, async (req, res, next) => {
 // @desc Get user workout plans
 // @access Private
 router.get("/user/:username", ensureSignedIn, async (req, res, next) => {
-  const { params } = req;
+  const { query, params } = req;
+  const { skip } = query;
   const { username } = params;
 
   User.findOne({ username })
@@ -54,6 +59,8 @@ router.get("/user/:username", ensureSignedIn, async (req, res, next) => {
       }
       const { _id: userId } = user;
       WOPlan.find({ user: userId, access: "public" })
+        .skip(Number(skip) || 0)
+        .limit(40)
         .populate("user")
         .then(woPlans => res.json(woPlans))
         .catch(next);

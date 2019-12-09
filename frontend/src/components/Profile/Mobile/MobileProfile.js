@@ -4,6 +4,7 @@ import { SHOW_BACK, SHOW_DEHAZE } from "../../../types/navTypes";
 
 import PlanCard from "../../shared/PlanCard/MobilePlanCard";
 import MobileNavMidContainer from "../../shared/NavMid/MobileNavMidContainer";
+import LoadingSpinner from "../../shared/SVGs/LoadingSpinner";
 
 import "./mobileProfile.css";
 
@@ -12,6 +13,7 @@ const Profile = ({
   woPlans,
   profile,
   navState,
+  isPending,
   navDispatch,
   setShowModal,
   accessedPlans,
@@ -33,8 +35,6 @@ const Profile = ({
     setNav();
   }, [navDispatch, profileId, navState]);
 
-  console.log(navState);
-
   let cards = woPlans.map(plan => {
     let hasAccess = false;
     if (accessedPlans.includes(plan._id) || isSelf) {
@@ -52,6 +52,8 @@ const Profile = ({
       />
     );
   });
+
+  console.log(isPending);
 
   return (
     <>
@@ -85,10 +87,11 @@ const Profile = ({
           </div>
         </div>
         <div>
-          <p className="color-light-gray font-14 text-center margin-0">
+          <p className="color-light-gray font-14 text-center margin-0 profile-mobile-plans-header">
             Workout Plans
           </p>
           <div>{cards}</div>
+          {isPending && <LoadingSpinner />}
         </div>
       </div>
     </>

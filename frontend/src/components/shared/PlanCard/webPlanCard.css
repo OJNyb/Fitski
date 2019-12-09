@@ -57,6 +57,7 @@
   overflow: hidden;
   border-radius: 50%;
   border: 1.5px solid #a60000;
+  background-color: #a60000;
   margin-right: 7px;
   position: relative;
 }

@@ -1,14 +1,18 @@
 import React from "react";
 
 import { ensureDecimal } from "../../utils/ensureDecimal";
+import { useUser } from "../../context/userContext";
 
 const ExerciseText = ({ exercise }) => {
+  const user = useUser();
+  const { defaultUnit } = user;
   const {
     exercise: { name },
     sets
   } = exercise;
+
   let setsView = sets.map(x => {
-    return <Row key={x._id} set={x} />;
+    return <Row key={x._id} set={x} defaultUnit={defaultUnit} />;
   });
   return (
     <div>
@@ -20,13 +24,13 @@ const ExerciseText = ({ exercise }) => {
   );
 };
 
-const Row = ({ set }) => {
+const Row = ({ set, defaultUnit }) => {
   const { reps, weight } = set;
   return (
     <div className="history-exercise-text-row">
       <div className="history-mobile-exercise-list-label-wrapper">
         <b className="color-gray mr-1 font-14">{ensureDecimal(weight)}</b>
-        <span className="black font-12 font-w-300">kgs</span>
+        <span className="black font-12 font-w-300">{defaultUnit}</span>
       </div>
       <div className="history-mobile-exercise-list-label-wrapper">
         <b className="color-gray mr-1 font-14">{reps}</b>

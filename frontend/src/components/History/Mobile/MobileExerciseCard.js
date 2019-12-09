@@ -9,6 +9,7 @@ const MobileExerciseCard = ({
   exercise,
   onCardHold,
   onCardClick,
+  defaultUnit,
   selectedExercises
 }) => {
   const [isActive, setIsActive] = useState(false);
@@ -33,7 +34,9 @@ const MobileExerciseCard = ({
     setActive();
   }, [selectedExercises, exerId]);
 
-  let setDisplay = sets.map(set => <SetColumn set={set} key={set._id} />);
+  let setDisplay = sets.map(set => (
+    <SetColumn set={set} key={set._id} defaultUnit={defaultUnit} />
+  ));
 
   return (
     <div
@@ -54,7 +57,7 @@ const MobileExerciseCard = ({
   );
 };
 
-const SetColumn = ({ set }) => {
+const SetColumn = ({ set, defaultUnit }) => {
   const { reps, weight } = set;
 
   return (
@@ -62,7 +65,7 @@ const SetColumn = ({ set }) => {
       <div className="history-row">
         <span>
           <span className="black mr-1">{ensureDecimal(weight) || 0.0}</span>
-          <span className="color-gray font-12 font-w-300">kg</span>
+          <span className="color-gray font-12 font-w-300">{defaultUnit}</span>
         </span>
       </div>
       <div className="history-row">

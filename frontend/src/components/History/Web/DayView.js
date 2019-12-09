@@ -1,4 +1,5 @@
 import React from "react";
+import { useUser } from "../../../context/userContext";
 
 import WebExerciseCard from "./WebExerciseCard";
 
@@ -11,6 +12,8 @@ const DayView = ({
   handleDeleteSet,
   handleDeleteExercise
 }) => {
+  const user = useUser();
+  const { defaultUnit } = user;
   if (dayIndex !== -1) {
     const { exercises, _id: dayId } = currentDay;
 
@@ -24,6 +27,7 @@ const DayView = ({
             key={exercise._id}
             exercise={exercise}
             onAddSet={handleAddSet}
+            defaultUnit={defaultUnit}
             handleEditSet={handleEditSet}
             handleDeleteSet={handleDeleteSet}
             onDeleteExercise={handleDeleteExercise}

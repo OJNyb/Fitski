@@ -19,6 +19,7 @@ import ConfirmModal from "../shared/Modal/ConfirmModal";
 import ActivatePlanModal from "../shared/Modal/ActivatePlanModal";
 
 import "./explore.css";
+import useSkip from "../../hooks/useSkip";
 
 const searchReq = makeRequestCreator();
 const trendingReq = makeRequestCreator();
@@ -29,19 +30,16 @@ const MobileExplore = lazy(() => import("./Mobile/MobileExplore"));
 const Explore = () => {
   const { state: navState } = useContext(NavContext);
   const isMobile = useMobile();
+  const { skip, setSkip } = useSkip();
   const { dispatch: userDispatch } = useAuth();
-
-  const [search, setSearch] = useState(navState.search || "");
   const prevSearch = useRef("");
   const keepOldPlans = useRef(true);
+  const isCancelled = useRef(false);
+  const [results, setResults] = useState([]);
   const [noMatch, setNoMatch] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [reachedEnd, setReachedEnd] = useState(false);
-  const [results, setResults] = useState([]);
-  // const [filter, setFilter] = useState({ goal: "", length: [0, 50] });
-  const isCancelled = useRef(false);
-  //  const skip = useRef(0);
-  const [skip, setSkip] = useState(0);
+  const [search, setSearch] = useState(navState.search || "");
   const [category, setCategory] = useState(navState.searchCategory || "plans");
 
   console.log(navState);
@@ -103,6 +101,7 @@ const Explore = () => {
             } else {
               setResults(results);
             }
+            keepOldPlans.current = true;
             prevSearch.current = search;
           }
         } else if (isReqCancelled && !isCancelled.current) {
@@ -116,21 +115,6 @@ const Explore = () => {
       isCancelled.current = true;
     };
   }, [skip, search, category]);
-
-  useEffect(() => {
-    function fetchMore(e) {
-      if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
-        keepOldPlans.current = true;
-        setSkip(s => (s += 40));
-        console.log("gay");
-      }
-    }
-
-    window.addEventListener("scroll", fetchMore);
-    return () => {
-      window.removeEventListener("scroll", fetchMore);
-    };
-  }, []);
 
   function handlePeopleClick() {
     setCategory("people");

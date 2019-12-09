@@ -14,6 +14,7 @@ function userReducer(state, action) {
       const { error } = payload;
       return {
         ...state,
+        user: null,
         isRejected: true,
         isPending: false,
         error

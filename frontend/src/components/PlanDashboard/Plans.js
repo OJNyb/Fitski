@@ -6,9 +6,9 @@ import useCleanNavState from "../../hooks/useCleanNavState";
 import useTitle from "../../hooks/useTitle";
 import { activatePlan, deactivatePlan } from "../../utils/userClient";
 
-import ActivatePlanModal from "../shared/Modal/ActivatePlanModal";
-import ConfirmModal from "../shared/Modal/ConfirmModal";
 import SetLoading from "../SetLoading";
+import ConfirmModal from "../shared/Modal/ConfirmModal";
+import ActivatePlanModal from "../shared/Modal/ActivatePlanModal";
 
 const MobilePlans = lazy(() => import("./Mobile/MobilePlans"));
 const WebPlans = lazy(() => import("./Web/WebPlans"));
@@ -45,7 +45,6 @@ const Plans = () => {
     setShowModal(false);
   }
 
-  if (isPending) return null;
   if (isRejected) return <p>Derp</p>;
   if (!woPlans) {
     return <p>Derp...</p>;
@@ -78,12 +77,15 @@ const Plans = () => {
     view = (
       <MobilePlans
         woPlans={woPlans}
+        isPending={isPending}
         handleActivateClick={handleActivateClick}
         handleDeactivateClick={handleDeactivateClick}
       />
     );
   } else {
-    view = <WebPlans woPlans={woPlans} dispatch={dispatch} />;
+    view = (
+      <WebPlans woPlans={woPlans} isPending={isPending} dispatch={dispatch} />
+    );
   }
 
   return (

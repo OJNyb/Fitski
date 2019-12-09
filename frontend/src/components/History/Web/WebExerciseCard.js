@@ -9,6 +9,7 @@ const ExerciseCard = ({
   dayId,
   exercise,
   onAddSet,
+  defaultUnit,
   handleEditSet,
   handleDeleteSet,
   onDeleteExercise
@@ -27,6 +28,7 @@ const ExerciseCard = ({
       key={set._id}
       dayId={dayId}
       exerId={exerId}
+      defaultUnit={defaultUnit}
       handleEditSet={handleEditSet}
       onDeleteSet={handleDeleteSet}
     />
@@ -65,7 +67,13 @@ const ExerciseCard = ({
   );
 };
 
-const SetColumn = ({ set, exerId, onDeleteSet, handleEditSet }) => {
+const SetColumn = ({
+  set,
+  exerId,
+  onDeleteSet,
+  handleEditSet,
+  defaultUnit
+}) => {
   const { reps, weight, _id: setId } = set;
 
   return (
@@ -75,6 +83,7 @@ const SetColumn = ({ set, exerId, onDeleteSet, handleEditSet }) => {
         setId={setId}
         exerId={exerId}
         weight={weight}
+        defaultUnit={defaultUnit}
         onDeleteSet={onDeleteSet}
         handleEditSet={handleEditSet}
       />

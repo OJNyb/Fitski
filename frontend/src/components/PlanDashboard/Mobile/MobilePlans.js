@@ -11,6 +11,7 @@ import MobileEmpty from "../../shared/MobileEmpty";
 
 const PlansMobile = ({
   woPlans,
+  isPending,
   handleActivateClick,
   handleDeactivateClick
 }) => {
@@ -32,7 +33,7 @@ const PlansMobile = ({
         {cards}
       </div>
     );
-  } else {
+  } else if (!isPending) {
     view = <NoPlans />;
   }
 

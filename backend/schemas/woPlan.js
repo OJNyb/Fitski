@@ -21,6 +21,8 @@ const setId = _id.label("Set ID");
 
 const exerciseId = _id.label("Exercise ID");
 
+const skip = Joi.number().label("Skip");
+
 const name = Joi.string()
   .min(1)
   .max(30)

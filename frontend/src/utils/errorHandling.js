@@ -8,11 +8,13 @@ export function isSuccessful(res) {
 }
 
 export function getErrorMessage(err) {
-  const { error } = err;
-  if (error) {
-    const { details } = error;
-    if (details) {
-      return details;
+  if (err) {
+    const { error } = err;
+    if (error) {
+      const { details } = error;
+      if (details) {
+        return details;
+      }
     }
   }
   return [{ message: "Something gnarly happened, please refresh the page" }];

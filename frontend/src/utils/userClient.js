@@ -33,12 +33,14 @@ function editUser(dispatch, profileDispatch, values) {
           type: EDIT_USER,
           payload
         });
-        profileDispatch({
-          type: EDIT_PROFILE,
-          payload
-        });
+        if (profileDispatch) {
+          profileDispatch({
+            type: EDIT_PROFILE,
+            payload
+          });
+        }
       })
-      .catch(err => console.log(err));
+      .catch(err => console.log(err.response));
     delete values.avatar;
   }
 
@@ -50,10 +52,12 @@ function editUser(dispatch, profileDispatch, values) {
     payload
   });
 
-  profileDispatch({
-    type: EDIT_PROFILE,
-    payload
-  });
+  if (profileDispatch) {
+    profileDispatch({
+      type: EDIT_PROFILE,
+      payload
+    });
+  }
 
   axios
     .post(`/user/edit`, {

@@ -18,6 +18,8 @@ import { activatePlan, deactivatePlan } from "../../utils/userClient";
 import { NavContext } from "../../context/navContext";
 
 import EditProfileModal from "./EditProfileModal";
+import LoadingSpinner from "../shared/SVGs/LoadingSpinner";
+import ErrorText from "../shared/ErrorText";
 const WebProfile = lazy(() => import("./Web/WebProfile"));
 const MobileProfile = lazy(() => import("./Mobile/MobileProfile"));
 const loadConfirmModal = () => import("../shared/Modal/ConfirmModal");
@@ -50,7 +52,7 @@ const Profile = () => {
     isPending: accessPending,
     isRejected: accessRejected
   } = accessState;
-  const { profile, isPending, isRejected } = state;
+  const { profile, isPending, isRejected, error } = state;
 
   useLayoutEffect(() => {
     if (profile) {
@@ -112,12 +114,12 @@ const Profile = () => {
     setShowModal(false);
   }
 
-  if (isPending || plansPending || accessPending) {
-    return null;
+  if (isPending || accessPending) {
+    return <LoadingSpinner />;
   }
 
   if (isRejected || plansRejected || accessRejected) {
-    return <p>Woops... Try refreshing the page</p>;
+    return <ErrorText error={error} />;
   }
 
   if (!profile) {
@@ -164,6 +166,7 @@ const Profile = () => {
         profile={profile}
         woPlans={woPlans}
         navState={navState}
+        isPending={plansPending}
         navDispatch={navDispatch}
         accessedPlans={accessedPlans}
         handleGetClick={handleGetClick}
@@ -180,6 +183,7 @@ const Profile = () => {
         profile={profile}
         woPlans={woPlans}
         navState={navState}
+        isPending={plansPending}
         navDispatch={navDispatch}
         setShowModal={setShowModal}
         accessedPlans={accessedPlans}

@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Form, Field, Formik } from "formik";
 import { useAuth } from "../../context/authContext";
 import useSetLoading from "../../hooks/useSetLoading";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 import MobileInput from "../shared/Form/MobileInput";
 
@@ -11,6 +11,13 @@ import "./mobileSignX.css";
 
 const Login = () => {
   const [loginErr, setLoginErr] = useState(false);
+  const { search } = useLocation();
+
+  useEffect(() => {
+    if (search === "?err=true") {
+      setLoginErr(true);
+    }
+  }, [search]);
 
   const { login } = useAuth();
   useSetLoading(false);
@@ -78,7 +85,6 @@ const Login = () => {
                 label="Password"
                 autoComplete="current-password"
               />
-              {console.log("gay")}
 
               <div className="margin-15">
                 <button

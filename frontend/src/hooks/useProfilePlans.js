@@ -1,11 +1,11 @@
 import { useRef, useEffect, useReducer } from "react";
 import axios from "axios";
-
 import plansReducer from "../reducers/plansReducer";
 import { SET_PLANS, IS_PENDING, IS_REJECTED } from "../types/plansTypes";
+import useSkip from "./useSkip";
 
 const initialState = {
-  woPlans: null,
+  woPlans: [],
   isPending: true,
   isRejected: false,
   error: null
@@ -14,6 +14,7 @@ const initialState = {
 const useProfilePlans = username => {
   const [state, dispatch] = useReducer(plansReducer, initialState);
   const timesTried = useRef(1);
+  const { skip } = useSkip();
 
   useEffect(() => {
     return () => {
@@ -27,7 +28,7 @@ const useProfilePlans = username => {
     function fetchData() {
       dispatch({ type: IS_PENDING });
       axios
-        .get(`/plan/user/${username}`)
+        .get(`/plan/user/${username}?skip=${skip}`)
         .then(res => {
           if (!isCancelled) {
             dispatch({ type: SET_PLANS, payload: { woPlans: res.data } });
@@ -35,6 +36,9 @@ const useProfilePlans = username => {
         })
         .catch(err => {
           if (!isCancelled) {
+            if (err.status < 500) {
+              timesTried.current = 4;
+            }
             if (timesTried.current < 3) {
               timesTried.current = timesTried.current + 1;
               fetchData();
@@ -53,7 +57,7 @@ const useProfilePlans = username => {
     return () => {
       isCancelled = true;
     };
-  }, [username]);
+  }, [skip, username]);
 
   return {
     state,
