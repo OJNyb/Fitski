@@ -7,10 +7,7 @@ package-lock.json
 backend/config/keys.js
 backend/.env
 
-
-
 # frontend #
-
 frontend/node_modules
 frontend/package-lock.json
 frontend/.pnp
