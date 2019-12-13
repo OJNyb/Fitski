@@ -36,6 +36,7 @@ const deleteExercises = Joi.object().keys({
     .items(exerciseId)
     .required()
     .label("Exercise IDs")
+  // gay: Joi.string().required()
 });
 
 module.exports = {

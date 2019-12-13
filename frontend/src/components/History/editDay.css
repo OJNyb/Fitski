@@ -33,8 +33,8 @@
   font-size: 13.3px;
 }
 
-.history-exercise-name span {
-  width: calc(100% - 75px);
+.history-exercise-name > span {
+  width: calc(100% - 110px);
   line-height: 15px;
   font-size: 16px;
 }
@@ -42,14 +42,22 @@
 .add-card-column button {
   padding: 2px;
 }
+.add-card-remove-btn {
+  width: 30px;
+  height: 30px;
+}
 
-.add-card-column i {
+.add-card-remove-btn i {
+  font-size: 20px;
+}
+
+.add-card-set-remove-btn i {
   color: transparent;
   transition: color 0.2s;
 }
 
 .add-card-column:hover i {
-  color: #a60000c0;
+  color: #a60000;
 }
 
 .history-set-row {

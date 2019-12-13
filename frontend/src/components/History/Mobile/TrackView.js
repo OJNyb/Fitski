@@ -12,7 +12,9 @@ const TrackView = ({
   exerciseId,
   onAddSet,
   onEditSet,
-  onDeleteSet
+  onDeleteSet,
+  handleAddSetRetry,
+  handleEditSetRetry
 }) => {
   const [selectedSet, setSelectedSet] = useState({});
   const [weight, setWeight] = useState(ensureDecimal(0));
@@ -53,7 +55,7 @@ const TrackView = ({
     }
     setInitialInput();
     setInitialSet();
-  }, [exerId, sets, onItemClick]);
+  }, [exerId, selectedSet, sets, onItemClick]);
 
   useSetLoading(false);
 
@@ -91,10 +93,14 @@ const TrackView = ({
       key={x._id}
       set={x}
       index={y}
-      defaultUnit={defaultUnit}
+      exerId={exerId}
       selectedSetId={setId}
+      onDeleteSet={onDeleteSet}
+      defaultUnit={defaultUnit}
       onItemClick={onItemClick}
       onCommentClick={() => console.log("c")}
+      onAddSetRetry={handleAddSetRetry}
+      onEditSetRetry={handleEditSetRetry}
     />
   ));
 
@@ -207,46 +213,73 @@ const TrackInput = ({ label, onDecrement, onIncrement, onChange, value }) => {
 const TrackListItem = ({
   set,
   index,
+  exerId,
   defaultUnit,
   onItemClick,
+  onDeleteSet,
   selectedSetId,
+  onAddSetRetry,
+  onEditSetRetry,
   onCommentClick
 }) => {
-  const { reps, weight, _id: setId } = set;
+  const { reps, weight, _id: setId, isRejected, isPending, request } = set;
+
+  function onRetryClick(e) {
+    e.stopPropagation();
+    if (request === "add") {
+      onAddSetRetry(exerId, set);
+    } else if (request === "edit") {
+      onEditSetRetry(exerId, set);
+    } else if (request === "delete") {
+      onDeleteSet(exerId, setId);
+    }
+  }
 
   return (
-    <div
-      className={
-        "history-mobile-exercise-list-item" +
-        (setId === selectedSetId
-          ? " history-mobile-exercise-list-item-active"
-          : "")
-      }
-      onClick={() => onItemClick(setId)}
-    >
-      <div className="history-mobile-exercise-list-action-index flex-center-space-bw">
-        <button onClick={onCommentClick}>
-          <i className="material-icons">comment</i>
-        </button>
-        <b className="font-16">{index + 1}</b>
-      </div>
-      <div className="history-mobile-exercise-list-kg-reps">
-        <div className="history-mobile-exercise-list-label-wrapper">
-          <span>
-            <b className="mr-1">{ensureDecimal(weight)}</b>
-            <span className="font-12 color-gray font-w-400 color-light-gray">
-              {defaultUnit}
+    <>
+      <div
+        className={
+          "history-mobile-exercise-list-item" +
+          (setId === selectedSetId
+            ? " history-mobile-exercise-list-item-active"
+            : "") +
+          (isPending ? " history-mobile-set-pending" : "") +
+          (isRejected ? " history-mobile-set-rejected" : "")
+        }
+        onClick={() => onItemClick(setId)}
+      >
+        <div className="history-mobile-exercise-list-action-index flex-center-space-bw">
+          <button onClick={onCommentClick}>
+            <i className="material-icons">comment</i>
+          </button>
+          <b className="font-16">{index + 1}</b>
+        </div>
+        <div className="history-mobile-exercise-list-kg-reps">
+          <div className="history-mobile-exercise-list-label-wrapper">
+            <span>
+              <b className="mr-1">{ensureDecimal(weight)}</b>
+              <span className="font-12 color-gray font-w-400 color-light-gray">
+                {defaultUnit}
+              </span>
             </span>
-          </span>
-        </div>
-        <div className="history-mobile-exercise-list-label-wrapper">
-          <span>
-            <b className="mr-1 font-16 font-w-700">{reps}</b>
-            <span className="font-12 font-w-400 color-light-gray">reps</span>
-          </span>
+          </div>
+          <div className="history-mobile-exercise-list-label-wrapper">
+            <span>
+              <b className="mr-1 font-16 font-w-700">{reps}</b>
+              <span className="font-12 font-w-400 color-light-gray">reps</span>
+            </span>
+          </div>
         </div>
       </div>
-    </div>
+      {isRejected && (
+        <div className="flex-ai-center history-mobile-set-rejected-container">
+          <span className="color-light-gray">Request failed</span>
+          <button className="padding-5 tc" onClick={onRetryClick}>
+            <i className="material-icons">refresh</i>
+          </button>
+        </div>
+      )}
+    </>
   );
 };
 

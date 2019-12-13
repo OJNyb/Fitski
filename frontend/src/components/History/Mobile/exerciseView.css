@@ -113,3 +113,19 @@
   -ms-transform: scale(-1, 1);
   transform: scale(-1, 1);
 }
+
+.history-mobile-set-pending {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.history-mobile-set-rejected {
+  background-color: rgb(255, 152, 152);
+  pointer-events: none;
+}
+
+.history-mobile-set-rejected-container {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}

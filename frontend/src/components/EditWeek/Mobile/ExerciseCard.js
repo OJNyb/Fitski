@@ -11,12 +11,18 @@ const ExerciseCard = ({
   handleEditSet,
   activeExercise,
   handleDeleteSet,
-  onDeleteExercise
+  onDeleteExercise,
+  onAddExerciseRetry,
+  handleAddSetRetry,
+  handleEditSetRetry
 }) => {
   const {
-    exercise: { name, _id: exerciseId },
     sets,
-    _id: exerId
+    request,
+    isPending,
+    isRejected,
+    _id: exerId,
+    exercise: { name, _id: exerciseId }
   } = exercise;
   const [activeSet, setActiveSet] = useState(null);
 
@@ -25,6 +31,16 @@ const ExerciseCard = ({
       setActiveSet(null);
     } else {
       setActiveSet(setId);
+    }
+  }
+
+  function onRetryClick(e) {
+    e.stopPropagation();
+
+    if (request === "add") {
+      onAddExerciseRetry(exercise);
+    } else if (request === "delete") {
+      onDeleteExercise(exerId);
     }
   }
 
@@ -46,11 +62,22 @@ const ExerciseCard = ({
         onSetClick={handleSetClick}
         handleEditSet={handleEditSet}
         onDeleteSet={handleDeleteSet}
+        onAddSetRetry={handleAddSetRetry}
+        onEditSetRetry={handleEditSetRetry}
       />
     ));
   } else {
     cardView = sets.map((x, y) => (
-      <SetColumn set={x} index={y} key={x._id} dayId={dayId} exerId={exerId} />
+      <SetColumn
+        set={x}
+        index={y}
+        key={x._id}
+        dayId={dayId}
+        exerId={exerId}
+        onDeleteSet={handleDeleteSet}
+        onAddSetRetry={handleAddSetRetry}
+        onEditSetRetry={handleEditSetRetry}
+      />
     ));
   }
 
@@ -58,7 +85,9 @@ const ExerciseCard = ({
     <div
       className={
         "history-add-card margin-10" +
-        (isActive ? " edit-week-mobile-add-card-active" : "")
+        (isActive ? " edit-week-mobile-add-card-active" : "") +
+        (isPending ? " exercise-card-pending" : "") +
+        (isRejected ? " exercise-card-rejected" : "")
       }
       onClick={e => {
         e.stopPropagation();
@@ -66,10 +95,20 @@ const ExerciseCard = ({
       }}
     >
       <div className="history-exercise-name">
-        <span className="black height-20 flex-ai-center">{name}</span>
+        <span className="black height-20 flex-ai-center">
+          <span className="black">{name}</span>
+        </span>
 
         <div className="add-card-btn-container">
-          {isActive && (
+          {isRejected && (
+            <div className="flex-ai-center exercise-card-rejected-container">
+              <span className="color-gray text-center">Request failed</span>
+              <button className="padding-5" onClick={onRetryClick}>
+                <i className="material-icons">refresh</i>
+              </button>
+            </div>
+          )}
+          {isActive && !isRejected && (
             <>
               <button
                 className="add-card-remove-btn theme-btn-no-border"
@@ -101,22 +140,68 @@ const ExerciseCard = ({
   );
 };
 
-const SetColumn = ({ set, index }) => {
-  const { reps } = set;
+const SetColumn = ({
+  set,
+  index,
+  exerId,
+  onDeleteSet,
+  onAddSetRetry,
+  onEditSetRetry
+}) => {
+  const { reps, request, isPending, isRejected, _id: setId } = set;
+
+  function onRetryClick(e) {
+    e.stopPropagation();
+    if (request === "add") {
+      onAddSetRetry(exerId, set);
+    } else if (request === "edit") {
+      onEditSetRetry(exerId, set);
+    } else if (request === "delete") {
+      onDeleteSet(exerId, setId);
+    }
+  }
 
   return (
-    <div className="edit-week-mobile-card-column black">
-      <div>
+    <div
+      className={
+        "edit-week-mobile-card-column black" +
+        (isPending ? " exercise-card-pending" : "") +
+        (isRejected ? " exercise-card-rejected" : "")
+      }
+    >
+      <div className="flex-ai-center edit-week-card-set-button-container">
+        {isRejected && (
+          <div className="flex-ai-center history-web-column-btn-wrapper">
+            <div className="flex-ai-center exercise-card-rejected-container">
+              <span className="color-light-gray">Request failed</span>
+              <button className="padding-5 tc" onClick={onRetryClick}>
+                <i className="material-icons">refresh</i>
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+      <span className="font-15 black edit-week-card-rep-index">
+        {index + 1}
+      </span>
+      <div className="edit-week-mobile-reps-wrapper flex-ai-center">
         <span className="font-15 black mr-1">{reps || 0}</span>
         <span className="font-12 color-gray font-w-300">reps</span>
       </div>
-      <span className="font-15 black">{index + 1}</span>
     </div>
   );
 };
 
-const EditColumn = ({ set, index, exerId, onDeleteSet, handleEditSet }) => {
-  const { reps, _id: setId } = set;
+const EditColumn = ({
+  set,
+  index,
+  exerId,
+  onDeleteSet,
+  handleEditSet,
+  onAddSetRetry,
+  onEditSetRetry
+}) => {
+  const { reps, _id: setId, request, isPending, isRejected } = set;
   const [inputReps, setInputReps] = useState(reps || 0);
   const isDeleted = useRef(false);
   const isClosed = useRef(false);
@@ -148,6 +233,17 @@ const EditColumn = ({ set, index, exerId, onDeleteSet, handleEditSet }) => {
     }
   }
 
+  function onRetryClick(e) {
+    e.stopPropagation();
+    if (request === "add") {
+      onAddSetRetry(exerId, set);
+    } else if (request === "edit") {
+      onEditSetRetry(exerId, set);
+    } else if (request === "delete") {
+      onDeleteSet(exerId, setId);
+    }
+  }
+
   function handleRepsChange(value) {
     setInputReps(value);
     repsRef.current = value;
@@ -164,19 +260,40 @@ const EditColumn = ({ set, index, exerId, onDeleteSet, handleEditSet }) => {
   }
 
   return (
-    <div className="edit-week-mobile-card-column edit-week-mobile-edit-card-col">
-      <button
-        className="edit-week-mobile-set-delete-btn"
-        onClick={e => {
-          e.stopPropagation();
-          isDeleted.current = true;
-          onDeleteSet(exerId, setId);
-        }}
-      >
-        <i className="material-icons">remove</i>
-      </button>
+    <div
+      className={
+        "edit-week-mobile-card-column edit-week-mobile-edit-card-col" +
+        (isPending ? " exercise-card-pending" : "") +
+        (isRejected ? " exercise-card-rejected" : "")
+      }
+    >
+      <div className="flex-ai-center edit-week-card-set-button-container">
+        {isRejected ? (
+          <div className="flex-ai-center exercise-card-rejected-container">
+            <span className="color-light-gray">Request failed</span>
+            <button className="padding-5 tc" onClick={onRetryClick}>
+              <i className="material-icons">refresh</i>
+            </button>
+          </div>
+        ) : (
+          <button
+            className="edit-week-mobile-set-delete-btn"
+            onClick={e => {
+              e.stopPropagation();
+              isDeleted.current = true;
+              onDeleteSet(exerId, setId);
+            }}
+          >
+            <i className="material-icons">remove</i>
+          </button>
+        )}
+      </div>
 
-      <div className="flex-center">
+      <span className="font-w-500 color-gray edit-week-card-rep-index">
+        {index + 1}
+      </span>
+
+      <div className="flex-center edit-week-mobile-reps-wrapper">
         <div className="flex-center" onClick={e => e.stopPropagation()}>
           <button
             className="edit-week-mobile-reps-btn"
@@ -206,7 +323,6 @@ const EditColumn = ({ set, index, exerId, onDeleteSet, handleEditSet }) => {
           </button>
         </div>
       </div>
-      <span className="edit-week-card-rep-index">{index + 1}</span>
     </div>
   );
 };

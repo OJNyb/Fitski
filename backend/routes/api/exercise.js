@@ -178,15 +178,16 @@ router.delete(
       )
         .then(reski => {
           if (!reski.nModified) {
-          } else {
-            res.status(404).json(createErrorObject(["Couldn't apply update"]));
+            return res
+              .status(404)
+              .json(createErrorObject(["Couldn't apply update"]));
           }
         })
         .catch(next);
     }
 
     if (customExercisesToDelete.length) {
-      UserExercise.update(
+      UserExercise.updateOne(
         { _id: { $in: customExercisesToDelete } },
         {
           $set: { isDeleted: true }
@@ -194,8 +195,9 @@ router.delete(
       )
         .then(reski => {
           if (!reski.nModified) {
-          } else {
-            res.status(404).json(createErrorObject(["Couldn't apply update"]));
+            return res
+              .status(404)
+              .json(createErrorObject(["Couldn't apply update"]));
           }
         })
         .catch(next);

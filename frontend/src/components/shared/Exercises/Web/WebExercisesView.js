@@ -18,6 +18,8 @@ const ExercisesBigView = ({
   handleSearchChange,
   handleEditExercise,
   handleDeleteExercises,
+  handleAddExerciseRetry,
+  handleEditExerciseRetry,
   handleAddCustomExercise
 }) => {
   const [showFilter, setShowFilter] = useState(false);
@@ -68,6 +70,9 @@ const ExercisesBigView = ({
         key={x._id}
         exercise={x}
         onClick={() => onAddExercise(x)}
+        onDeleteExercises={handleDeleteExercises}
+        onAddExerciseRetry={handleAddExerciseRetry}
+        onEditExerciseRetry={handleEditExerciseRetry}
         handleEditDeleteClick={handleEditDeleteClick}
       />
     ));
@@ -170,35 +175,70 @@ const ExercisesBigView = ({
   );
 };
 
-const ExerciseItem = ({ onClick, exercise, handleEditDeleteClick }) => {
+const ExerciseItem = ({
+  onClick,
+  exercise,
+  onDeleteExercises,
+  onAddExerciseRetry,
+  onEditExerciseRetry,
+  handleEditDeleteClick
+}) => {
   const [showDropdown, setShowDropdown] = useState(false);
   const moreBtn = useRef(null);
-  const { name } = exercise;
+  const { name, request, isPending, isRejected } = exercise;
+
+  function onRetryClick() {
+    if (request === "add") {
+      onAddExerciseRetry(exercise);
+    } else if (request === "edit") {
+      onEditExerciseRetry(exercise);
+    } else if (request === "delete") {
+      onDeleteExercises([exercise._id]);
+    }
+  }
+
   return (
-    <div
-      className="exercises-item border-box flex-center-space-bw"
-      onClick={onClick}
-    >
-      <span className="black">{name}</span>
-      <button
-        ref={moreBtn}
-        className="color-light-gray"
-        onClick={e => {
-          e.stopPropagation();
-          setShowDropdown(true);
-        }}
+    <>
+      <div
+        className={
+          "exercises-item border-box flex-center-space-bw exercise-card" +
+          (isPending ? " exercise-card-pending " : "") +
+          (isRejected ? " exercise-card-rejected" : "")
+        }
+        onClick={onClick}
       >
-        <i className="material-icons">more_horiz</i>
-      </button>
-      {showDropdown && (
-        <ExerciseDropdown
-          moreBtn={moreBtn}
-          exercise={exercise}
-          setShowDropdown={setShowDropdown}
-          onEditDeleteClick={handleEditDeleteClick}
-        />
+        <span className="black">{name}</span>
+        <button
+          ref={moreBtn}
+          className="color-light-gray"
+          onClick={e => {
+            e.stopPropagation();
+            setShowDropdown(true);
+          }}
+        >
+          <i className="material-icons">more_horiz</i>
+        </button>
+        {showDropdown && (
+          <ExerciseDropdown
+            moreBtn={moreBtn}
+            exercise={exercise}
+            setShowDropdown={setShowDropdown}
+            onEditDeleteClick={handleEditDeleteClick}
+          />
+        )}
+      </div>
+      {isRejected && (
+        <div className="flex-ai-center exercises-rejected-container">
+          <span className="color-light-gray">Request failed</span>
+          <button
+            className="padding-5 theme-btn-no-border"
+            onClick={onRetryClick}
+          >
+            <i className="material-icons">refresh</i>
+          </button>
+        </div>
       )}
-    </div>
+    </>
   );
 };
 

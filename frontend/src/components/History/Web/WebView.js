@@ -20,7 +20,10 @@ const WebView = ({
   handleDateChange,
   handleAddExercise,
   displayGroupCircle,
-  handleDeleteExercise
+  handleDeleteExercise,
+  handleAddSetRetry,
+  handleEditSetRetry,
+  handleAddExerciseRetry
 }) => {
   const [focused, setFocused] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -68,6 +71,9 @@ const WebView = ({
             handleDeleteSet={handleDeleteSet}
             handleCopyClick={handleCopyClick}
             handleDeleteExercise={handleDeleteExercise}
+            handleAddSetRetry={handleAddSetRetry}
+            handleEditSetRetry={handleEditSetRetry}
+            handleAddExerciseRetry={handleAddExerciseRetry}
           />
         </div>
 
@@ -87,7 +93,10 @@ const WebViewLeft = ({
   handleDeleteSet,
   handleCopyClick,
   setShowExercises,
-  handleDeleteExercise
+  handleDeleteExercise,
+  handleAddSetRetry,
+  handleEditSetRetry,
+  handleAddExerciseRetry
 }) => {
   return (
     <div className="history-add-container">
@@ -100,6 +109,9 @@ const WebViewLeft = ({
         handleDeleteSet={handleDeleteSet}
         setShowExercises={setShowExercises}
         handleDeleteExercise={handleDeleteExercise}
+        handleAddSetRetry={handleAddSetRetry}
+        handleEditSetRetry={handleEditSetRetry}
+        handleAddExerciseRetry={handleAddExerciseRetry}
       />
     </div>
   );

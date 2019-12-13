@@ -26,6 +26,7 @@ function useLongPress(
       } else {
         holdCallback();
       }
+      setCancelled(true);
       setType("short");
     }
     return () => {
@@ -37,7 +38,8 @@ function useLongPress(
     setStartLongPress(true);
     setCancelled(false);
   }, []);
-  const stop = useCallback(() => {
+  const stop = useCallback(e => {
+    e.preventDefault();
     setStartLongPress(false);
   }, []);
   const cancel = useCallback(() => {

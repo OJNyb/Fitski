@@ -33,9 +33,12 @@ const MobileView = ({
   handleEditSet,
   handleCopyDay,
   handleDeleteSet,
+  handleAddSetRetry,
   handleAddExercise,
   displayGroupCircle,
-  handleDeleteExercises
+  handleEditSetRetry,
+  handleDeleteExercises,
+  handleAddExerciseRetry
 }) => {
   const [showHistory, setShowHistory] = useState(false);
   const [showExercise, setShowExercise] = useState(false);
@@ -119,6 +122,8 @@ const MobileView = ({
           handleAddSet={handleAddSet}
           handleEditSet={handleEditSet}
           handleDeleteSet={handleDeleteSet}
+          handleAddSetRetry={handleAddSetRetry}
+          handleEditSetRetry={handleEditSetRetry}
         />
       </Suspense>
     );
@@ -136,15 +141,16 @@ const MobileView = ({
     view = (
       <MobileDayView
         date={date}
-        onCopyDayClick={handleCopyDayClick}
         dayIndex={dayIndex}
         currentDay={currentDay}
         onDateChange={handleDateChange}
         setShowExercise={setShowExercise}
+        onCopyDayClick={handleCopyDayClick}
         setShowExercises={setShowExercises}
         onCalendarClick={handleCalendarClick}
         onExercisesClick={handleExercisesClick}
         handleDeleteExercises={handleDeleteExercises}
+        handleAddExerciseRetry={handleAddExerciseRetry}
       />
     );
   }

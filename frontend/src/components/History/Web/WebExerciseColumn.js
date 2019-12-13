@@ -2,14 +2,15 @@ import React, { useRef, useState, useEffect, useCallback } from "react";
 import { ensureDecimal } from "../../../utils/ensureDecimal";
 
 const WebExerciseColumn = ({
-  reps,
-  setId,
+  set,
   exerId,
-  weight,
   defaultUnit,
   onDeleteSet,
-  handleEditSet
+  handleEditSet,
+  onAddSetRetry,
+  onEditSetRetry
 }) => {
+  const { reps, weight, request, isPending, isRejected, _id: setId } = set;
   const [inputReps, setInputReps] = useState(reps || 0);
   const [inputWeight, setInputWeight] = useState(ensureDecimal(weight) || 0);
   const isDeleted = useRef(false);
@@ -46,8 +47,6 @@ const WebExerciseColumn = ({
     if (vReps) {
       lastRepsReqRef.current = vReps;
     }
-
-    console.log(values);
 
     handleEditSet(values, exerId, setId);
   }, [setId, exerId, handleEditSet]);
@@ -87,18 +86,47 @@ const WebExerciseColumn = ({
     };
   }, [onEditSet]);
 
+  function onRetryClick(e) {
+    e.stopPropagation();
+    if (request === "add") {
+      onAddSetRetry(exerId, set);
+    } else if (request === "edit") {
+      onEditSetRetry(exerId, set);
+    } else if (request === "delete") {
+      onDeleteSet(exerId, setId);
+    }
+  }
+
   return (
-    <>
-      <button
-        className="add-card-remove-btn theme-btn-no-border flex-center"
-        onClick={() => {
-          isDeleted.current = true;
-          onDeleteSet(exerId, setId);
-        }}
-        tabIndex="-1"
-      >
-        <i className="material-icons">remove</i>
-      </button>
+    <div
+      className={
+        "add-card-column flex-ai-center padding-0-20 history-web-add-card-column" +
+        (isPending ? " exercise-card-pending" : "") +
+        (isRejected ? " history-web-set-rejected" : "")
+      }
+    >
+      <div className="flex-ai-center history-web-column-btn-wrapper">
+        {isRejected ? (
+          <div className="flex-center-space-bw width-100p history-web-set-rejected-container">
+            <span className="color-light-gray">Request failed</span>
+            <button className="padding-5 tc" onClick={onRetryClick}>
+              <i className="material-icons">refresh</i>
+            </button>
+          </div>
+        ) : (
+          <button
+            className="add-card-set-remove-btn theme-btn-no-border flex-center"
+            onClick={() => {
+              isDeleted.current = true;
+              onDeleteSet(exerId, setId);
+            }}
+            tabIndex="-1"
+          >
+            <i className="material-icons">remove</i>
+          </button>
+        )}
+      </div>
+
       <ExerciseForm
         onChange={onChange}
         inputReps={inputReps}
@@ -107,7 +135,7 @@ const WebExerciseColumn = ({
         onInputBlur={onInputBlur}
         setId={setId}
       />
-    </>
+    </div>
   );
 };
 
@@ -128,8 +156,11 @@ const ExerciseForm = ({
     weightInputEl.current.blur();
   }
   return (
-    <form className="flex-ai-center width-100p" onSubmit={onSubmit}>
-      <div className="history-row">
+    <form
+      className="flex-ai-center history-web-column-form"
+      onSubmit={onSubmit}
+    >
+      <div className="history-web-row">
         <label
           htmlFor={`weight-${setId}`}
           className="padding-5 font-12 color-gray font-w-300"
@@ -149,7 +180,7 @@ const ExerciseForm = ({
         </label>
       </div>
 
-      <div className="history-row">
+      <div className="history-web-row">
         <label
           htmlFor={`reps-${setId}`}
           className="padding-5 font-12 color-gray font-w-300"

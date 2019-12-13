@@ -1,11 +1,19 @@
 import {
   IS_PENDING,
   IS_REJECTED,
-  ADD_EXERCISE,
-  EDIT_EXERCISE,
   SET_EXERCISES,
   GET_EXERCISES,
-  DELETE_EXERCISE
+  ADD_EXERCISE,
+  ADD_EXERCISE_RETRY,
+  ADD_EXERCISE_FAILED,
+  ADD_EXERCISE_SUCCESS,
+  EDIT_EXERCISE,
+  EDIT_EXERCISE_RETRY,
+  EDIT_EXERCISE_FAILED,
+  EDIT_EXERCISE_SUCCESS,
+  DELETE_EXERCISE,
+  DELETE_EXERCISE_FAILED,
+  DELETE_EXERCISE_SUCCESS
 } from "../types/exerciseTypes";
 
 // TODO: If !week/day/woplan
@@ -58,10 +66,53 @@ function planReducer(state, action) {
         name,
         custom: true,
         _id: exerciseId,
-        muscleGroup: category
+        muscleGroup: category,
+        isPending: true
       };
 
       exercises.push(newExercise);
+      return {
+        ...state,
+        exercises
+      };
+    }
+
+    case ADD_EXERCISE_RETRY: {
+      const { exercises } = state;
+      const { exerciseId } = payload;
+
+      const exercise = exercises.find(x => x._id === exerciseId);
+      exercise.isPending = true;
+      exercise.isRejected = false;
+
+      return {
+        ...state,
+        exercises
+      };
+    }
+
+    case ADD_EXERCISE_SUCCESS: {
+      const { exercises } = state;
+      const { exerciseId } = payload;
+
+      const exercise = exercises.find(x => x._id === exerciseId);
+      exercise.isPending = false;
+
+      return {
+        ...state,
+        exercises
+      };
+    }
+
+    case ADD_EXERCISE_FAILED: {
+      const { exercises } = state;
+      const { exerciseId } = payload;
+
+      const exercise = exercises.find(x => x._id === exerciseId);
+      exercise.isPending = false;
+      exercise.isRejected = true;
+      exercise.request = "add";
+
       return {
         ...state,
         exercises
@@ -76,8 +127,52 @@ function planReducer(state, action) {
 
       exercises[exerciseIndex] = {
         ...exercises[exerciseIndex],
-        ...values
+        ...values,
+        isPending: true
       };
+
+      return {
+        ...state,
+        exercises
+      };
+    }
+
+    case EDIT_EXERCISE_RETRY: {
+      const { exercises } = state;
+      const { exerciseId } = payload;
+
+      const exercise = exercises.find(x => x._id === exerciseId);
+      exercise.isPending = true;
+      exercise.isRejected = false;
+
+      return {
+        ...state,
+        exercises
+      };
+    }
+
+    case EDIT_EXERCISE_SUCCESS: {
+      const { exercises } = state;
+      const { exerciseId } = payload;
+
+      const exercise = exercises.find(x => x._id === exerciseId);
+      exercise.isPending = false;
+
+      return {
+        ...state,
+        exercises
+      };
+    }
+
+    case EDIT_EXERCISE_FAILED: {
+      const { exercises } = state;
+      const { exerciseId } = payload;
+
+      const exercise = exercises.find(x => x._id === exerciseId);
+
+      exercise.isPending = false;
+      exercise.isRejected = true;
+      exercise.request = "edit";
 
       return {
         ...state,
@@ -89,13 +184,49 @@ function planReducer(state, action) {
       const { exercises } = state;
       const { exerciseIds } = payload;
 
-      const oldExerciseIds = exercises.map(x => x._id);
-
-      exerciseIds.forEach(x => {
-        const exerciseIndex = oldExerciseIds.indexOf(x);
-        exercises.splice(exerciseIndex, 1);
+      exercises.forEach(x => {
+        let index = exerciseIds.indexOf(x._id);
+        if (index > -1) {
+          x.isPending = true;
+          x.isRejected = false;
+        }
       });
 
+      return {
+        ...state,
+        exercises
+      };
+    }
+
+    case DELETE_EXERCISE_SUCCESS: {
+      const { exercises } = state;
+      const { exerciseIds } = payload;
+
+      console.log(exerciseIds);
+      console.log(exercises);
+
+      const newExercises = exercises.filter(
+        x => exerciseIds.indexOf(x._id) === -1
+      );
+
+      return {
+        ...state,
+        exercises: newExercises
+      };
+    }
+
+    case DELETE_EXERCISE_FAILED: {
+      const { exercises } = state;
+      const { exerciseIds } = payload;
+
+      exercises.forEach(x => {
+        let index = exerciseIds.indexOf(x._id);
+        if (index > -1) {
+          x.isPending = false;
+          x.isRejected = true;
+          x.request = "delete";
+        }
+      });
       return {
         ...state,
         exercises

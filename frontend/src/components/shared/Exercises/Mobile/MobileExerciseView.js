@@ -4,7 +4,7 @@ import useLongPressAndClick from "../../../../hooks/useLongPressAndClick";
 import MobileExercisesNav from "./MobileExercisesNav";
 import useSetLoading from "../../../../hooks/useSetLoading";
 import AddEditExerciseModal from "./AddExerciseModal";
-import DeleteExerciseModal from "../DeleteExerciseModal";
+import DeleteExerciseModal from "./DeleteExerciseModal";
 
 import "./mobileExercises.css";
 
@@ -25,9 +25,11 @@ const MobileExerciseView = ({
   setMuscleGroup,
   exercisesToShow,
   handleSearchChange,
-  handleAddCustomExercise,
   handleEditExercise,
-  handleDeleteExercises
+  handleDeleteExercises,
+  handleAddExerciseRetry,
+  handleAddCustomExercise,
+  handleEditExerciseRetry
 }) => {
   useSetLoading(false);
   const [selectedExercises, setSelectedExercises] = useState([]);
@@ -106,10 +108,8 @@ const MobileExerciseView = ({
     const onClick = selectedExercises.length
       ? x => {
           handleSelectExercise(x);
-          console.log("click");
         }
       : x => {
-          console.log("click");
           onAddExercise(x);
           closeExercises();
         };
@@ -118,8 +118,11 @@ const MobileExerciseView = ({
         key={x._id}
         exercise={x}
         onClick={onClick}
+        onDeleteExercises={handleDeleteExercises}
         selected={selectedIds.indexOf(x._id) > -1}
         onSelectExercise={handleSelectExercise}
+        onAddExerciseRetry={handleAddExerciseRetry}
+        onEditExerciseRetry={handleEditExerciseRetry}
       />
     ));
   } else {
@@ -167,25 +170,58 @@ const MuscleGroupItem = ({ mg, onClick }) => {
   );
 };
 
-const ExerciseItem = ({ onClick, exercise, selected, onSelectExercise }) => {
-  const { name } = exercise;
+const ExerciseItem = ({
+  onClick,
+  exercise,
+  selected,
+  onSelectExercise,
+  onDeleteExercises,
+  onAddExerciseRetry,
+  onEditExerciseRetry
+}) => {
+  const { name, request, isPending, isRejected } = exercise;
   const { onTouchEnd, onTouchStart, onTouchMove } = useLongPressAndClick(
     () => onSelectExercise(exercise),
     () => onClick(exercise)
   );
 
+  function onRetryClick() {
+    if (request === "add") {
+      onAddExerciseRetry(exercise);
+    } else if (request === "edit") {
+      onEditExerciseRetry(exercise);
+    } else if (request === "delete") {
+      onDeleteExercises([exercise._id]);
+    }
+  }
+
   return (
-    <div
-      className={
-        "mobile-exercise-item" +
-        (selected ? " mobile-exercise-item-selected" : "")
-      }
-      onTouchStart={onTouchStart}
-      onTouchEnd={onTouchEnd}
-      onTouchMove={onTouchMove}
-    >
-      {name}
-    </div>
+    <>
+      <div
+        className={
+          "mobile-exercise-item" +
+          (selected ? " mobile-exercise-item-selected" : "") +
+          (isPending ? " exercise-card-pending " : "") +
+          (isRejected ? " exercise-card-rejected" : "")
+        }
+        onTouchStart={onTouchStart}
+        onTouchEnd={onTouchEnd}
+        onTouchMove={onTouchMove}
+      >
+        {name}
+      </div>
+      {isRejected && (
+        <div className="flex-ai-center exercises-rejected-container">
+          <span className="color-light-gray">Request failed</span>
+          <button
+            className="padding-5 theme-btn-no-border"
+            onClick={onRetryClick}
+          >
+            <i className="material-icons">refresh</i>
+          </button>
+        </div>
+      )}
+    </>
   );
 };
 

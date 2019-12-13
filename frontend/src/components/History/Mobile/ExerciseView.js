@@ -13,7 +13,9 @@ const ExerciseView = ({
   handleAddSet,
   handleEditSet,
   handleDeleteSet,
-  setShowExercise
+  setShowExercise,
+  handleAddSetRetry,
+  handleEditSetRetry
 }) => {
   const { _id: exerId, sets, exercise } = exer;
   const { _id: exerciseId } = exercise;
@@ -29,6 +31,8 @@ const ExerciseView = ({
         onAddSet={handleAddSet}
         onEditSet={handleEditSet}
         onDeleteSet={handleDeleteSet}
+        handleAddSetRetry={handleAddSetRetry}
+        handleEditSetRetry={handleEditSetRetry}
       />
     );
   } else if (exerciseView === "history") {

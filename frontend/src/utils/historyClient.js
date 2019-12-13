@@ -2,18 +2,39 @@ import axios from "axios";
 import { Types } from "mongoose";
 import {
   ADD_DAY,
+  ADD_DAY_RETRY,
+  ADD_DAY_FAILED,
+  ADD_DAY_SUCCESS,
   DELETE_DAY,
+  DELETE_DAY_FAILED,
+  DELETE_DAY_SUCCESS,
   ADD_EXERCISE,
+  ADD_EXERCISE_RETRY,
+  ADD_EXERCISE_FAILED,
+  ADD_EXERCISE_SUCCESS,
   DELETE_EXERCISE,
+  DELETE_EXERCISE_FAILED,
+  DELETE_EXERCISE_SUCCESS,
   DELETE_EXERCISES,
+  DELETE_EXERCISES_FAILED,
+  DELETE_EXERCISES_SUCCESS,
   ADD_SET,
+  ADD_SET_RETRY,
+  ADD_SET_FAILED,
+  ADD_SET_SUCCESS,
   EDIT_SET,
+  EDIT_SET_RETRY,
+  EDIT_SET_FAILED,
+  EDIT_SET_SUCCESS,
   DELETE_SET,
+  DELETE_SET_FAILED,
+  DELETE_SET_SUCCESS,
   COPY_DAY,
   REQUEST_FAILED
 } from "../types/historyTypes";
 import { isSuccessful } from "./errorHandling";
 import { getNewExerciseIds } from "./historyUtils";
+import { reverseHistoryDate } from "./formatHistoryDate";
 
 const { ObjectId } = Types;
 
@@ -21,12 +42,13 @@ function addDay(dispatch, date, exercise, values) {
   const dayId = new ObjectId().toHexString();
   const exerId = new ObjectId().toHexString();
   const setId = new ObjectId().toHexString();
+  const payload = { date, exercise, dayId, exerId, setId, ...values };
 
   const custom = exercise.custom || false;
 
   dispatch({
     type: ADD_DAY,
-    payload: { date, exercise, dayId, exerId, setId, ...values }
+    payload
   });
 
   axios
@@ -43,22 +65,78 @@ function addDay(dispatch, date, exercise, values) {
       let isSucc = isSuccessful(res);
       if (!isSucc) {
         dispatch({
-          type: REQUEST_FAILED
+          type: ADD_DAY_FAILED,
+          payload
+        });
+      } else {
+        dispatch({
+          type: ADD_DAY_SUCCESS,
+          payload
+        });
+      }
+    })
+    .catch(() => {
+      dispatch({
+        type: ADD_DAY_FAILED,
+        payload
+      });
+    });
+}
+
+function retryAddDay(dispatch, day) {
+  const { _id: dayId, exercises, date } = day;
+  const { sets, _id: exerId, exercise } = exercises[0];
+  const { reps, weight, _id: setId } = sets[0];
+
+  let dateObject = reverseHistoryDate(date);
+
+  const payload = { dayId };
+
+  const custom = exercise.custom || false;
+
+  dispatch({
+    type: ADD_DAY_RETRY,
+    payload
+  });
+
+  axios
+    .post("/history", {
+      date: dateObject,
+      setId,
+      dayId,
+      exerId,
+      custom,
+      exerciseId: exercise._id,
+      reps,
+      weight
+    })
+    .then(res => {
+      let isSucc = isSuccessful(res);
+      if (!isSucc) {
+        dispatch({
+          type: ADD_DAY_FAILED,
+          payload
+        });
+      } else {
+        dispatch({
+          type: ADD_DAY_SUCCESS,
+          payload
         });
       }
     })
     .catch(err => {
       dispatch({
-        type: REQUEST_FAILED,
-        payload: { err }
+        type: ADD_DAY_FAILED,
+        payload
       });
     });
 }
 
 function deleteDay(dispatch, dayId) {
+  const payload = { dayId };
   dispatch({
     type: DELETE_DAY,
-    payload: { dayId }
+    payload
   });
 
   axios
@@ -67,14 +145,20 @@ function deleteDay(dispatch, dayId) {
       let isSucc = isSuccessful(res);
       if (!isSucc) {
         dispatch({
-          type: REQUEST_FAILED
+          type: DELETE_DAY_FAILED,
+          payload
+        });
+      } else {
+        dispatch({
+          type: DELETE_DAY_SUCCESS,
+          payload
         });
       }
     })
-    .catch(err => {
+    .catch(() => {
       dispatch({
-        type: REQUEST_FAILED,
-        payload: { err }
+        type: DELETE_DAY_FAILED,
+        payload
       });
     });
 }
@@ -84,10 +168,11 @@ function addExercise(dispatch, dayId, exercise) {
   const setId = new ObjectId().toHexString();
 
   const custom = exercise.custom || false;
+  const payload = { dayId, exerId, exercise, setId };
 
   dispatch({
     type: ADD_EXERCISE,
-    payload: { dayId, exerId, exercise, setId }
+    payload
   });
 
   axios
@@ -101,22 +186,69 @@ function addExercise(dispatch, dayId, exercise) {
       let isSucc = isSuccessful(res);
       if (!isSucc) {
         dispatch({
-          type: REQUEST_FAILED
+          type: ADD_EXERCISE_FAILED,
+          payload
+        });
+      } else {
+        dispatch({
+          type: ADD_EXERCISE_SUCCESS,
+          payload
         });
       }
     })
-    .catch(err => {
+    .catch(() => {
       dispatch({
-        type: REQUEST_FAILED,
-        payload: { err }
+        type: ADD_EXERCISE_FAILED,
+        payload
+      });
+    });
+}
+
+function retryAddExercise(dispatch, dayId, exer) {
+  const { _id: exerId, sets, exercise } = exer;
+  const custom = exercise.custom || false;
+  const { _id: setId } = sets[0];
+  const payload = { dayId, exerId };
+
+  dispatch({
+    type: ADD_EXERCISE_RETRY,
+    payload
+  });
+
+  axios
+    .post(`/history/exercise/${dayId}`, {
+      setId,
+      exerId,
+      custom,
+      exerciseId: exercise._id
+    })
+    .then(res => {
+      let isSucc = isSuccessful(res);
+      if (!isSucc) {
+        dispatch({
+          type: ADD_EXERCISE_FAILED,
+          payload
+        });
+      } else {
+        dispatch({
+          type: ADD_EXERCISE_SUCCESS,
+          payload
+        });
+      }
+    })
+    .catch(() => {
+      dispatch({
+        type: ADD_EXERCISE_FAILED,
+        payload
       });
     });
 }
 
 function deleteExercise(dispatch, dayId, exerId) {
+  const payload = { dayId, exerId };
   dispatch({
     type: DELETE_EXERCISE,
-    payload: { dayId, exerId }
+    payload
   });
 
   axios
@@ -125,22 +257,29 @@ function deleteExercise(dispatch, dayId, exerId) {
       let isSucc = isSuccessful(res);
       if (!isSucc) {
         dispatch({
-          type: REQUEST_FAILED
+          type: DELETE_EXERCISE_FAILED,
+          payload
+        });
+      } else {
+        dispatch({
+          type: DELETE_EXERCISE_SUCCESS,
+          payload
         });
       }
     })
-    .catch(err => {
+    .catch(() => {
       dispatch({
-        type: REQUEST_FAILED,
-        payload: { err }
+        type: DELETE_EXERCISE_FAILED,
+        payload
       });
     });
 }
 
 function deleteExercises(dispatch, dayId, exerIds) {
+  const payload = { dayId, exerIds };
   dispatch({
     type: DELETE_EXERCISES,
-    payload: { dayId, exerIds }
+    payload
   });
 
   axios
@@ -151,24 +290,31 @@ function deleteExercises(dispatch, dayId, exerIds) {
       let isSucc = isSuccessful(res);
       if (!isSucc) {
         dispatch({
-          type: REQUEST_FAILED
+          type: DELETE_EXERCISES_FAILED,
+          payload
+        });
+      } else {
+        dispatch({
+          type: DELETE_EXERCISES_SUCCESS,
+          payload
         });
       }
     })
-    .catch(err => {
+    .catch(() => {
       dispatch({
-        type: REQUEST_FAILED,
-        payload: { err }
+        type: DELETE_EXERCISES_FAILED,
+        payload
       });
     });
 }
 
 function addSet(dispatch, values, dayId, exerId) {
   const setId = new ObjectId().toHexString();
+  const payload = { dayId, exerId, setId, ...values };
 
   dispatch({
     type: ADD_SET,
-    payload: { dayId, exerId, setId, ...values }
+    payload
   });
 
   axios
@@ -177,14 +323,54 @@ function addSet(dispatch, values, dayId, exerId) {
       let isSucc = isSuccessful(res);
       if (!isSucc) {
         dispatch({
-          type: REQUEST_FAILED
+          type: ADD_SET_FAILED,
+          payload
+        });
+      } else {
+        dispatch({
+          type: ADD_SET_SUCCESS,
+          payload
         });
       }
     })
-    .catch(err => {
+    .catch(() => {
       dispatch({
-        type: REQUEST_FAILED,
-        payload: { err }
+        type: ADD_SET_FAILED,
+        payload
+      });
+    });
+}
+
+function retryAddSet(dispatch, dayId, exerId, set) {
+  const { _id: setId } = set;
+  const { reps, weight } = set;
+  const payload = { dayId, exerId, setId };
+
+  dispatch({
+    type: ADD_SET_RETRY,
+    payload
+  });
+
+  axios
+    .post(`/history/exercise/${dayId}/${exerId}`, { setId, reps, weight })
+    .then(res => {
+      let isSucc = isSuccessful(res);
+      if (!isSucc) {
+        dispatch({
+          type: ADD_SET_FAILED,
+          payload
+        });
+      } else {
+        dispatch({
+          type: ADD_SET_SUCCESS,
+          payload
+        });
+      }
+    })
+    .catch(() => {
+      dispatch({
+        type: ADD_SET_FAILED,
+        payload
       });
     });
 }
@@ -202,22 +388,62 @@ function editSet(dispatch, values, dayId, exerId, setId) {
       let isSucc = isSuccessful(res);
       if (!isSucc) {
         dispatch({
-          type: REQUEST_FAILED
+          type: EDIT_SET_FAILED,
+          payload
+        });
+      } else {
+        dispatch({
+          type: EDIT_SET_SUCCESS,
+          payload
         });
       }
     })
-    .catch(err => {
+    .catch(() => {
       dispatch({
-        type: REQUEST_FAILED,
-        payload: { err }
+        type: EDIT_SET_FAILED,
+        payload
+      });
+    });
+}
+
+function retryEditSet(dispatch, dayId, exerId, set) {
+  const { reps, weight, _id: setId } = set;
+  const values = { reps, weight };
+  const payload = { values, dayId, exerId, setId };
+  dispatch({
+    type: EDIT_SET_RETRY,
+    payload
+  });
+
+  axios
+    .post(`/history/exercise/${dayId}/${exerId}/${setId}`, values)
+    .then(res => {
+      let isSucc = isSuccessful(res);
+      if (!isSucc) {
+        dispatch({
+          type: EDIT_SET_FAILED,
+          payload
+        });
+      } else {
+        dispatch({
+          type: EDIT_SET_SUCCESS,
+          payload
+        });
+      }
+    })
+    .catch(() => {
+      dispatch({
+        type: EDIT_SET_FAILED,
+        payload
       });
     });
 }
 
 function deleteSet(dispatch, dayId, exerId, setId) {
+  const payload = { dayId, exerId, setId };
   dispatch({
     type: DELETE_SET,
-    payload: { dayId, exerId, setId }
+    payload
   });
 
   axios
@@ -226,14 +452,20 @@ function deleteSet(dispatch, dayId, exerId, setId) {
       let isSucc = isSuccessful(res);
       if (!isSucc) {
         dispatch({
-          type: REQUEST_FAILED
+          type: DELETE_SET_FAILED,
+          payload
+        });
+      } else {
+        dispatch({
+          type: DELETE_SET_SUCCESS,
+          payload
         });
       }
     })
-    .catch(err => {
+    .catch(() => {
       dispatch({
-        type: REQUEST_FAILED,
-        payload: { err }
+        type: DELETE_SET_FAILED,
+        payload
       });
     });
 }
@@ -273,12 +505,16 @@ function copyDay(dispatch, dayToCopy, formattedDate) {
 
 export {
   addDay,
+  retryAddDay,
   deleteDay,
   addExercise,
+  retryAddExercise,
   deleteExercise,
   deleteExercises,
   addSet,
+  retryAddSet,
   editSet,
+  retryEditSet,
   deleteSet,
   copyDay
 };

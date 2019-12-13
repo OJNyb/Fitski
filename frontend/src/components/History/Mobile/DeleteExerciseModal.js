@@ -16,7 +16,7 @@ const DeleteExerciseModal = ({
   ));
 
   let children = (
-    <div className="flex-col-cen width-100p">
+    <div className="flex-col-cen width-100p padding-0-10-77">
       {ExercisesToDeleteView}
       <button
         className="theme-btn-filled mobile-modal-submit-btn"

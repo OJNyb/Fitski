@@ -26,3 +26,28 @@
 .add-card-body {
   padding: 4px 0;
 }
+
+.exercise-card-pending {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.exercise-card-rejected {
+  background-color: rgb(255, 215, 215) !important;
+  pointer-events: none;
+}
+
+.exercise-card-rejected-container button {
+  pointer-events: all;
+  color: #a60000;
+  margin-left: 5px;
+}
+
+.edit-week-card-set-button-container {
+  flex: 0.4 40%;
+}
+
+.edit-week-card-rep-index {
+  flex: 0.1 10%;
+  text-align: end;
+}

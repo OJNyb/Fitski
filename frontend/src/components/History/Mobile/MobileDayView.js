@@ -17,11 +17,14 @@ const MobileDayView = ({
   dayIndex,
   currentDay,
   onDateChange,
-  onCalendarClick,
-  onExercisesClick,
   onCopyDayClick,
+  onCalendarClick,
   setShowExercise,
-  handleDeleteExercises
+  onExercisesClick,
+  handleAddSetRetry,
+  handleEditSetRetry,
+  handleDeleteExercises,
+  handleAddExerciseRetry
 }) => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedExercises, setSelectedExercises] = useState([]);
@@ -90,7 +93,8 @@ const MobileDayView = ({
   }
 
   if (dayIndex !== -1) {
-    const { exercises } = currentDay;
+    const { exercises, request, isPending, isRejected } = currentDay;
+
     view = exercises.map(exercise => {
       if (!exercise || !exercise.exercise) {
         return null;
@@ -99,11 +103,18 @@ const MobileDayView = ({
           <MobileExerciseCard
             key={exercise._id}
             exercise={exercise}
+            dayRequest={request}
+            dayPending={isPending}
+            dayRejected={isRejected}
             defaultUnit={defaultUnit}
             onCardClick={handleCardClick}
             onCardHold={handleCardHold}
             setShowExercise={setShowExercise}
             selectedExercises={selectedExercises}
+            handleAddSetRetry={handleAddSetRetry}
+            handleEditSetRetry={handleEditSetRetry}
+            onDeleteExercises={handleDeleteExercises}
+            onAddExerciseRetry={handleAddExerciseRetry}
           />
         );
       }

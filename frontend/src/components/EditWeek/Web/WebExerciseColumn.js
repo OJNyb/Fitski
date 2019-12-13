@@ -5,9 +5,11 @@ const WebExerciseColumn = ({
   index,
   exerId,
   onDeleteSet,
-  handleEditSet
+  handleEditSet,
+  onAddSetRetry,
+  onEditSetRetry
 }) => {
-  const { reps, _id: setId } = set;
+  const { reps, _id: setId, request, isPending, isRejected } = set;
   const [inputReps, setInputReps] = useState(reps || 0);
   const repsRef = useRef();
   const lastRepsReqRef = useRef(reps);
@@ -60,19 +62,51 @@ const WebExerciseColumn = ({
     };
   }, [onEditSet]);
 
+  function onRetryClick(e) {
+    e.stopPropagation();
+    if (request === "add") {
+      onAddSetRetry(exerId, set);
+    } else if (request === "edit") {
+      onEditSetRetry(exerId, set);
+    } else if (request === "delete") {
+      onDeleteSet(exerId, setId);
+    }
+  }
+
   return (
-    <div className="add-card-column flex-center-space-bw padding-0-20">
-      <button
-        className="add-card-remove-btn theme-btn-no-border flex-center"
-        onClick={() => {
-          isDeleted.current = true;
-          onDeleteSet(exerId, setId);
-        }}
-        tabIndex="-1"
-      >
-        <i className="material-icons">remove</i>
-      </button>
-      <span className="black font-14 font-w-500">{index + 1}</span>
+    <div
+      className={
+        "add-card-column flex-ai-center padding-0-20" +
+        (isPending ? " exercise-card-pending" : "") +
+        (isRejected ? " exercise-card-rejected" : "")
+      }
+    >
+      <div className="flex-ai-center edit-week-card-set-button-container">
+        {isRejected ? (
+          <div className="flex-ai-center exercise-card-rejected-container">
+            <span className="color-light-gray">Request failed</span>
+            <button className="padding-5 tc" onClick={onRetryClick}>
+              <i className="material-icons">refresh</i>
+            </button>
+          </div>
+        ) : (
+          <button
+            className="add-card-set-remove-btn theme-btn-no-border flex-center"
+            onClick={() => {
+              isDeleted.current = true;
+              onDeleteSet(exerId, setId);
+            }}
+            tabIndex="-1"
+          >
+            <i className="material-icons">remove</i>
+          </button>
+        )}
+      </div>
+
+      <span className="font-w-500 color-gray edit-week-card-rep-index">
+        {index + 1}
+      </span>
+
       <ExerciseForm
         onChange={onChange}
         inputReps={inputReps}
@@ -88,12 +122,13 @@ const ExerciseForm = ({ setId, onChange, inputReps, onInputBlur }) => {
   const inputEl = useRef(null);
 
   return (
-    <div className="">
+    <div className="edit-week-web-reps-wrapper flex-ai-center">
       <form
         onSubmit={e => {
           e.preventDefault();
           inputEl.current.blur();
         }}
+        className="edit-week-mobile-reps-form"
       >
         <label
           htmlFor={`reps-${setId}`}

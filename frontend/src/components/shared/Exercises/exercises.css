@@ -32,3 +32,9 @@
   display: flex;
   flex-wrap: wrap;
 }
+
+.exercises-rejected-container {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}

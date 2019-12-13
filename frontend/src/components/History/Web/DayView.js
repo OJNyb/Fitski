@@ -10,12 +10,21 @@ const DayView = ({
   onCopyClick,
   handleEditSet,
   handleDeleteSet,
-  handleDeleteExercise
+  handleDeleteExercise,
+  handleAddSetRetry,
+  handleEditSetRetry,
+  handleAddExerciseRetry
 }) => {
   const user = useUser();
   const { defaultUnit } = user;
   if (dayIndex !== -1) {
-    const { exercises, _id: dayId } = currentDay;
+    const {
+      exercises,
+      request,
+      isPending,
+      isRejected,
+      _id: dayId
+    } = currentDay;
 
     let exerciseDisplay = exercises.map(exercise => {
       if (!exercise || !exercise.exercise) {
@@ -26,11 +35,17 @@ const DayView = ({
             dayId={dayId}
             key={exercise._id}
             exercise={exercise}
+            dayRequest={request}
+            dayPending={isPending}
+            dayRejected={isRejected}
             onAddSet={handleAddSet}
             defaultUnit={defaultUnit}
             handleEditSet={handleEditSet}
             handleDeleteSet={handleDeleteSet}
             onDeleteExercise={handleDeleteExercise}
+            handleAddSetRetry={handleAddSetRetry}
+            handleEditSetRetry={handleEditSetRetry}
+            onAddExerciseRetry={handleAddExerciseRetry}
           />
         );
       }

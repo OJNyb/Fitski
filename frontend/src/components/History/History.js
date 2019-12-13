@@ -11,12 +11,16 @@ import CalendarMuscleGroupCircle from "./CalendarMuscleGroupCircle";
 
 import {
   addDay,
+  retryAddDay,
   deleteDay,
   addExercise,
+  retryAddExercise,
   deleteExercise,
   deleteExercises,
   addSet,
+  retryAddSet,
   editSet,
+  retryEditSet,
   deleteSet,
   copyDay
 } from "../../utils/historyClient";
@@ -89,6 +93,14 @@ const History = () => {
     }
   }
 
+  function handleAddExerciseRetry(exer) {
+    if (days[dayIndex].isRejected) {
+      retryAddDay(dispatch, days[dayIndex]);
+    } else {
+      retryAddExercise(dispatch, dayId, exer);
+    }
+  }
+
   function handleDeleteExercise(exerId) {
     const { notes, exercises } = currentDay;
     if (!notes && exercises.length === 1) {
@@ -118,8 +130,16 @@ const History = () => {
     addSet(dispatch, values, dayId, exerId);
   }
 
+  function handleAddSetRetry(exerId, set) {
+    retryAddSet(dispatch, dayId, exerId, set);
+  }
+
   function handleEditSet(values, exerId, setId) {
     editSet(dispatch, values, dayId, exerId, setId);
+  }
+
+  function handleEditSetRetry(exerId, set) {
+    retryEditSet(dispatch, dayId, exerId, set);
   }
 
   function handleDeleteSet(exerId, setId) {
@@ -162,12 +182,15 @@ const History = () => {
         currentDay={currentDay}
         handleAddSet={handleAddSet}
         handleEditSet={handleEditSet}
-        handleDateChange={handleDateChange}
+        handleCopyDay={handleCopyDay}
         handleDeleteSet={handleDeleteSet}
+        handleDateChange={handleDateChange}
         handleAddExercise={handleAddExercise}
+        handleAddSetRetry={handleAddSetRetry}
+        handleEditSetRetry={handleEditSetRetry}
         displayGroupCircle={displayGroupCircle}
         handleDeleteExercises={handleDeleteExercises}
-        handleCopyDay={handleCopyDay}
+        handleAddExerciseRetry={handleAddExerciseRetry}
       />
     );
   } else {
@@ -183,8 +206,11 @@ const History = () => {
         handleDeleteSet={handleDeleteSet}
         handleDateChange={handleDateChange}
         handleAddExercise={handleAddExercise}
+        handleAddSetRetry={handleAddSetRetry}
+        handleEditSetRetry={handleEditSetRetry}
         displayGroupCircle={displayGroupCircle}
         handleDeleteExercise={handleDeleteExercise}
+        handleAddExerciseRetry={handleAddExerciseRetry}
       />
     );
   }

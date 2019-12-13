@@ -14,7 +14,10 @@ const WebEditWeek = ({
   handleDeleteSet,
   handleAddExercise,
   setCurrentDayIndex,
-  handleDeleteExercise
+  handleDeleteExercise,
+  handleAddExerciseRetry,
+  handleAddSetRetry,
+  handleEditSetRetry
 }) => {
   const { days } = currentWeek;
   const currentDay = days[currentDayIndex];
@@ -41,6 +44,9 @@ const WebEditWeek = ({
       handleEditSet={handleEditSet}
       handleDeleteSet={handleDeleteSet}
       onDeleteExercise={handleDeleteExercise}
+      handleAddSetRetry={handleAddSetRetry}
+      handleEditSetRetry={handleEditSetRetry}
+      onAddExerciseRetry={handleAddExerciseRetry}
     />
   ));
 

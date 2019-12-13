@@ -1,3 +1,38 @@
 .history-copy-day-modal-container {
   width: 300px;
 }
+
+.history-web-set-rejected {
+  background-color: rgb(250, 206, 206);
+}
+
+.history-web-set-rejected-container button {
+  color: #a60000;
+}
+
+.history-web-set-rejected-container button:hover {
+  background-color: #aa000028;
+  border-radius: 50%;
+}
+
+.history-web-column-btn-wrapper {
+  width: 35%;
+}
+
+.history-web-column-form {
+  width: 65%;
+}
+
+.history-web-row {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.history-web-row:first-child {
+  flex: 0.45 45%;
+}
+
+.history-web-row:last-child {
+  flex: 0.55 55%;
+}

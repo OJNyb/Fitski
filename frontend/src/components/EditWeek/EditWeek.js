@@ -8,7 +8,10 @@ import {
   editSet,
   deleteSet,
   addExercise,
-  deleteExercise
+  deleteExercise,
+  retryAddExercise,
+  retryAddSet,
+  retryEditSet
 } from "../../utils/planClient";
 
 import SetLoading from "../SetLoading";
@@ -48,6 +51,10 @@ const EditWeek = ({ match: { params } }) => {
     addExercise(dispatch, planId, weekId, dayId, exercise, reps);
   }
 
+  function handleAddExerciseRetry(exer) {
+    retryAddExercise(dispatch, planId, weekId, dayId, exer);
+  }
+
   function handleDeleteExercise(exerId) {
     deleteExercise(dispatch, planId, weekId, dayId, exerId);
   }
@@ -57,15 +64,19 @@ const EditWeek = ({ match: { params } }) => {
       reps = findLastOccurenceOfExercisePlan(weeks, exerciseId).reps;
     }
 
-    if (!reps) {
-      reps = 0;
-    }
-
     addSet(dispatch, reps, planId, weekId, dayId, exerId);
+  }
+
+  function handleAddSetRetry(exerId, set) {
+    retryAddSet(dispatch, planId, weekId, dayId, exerId, set);
   }
 
   function handleEditSet(exerId, setId, reps) {
     editSet(dispatch, reps, planId, weekId, dayId, exerId, setId);
+  }
+
+  function handleEditSetRetry(exerId, set) {
+    retryEditSet(dispatch, planId, weekId, dayId, exerId, set);
   }
 
   function handleDeleteSet(exerId, setId) {
@@ -87,6 +98,9 @@ const EditWeek = ({ match: { params } }) => {
         handleDeleteSet={handleDeleteSet}
         handleAddExercise={handleAddExercise}
         handleDeleteExercise={handleDeleteExercise}
+        handleAddExerciseRetry={handleAddExerciseRetry}
+        handleAddSetRetry={handleAddSetRetry}
+        handleEditSetRetry={handleEditSetRetry}
       />
     );
   } else {
@@ -103,6 +117,9 @@ const EditWeek = ({ match: { params } }) => {
         handleDeleteSet={handleDeleteSet}
         handleAddExercise={handleAddExercise}
         handleDeleteExercise={handleDeleteExercise}
+        handleAddExerciseRetry={handleAddExerciseRetry}
+        handleAddSetRetry={handleAddSetRetry}
+        handleEditSetRetry={handleEditSetRetry}
       />
     );
   }

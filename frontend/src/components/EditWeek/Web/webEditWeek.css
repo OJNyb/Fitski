@@ -145,3 +145,8 @@
   flex-direction: column;
   align-items: center;
 }
+
+.edit-week-web-reps-wrapper {
+  flex: 0.5 50%;
+  justify-content: flex-end;
+}

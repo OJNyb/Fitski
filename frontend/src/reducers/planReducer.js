@@ -3,15 +3,33 @@ import {
   IS_REJECTED,
   SET_PLAN,
   EDIT_PLAN,
+  EDIT_PLAN_FAILED,
   ADD_WEEK,
+  ADD_WEEK_FAILED,
   COPY_WEEK,
+  COPY_WEEK_FAILED,
   REPEAT_WEEK,
+  REPEAT_WEEK_FAILED,
   DELETE_WEEK,
+  DELETE_WEEK_FAILED,
   ADD_EXERCISE,
+  ADD_EXERCISE_RETRY,
+  ADD_EXERCISE_FAILED,
+  ADD_EXERCISE_SUCCESS,
   DELETE_EXERCISE,
+  DELETE_EXERCISE_FAILED,
+  DELETE_EXERCISE_SUCCESS,
   ADD_SET,
+  ADD_SET_RETRY,
+  ADD_SET_FAILED,
+  ADD_SET_SUCCESS,
   EDIT_SET,
+  EDIT_SET_RETRY,
+  EDIT_SET_FAILED,
+  EDIT_SET_SUCCESS,
   DELETE_SET,
+  DELETE_SET_FAILED,
+  DELETE_SET_SUCCESS,
   REQUEST_FAILED
 } from "../types/planTypes";
 import axios from "axios";
@@ -214,7 +232,8 @@ function planReducer(state, action) {
             reps,
             _id: setId
           }
-        ]
+        ],
+        isPending: true
       };
 
       let week = weeks.find(x => x._id === weekId);
@@ -229,27 +248,86 @@ function planReducer(state, action) {
       };
     }
 
-    // case EDIT_EXERCISE: {
-    //   const { dayId, weekId, exerId, values } = payload;
-    //   const { woPlan } = state;
+    case ADD_EXERCISE_RETRY: {
+      const { exerId, dayId, weekId } = payload;
+      const { woPlan } = state;
 
-    //   let week = woPlan.weeks.find(x => x._id === weekId);
+      const { weeks } = woPlan;
 
-    //   let day = week.days.find(x => x._id === dayId);
+      const week = weeks.find(x => x._id === weekId);
+      const day = week.days.find(x => x._id === dayId);
+      const exercise = day.exercises.find(x => x._id === exerId);
 
-    //   let { exercises } = day;
+      exercise.isPending = true;
+      exercise.isRejected = false;
 
-    //   let exerciseIndex = exercises.map(x => x._id).indexOf(exerId);
+      return {
+        ...state,
+        woPlan
+      };
+    }
 
-    //   exercises[exerciseIndex] = { ...exercises[exerciseIndex], ...values };
+    case ADD_EXERCISE_SUCCESS: {
+      const { exerId, dayId, weekId } = payload;
+      const { woPlan } = state;
 
-    //   return {
-    //     ...state,
-    //     woPlan
-    //   };
-    // }
+      const { weeks } = woPlan;
+
+      const week = weeks.find(x => x._id === weekId);
+      const day = week.days.find(x => x._id === dayId);
+      const exercise = day.exercises.find(x => x._id === exerId);
+
+      exercise.isPending = false;
+
+      return {
+        ...state,
+        woPlan
+      };
+    }
+
+    case ADD_EXERCISE_FAILED: {
+      const { exerId, dayId, weekId } = payload;
+      const { woPlan } = state;
+
+      const { weeks } = woPlan;
+
+      const week = weeks.find(x => x._id === weekId);
+      const day = week.days.find(x => x._id === dayId);
+      const exercise = day.exercises.find(x => x._id === exerId);
+
+      exercise.isPending = false;
+      exercise.isRejected = true;
+      exercise.request = "add";
+
+      return {
+        ...state,
+        woPlan
+      };
+    }
 
     case DELETE_EXERCISE: {
+      const { dayId, weekId, exerId } = payload;
+      const { woPlan } = state;
+
+      const week = woPlan.weeks.find(x => x._id === weekId);
+      const day = week.days.find(x => x._id === dayId);
+
+      console.log(exerId);
+      day.exercises.forEach(x => {
+        if (x._id === exerId) {
+          x.isPending = true;
+          x.isRejected = false;
+          console.log(x);
+        }
+      });
+
+      return {
+        ...state,
+        woPlan
+      };
+    }
+
+    case DELETE_EXERCISE_SUCCESS: {
       const { dayId, weekId, exerId } = payload;
       const { woPlan } = state;
 
@@ -267,6 +345,29 @@ function planReducer(state, action) {
       };
     }
 
+    case DELETE_EXERCISE_FAILED: {
+      const { dayId, weekId, exerId } = payload;
+      const { woPlan } = state;
+
+      const week = woPlan.weeks.find(x => x._id === weekId);
+      const day = week.days.find(x => x._id === dayId);
+
+      console.log("fail");
+
+      day.exercises.forEach(x => {
+        if (x._id === exerId) {
+          x.isPending = false;
+          x.isRejected = true;
+          x.request = "delete";
+        }
+      });
+
+      return {
+        ...state,
+        woPlan
+      };
+    }
+
     case ADD_SET: {
       const { dayId, weekId, exerId, setId, reps } = payload;
       const { woPlan } = state;
@@ -274,7 +375,8 @@ function planReducer(state, action) {
 
       const newSet = {
         _id: setId,
-        reps
+        reps,
+        isPending: true
       };
 
       if (!weeks) {
@@ -308,6 +410,81 @@ function planReducer(state, action) {
       const { sets } = exercise;
 
       sets.push(newSet);
+
+      return {
+        ...state,
+        woPlan
+      };
+    }
+
+    case ADD_SET_RETRY: {
+      const { dayId, weekId, exerId, setId } = payload;
+      const { woPlan } = state;
+      const { weeks } = woPlan;
+
+      const week = weeks.find(x => x._id === weekId);
+      const { days } = week;
+
+      const day = days.find(x => x._id === dayId);
+      const { exercises } = day;
+
+      const exercise = exercises.find(x => x._id === exerId);
+      const { sets } = exercise;
+
+      const set = sets.find(x => x._id === setId);
+
+      set.isPending = true;
+      set.isRejected = false;
+
+      return {
+        ...state,
+        woPlan
+      };
+    }
+
+    case ADD_SET_SUCCESS: {
+      const { dayId, weekId, exerId, setId } = payload;
+      const { woPlan } = state;
+      const { weeks } = woPlan;
+
+      const week = weeks.find(x => x._id === weekId);
+      const { days } = week;
+
+      const day = days.find(x => x._id === dayId);
+      const { exercises } = day;
+
+      const exercise = exercises.find(x => x._id === exerId);
+      const { sets } = exercise;
+
+      const set = sets.find(x => x._id === setId);
+
+      set.isPending = false;
+
+      return {
+        ...state,
+        woPlan
+      };
+    }
+
+    case ADD_SET_FAILED: {
+      const { dayId, weekId, exerId, setId } = payload;
+      const { woPlan } = state;
+      const { weeks } = woPlan;
+
+      const week = weeks.find(x => x._id === weekId);
+      const { days } = week;
+
+      const day = days.find(x => x._id === dayId);
+      const { exercises } = day;
+
+      const exercise = exercises.find(x => x._id === exerId);
+      const { sets } = exercise;
+
+      const set = sets.find(x => x._id === setId);
+
+      set.isPending = false;
+      set.isRejected = true;
+      set.request = "add";
 
       return {
         ...state,
@@ -352,7 +529,94 @@ function planReducer(state, action) {
 
       let setIndex = sets.map(x => x._id).indexOf(setId);
 
-      sets[setIndex] = { ...sets[setIndex], reps };
+      sets[setIndex] = { ...sets[setIndex], reps, isPending: true };
+
+      return {
+        ...state,
+        woPlan
+      };
+    }
+
+    case EDIT_SET_RETRY: {
+      const { dayId, weekId, exerId, setId } = payload;
+      const { woPlan } = state;
+
+      const { weeks } = woPlan;
+
+      const week = weeks.find(x => x._id === weekId);
+      const { days } = week;
+
+      const day = days.find(x => x._id === dayId);
+      const { exercises } = day;
+
+      const exercise = exercises.find(x => x._id === exerId);
+      const { sets } = exercise;
+
+      let setIndex = sets.map(x => x._id).indexOf(setId);
+
+      sets[setIndex] = {
+        ...sets[setIndex],
+        isPending: true,
+        isRejected: false
+      };
+
+      return {
+        ...state,
+        woPlan
+      };
+    }
+
+    case EDIT_SET_SUCCESS: {
+      const { dayId, weekId, exerId, setId } = payload;
+      const { woPlan } = state;
+
+      const { weeks } = woPlan;
+
+      const week = weeks.find(x => x._id === weekId);
+      const { days } = week;
+
+      const day = days.find(x => x._id === dayId);
+      const { exercises } = day;
+
+      const exercise = exercises.find(x => x._id === exerId);
+      const { sets } = exercise;
+
+      let setIndex = sets.map(x => x._id).indexOf(setId);
+
+      sets[setIndex] = {
+        ...sets[setIndex],
+        isPending: false
+      };
+
+      return {
+        ...state,
+        woPlan
+      };
+    }
+
+    case EDIT_SET_FAILED: {
+      const { dayId, weekId, exerId, setId } = payload;
+      const { woPlan } = state;
+
+      const { weeks } = woPlan;
+
+      const week = weeks.find(x => x._id === weekId);
+      const { days } = week;
+
+      const day = days.find(x => x._id === dayId);
+      const { exercises } = day;
+
+      const exercise = exercises.find(x => x._id === exerId);
+      const { sets } = exercise;
+
+      let setIndex = sets.map(x => x._id).indexOf(setId);
+
+      sets[setIndex] = {
+        ...sets[setIndex],
+        isPending: false,
+        isRejected: true,
+        request: "edit"
+      };
 
       return {
         ...state,
@@ -373,9 +637,61 @@ function planReducer(state, action) {
       const exercise = exercises.find(x => x._id === exerId);
       const { sets } = exercise;
 
+      sets.forEach(x => {
+        if (x._id === setId) {
+          x.isPending = true;
+        }
+      });
+
+      return {
+        ...state,
+        woPlan
+      };
+    }
+
+    case DELETE_SET_SUCCESS: {
+      const { dayId, weekId, exerId, setId } = payload;
+      const { woPlan } = state;
+
+      const week = woPlan.weeks.find(x => x._id === weekId);
+      const { days } = week;
+
+      const day = days.find(x => x._id === dayId);
+      const { exercises } = day;
+
+      const exercise = exercises.find(x => x._id === exerId);
+      const { sets } = exercise;
+
       const newSets = sets.filter(x => x._id !== setId);
 
       exercise.sets = newSets;
+
+      return {
+        ...state,
+        woPlan
+      };
+    }
+
+    case DELETE_SET_FAILED: {
+      const { dayId, weekId, exerId, setId } = payload;
+      const { woPlan } = state;
+
+      const week = woPlan.weeks.find(x => x._id === weekId);
+      const { days } = week;
+
+      const day = days.find(x => x._id === dayId);
+      const { exercises } = day;
+
+      const exercise = exercises.find(x => x._id === exerId);
+      const { sets } = exercise;
+
+      sets.forEach(x => {
+        if (x._id === setId) {
+          x.isPending = false;
+          x.isRejected = true;
+          x.request = "delete";
+        }
+      });
 
       return {
         ...state,

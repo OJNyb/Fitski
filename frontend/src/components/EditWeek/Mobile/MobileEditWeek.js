@@ -19,7 +19,10 @@ const MobileEditWeek = ({
   handleDeleteSet,
   handleAddExercise,
   setCurrentDayIndex,
-  handleDeleteExercise
+  handleDeleteExercise,
+  handleAddExerciseRetry,
+  handleAddSetRetry,
+  handleEditSetRetry
 }) => {
   const [showExercises, setShowExercises] = useState(false);
   const [activeExercise, setActiveExercise] = useState(null);
@@ -51,6 +54,9 @@ const MobileEditWeek = ({
       activeExercise={activeExercise}
       onCardClick={handleCardClick}
       onDeleteExercise={() => handleDeleteExercise(x._id)}
+      handleAddSetRetry={handleAddSetRetry}
+      handleEditSetRetry={handleEditSetRetry}
+      onAddExerciseRetry={handleAddExerciseRetry}
     />
   ));
 

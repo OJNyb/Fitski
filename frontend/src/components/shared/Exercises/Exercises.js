@@ -4,7 +4,9 @@ import useSetLoading from "../../../hooks/useSetLoading";
 import { ExerciseContext } from "../../../context/exerciseContext";
 import {
   addExercise,
+  retryAddExercise,
   editExercise,
+  retryEditExercise,
   deleteExercise
 } from "../../../utils/exerciseClient";
 
@@ -71,6 +73,14 @@ const Exercises = ({ handleAddExercise, closeExercises }) => {
     setEdit(edit + 1);
   }
 
+  function handleAddExerciseRetry(exercise) {
+    retryAddExercise(dispatch, exercise);
+  }
+
+  function handleEditExerciseRetry(exercise) {
+    retryEditExercise(dispatch, exercise);
+  }
+
   function handleDeleteExercises(exerciseIds) {
     deleteExercise(dispatch, exerciseIds);
   }
@@ -102,6 +112,8 @@ const Exercises = ({ handleAddExercise, closeExercises }) => {
       handleSearchChange={handleSearchChange}
       handleEditExercise={handleEditExercise}
       handleDeleteExercises={handleDeleteExercises}
+      handleAddExerciseRetry={handleAddExerciseRetry}
+      handleEditExerciseRetry={handleEditExerciseRetry}
       handleAddCustomExercise={handleAddCustomExercise}
     />
   ) : (
@@ -116,6 +128,8 @@ const Exercises = ({ handleAddExercise, closeExercises }) => {
       handleSelectChange={handleSelectChange}
       handleEditExercise={handleEditExercise}
       handleDeleteExercises={handleDeleteExercises}
+      handleAddExerciseRetry={handleAddExerciseRetry}
+      handleEditExerciseRetry={handleEditExerciseRetry}
       handleAddCustomExercise={handleAddCustomExercise}
     />
   );
