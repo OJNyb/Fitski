@@ -22,7 +22,7 @@ const useHistory = () => {
     function fetchData() {
       dispatch({ type: IS_PENDING });
       axios
-        .get("/history")
+        .get("/api/history")
         .then(res => {
           if (!isCancelled) {
             dispatch({ type: SET_HISTORY, payload: { history: res.data } });

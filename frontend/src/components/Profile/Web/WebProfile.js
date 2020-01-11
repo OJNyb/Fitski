@@ -52,7 +52,7 @@ const Profile = ({
       <div>
         <div className="profile-web-info-container width-80p margin-a padding-10-0">
           <img
-            src={`/image/avatar/${avatar}_lg.jpg`}
+            src={`/api/image/avatar/${avatar}_lg.jpg`}
             alt="Avatar"
             className="mobile-profile-picture"
           />

@@ -34,7 +34,7 @@ const MobilePlanCard = ({
     avatar = a;
   }
 
-  const avatarUrl = `/image/avatar/${avatar}_sm.jpg`;
+  const avatarUrl = `/api/image/avatar/${avatar}_sm.jpg`;
 
   const { woPlan: activePlan, endDate } = activeWOPlan;
 

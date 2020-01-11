@@ -36,7 +36,7 @@ const Overview = ({ woPlan }) => {
         {showOverview && (
           <div className="pt-10 flex-col-cen">
             <div className="plan-overview-autho-container">
-              <img src={`/image/avatar/${avatar}_sm.jpg`} alt="Avatar" />
+              <img src={`/api/image/avatar/${avatar}_sm.jpg`} alt="Avatar" />
               <div className="flex-col">
                 <span className="font-w-300 font-14 black">Author</span>
                 <Link

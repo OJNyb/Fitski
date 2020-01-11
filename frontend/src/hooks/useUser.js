@@ -27,7 +27,7 @@ const useUser = () => {
     function fetchData() {
       dispatch({ type: IS_PENDING });
       axios
-        .get(`/user/me`)
+        .get(`/api/user/me`)
         .then(res => {
           if (!isCancelled) {
             dispatch({ type: SET_USER, payload: { user: res.data } });

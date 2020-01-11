@@ -8,7 +8,7 @@ const RemovePlanModal = ({ woPlan, hideModal }) => {
   const { push } = useHistory();
   function onSubmit() {
     axios
-      .delete(`/user/access/${planId}`)
+      .delete(`/api/user/access/${planId}`)
       .then(res => {
         const { data } = res;
         const { message } = data;

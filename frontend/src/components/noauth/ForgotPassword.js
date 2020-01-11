@@ -38,7 +38,7 @@ const ForgotPassword = () => {
           }}
           onSubmit={(values, { setSubmitting }) => {
             axios
-              .post("/user/forgot", values)
+              .post("/api/user/forgot", values)
               .then(res => {
                 let isSucc = isSuccessful(res);
                 if (isSucc) {

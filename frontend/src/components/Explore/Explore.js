@@ -50,9 +50,9 @@ const Explore = () => {
       if (search.length) {
         let req;
         if (category === "plans") {
-          req = `/explore/search?search=${search}&skip=${skip}`;
+          req = `/api/explore/search?search=${search}&skip=${skip}`;
         } else {
-          req = `/explore/users/search?username=${search}&skip=${skip}`;
+          req = `/api/explore/users/search?username=${search}&skip=${skip}`;
         }
 
         const {
@@ -87,7 +87,7 @@ const Explore = () => {
           error,
           isCancelled: isReqCancelled,
           results
-        } = await trendingReq(`/explore/trending?skip=${skip}`);
+        } = await trendingReq(`/api/explore/trending?skip=${skip}`);
         if (error) {
           return console.log(error);
         }

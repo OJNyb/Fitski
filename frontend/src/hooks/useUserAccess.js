@@ -26,7 +26,7 @@ const useUserAccess = () => {
     function fetchData() {
       dispatch({ type: IS_PENDING });
       axios
-        .get("/user/access")
+        .get("/api/user/access")
         .then(res => {
           if (!isCancelled) {
             dispatch({ type: SET_ACCESS, payload: { data: res.data } });

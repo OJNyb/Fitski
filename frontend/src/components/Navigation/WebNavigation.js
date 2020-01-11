@@ -52,7 +52,7 @@ const BigScreenNavigation = () => {
           <div className="header-user flex-center">
             <img
               className="header-avatar"
-              src={`/image/avatar/${user.avatar}_sm.jpg`}
+              src={`/api/image/avatar/${user.avatar}_sm.jpg`}
               alt="avatar"
             />
             <p className="header-name color-gray">{username}</p>

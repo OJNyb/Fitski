@@ -43,7 +43,7 @@ const ResetPassword = () => {
         }}
         onSubmit={(values, { setSubmitting }) => {
           axios
-            .post(`/user/reset/${token}`, values)
+            .post(`/api/user/reset/${token}`, values)
             .then(res => {
               console.log(res);
               setEmailSent(true);

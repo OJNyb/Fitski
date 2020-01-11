@@ -77,7 +77,7 @@ const Profile = ({
       <div>
         <div className="profile-info-container padding-10-15">
           <img
-            src={`/image/avatar/${avatar}_sm.jpg`}
+            src={`/api/image/avatar/${avatar}_sm.jpg`}
             alt="Avatar"
             className="mobile-profile-picture"
           />
