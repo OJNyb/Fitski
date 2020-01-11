@@ -32,5 +32,8 @@
     "nodemon": "^1.19.1",
     "react-range": "^1.4.2",
     "streamifier": "^0.1.1"
+  },
+  "engines": {
+    "node": "10.15.0"
   }
 }
