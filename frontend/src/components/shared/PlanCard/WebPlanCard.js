@@ -27,7 +27,7 @@ const PlanCard = ({ plan, profile, search, category }) => {
         searchCategory: category
       });
     }
-    return <Redirect to={`/api/plans/${planId}`} />;
+    return <Redirect to={`/plans/${planId}`} />;
   }
 
   let goalDisplay = goal;

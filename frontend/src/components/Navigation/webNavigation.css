@@ -17,6 +17,8 @@
 .header-logo-container {
   min-width: 250px;
   border-right: 1px solid rgba(0, 0, 0, 0.1);
+  background-color: white;
+  z-index: 99999;
 }
 
 .header-logo-container i {
@@ -54,4 +56,14 @@
 
 .small-screen-dehaze-button {
   margin: 0 37px 0 20px;
+}
+
+.nav-small-screen-background {
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 9999;
+  right: 0;
+  top: 66px;
+  position: fixed;
 }
