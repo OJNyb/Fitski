@@ -8,7 +8,8 @@
     "server": "cd backend&&nodemon server.js",
     "client": "npm start --prefix frontend",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "buildDev": "concurrently \"npm i\" \"cd frontend&&npm i\""
+    "buildDev": "concurrently \"npm i\" \"cd frontend&&npm i\"",
+    "heroku-postbuild": "cd client && npm install — only=dev && npm install && npm run build"
   },
   "author": "",
   "license": "ISC",
