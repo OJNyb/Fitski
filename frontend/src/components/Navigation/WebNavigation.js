@@ -11,6 +11,7 @@ const BigScreenNavigation = () => {
   const { username } = user;
   const width = useWindowWidth();
   const [showMenu, setShowMenu] = useState(true);
+  let isSmallScreen = width < 1000;
   useLayoutEffect(() => {
     if (width < 1000) {
       setShowMenu(false);
@@ -20,7 +21,7 @@ const BigScreenNavigation = () => {
   }, [width]);
 
   let logo;
-  if (width < 1000) {
+  if (isSmallScreen) {
     logo = <SmallScreenLogo showMenu={showMenu} setShowMenu={setShowMenu} />;
   } else {
     logo = <BigScreenLogo />;
@@ -28,7 +29,7 @@ const BigScreenNavigation = () => {
 
   useEffect(() => {
     function clickListener(e) {
-      if (width < 1000 && e.target.id !== "ss-more-btn") {
+      if (isSmallScreen && e.target.id !== "ss-more-btn") {
         setShowMenu(false);
       }
     }
@@ -36,7 +37,7 @@ const BigScreenNavigation = () => {
       window.addEventListener("click", clickListener);
     }
 
-    if (width < 1000) {
+    if (isSmallScreen) {
       addClickListener();
     }
     return () => {
@@ -48,7 +49,7 @@ const BigScreenNavigation = () => {
     <>
       <div className="header">
         {logo}
-        {width >= 1000 && (
+        {!isSmallScreen && (
           <div className="header-user flex-center">
             <img
               className="header-avatar"
@@ -58,8 +59,11 @@ const BigScreenNavigation = () => {
             <p className="header-name color-gray">{username}</p>
           </div>
         )}
-        <NavigationMenu marginTop={true} show={showMenu} />
       </div>
+      {isSmallScreen && showMenu && (
+        <div className="nav-small-screen-background"></div>
+      )}
+      <NavigationMenu marginTop={true} show={showMenu} />
     </>
   );
 };

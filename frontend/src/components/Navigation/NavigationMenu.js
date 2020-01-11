@@ -1,12 +1,20 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import { useUser } from "../../context/userContext";
+import useMobile from "../../hooks/useMobile";
 
 const NavigationMenu = ({ marginTop, show = true }) => {
   const user = useUser();
+  const isMobile = useMobile();
+
+  let style = {};
+  if (!isMobile) {
+    style.left = show ? 0 : "-251px";
+  }
+
   const { avatar, username } = user;
   return (
-    <nav style={{ marginTop: marginTop && "61px", left: show ? 0 : "-251px" }}>
+    <nav style={style}>
       <section>
         <h3 className="nav-header">DASHBOARD</h3>
 
