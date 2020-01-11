@@ -4,7 +4,6 @@
 node_modules
 package-lock.json
 # keys
-backend/config/keys.js
 backend/.env
 
 # frontend #
