@@ -2,6 +2,9 @@ import React, { lazy, useState, useContext, Suspense } from "react";
 import useMobile from "../../hooks/useMobile";
 import { PlanContext } from "../../context/planContext";
 import useSetLoading from "../../hooks/useSetLoading";
+import { deleteWeek } from "../../utils/planClient";
+import { useParams, useHistory } from "react-router-dom";
+
 import { findLastOccurenceOfExercisePlan } from "../../utils/findAllOccurencesOfExercise";
 import {
   addSet,
@@ -22,7 +25,8 @@ import "./editWeek.css";
 const MobileEditWeek = lazy(() => import("./Mobile/MobileEditWeek"));
 const WebEditWeek = lazy(() => import("./Web/WebEditWeek"));
 
-const EditWeek = ({ match: { params } }) => {
+const EditWeek = () => {
+  const { push } = useHistory();
   const { state, dispatch } = useContext(PlanContext);
   const [currentDayIndex, setCurrentDayIndex] = useState(0);
   const isMobile = useMobile();
@@ -30,7 +34,7 @@ const EditWeek = ({ match: { params } }) => {
 
   const { woPlan } = state;
   const { weeks } = woPlan;
-  const { plan_id: planId, week_id: weekId } = params;
+  const { plan_id: planId, week_id: weekId } = useParams();
 
   let weekIndex = weeks.map(x => x._id).indexOf(weekId);
 
@@ -83,6 +87,23 @@ const EditWeek = ({ match: { params } }) => {
     deleteSet(dispatch, planId, weekId, dayId, exerId, setId);
   }
 
+  function handleDeleteWeekSubmit() {
+    deleteWeek(dispatch, planId, weekId)
+      .then(() => {
+        let url = `/plans/${planId}/`;
+
+        if (weeks[weekIndex - 1]) {
+          let prevWeekId = weeks[weekIndex - 1]._id;
+          url += prevWeekId;
+        } else if (weeks[weekIndex + 1]) {
+          let nextWeekId = weeks[weekIndex + 1]._id;
+          url += nextWeekId;
+        }
+        push(url);
+      })
+      .catch(err => console.log(err));
+  }
+
   let view = null;
   if (isMobile) {
     view = (
@@ -126,7 +147,12 @@ const EditWeek = ({ match: { params } }) => {
 
   return (
     <>
-      <EditWeekNav weeks={weeks} weekIndex={weekIndex} isMobile={isMobile} />
+      <EditWeekNav
+        weeks={weeks}
+        weekIndex={weekIndex}
+        isMobile={isMobile}
+        handleDeleteWeekSubmit={handleDeleteWeekSubmit}
+      />
       <Suspense fallback={<SetLoading />}>{view}</Suspense>
     </>
   );

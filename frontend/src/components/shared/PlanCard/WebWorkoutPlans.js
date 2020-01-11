@@ -16,7 +16,7 @@ const WorkoutPlans = ({ woPlans, profile, search, category, isPending }) => {
         category={category}
       />
     ));
-  } else {
+  } else if (!isPending) {
     cardView = <p className="text-center">No workout plans</p>;
   }
 
@@ -27,11 +27,14 @@ const WorkoutPlans = ({ woPlans, profile, search, category, isPending }) => {
         <div className="plans-cards-header-goal">Goal</div>
         <div className="plans-cards-header-author">Author</div>
         <div className="plans-cards-header-length">Length</div>
-
         <div className="plans-cards-header-created">Created</div>
       </div>
       {cardView}
-      {isPending && <LoadingSpinner />}
+      {isPending && (
+        <div className="flex-center web-plan-card-spinner-container">
+          <LoadingSpinner />
+        </div>
+      )}
     </div>
   );
 };

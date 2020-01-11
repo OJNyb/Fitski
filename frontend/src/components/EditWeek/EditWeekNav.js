@@ -7,12 +7,18 @@ import RepeatModal from "./RepeatModal";
 
 import NavMid from "../shared/NavMid/NavMid";
 
-const EditWeekNav = ({ weeks, weekIndex, isMobile }) => {
+const EditWeekNav = ({
+  weeks,
+  weekIndex,
+  isMobile,
+  handleDeleteWeekSubmit
+}) => {
   const { plan_id: planId } = useParams();
   const { push } = useHistory();
   const [showModal, setShowModal] = useState(false);
 
   function redirect(weekId) {
+    if (!weekId) push(`/plans/${planId}`);
     push(`/plans/${planId}/${weekId}`);
   }
 
@@ -47,17 +53,14 @@ const EditWeekNav = ({ weeks, weekIndex, isMobile }) => {
   let modal = null;
   if (showModal) {
     if (showModal === "copy") {
-      modal = (
-        <CopyModal weeks={weeks} weekIndex={weekIndex} hideModal={hideModal} />
-      );
+      modal = <CopyModal weekIndex={weekIndex} hideModal={hideModal} />;
     }
 
     if (showModal === "delete") {
       modal = (
         <DeleteModal
           hideModal={hideModal}
-          prevWeekId={prevWeekId}
-          nextWeekId={nextWeekId}
+          handleSubmit={handleDeleteWeekSubmit}
         />
       );
     }
@@ -110,8 +113,10 @@ const EditWeekNav = ({ weeks, weekIndex, isMobile }) => {
       <NavMid
         backText={"Weeks"}
         backAction={() => redirect("")}
-        rightBtnText={"Clear"}
-        rightBtnAction={() => console.log("gay")}
+        rightBtnText={"Delete week"}
+        rightBtnAction={handleDeleteClick}
+        rightBtnIcon={"delete_outline"}
+        rightBtnCustomClass={" delete-color"}
         actionMenuChildren={[
           {
             icon: "repeat",
@@ -125,12 +130,6 @@ const EditWeekNav = ({ weeks, weekIndex, isMobile }) => {
             action: handleCopyClick,
             customClass: " nav-minified-icon",
             outlined: true
-          },
-          {
-            icon: "delete_outline",
-            text: "Delete week",
-            action: handleDeleteClick,
-            customClass: " delete-color"
           }
         ]}
         midContent={isMobile ? null : navMidContent}

@@ -73,10 +73,9 @@ function App() {
           <Suspense fallback={<SetLoading />}>
             <Switch>
               <Route exact path="/plans" component={Plans} />
-              <Route exact path="/progress" component={CreatePlan} />
               <Route exact path="/create-plan" component={CreatePlan} />
               <Route exact path="/settings" component={Settings} />
-              <Route exact path="/calendar" component={History} />
+              <Route exact path="/" component={History} />
               <Route exact path="/explore" component={Explore} />
               <Route path="/profile/:username" component={Profile} />
               <Route path="/plans/:plan_id" component={PlanHOC} />

@@ -2,16 +2,16 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import { useUser } from "../../context/userContext";
 
-const NavigationMenu = ({ marginTop }) => {
+const NavigationMenu = ({ marginTop, show = true }) => {
   const user = useUser();
   const { avatar, username } = user;
   return (
-    <nav style={{ marginTop: marginTop && "61px" }}>
+    <nav style={{ marginTop: marginTop && "61px", left: show ? 0 : "-251px" }}>
       <section>
         <h3 className="nav-header">DASHBOARD</h3>
 
+        <NavItem to="/" icon="calendar_today" text="Calendar" exact={true} />
         <NavItem to="/plans" icon="view_list" text="Plans" />
-        <NavItem to="/calendar" icon="calendar_today" text="Calendar" />
         <NavItem to="/explore" icon="supervised_user_circle" text="Explore" />
 
         {/* <NavLink
@@ -47,9 +47,13 @@ const NavigationMenu = ({ marginTop }) => {
   );
 };
 
-const NavItem = ({ to, icon, text }) => {
+const NavItem = ({ to, icon, text, exact }) => {
   return (
-    <NavLink to={to} className="nav-item flex-ai-center line-height-11">
+    <NavLink
+      exact={exact}
+      to={to}
+      className="nav-item flex-ai-center line-height-11"
+    >
       <i className="material-icons nav-icon">{icon}</i>
       <span className="nav-span">{text}</span>
     </NavLink>

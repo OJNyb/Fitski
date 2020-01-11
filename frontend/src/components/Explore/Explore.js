@@ -32,7 +32,6 @@ const Explore = () => {
   const isMobile = useMobile();
   const { skip, setSkip } = useSkip();
   const { dispatch: userDispatch } = useAuth();
-  const prevSearch = useRef("");
   const keepOldPlans = useRef(true);
   const isCancelled = useRef(false);
   const [results, setResults] = useState([]);
@@ -42,13 +41,12 @@ const Explore = () => {
   const [search, setSearch] = useState(navState.search || "");
   const [category, setCategory] = useState(navState.searchCategory || "plans");
 
-  console.log(navState);
-
   useTitle("Fitnut - Explore");
   useCleanNavState();
 
   useEffect(() => {
     async function fetchData() {
+      console.log("gay");
       if (search.length) {
         let req;
         if (category === "plans") {
@@ -57,15 +55,17 @@ const Explore = () => {
           req = `/explore/users/search?username=${search}&skip=${skip}`;
         }
 
-        const { error, isCancelled: isReqCancelled, results } = await searchReq(
-          req
-        );
+        const {
+          error,
+          isCancelled: isReqCancelled,
+          results: newResults
+        } = await searchReq(req);
         if (error) {
           return console.log(error);
         }
 
         if (!isCancelled.current || !isReqCancelled) {
-          if (results.length === 0) {
+          if (newResults.length === 0) {
             if (results.length) {
               setReachedEnd(true);
             } else {
@@ -73,11 +73,10 @@ const Explore = () => {
             }
           } else {
             if (keepOldPlans.current) {
-              setResults(p => [...p, ...results]);
+              setResults(p => [...p, ...newResults]);
             } else {
-              setResults(results);
+              setResults(newResults);
             }
-            prevSearch.current = search;
           }
         } else if (isReqCancelled && !isCancelled.current) {
           setResults([]);
@@ -93,6 +92,7 @@ const Explore = () => {
           return console.log(error);
         }
         if (!isCancelled.current || !isReqCancelled) {
+          console.log("gay");
           if (results.length === 0) {
             setReachedEnd(true);
           } else {
@@ -102,7 +102,6 @@ const Explore = () => {
               setResults(results);
             }
             keepOldPlans.current = true;
-            prevSearch.current = search;
           }
         } else if (isReqCancelled && !isCancelled.current) {
           setResults([]);
@@ -114,16 +113,18 @@ const Explore = () => {
     return () => {
       isCancelled.current = true;
     };
-  }, [skip, search, category]);
+  }, [skip, search, category, results.length]);
 
   function handlePeopleClick() {
     setCategory("people");
+    setNoMatch(false);
     setSkip(0);
     setResults([]);
   }
 
   function handlePlanClick() {
     setCategory("plans");
+    setNoMatch(false);
     setSkip(0);
     setResults([]);
   }
@@ -188,13 +189,13 @@ const Explore = () => {
   if (isMobile) {
     view = (
       <MobileExplore
-        results={results}
         search={search}
-        category={category}
         noMatch={noMatch}
+        results={results}
+        category={category}
         reachedEnd={reachedEnd}
-        onSearchChange={handleSearchChange}
         handlePlanClick={handlePlanClick}
+        onSearchChange={handleSearchChange}
         handlePeopleClick={handlePeopleClick}
         handleActivateClick={handleActivateClick}
         handleDeactivateClick={handleDeactivateClick}

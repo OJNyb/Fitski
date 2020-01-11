@@ -19,9 +19,10 @@ const MobileExplore = ({
   noMatch,
   results,
   category,
+  reachedEnd,
+  onSearchChange,
   handlePlanClick,
   handlePeopleClick,
-  onSearchChange,
   handleActivateClick,
   handleDeactivateClick
 }) => {
@@ -100,6 +101,9 @@ const MobileExplore = ({
         onPeopleClick={handlePeopleClick}
       />
       <div className="explore-mobile-cards-container">{view}</div>
+      {reachedEnd && !!results.length && (
+        <p className="text-center black">You've reached the end</p>
+      )}
     </>
   );
 };

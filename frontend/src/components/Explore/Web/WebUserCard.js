@@ -24,9 +24,9 @@ const UserCard = ({ user, search, category }) => {
   return (
     <div
       onClick={() => setRedirect(true)}
-      className="padding-10 flex-stretch border-box width-100p plans-mobile-card black"
+      className="padding-10 border-box explore-web-user-card black"
     >
-      <div className="flex-stretch plans-mobile-plan-author margin-0-5">
+      <div className="explore-web-avatar-container margin-0-5">
         <div style={{ backgroundImage: `url(${avatarUrl})` }}>
           <img src={avatarUrl} alt="Avatar" />
         </div>

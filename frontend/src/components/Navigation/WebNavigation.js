@@ -58,7 +58,7 @@ const BigScreenNavigation = () => {
             <p className="header-name color-gray">{username}</p>
           </div>
         )}
-        {showMenu && <NavigationMenu marginTop={true} />}
+        <NavigationMenu marginTop={true} show={showMenu} />
       </div>
     </>
   );

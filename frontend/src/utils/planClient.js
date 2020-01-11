@@ -5,14 +5,19 @@ import { isSuccessful } from "../utils/errorHandling";
 import {
   EDIT_PLAN,
   EDIT_PLAN_FAILED,
+  EDIT_PLAN_SUCCESS,
   ADD_WEEK,
   ADD_WEEK_FAILED,
+  ADD_WEEK_SUCCESS,
   COPY_WEEK,
   COPY_WEEK_FAILED,
+  COPY_WEEK_SUCCESS,
   REPEAT_WEEK,
   REPEAT_WEEK_FAILED,
+  REPEAT_WEEK_SUCCESS,
   DELETE_WEEK,
   DELETE_WEEK_FAILED,
+  DELETE_WEEK_SUCCESS,
   ADD_EXERCISE,
   ADD_EXERCISE_RETRY,
   ADD_EXERCISE_FAILED,
@@ -30,14 +35,13 @@ import {
   EDIT_SET_SUCCESS,
   DELETE_SET,
   DELETE_SET_FAILED,
-  DELETE_SET_SUCCESS,
-  REQUEST_FAILED
+  DELETE_SET_SUCCESS
 } from "../types/planTypes";
 
 const { ObjectId } = Types;
 
 function editPlan(dispatch, planId, values) {
-  dispatch({ type: EDIT_PLAN, payload: { planId, values } });
+  dispatch({ type: EDIT_PLAN });
 
   axios
     .post(`/plan/${planId}`, values)
@@ -45,13 +49,18 @@ function editPlan(dispatch, planId, values) {
       let isSucc = isSuccessful(res);
       if (!isSucc) {
         dispatch({
-          type: REQUEST_FAILED
+          type: EDIT_PLAN_FAILED
+        });
+      } else {
+        dispatch({
+          type: EDIT_PLAN_SUCCESS,
+          payload: { planId, values }
         });
       }
     })
     .catch(err => {
       dispatch({
-        type: REQUEST_FAILED,
+        type: EDIT_PLAN_FAILED,
         payload: { err }
       });
     });
@@ -76,13 +85,18 @@ function addWeeks(dispatch, planId, numberOfWeeks = 1) {
       let isSucc = isSuccessful(res);
       if (!isSucc) {
         dispatch({
-          type: REQUEST_FAILED
+          type: ADD_WEEK_FAILED
+        });
+      } else {
+        dispatch({
+          type: ADD_WEEK_SUCCESS,
+          payload: { planId, weekArray }
         });
       }
     })
     .catch(err => {
       dispatch({
-        type: REQUEST_FAILED,
+        type: ADD_WEEK_FAILED,
         payload: { err }
       });
     });
@@ -102,13 +116,22 @@ function copyWeek(dispatch, planId, weekId, copyWeek) {
       let isSucc = isSuccessful(res);
       if (!isSucc) {
         dispatch({
-          type: REQUEST_FAILED
+          type: COPY_WEEK_FAILED
+        });
+      } else {
+        dispatch({
+          type: COPY_WEEK_SUCCESS,
+          payload: {
+            newIds,
+            weekId,
+            copyWeek
+          }
         });
       }
     })
     .catch(err => {
       dispatch({
-        type: REQUEST_FAILED,
+        type: COPY_WEEK_FAILED,
         payload: { err }
       });
     });
@@ -131,41 +154,53 @@ function repeatWeek(dispatch, planId, timesToRepeat, copyWeek) {
       let isSucc = isSuccessful(res);
       if (!isSucc) {
         dispatch({
-          type: REQUEST_FAILED
+          type: REPEAT_WEEK_FAILED
         });
+      } else {
+        dispatch({ type: REPEAT_WEEK_SUCCESS, payload: { newIds, copyWeek } });
       }
     })
     .catch(err => {
       dispatch({
-        type: REQUEST_FAILED,
+        type: REPEAT_WEEK_FAILED,
         payload: { err }
       });
     });
 }
 
 function deleteWeek(dispatch, planId, weekId) {
-  const payload = { weekId };
-  dispatch({
-    type: DELETE_WEEK,
-    payload
-  });
-
-  axios
-    .delete(`/plan/week/${planId}/${weekId}`)
-    .then(res => {
-      let isSucc = isSuccessful(res);
-      if (!isSucc) {
-        dispatch({
-          type: REQUEST_FAILED
-        });
-      }
-    })
-    .catch(err => {
-      dispatch({
-        type: REQUEST_FAILED,
-        payload: { err }
-      });
+  return new Promise((resolve, reject) => {
+    const payload = { weekId };
+    dispatch({
+      type: DELETE_WEEK,
+      payload
     });
+
+    axios
+      .delete(`/plan/week/${planId}/${weekId}`)
+      .then(res => {
+        let isSucc = isSuccessful(res);
+        if (!isSucc) {
+          dispatch({
+            type: DELETE_WEEK_FAILED
+          });
+          return reject();
+        } else {
+          dispatch({
+            type: DELETE_WEEK_SUCCESS,
+            payload
+          });
+          return resolve();
+        }
+      })
+      .catch(err => {
+        dispatch({
+          type: DELETE_WEEK_FAILED,
+          payload: { err }
+        });
+        reject();
+      });
+  });
 }
 
 function addExercise(dispatch, planId, weekId, dayId, exercise, reps) {

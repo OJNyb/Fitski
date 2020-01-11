@@ -96,7 +96,7 @@ const ExerciseCard = ({
     >
       <div className="history-exercise-name">
         <span className="black height-20 flex-ai-center">
-          <span className="black">{name}</span>
+          <span className="black font-16">{name}</span>
         </span>
 
         <div className="add-card-btn-container">

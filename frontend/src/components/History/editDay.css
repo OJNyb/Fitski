@@ -35,8 +35,6 @@
 
 .history-exercise-name > span {
   width: calc(100% - 110px);
-  line-height: 15px;
-  font-size: 16px;
 }
 
 .add-card-column button {

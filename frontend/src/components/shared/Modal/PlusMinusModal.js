@@ -3,6 +3,7 @@ import Modal from "./Modal";
 import useMobile from "../../../hooks/useMobile";
 import Plus24 from "../SVGs/Plus24";
 import Minus24 from "../SVGs/Minus24";
+import ErrorMessage from "./ErrorMessage";
 
 import "./plusMinusModal.css";
 
@@ -12,7 +13,9 @@ const PlusMinusModal = ({
   header,
   btnText,
   onSubmit,
-  hideModal
+  hideModal,
+  isRejected,
+  isPending
 }) => {
   const isMobile = useMobile();
 
@@ -22,6 +25,9 @@ const PlusMinusModal = ({
   }
   let children = (
     <div className={isMobile ? "plus-minus-modal-container" : "flex-col-cen"}>
+      {isRejected && (
+        <ErrorMessage message="Couldn't apply update, please try again" />
+      )}
       <div className="plus-minus-modal-input-wrapper">
         <button
           onClick={() => {
@@ -50,6 +56,7 @@ const PlusMinusModal = ({
           (isMobile ? "mobile-modal-submit-btn" : "bs-modal-submit-btn")
         }
         onClick={onSubmit}
+        disabled={isPending}
       >
         {btnText}
       </button>

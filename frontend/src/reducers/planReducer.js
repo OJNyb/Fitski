@@ -4,14 +4,19 @@ import {
   SET_PLAN,
   EDIT_PLAN,
   EDIT_PLAN_FAILED,
+  EDIT_PLAN_SUCCESS,
   ADD_WEEK,
   ADD_WEEK_FAILED,
+  ADD_WEEK_SUCCESS,
   COPY_WEEK,
   COPY_WEEK_FAILED,
+  COPY_WEEK_SUCCESS,
   REPEAT_WEEK,
   REPEAT_WEEK_FAILED,
+  REPEAT_WEEK_SUCCESS,
   DELETE_WEEK,
   DELETE_WEEK_FAILED,
+  DELETE_WEEK_SUCCESS,
   ADD_EXERCISE,
   ADD_EXERCISE_RETRY,
   ADD_EXERCISE_FAILED,
@@ -29,12 +34,8 @@ import {
   EDIT_SET_SUCCESS,
   DELETE_SET,
   DELETE_SET_FAILED,
-  DELETE_SET_SUCCESS,
-  REQUEST_FAILED
+  DELETE_SET_SUCCESS
 } from "../types/planTypes";
-import axios from "axios";
-
-// TODO: If !week/day/woplan
 
 function planReducer(state, action) {
   const { type, payload } = action;
@@ -81,21 +82,60 @@ function planReducer(state, action) {
     }
 
     case EDIT_PLAN: {
+      const { woPlan } = state;
+
+      return {
+        ...state,
+        woPlan: {
+          ...woPlan,
+          isPending: true,
+          isRejected: false
+        }
+      };
+    }
+
+    case EDIT_PLAN_SUCCESS: {
       const { values } = payload;
       const { woPlan } = state;
-      console.log(woPlan);
       const newPlan = {
         ...woPlan,
-        ...values
+        ...values,
+        isPending: false,
+        isRejected: false
       };
-      console.log(newPlan);
       return {
         ...state,
         woPlan: newPlan
       };
     }
 
+    case EDIT_PLAN_FAILED: {
+      const { woPlan } = state;
+
+      return {
+        ...state,
+        woPlan: {
+          ...woPlan,
+          isRejected: true,
+          isPending: false
+        }
+      };
+    }
+
     case ADD_WEEK: {
+      const { woPlan } = state;
+
+      return {
+        ...state,
+        woPlan: {
+          ...woPlan,
+          awPending: true,
+          awRejected: false
+        }
+      };
+    }
+
+    case ADD_WEEK_SUCCESS: {
       const { weekArray } = payload;
       const { woPlan } = state;
       const { weeks } = woPlan;
@@ -109,11 +149,41 @@ function planReducer(state, action) {
 
       return {
         ...state,
-        woPlan
+        woPlan: {
+          ...woPlan,
+          awPending: false,
+          awRejected: false
+        }
+      };
+    }
+
+    case ADD_WEEK_FAILED: {
+      const { woPlan } = state;
+
+      return {
+        ...state,
+        woPlan: {
+          ...woPlan,
+          awRejected: true,
+          awPending: false
+        }
       };
     }
 
     case COPY_WEEK: {
+      const { woPlan } = state;
+
+      return {
+        ...state,
+        woPlan: {
+          ...woPlan,
+          cwPending: true,
+          cwRejected: false
+        }
+      };
+    }
+
+    case COPY_WEEK_SUCCESS: {
       const { newIds, weekId, copyWeek } = payload;
       const { woPlan } = state;
       const { weeks } = woPlan;
@@ -152,11 +222,41 @@ function planReducer(state, action) {
 
       return {
         ...state,
-        woPlan
+        woPlan: {
+          ...woPlan,
+          cwPending: false,
+          cwRejected: false
+        }
+      };
+    }
+
+    case COPY_WEEK_FAILED: {
+      const { woPlan } = state;
+
+      return {
+        ...state,
+        woPlan: {
+          ...woPlan,
+          cwRejected: true,
+          cwPending: false
+        }
       };
     }
 
     case REPEAT_WEEK: {
+      const { woPlan } = state;
+
+      return {
+        ...state,
+        woPlan: {
+          ...woPlan,
+          rwPending: true,
+          rwRejected: false
+        }
+      };
+    }
+
+    case REPEAT_WEEK_SUCCESS: {
       const { newIds, copyWeek } = payload;
       const { woPlan } = state;
       const { weeks } = woPlan;
@@ -198,11 +298,41 @@ function planReducer(state, action) {
 
       return {
         ...state,
-        woPlan
+        woPlan: {
+          ...woPlan,
+          rwPending: false,
+          rwRejected: false
+        }
+      };
+    }
+
+    case REPEAT_WEEK_FAILED: {
+      const { woPlan } = state;
+
+      return {
+        ...state,
+        woPlan: {
+          ...woPlan,
+          rwRejected: true,
+          rwPending: false
+        }
       };
     }
 
     case DELETE_WEEK: {
+      const { woPlan } = state;
+
+      return {
+        ...state,
+        woPlan: {
+          ...woPlan,
+          dwPending: true,
+          dwRejected: false
+        }
+      };
+    }
+
+    case DELETE_WEEK_SUCCESS: {
       const { weekId } = payload;
       const { woPlan } = state;
 
@@ -214,7 +344,24 @@ function planReducer(state, action) {
 
       return {
         ...state,
-        woPlan
+        woPlan: {
+          ...woPlan,
+          dwPending: false,
+          dwRejected: false
+        }
+      };
+    }
+
+    case DELETE_WEEK_FAILED: {
+      const { woPlan } = state;
+
+      return {
+        ...state,
+        woPlan: {
+          ...woPlan,
+          dwRejected: true,
+          dwPending: false
+        }
       };
     }
 
@@ -696,19 +843,6 @@ function planReducer(state, action) {
       return {
         ...state,
         woPlan
-      };
-    }
-
-    case REQUEST_FAILED: {
-      let err;
-      if (payload) {
-        err = payload.err;
-      }
-
-      axios.post("/feedback/plan/error", { err });
-      window.location.reload(true);
-      return {
-        ...state
       };
     }
 

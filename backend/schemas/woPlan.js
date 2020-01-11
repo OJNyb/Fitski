@@ -21,8 +21,6 @@ const setId = _id.label("Set ID");
 
 const exerciseId = _id.label("Exercise ID");
 
-const skip = Joi.number().label("Skip");
-
 const name = Joi.string()
   .min(1)
   .max(30)
@@ -197,7 +195,7 @@ module.exports = {
   "post/plan/week/:plan_id": addWeek,
   "post/plan/week/copy/:plan_id/:week_id": copyWeek,
   "post/plan/week/repeat/:plan_id/:week_id": repeatWeek,
-  "delete/plan/:plan_id/:week_id": deleteWeek,
+  "delete/plan/week/:plan_id/:week_id": deleteWeek,
   "post/plan/day/:plan_id/:week_id/:day_id": editDay,
   "delete/plan/day/:plan_id/:week_id/:day_id": clearDay,
   "delete/plan/day/clear/:plan_id/:week_id/:day_id": clearDay,

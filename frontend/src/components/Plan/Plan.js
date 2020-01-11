@@ -87,34 +87,33 @@ const Plan = () => {
   }
 
   function handleEditSubmit(values) {
+    const submitValues = { ...values };
     const {
       name: vName,
       goal: vGoal,
       access: vAccess,
       difficulty: vDifficulty,
       description: vDescription
-    } = values;
+    } = submitValues;
     if (name === vName) {
-      delete values.name;
+      delete submitValues.name;
     }
     if (goal === vGoal) {
-      delete values.goal;
+      delete submitValues.goal;
     }
     if (access === vAccess) {
-      delete values.access;
+      delete submitValues.access;
     }
     if (difficulty === vDifficulty) {
-      delete values.difficulty;
+      delete submitValues.difficulty;
     }
     if (description === vDescription) {
-      delete values.description;
+      delete submitValues.description;
     }
 
-    if (Object.keys(values).length) {
-      editPlan(dispatch, planId, values);
+    if (Object.keys(submitValues).length) {
+      editPlan(dispatch, planId, submitValues);
     }
-
-    hideModal();
   }
 
   if (accessPending) {

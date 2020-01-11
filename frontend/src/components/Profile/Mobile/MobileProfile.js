@@ -63,12 +63,14 @@ const Profile = ({
             <h2 className="margin-0 font-w-500 mb-2 font-18 color-white">
               {username}
             </h2>
-            <button
-              onClick={() => setShowModal({ modal: "edit" })}
-              className="padding-5 flex-ai-center border-box color-white"
-            >
-              <i className="material-icons-outlined">edit</i>
-            </button>
+            {isSelf && (
+              <button
+                onClick={() => setShowModal({ modal: "edit" })}
+                className="padding-5 flex-ai-center border-box color-white"
+              >
+                <i className="material-icons-outlined">edit</i>
+              </button>
+            )}
           </>
         }
       />
@@ -91,6 +93,11 @@ const Profile = ({
             Workout Plans
           </p>
           <div>{cards}</div>
+          {!cards.length && (
+            <p className="color-gray text-center">
+              This user doesn't have any workout plans
+            </p>
+          )}
           {isPending && <LoadingSpinner />}
         </div>
       </div>

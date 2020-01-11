@@ -1,33 +1,57 @@
 import React, { useState, useContext } from "react";
-import { useParams } from "react-router-dom";
 import { copyWeek } from "../../utils/planClient";
 import { PlanContext } from "../../context/planContext";
 import useMobile from "../../hooks/useMobile";
 
 import Modal from "../shared/Modal/Modal";
+import ErrorMessage from "../shared/Modal/ErrorMessage";
 
-const CopyModal = ({ weeks, weekIndex, hideModal }) => {
-  const { plan_id: planId } = useParams();
-  const { dispatch } = useContext(PlanContext);
+const CopyModal = ({ weekIndex, hideModal }) => {
+  const {
+    state: { woPlan },
+    dispatch
+  } = useContext(PlanContext);
+  const { _id: planId, weeks } = woPlan;
   const currentWeek = weeks[weekIndex];
   const { _id: weekId } = currentWeek;
 
   function handleSubmit(copyWeekIndex) {
     if (copyWeekIndex === weekIndex) return;
     copyWeek(dispatch, planId, weekId, weeks[copyWeekIndex]);
+  }
+
+  const { cwRejected, cwPending } = woPlan;
+
+  console.log(woPlan);
+
+  function onClose() {
+    delete woPlan.cwPending;
+    delete woPlan.cwRejected;
     hideModal();
   }
 
+  if (cwRejected === false && cwPending === false) {
+    onClose();
+  }
+
   return (
-    <MobileCopyWeek
+    <CopyWeekModal
       weeks={weeks}
-      hideModal={hideModal}
+      hideModal={onClose}
       onSubmit={handleSubmit}
+      isRejected={cwRejected}
+      isPending={cwPending}
     />
   );
 };
 
-const MobileCopyWeek = ({ weeks, hideModal, onSubmit }) => {
+const CopyWeekModal = ({
+  weeks,
+  onSubmit,
+  hideModal,
+  isPending,
+  isRejected
+}) => {
   const isMobile = useMobile();
 
   const [selected, setSelected] = useState(1);
@@ -49,44 +73,50 @@ const MobileCopyWeek = ({ weeks, hideModal, onSubmit }) => {
   }
 
   let children = (
-    <div className="width-100p padding-s-10 border-box flex-col relative">
-      <div className="fixed bc-white margin-a edit-week-copy-select-week-wrapper">
-        <div className="flex-center">
-          <button
-            className="theme-btn-no-border"
-            onClick={() => {
-              onIncDecClick(-1);
-            }}
-            disabled={selected === 1}
-          >
-            <i className="material-icons">keyboard_arrow_left</i>
-          </button>
+    <>
+      {isRejected && (
+        <ErrorMessage message="Request failed, please try again" />
+      )}
+      <div className="width-100p padding-s-10 border-box flex-col relative">
+        <div className="fixed bc-white margin-a edit-week-copy-select-week-wrapper">
+          <div className="flex-center">
+            <button
+              className="theme-btn-no-border"
+              onClick={() => {
+                onIncDecClick(-1);
+              }}
+              disabled={selected === 1}
+            >
+              <i className="material-icons">keyboard_arrow_left</i>
+            </button>
 
-          <button className="font-21 black">{selected}</button>
+            <button className="font-21 black">{selected}</button>
 
-          <button
-            className="theme-btn-no-border"
-            onClick={() => onIncDecClick(1)}
-            disabled={selected === weeks.length}
-          >
-            <i className="material-icons">keyboard_arrow_right</i>
-          </button>
+            <button
+              className="theme-btn-no-border"
+              onClick={() => onIncDecClick(1)}
+              disabled={selected === weeks.length}
+            >
+              <i className="material-icons">keyboard_arrow_right</i>
+            </button>
+          </div>
         </div>
-      </div>
 
-      {weekView}
-      <button
-        className={
-          "theme-btn-filled " +
-          (isMobile ? "mobile-modal-submit-btn" : "bs-modal-submit-btn")
-        }
-        onClick={() => {
-          onSubmit(selected - 1);
-        }}
-      >
-        Copy
-      </button>
-    </div>
+        {weekView}
+        <button
+          className={
+            "theme-btn-filled " +
+            (isMobile ? "mobile-modal-submit-btn" : "bs-modal-submit-btn")
+          }
+          onClick={() => {
+            onSubmit(selected - 1);
+          }}
+          disabled={isPending}
+        >
+          Copy
+        </button>
+      </div>
+    </>
   );
 
   return (

@@ -66,7 +66,7 @@ const WebExerciseCard = ({
       }
     >
       <div className="history-exercise-name">
-        <span className="black">{name}</span>
+        <span className="black font-14">{name}</span>
 
         <div className="add-card-btn-container">
           {isRejected ? (

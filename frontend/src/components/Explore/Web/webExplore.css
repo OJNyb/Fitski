@@ -1,11 +1,12 @@
 .explore-web-search-container {
   background-color: rgb(252, 246, 246);
   border: 1px solid rgb(240, 232, 232);
-  width: 400px;
-  height: 35px;
+  width: 300px;
+  height: 25px;
   padding: 0 15px;
   border-radius: 2px;
   position: relative;
+  margin-top: 1px;
 }
 
 .explore-web-search-container:focus-within {
@@ -36,4 +37,62 @@
 
 .explore-web-search-container:focus-within circle {
   stroke: #a60000;
+}
+
+.explore-web-search-category-button {
+  border: 1px solid #a60000;
+  color: #a60000;
+  line-height: 1;
+  padding: 2px 6px;
+}
+
+.explore-web-search-category-button:first-child {
+  border-right: 0;
+}
+
+.explore-web-search-category-button-active {
+  background-color: #a60000 !important;
+  color: white;
+}
+
+/* USER CARD */
+.explore-web-profile-cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.explore-web-user-card {
+  width: 300px;
+  display: flex;
+  border: 1px solid rgb(243, 235, 235);
+  background-color: white;
+  margin: 10px;
+  box-shadow: 1px 1px 3px 0 rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+  min-height: 80px;
+  border-radius: 5px;
+}
+
+.explore-web-user-card:hover {
+  background-color: rgb(254, 243, 243);
+}
+
+.explore-web-avatar-container {
+  border-radius: 9999px;
+  overflow: hidden;
+  height: 36px;
+  min-width: 36px;
+  background-color: #f9eded;
+}
+
+.explore-web-avatar-container img {
+  width: 36px;
+  height: 36px;
+}
+
+.explore-web-avatar-container > div {
+  width: 36px;
+  height: 36px;
+  margin-right: 0;
 }

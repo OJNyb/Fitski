@@ -2,13 +2,33 @@ import React from "react";
 import { Formik, Form, Field } from "formik";
 
 import Modal from "../shared/Modal/Modal";
+import ErrorMessage from "../shared/Modal/ErrorMessage";
 import useMobile from "../../hooks/useMobile";
 import MobileInput from "../shared/Form/MobileInput";
 import CustomRadio from "../shared/Form/CustomRadio";
+import LoadingSpinner from "../shared/SVGs/LoadingSpinner";
 
 const EditProfileModal = ({ plan, onSubmit, hideModal }) => {
-  const { name, goal, difficulty, description, access } = plan;
+  const {
+    name,
+    goal,
+    difficulty,
+    description,
+    access,
+    isPending,
+    isRejected
+  } = plan;
   const isMobile = useMobile();
+
+  function onClose() {
+    delete plan.isRejected;
+    delete plan.isPending;
+    hideModal();
+  }
+
+  if (isRejected === false && isPending === false) {
+    onClose();
+  }
 
   let children = (
     <Formik
@@ -22,20 +42,21 @@ const EditProfileModal = ({ plan, onSubmit, hideModal }) => {
       validate={({ values }) => {
         const { name } = values;
         let errors = {};
-        console.log(name);
         if (!name.length) {
           errors.name = "Name is required";
         }
         return errors;
       }}
       onSubmit={(values, { setSubmitting }) => {
-        console.log(values);
         onSubmit(values);
         setSubmitting(false);
       }}
     >
       {({ isSubmitting }) => (
-        <Form className="flex-col border-box padding-10-0 edit-plan-modal-form">
+        <Form className="flex-col border-box edit-plan-modal-form">
+          {isRejected && (
+            <ErrorMessage message="Couldn't apply update, please try again." />
+          )}
           <div className="edit-plan-input-wrapper custom-scrollbar">
             <Field
               name="name"
@@ -116,10 +137,10 @@ const EditProfileModal = ({ plan, onSubmit, hideModal }) => {
                 ? "mobile-modal-submit-btn"
                 : "web-modal-submit-btn theme-btn-filled padding-10-0 width-80p margin-a"
             }
-            disabled={isSubmitting}
+            disabled={isSubmitting || isPending}
             type="submit"
           >
-            Save
+            {isPending ? <LoadingSpinner /> : isRejected ? "Retry" : "Save"}
           </button>
         </Form>
       )}
@@ -130,7 +151,7 @@ const EditProfileModal = ({ plan, onSubmit, hideModal }) => {
     <Modal
       children={children}
       header={"Edit Profile"}
-      toggleModal={hideModal}
+      toggleModal={onClose}
       onlyHideOnBtnClick={true}
     />
   );

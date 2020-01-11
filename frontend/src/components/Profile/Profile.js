@@ -18,7 +18,6 @@ import { activatePlan, deactivatePlan } from "../../utils/userClient";
 import { NavContext } from "../../context/navContext";
 
 import EditProfileModal from "./EditProfileModal";
-import LoadingSpinner from "../shared/SVGs/LoadingSpinner";
 import ErrorText from "../shared/ErrorText";
 const WebProfile = lazy(() => import("./Web/WebProfile"));
 const MobileProfile = lazy(() => import("./Mobile/MobileProfile"));
@@ -115,7 +114,7 @@ const Profile = () => {
   }
 
   if (isPending || accessPending) {
-    return <LoadingSpinner />;
+    return null;
   }
 
   if (isRejected || plansRejected || accessRejected) {

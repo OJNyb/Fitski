@@ -16,7 +16,7 @@ const validateRequest = SchemaValidator(true);
 new CronJob(
   "5 0 * * * *",
   function() {
-    console.log("You will see this message every day ") + new Date();
+    console.log("Cron Job: ", new Date());
     PlanTrend.deleteMany({
       date: {
         $lt: formatHistoryDate(
@@ -118,11 +118,9 @@ router.get(
 
     const { skip, username } = query;
 
-    console.log(username);
-    console.log(skip);
     let users;
 
-    const regex = new RegExp(escapeRegExp(username));
+    const regex = new RegExp(escapeRegExp(username), "gi");
     try {
       users = await User.find({ username: { $regex: regex } })
         .skip(Number(skip))
@@ -131,7 +129,6 @@ router.get(
       next(err);
     }
 
-    console.log(users);
     return res.status(200).json({ results: users });
   }
 );

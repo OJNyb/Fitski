@@ -57,7 +57,7 @@
   overflow: hidden;
   border-radius: 50%;
   border: 1.5px solid #a60000;
-  background-color: #a60000;
+  background-color: #f9eded;
   margin-right: 7px;
   position: relative;
 }
@@ -76,4 +76,8 @@
 .plans-cards-container .plans-plan-created,
 .plans-cards-container .plans-cards-header-created {
   flex: 0.6;
+}
+
+.web-plan-card-spinner-container {
+  margin-top: 30px;
 }

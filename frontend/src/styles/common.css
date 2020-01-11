@@ -574,6 +574,10 @@
   color: #d90000;
 }
 
+.color-error {
+  color: #d90000;
+}
+
 .theme-faded {
   color: rgb(153, 108, 108);
 }

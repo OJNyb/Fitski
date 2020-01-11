@@ -12,22 +12,30 @@ const MobileNavMid = ({
   rightBtnText,
   rightBtnAction,
   rightBtnIcon,
-  rightBtnOutlined
+  rightBtnOutlined,
+  rightBtnCustomClass
 }) => {
   const [showActionModal, setShowActionModal] = useState(false);
+  const [menuChildren, setMenuChildren] = useState(actionMenuChildren);
   const {
     state: { showDehaze }
   } = useContext(NavContext);
 
+  console.log(rightBtnCustomClass);
+
   useEffect(() => {
     function addRightBtnToActionMenu() {
       if (rightBtnIcon) {
-        actionMenuChildren.unshift({
-          action: rightBtnAction,
-          text: rightBtnText,
-          icon: rightBtnIcon,
-          outlined: rightBtnOutlined
-        });
+        setMenuChildren([
+          {
+            action: rightBtnAction,
+            text: rightBtnText,
+            icon: rightBtnIcon,
+            outlined: rightBtnOutlined,
+            customClass: rightBtnCustomClass
+          },
+          ...actionMenuChildren
+        ]);
       }
     }
     addRightBtnToActionMenu();
@@ -36,7 +44,8 @@ const MobileNavMid = ({
     rightBtnAction,
     rightBtnOutlined,
     rightBtnText,
-    actionMenuChildren
+    actionMenuChildren,
+    rightBtnCustomClass
   ]);
 
   function handleMoreActionClick() {
@@ -45,8 +54,8 @@ const MobileNavMid = ({
 
   let children;
 
-  if (actionMenuChildren) {
-    let actionMenu = actionMenuChildren.map(x => (
+  if (menuChildren) {
+    let actionMenu = menuChildren.map(x => (
       <NavMidActionMenuItem element={x} key={x.text} />
     ));
     children = (
