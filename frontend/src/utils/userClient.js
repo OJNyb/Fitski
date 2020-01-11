@@ -15,7 +15,7 @@ function editUser(dispatch, profileDispatch, values) {
     let fD = new FormData();
     fD.append("avatar", avatar);
     axios
-      .post("/image/avatar", fD)
+      .post("/api/image/avatar", fD)
       .then(res => {
         let isSucc = isSuccessful(res);
 
@@ -60,7 +60,7 @@ function editUser(dispatch, profileDispatch, values) {
   }
 
   axios
-    .post(`/user/edit`, {
+    .post(`/api/user/edit`, {
       ...values
     })
     .then(res => {
@@ -86,7 +86,7 @@ function activatePlan(dispatch, planId, startDate) {
   });
 
   axios
-    .post(`/history/activate/${planId}`, { startDate })
+    .post(`/api/history/activate/${planId}`, { startDate })
     .then(res => {
       let isSucc = isSuccessful(res);
       if (!isSucc) {
@@ -106,7 +106,7 @@ function deactivatePlan(dispatch, planId) {
   });
 
   axios
-    .post(`/history/deactivate/${planId}`)
+    .post(`/api/history/deactivate/${planId}`)
     .then(res => {
       let isSucc = isSuccessful(res);
       if (!isSucc) {

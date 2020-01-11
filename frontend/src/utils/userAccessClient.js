@@ -13,7 +13,7 @@ function addPlan(dispatch, planId) {
   });
 
   axios
-    .post(`/user/access/${planId}`)
+    .post(`/api/user/access/${planId}`)
     .then(res => {
       let isSucc = isSuccessful(res);
       if (!isSucc) {
@@ -37,7 +37,7 @@ function removePlan(dispatch, planId) {
   });
 
   axios
-    .delete(`/user/access/${planId}`)
+    .delete(`/api/user/access/${planId}`)
     .then(res => {
       let isSucc = isSuccessful(res);
       if (!isSucc) {

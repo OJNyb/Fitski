@@ -27,7 +27,7 @@ function addExercise(dispatch, name, category) {
   });
 
   axios
-    .post("/exercise/custom", {
+    .post("/api/exercise/custom", {
       name,
       category,
       exerciseId
@@ -64,7 +64,7 @@ function retryAddExercise(dispatch, exercise) {
   });
 
   axios
-    .post("/exercise/custom", {
+    .post("/api/exercise/custom", {
       name,
       category: muscleGroup,
       exerciseId
@@ -168,7 +168,7 @@ function deleteExercise(dispatch, exerciseIds) {
   });
 
   axios
-    .delete("/exercise", {
+    .delete("/api/exercise", {
       data: { exerciseIds }
     })
     .then(res => {

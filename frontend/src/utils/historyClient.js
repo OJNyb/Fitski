@@ -52,7 +52,7 @@ function addDay(dispatch, date, exercise, values) {
   });
 
   axios
-    .post("/history", {
+    .post("/api/history", {
       date,
       setId,
       dayId,
@@ -100,7 +100,7 @@ function retryAddDay(dispatch, day) {
   });
 
   axios
-    .post("/history", {
+    .post("/api/history", {
       date: dateObject,
       setId,
       dayId,
@@ -140,7 +140,7 @@ function deleteDay(dispatch, dayId) {
   });
 
   axios
-    .delete(`/history/${dayId}`)
+    .delete(`/api/history/${dayId}`)
     .then(res => {
       let isSucc = isSuccessful(res);
       if (!isSucc) {
@@ -176,7 +176,7 @@ function addExercise(dispatch, dayId, exercise) {
   });
 
   axios
-    .post(`/history/exercise/${dayId}`, {
+    .post(`/api/history/exercise/${dayId}`, {
       setId,
       exerId,
       custom,
@@ -216,7 +216,7 @@ function retryAddExercise(dispatch, dayId, exer) {
   });
 
   axios
-    .post(`/history/exercise/${dayId}`, {
+    .post(`/api/history/exercise/${dayId}`, {
       setId,
       exerId,
       custom,
@@ -252,7 +252,7 @@ function deleteExercise(dispatch, dayId, exerId) {
   });
 
   axios
-    .delete(`/history/exercise/${dayId}/${exerId}`)
+    .delete(`/api/history/exercise/${dayId}/${exerId}`)
     .then(res => {
       let isSucc = isSuccessful(res);
       if (!isSucc) {
@@ -283,7 +283,7 @@ function deleteExercises(dispatch, dayId, exerIds) {
   });
 
   axios
-    .delete(`/history/exercise/${dayId}`, {
+    .delete(`/api/history/exercise/${dayId}`, {
       data: { exerciseIds: exerIds }
     })
     .then(res => {
@@ -318,7 +318,7 @@ function addSet(dispatch, values, dayId, exerId) {
   });
 
   axios
-    .post(`/history/exercise/${dayId}/${exerId}`, { setId, ...values })
+    .post(`/api/history/exercise/${dayId}/${exerId}`, { setId, ...values })
     .then(res => {
       let isSucc = isSuccessful(res);
       if (!isSucc) {
@@ -352,7 +352,7 @@ function retryAddSet(dispatch, dayId, exerId, set) {
   });
 
   axios
-    .post(`/history/exercise/${dayId}/${exerId}`, { setId, reps, weight })
+    .post(`/api/history/exercise/${dayId}/${exerId}`, { setId, reps, weight })
     .then(res => {
       let isSucc = isSuccessful(res);
       if (!isSucc) {
@@ -383,7 +383,7 @@ function editSet(dispatch, values, dayId, exerId, setId) {
   });
 
   axios
-    .post(`/history/exercise/${dayId}/${exerId}/${setId}`, values)
+    .post(`/api/history/exercise/${dayId}/${exerId}/${setId}`, values)
     .then(res => {
       let isSucc = isSuccessful(res);
       if (!isSucc) {
@@ -416,7 +416,7 @@ function retryEditSet(dispatch, dayId, exerId, set) {
   });
 
   axios
-    .post(`/history/exercise/${dayId}/${exerId}/${setId}`, values)
+    .post(`/api/history/exercise/${dayId}/${exerId}/${setId}`, values)
     .then(res => {
       let isSucc = isSuccessful(res);
       if (!isSucc) {
@@ -447,7 +447,7 @@ function deleteSet(dispatch, dayId, exerId, setId) {
   });
 
   axios
-    .delete(`/history/exercise/${dayId}/${exerId}/${setId}`)
+    .delete(`/api/history/exercise/${dayId}/${exerId}/${setId}`)
     .then(res => {
       let isSucc = isSuccessful(res);
       if (!isSucc) {
@@ -481,7 +481,7 @@ function copyDay(dispatch, dayToCopy, formattedDate) {
   });
 
   axios
-    .post("/history/copy", {
+    .post("/api/history/copy", {
       dayToCopyId: dayToCopy._id,
       newDayId,
       newIds,

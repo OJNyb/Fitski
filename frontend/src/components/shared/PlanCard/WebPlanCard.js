@@ -17,7 +17,7 @@ const PlanCard = ({ plan, profile, search, category }) => {
     const { avatar: pAvatar } = profile;
     avatar = pAvatar;
   }
-  const avatarUrl = `/image/avatar/${avatar}_sm.jpg`;
+  const avatarUrl = `/api/image/avatar/${avatar}_sm.jpg`;
 
   if (redirect) {
     if (!state[planId]) {

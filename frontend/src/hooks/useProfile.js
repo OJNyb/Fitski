@@ -25,7 +25,7 @@ const useProfile = username => {
     function fetchData() {
       dispatch({ type: IS_PENDING });
       axios
-        .get(`/user/user/${username}`)
+        .get(`/api/user/user/${username}`)
         .then(res => {
           if (!isCancelled) {
             dispatch({ type: SET_PROFILE, payload: { profile: res.data } });

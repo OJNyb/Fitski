@@ -2,7 +2,7 @@ import axios from "axios";
 
 function getUser() {
   return axios
-    .get("/user/me")
+    .get("/api/user/me")
     .then(res => {
       return res.data;
     })
@@ -14,7 +14,7 @@ function getUser() {
 
 function login(values) {
   return axios
-    .post("/user/login", {
+    .post("/api/user/login", {
       ...values
     })
     .then(res => {
@@ -27,7 +27,7 @@ function login(values) {
 
 function logout(values) {
   return axios
-    .get("/user/logout", {
+    .get("/api/user/logout", {
       ...values
     })
     .then(res => {
@@ -42,7 +42,7 @@ function logout(values) {
 
 const register = values => {
   return axios
-    .post("/user/register", {
+    .post("/api/user/register", {
       ...values
     })
     .then(res => {

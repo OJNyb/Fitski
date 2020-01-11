@@ -44,7 +44,7 @@ function editPlan(dispatch, planId, values) {
   dispatch({ type: EDIT_PLAN });
 
   axios
-    .post(`/plan/${planId}`, values)
+    .post(`/api/plan/${planId}`, values)
     .then(res => {
       let isSucc = isSuccessful(res);
       if (!isSucc) {
@@ -80,7 +80,7 @@ function addWeeks(dispatch, planId, numberOfWeeks = 1) {
   dispatch({ type: ADD_WEEK, payload: { planId, weekArray } });
 
   axios
-    .post(`/plan/week/${planId}`, { weekArray })
+    .post(`/api/plan/week/${planId}`, { weekArray })
     .then(res => {
       let isSucc = isSuccessful(res);
       if (!isSucc) {
@@ -108,7 +108,7 @@ function copyWeek(dispatch, planId, weekId, copyWeek) {
   dispatch({ type: COPY_WEEK, payload: { newIds, weekId, copyWeek } });
 
   axios
-    .post(`/plan/week/copy/${planId}/${weekId}`, {
+    .post(`/api/plan/week/copy/${planId}/${weekId}`, {
       newIds,
       copyWeekId: copyWeek._id
     })
@@ -146,7 +146,7 @@ function repeatWeek(dispatch, planId, timesToRepeat, copyWeek) {
   dispatch({ type: REPEAT_WEEK, payload: { newIds, copyWeek } });
 
   axios
-    .post(`/plan/week/repeat/${planId}/${copyWeek._id}`, {
+    .post(`/api/plan/week/repeat/${planId}/${copyWeek._id}`, {
       newIds,
       copyWeekId: copyWeek._id
     })
@@ -177,7 +177,7 @@ function deleteWeek(dispatch, planId, weekId) {
     });
 
     axios
-      .delete(`/plan/week/${planId}/${weekId}`)
+      .delete(`/api/plan/week/${planId}/${weekId}`)
       .then(res => {
         let isSucc = isSuccessful(res);
         if (!isSucc) {
@@ -215,7 +215,7 @@ function addExercise(dispatch, planId, weekId, dayId, exercise, reps) {
   });
 
   axios
-    .post(`/plan/exercise/${planId}/${weekId}/${dayId}`, {
+    .post(`/api/plan/exercise/${planId}/${weekId}/${dayId}`, {
       exerciseId: exercise._id,
       exerId,
       setId,
@@ -256,7 +256,7 @@ function retryAddExercise(dispatch, planId, weekId, dayId, exer) {
   });
 
   axios
-    .post(`/plan/exercise/${planId}/${weekId}/${dayId}`, {
+    .post(`/api/plan/exercise/${planId}/${weekId}/${dayId}`, {
       exerciseId: exercise._id,
       exerId,
       setId,
@@ -293,7 +293,7 @@ function deleteExercise(dispatch, planId, weekId, dayId, exerId) {
   });
 
   axios
-    .delete(`/plan/exercise/${planId}/${weekId}/${dayId}/${exerId}`)
+    .delete(`/api/plan/exercise/${planId}/${weekId}/${dayId}/${exerId}`)
     .then(res => {
       let isSucc = isSuccessful(res);
       if (!isSucc) {
@@ -326,7 +326,7 @@ function addSet(dispatch, reps, planId, weekId, dayId, exerId) {
   });
 
   axios
-    .post(`/plan/exercise/${planId}/${weekId}/${dayId}/${exerId}`, {
+    .post(`/api/plan/exercise/${planId}/${weekId}/${dayId}/${exerId}`, {
       reps,
       setId
     })
@@ -362,7 +362,7 @@ function retryAddSet(dispatch, planId, weekId, dayId, exerId, set) {
   });
 
   axios
-    .post(`/plan/exercise/${planId}/${weekId}/${dayId}/${exerId}`, {
+    .post(`/api/plan/exercise/${planId}/${weekId}/${dayId}/${exerId}`, {
       reps,
       setId
     })
@@ -396,9 +396,12 @@ function editSet(dispatch, reps, planId, weekId, dayId, exerId, setId) {
   });
 
   axios
-    .post(`/plan/exercise/${planId}/${weekId}/${dayId}/${exerId}/${setId}`, {
-      reps
-    })
+    .post(
+      `/api/plan/exercise/${planId}/${weekId}/${dayId}/${exerId}/${setId}`,
+      {
+        reps
+      }
+    )
     .then(res => {
       let isSucc = isSuccessful(res);
       if (!isSucc) {
@@ -430,9 +433,12 @@ function retryEditSet(dispatch, planId, weekId, dayId, exerId, set) {
   });
 
   axios
-    .post(`/plan/exercise/${planId}/${weekId}/${dayId}/${exerId}/${setId}`, {
-      reps
-    })
+    .post(
+      `/api/plan/exercise/${planId}/${weekId}/${dayId}/${exerId}/${setId}`,
+      {
+        reps
+      }
+    )
     .then(res => {
       let isSucc = isSuccessful(res);
       if (!isSucc) {
@@ -463,7 +469,9 @@ function deleteSet(dispatch, planId, weekId, dayId, exerId, setId) {
   });
 
   axios
-    .delete(`/plan/exercise/${planId}/${weekId}/${dayId}/${exerId}/${setId}`)
+    .delete(
+      `/api/plan/exercise/${planId}/${weekId}/${dayId}/${exerId}/${setId}`
+    )
     .then(res => {
       let isSucc = isSuccessful(res);
       if (!isSucc) {

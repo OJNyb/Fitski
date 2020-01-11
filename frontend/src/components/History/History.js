@@ -33,7 +33,7 @@ const MobileView = lazy(() => import("./Mobile/MobileView"));
 const WebView = lazy(() => import("./Web/WebView"));
 
 const History = () => {
-  const { state, dispatch } = useHistory("/history");
+  const { state, dispatch } = useHistory();
 
   const [date, setDate] = useState(new Date());
   const [formattedDate, setFormattedDate] = useState(

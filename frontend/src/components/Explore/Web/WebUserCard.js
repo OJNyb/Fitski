@@ -8,7 +8,7 @@ const UserCard = ({ user, search, category }) => {
   const { dispatch } = useContext(NavContext);
   const { bio, avatar, username, _id: userId } = user;
 
-  const avatarUrl = `/image/avatar/${avatar}_sm.jpg`;
+  const avatarUrl = `/api/image/avatar/${avatar}_sm.jpg`;
 
   if (redirect) {
     setBackLink(dispatch, userId, { search, searchCategory: category });

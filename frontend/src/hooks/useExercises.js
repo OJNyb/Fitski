@@ -25,7 +25,7 @@ const useExercises = () => {
       if (getExercises) {
         dispatch({ type: IS_PENDING });
         axios
-          .get("/exercise")
+          .get("/api/exercise")
           .then(res => {
             if (!isCancelled) {
               dispatch({

@@ -9,7 +9,7 @@ const DeletePlanModal = ({ woPlan, hideModal }) => {
 
   function onSubmit() {
     axios
-      .delete(`/plan/${planId}`)
+      .delete(`/api/plan/${planId}`)
       .then(res => {
         const { data } = res;
         const { message } = data;

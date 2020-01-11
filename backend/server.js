@@ -81,7 +81,6 @@ const {
     app.use("/api/exercise", exercise);
     app.use("/api/feedback", feedback);
 
-    // ... other app.use middleware
     if (process.env.NODE_ENV === "production") {
       app.use(express.static(path.join(__dirname, "..", "frontend", "build")));
       app.get("*", (req, res) => {

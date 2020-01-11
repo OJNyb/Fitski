@@ -147,7 +147,7 @@ const EditProfileModal = ({ bio, avatar, onSubmit, hideModal }) => {
                   <>
                     <div className="edit-profile-img-container">
                       <img
-                        src={edittedImg || `/image/avatar/${avatar}_lg.jpg`}
+                        src={edittedImg || `/api/image/avatar/${avatar}_lg.jpg`}
                         alt="Avatar"
                       />
                       <i className="material-icons-outlined">add_a_photo</i>

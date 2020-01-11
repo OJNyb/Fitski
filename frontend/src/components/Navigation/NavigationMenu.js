@@ -33,7 +33,7 @@ const NavigationMenu = ({ marginTop, show = true }) => {
           <div className="nav-sidebar-avatar-container">
             <img
               className="nav-sidebar-avatar"
-              src={`/image/avatar/${avatar}_sm.jpg`}
+              src={`/api/image/avatar/${avatar}_sm.jpg`}
               alt="avatar"
             />
           </div>
