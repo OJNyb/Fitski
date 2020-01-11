@@ -12,8 +12,6 @@ const UnauthenticatedApp = React.lazy(() => import("./UnauthenticatedApp"));
 
 const App = () => {
   const user = useUser();
-  console.log("gay");
-  console.log(user);
 
   React.useEffect(() => {
     loadAuthenticatedApp();

@@ -23,7 +23,7 @@ const usePlans = () => {
     function fetchData() {
       dispatch({ type: IS_PENDING });
       axios
-        .get(`/plan?skip=${skip}`)
+        .get(`/api/plan?skip=${skip}`)
         .then(res => {
           if (!isCancelled) {
             dispatch({ type: SET_PLANS, payload: { woPlans: res.data } });
