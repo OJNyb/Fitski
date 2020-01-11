@@ -54,7 +54,7 @@ const MobilePlanCard = ({
         searchCategory: category
       });
     }
-    return <Redirect to={`/plans/${planId}`} />;
+    return <Redirect to={`/api/plans/${planId}`} />;
   }
 
   function onLinkClick(e) {
