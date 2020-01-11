@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const session = require("express-session");
 const connectRedis = require("connect-redis");
 const bodyParser = require("body-parser");
+const path = require("path");
 
 const user = require("./routes/api/user");
 const image = require("./routes/api/image");
@@ -78,6 +79,13 @@ const {
     app.use("/api/history", history);
     app.use("/api/exercise", exercise);
     app.use("/api/feedback", feedback);
+
+    // ... other app.use middleware
+    app.use(express.static(path.join(__dirname, "client", "build")));
+
+    app.get("*", (req, res) => {
+      res.sendFile(path.join(__dirname, "client", "build", "index.html"));
+    });
 
     app.use(function(err, req, res, next) {
       console.log(err);
