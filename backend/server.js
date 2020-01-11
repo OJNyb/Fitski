@@ -17,6 +17,7 @@ const feedback = require("./routes/api/feedback");
 const createErrorObject = require("./utils/createErrorObject");
 
 const {
+  PORT,
   APP_PORT,
   NODE_ENV,
   mongoURI,
@@ -81,7 +82,9 @@ const {
     app.use("/api/feedback", feedback);
 
     // ... other app.use middleware
-    app.use(express.static(path.join(__dirname, "client", "build")));
+    if (process.env.NODE_ENV === "production") {
+      app.use(express.static(path.join(__dirname, "client", "build")));
+    }
 
     app.get("*", (req, res) => {
       res.sendFile(path.join(__dirname, "client", "build", "index.html"));
@@ -98,8 +101,8 @@ const {
       res.status(500).json(createErrorObject(["Something gnarly happened"]));
     });
 
-    app.listen(APP_PORT, () => {
-      console.log(`Listening on port ${APP_PORT}`);
+    app.listen(PORT || APP_PORT, () => {
+      console.log(`Listening on port ${PORT || APP_PORT}`);
     });
   } catch (e) {
     console.error(e);
