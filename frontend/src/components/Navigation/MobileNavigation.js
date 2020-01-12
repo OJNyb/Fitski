@@ -4,6 +4,8 @@ import { NavContext } from "../../context/navContext";
 import NavigationMenu from "./NavigationMenu";
 import { Link } from "react-router-dom";
 
+import "./mobileNavigation.css";
+
 const MobileNavigation = () => {
   const {
     state: { backLink, showNone, showDehaze }

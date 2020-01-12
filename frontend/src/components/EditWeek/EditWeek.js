@@ -90,7 +90,7 @@ const EditWeek = () => {
   function handleDeleteWeekSubmit() {
     deleteWeek(dispatch, planId, weekId)
       .then(() => {
-        let url = `/api/plans/${planId}/`;
+        let url = `/plans/${planId}/`;
 
         if (weeks[weekIndex - 1]) {
           let prevWeekId = weeks[weekIndex - 1]._id;

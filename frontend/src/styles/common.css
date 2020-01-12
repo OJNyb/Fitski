@@ -510,8 +510,8 @@
   padding-top: 5px;
 }
 
-.pt-6vh {
-  padding-top: 6vh;
+.pt-50 {
+  padding-top: 50px;
 }
 
 .padding-15 {
@@ -618,12 +618,12 @@
   z-index: 9999;
 }
 
-.height-6vh {
-  height: 6vh;
+.height-50 {
+  height: 50px;
 }
 
-.height-7vh {
-  height: 7vh;
+.height-50 {
+  height: 50px;
 }
 
 .text-center {
@@ -685,4 +685,13 @@
 /* Handle on hover */
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
   background: rgb(92, 87, 87);
+}
+
+.noselect {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }

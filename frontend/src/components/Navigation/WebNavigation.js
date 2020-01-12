@@ -29,7 +29,12 @@ const BigScreenNavigation = () => {
 
   useEffect(() => {
     function clickListener(e) {
-      if (isSmallScreen && e.target.id !== "ss-more-btn") {
+      const { target } = e;
+      if (
+        isSmallScreen &&
+        target.id !== "ss-more-btn" &&
+        target.parentNode.id !== "ss-more-btn"
+      ) {
         setShowMenu(false);
       }
     }
@@ -43,7 +48,7 @@ const BigScreenNavigation = () => {
     return () => {
       window.removeEventListener("click", clickListener);
     };
-  }, [width]);
+  }, [isSmallScreen]);
 
   return (
     <>
@@ -72,17 +77,16 @@ const SmallScreenLogo = ({ showMenu, setShowMenu }) => {
   return (
     <div className="header-logo-container flex-ai-center">
       <button
+        id="ss-more-btn"
         className="small-screen-dehaze-button"
         onClick={() => setShowMenu(!showMenu)}
       >
-        <i id="ss-more-btn" className="material-icons font-20 color-gray">
-          dehaze
-        </i>
+        <i className="material-icons font-20 color-gray">dehaze</i>
       </button>
 
       <div className="flex-col-cen">
         <div className="flex-ai-center">
-          <i className="material-icons font-22 tc">fitness_center</i>
+          <i className="material-icons font-22 tc mt-6">fitness_center</i>
           <h1 className="margin-0 black line-height-11 font-22">Fitnut</h1>
         </div>
         <span className="color-light-gray line-height-11 header-small-screen-beta-text">
@@ -97,7 +101,7 @@ const BigScreenLogo = () => {
   return (
     <div className="header-logo-container flex-col-cen">
       <div className="flex-ai-center">
-        <i className="material-icons font-34 header-big-screen-icon tc">
+        <i className="material-icons font-34 header-big-screen-icon tc mt-6">
           fitness_center
         </i>
         <h1 className="margin-0 black line-height-11 font-32 header-big-screen-logo">

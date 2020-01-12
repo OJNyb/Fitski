@@ -25,7 +25,7 @@ const PlanText = ({ week, index, isSelf, planId }) => {
   if (isSelf) {
     weekHeader = (
       <Link to={`/plans/${planId}/${weekId}`}>
-        <h1 className="tc font-fam-babas font-40 plan-text-week-header-link">
+        <h1 className="tc font-fam-babas font-40 plan-text-week-header-link noselect">
           WEEK {index + 1}
         </h1>
       </Link>

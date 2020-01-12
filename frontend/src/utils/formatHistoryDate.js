@@ -68,7 +68,7 @@ function displayDate(date) {
   if (day < 10) {
     day = day.slice(1);
   }
-  const month = date.toLocaleString("default", { month: "long" });
+  const month = date.toLocaleString("en-US", { month: "long" });
   if (nDate.slice(0, 4) === fDate.slice(0, 4)) {
     return `${month} ${day}`;
   } else {
@@ -86,8 +86,8 @@ function displayDateWeekday(date) {
     day = day.slice(1);
   }
 
-  const month = date.toLocaleString("default", { month: "long" });
-  const weekday = date.toLocaleString("default", { weekday: "long" });
+  const month = date.toLocaleString("en-US", { month: "long" });
+  const weekday = date.toLocaleString("en-US", { weekday: "long" });
 
   if (nDate.slice(0, 4) === fDate.slice(0, 4)) {
     return `${weekday}, ${month} ${day}`;

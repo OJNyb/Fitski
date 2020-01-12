@@ -11,7 +11,7 @@ export function setBackLink(dispatch, id, args) {
   } else if (search || search === "") {
     payload = { [id]: "/explore", search, searchCategory };
   } else if (planId) {
-    payload = { [id]: `/api/plans/${planId}` };
+    payload = { [id]: `/plans/${planId}` };
   } else {
     payload = { [id]: "/plans" };
   }

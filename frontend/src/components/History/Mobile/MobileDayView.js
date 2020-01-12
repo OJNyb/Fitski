@@ -82,7 +82,7 @@ const MobileDayView = ({
     );
   } else {
     bottomNavContent = (
-      <div className="bc-d9 width-100p flex-center-space-bw color-white padding-0 border-box height-6vh fixed">
+      <div className="bc-d9 width-100p flex-center-space-bw color-white padding-0 border-box height-50 fixed">
         <NavigateDays
           centerText={displayDate(_d)}
           leftArrowAction={() => onDateChange(decrementDate(_d))}
@@ -158,9 +158,7 @@ const MobileDayView = ({
         </button>
       </div>
       {bottomNavContent}
-      <div className="pt-6vh history-mobile-body-container margin-a">
-        {view}
-      </div>
+      <div className="pt-50 history-mobile-body-container margin-a">{view}</div>
     </>
   );
 };
@@ -173,7 +171,7 @@ const SelectedNavBar = ({
   let text = selectedExercises.length > 1 ? "exercises" : "exercise";
 
   return (
-    <div className="bc-d9 width-100p flex-center-space-bw padding-s-10 border-box height-6vh fixed">
+    <div className="bc-d9 width-100p flex-center-space-bw padding-s-10 border-box height-50 fixed">
       <div className="flex-ai-center history-mobile-selected-check-n-span-wrapper">
         <button
           className="padding-5 color-white"

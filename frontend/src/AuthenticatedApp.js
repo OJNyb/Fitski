@@ -41,8 +41,8 @@ function App() {
   let width;
 
   if (isMobile) {
-    marginTop = "7vh";
-    minHeight = "93vh";
+    marginTop = "50px";
+    minHeight = "calc(100vh - 50px)";
     width = "calc(100%)";
   } else {
     marginTop = "66px";

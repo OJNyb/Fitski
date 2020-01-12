@@ -24,7 +24,7 @@
 /* VIEW */
 .history-mobile-container {
   margin: 0 auto;
-  height: 93vh;
+  height: calc(100vh - 50px);
   box-sizing: border-box;
   overflow: visible;
 }
