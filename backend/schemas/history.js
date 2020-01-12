@@ -116,15 +116,13 @@ const addSet = Joi.object().keys({
 
 const editSet = Joi.object()
   .keys({
-    sets,
     reps,
     weight,
-    unit,
     day_id: dayId,
     exercise_id: exerciseId,
     set_id: setId
   })
-  .or("sets", "reps", "weight", "unit");
+  .or("reps", "weight");
 
 const deleteSet = Joi.object().keys({
   day_id: dayId,
