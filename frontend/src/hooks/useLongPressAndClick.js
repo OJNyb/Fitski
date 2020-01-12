@@ -10,7 +10,9 @@ function useLongPress(
   const [type, setType] = useState("short");
 
   function onTouchski() {
-    setType("long");
+    holdCallback();
+    setType("short");
+    setCancelled(true);
   }
 
   useEffect(() => {
@@ -23,8 +25,6 @@ function useLongPress(
       clearTimeout(timerId);
       if (type === "short") {
         clickCallback();
-      } else {
-        holdCallback();
       }
       setCancelled(true);
       setType("short");

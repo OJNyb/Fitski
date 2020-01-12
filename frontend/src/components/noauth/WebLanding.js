@@ -39,7 +39,6 @@ const BigScreenLanding = () => {
     e.preventDefault();
     loginReq({ email, password }).catch(e => {
       // TODO: If err.status !== 404 ???
-      console.log(e);
       setRedirect(true);
     });
   }

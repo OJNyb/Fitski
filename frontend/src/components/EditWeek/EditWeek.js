@@ -21,6 +21,7 @@ import SetLoading from "../SetLoading";
 import EditWeekNav from "./EditWeekNav";
 
 import "./editWeek.css";
+import useUser from "../../hooks/useUser";
 
 const MobileEditWeek = lazy(() => import("./Mobile/MobileEditWeek"));
 const WebEditWeek = lazy(() => import("./Web/WebEditWeek"));
@@ -30,11 +31,27 @@ const EditWeek = () => {
   const { state, dispatch } = useContext(PlanContext);
   const [currentDayIndex, setCurrentDayIndex] = useState(0);
   const isMobile = useMobile();
-  useSetLoading(false);
 
+  const {
+    state: { user }
+  } = useUser();
+  useSetLoading(false);
   const { woPlan } = state;
-  const { weeks } = woPlan;
+  const {
+    weeks,
+    user: { _id: authorId }
+  } = woPlan;
   const { plan_id: planId, week_id: weekId } = useParams();
+
+  if (!user) {
+    return <p>Only the author of a plan can view weeks</p>;
+  }
+
+  const { _id: userId } = user;
+
+  if (authorId !== userId) {
+    return <p>Only the author of a plan can view weeks</p>;
+  }
 
   let weekIndex = weeks.map(x => x._id).indexOf(weekId);
 

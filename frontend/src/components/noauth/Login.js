@@ -8,7 +8,6 @@ import "./signXError.css";
 const Login = () => {
   const [loginErr, setLoginErr] = useState(false);
   const { login } = useAuth();
-  console.log(loginErr);
   return (
     <Formik
       initialValues={{ email: "", password: "" }}
@@ -31,7 +30,6 @@ const Login = () => {
       onSubmit={(values, { setSubmitting }) => {
         login(values).catch(err => {
           // TODO: If err.status !== 404 ???
-          console.log(err);
           const { message } = getErrorMessage(err)[0];
           setLoginErr(message);
           setSubmitting(false);

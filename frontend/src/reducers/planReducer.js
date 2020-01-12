@@ -459,12 +459,10 @@ function planReducer(state, action) {
       const week = woPlan.weeks.find(x => x._id === weekId);
       const day = week.days.find(x => x._id === dayId);
 
-      console.log(exerId);
       day.exercises.forEach(x => {
         if (x._id === exerId) {
           x.isPending = true;
           x.isRejected = false;
-          console.log(x);
         }
       });
 
@@ -498,8 +496,6 @@ function planReducer(state, action) {
 
       const week = woPlan.weeks.find(x => x._id === weekId);
       const day = week.days.find(x => x._id === dayId);
-
-      console.log("fail");
 
       day.exercises.forEach(x => {
         if (x._id === exerId) {

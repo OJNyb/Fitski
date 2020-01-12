@@ -3,7 +3,7 @@ import { useLayoutEffect, useContext } from "react";
 import { NavContext } from "../context/navContext";
 import { SHOW_BACK } from "../types/navTypes";
 
-function useNavRedBack(backLink) {
+function useNavBack(backLink) {
   const { dispatch } = useContext(NavContext);
   useLayoutEffect(() => {
     function setNav() {
@@ -14,4 +14,4 @@ function useNavRedBack(backLink) {
   }, [dispatch, backLink]);
 }
 
-export default useNavRedBack;
+export default useNavBack;

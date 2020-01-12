@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { lazy, useState, Suspense } from "react";
 import { useAuth } from "../../context/authContext";
 import useSetLoading from "../../hooks/useSetLoading";
 import { editUser } from "../../utils/userClient";
@@ -8,24 +8,36 @@ import NavMid from "../shared/NavMid/NavMid";
 import "./settings.css";
 import useMobile from "../../hooks/useMobile";
 
+const MobileSettings = lazy(() => import("./Mobile/MobileSettings"));
+
 const Settings = () => {
   const isMobile = useMobile();
+  const { state, dispatch } = useAuth();
+  useSetLoading(false);
+  const { user } = state;
+  const { defaultUnit } = user;
+  const [unit, setUnit] = useState(defaultUnit);
+
+  function handleUnitChange(e) {
+    const { value } = e.target;
+    setUnit(value);
+    editUser(dispatch, null, { defaultUnit: value });
+  }
+
+  let view;
 
   if (isMobile) {
-    return <MobileSettings />;
+    view = <MobileSettings unit={unit} onUnitChange={handleUnitChange} />;
   } else {
-    return <WebSettings />;
+    view = <WebSettings unit={unit} onUnitChange={handleUnitChange} />;
   }
+
+  return <Suspense>{view}</Suspense>;
 };
 
-const MobileSettings = () => {
+const WebSettings = ({ unit, onUnitChange }) => {
   useSetLoading(false);
-  return <SettingsForm />;
-};
-
-const WebSettings = () => {
-  useSetLoading(false);
-  return <SettingsForm />;
+  return <MobileSettings unit={unit} onUnitChange={onUnitChange} />;
 };
 
 const SettingsForm = () => {

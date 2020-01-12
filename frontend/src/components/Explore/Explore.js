@@ -46,7 +46,6 @@ const Explore = () => {
 
   useEffect(() => {
     async function fetchData() {
-      console.log("gay");
       if (search.length) {
         let req;
         if (category === "plans") {
@@ -92,7 +91,6 @@ const Explore = () => {
           return console.log(error);
         }
         if (!isCancelled.current || !isReqCancelled) {
-          console.log("gay");
           if (results.length === 0) {
             setReachedEnd(true);
           } else {

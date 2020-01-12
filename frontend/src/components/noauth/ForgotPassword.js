@@ -48,13 +48,10 @@ const ForgotPassword = () => {
                 }
               })
               .catch(err => {
-                // TODO: If err.status !== 404 ???
-                console.log(err.response);
                 const { response } = err;
                 const { data } = response;
                 const { error } = data;
                 const { details } = error;
-                console.log(response);
 
                 setBackendError(details[0].message);
                 setSubmitting(false);

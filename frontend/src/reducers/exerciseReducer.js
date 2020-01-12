@@ -202,9 +202,6 @@ function planReducer(state, action) {
       const { exercises } = state;
       const { exerciseIds } = payload;
 
-      console.log(exerciseIds);
-      console.log(exercises);
-
       const newExercises = exercises.filter(
         x => exerciseIds.indexOf(x._id) === -1
       );

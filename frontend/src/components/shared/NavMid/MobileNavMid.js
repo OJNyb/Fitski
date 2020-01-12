@@ -21,8 +21,6 @@ const MobileNavMid = ({
     state: { showDehaze }
   } = useContext(NavContext);
 
-  console.log(rightBtnCustomClass);
-
   useEffect(() => {
     function addRightBtnToActionMenu() {
       if (rightBtnIcon) {
