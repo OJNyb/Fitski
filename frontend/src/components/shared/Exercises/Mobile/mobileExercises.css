@@ -9,11 +9,11 @@
 }
 
 .exercises-mobile-selected-container {
-  top: 7vh;
+  top: 50px;
   z-index: 2;
   background-color: #fff;
   border-bottom: 2px solid #a60000;
-  height: 6vh;
+  height: 50px;
   padding: 0 0px;
   box-sizing: border-box;
 }

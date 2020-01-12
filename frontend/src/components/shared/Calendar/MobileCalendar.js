@@ -19,7 +19,7 @@ const CalendarView = ({
   useSetLoading(false);
   return (
     <div className="fixed z-max width-100p top-0">
-      <div className="height-7vh width-100p padding-0-5 flex-ai-center bc-a6">
+      <div className="height-50 width-100p padding-0-5 flex-ai-center bc-a6">
         <button
           className="color-white padding-5"
           onClick={() => setShowCalendar(false)}

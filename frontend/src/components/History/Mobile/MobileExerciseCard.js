@@ -101,14 +101,18 @@ const SetColumn = ({ set, defaultUnit }) => {
     <div className="add-card-column flex-ai-center padding-4-20">
       <div className="history-row">
         <span>
-          <span className="black mr-1">{ensureDecimal(weight) || 0.0}</span>
-          <span className="color-gray font-12 font-w-300">{defaultUnit}</span>
+          <span className="black mr-1 noselect">
+            {ensureDecimal(weight) || 0.0}
+          </span>
+          <span className="color-gray font-12 font-w-300 noselect">
+            {defaultUnit}
+          </span>
         </span>
       </div>
       <div className="history-row">
         <span>
-          <span className="black mr-1">{reps || 0}</span>
-          <span className="color-gray font-12 font-w-300">reps</span>
+          <span className="black mr-1 noselect">{reps || 0}</span>
+          <span className="color-gray font-12 font-w-300 noselect">reps</span>
         </span>
       </div>
     </div>

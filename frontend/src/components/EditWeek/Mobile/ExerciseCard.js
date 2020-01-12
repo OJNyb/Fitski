@@ -185,8 +185,8 @@ const SetColumn = ({
         {index + 1}
       </span>
       <div className="edit-week-mobile-reps-wrapper flex-ai-center">
-        <span className="font-15 black mr-1">{reps || 0}</span>
-        <span className="font-12 color-gray font-w-300">reps</span>
+        <span className="font-15 black mr-1 noselect">{reps || 0}</span>
+        <span className="font-12 color-gray font-w-300 noselect">reps</span>
       </div>
     </div>
   );
@@ -289,7 +289,7 @@ const EditColumn = ({
         )}
       </div>
 
-      <span className="font-w-500 color-gray edit-week-card-rep-index">
+      <span className="font-w-500 color-gray edit-week-card-rep-index noselect">
         {index + 1}
       </span>
 
