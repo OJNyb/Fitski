@@ -72,7 +72,7 @@ const MobileExerciseCard = ({
       onTouchEnd={onTouchEnd}
       onTouchMove={onTouchMove}
     >
-      <div className="history-exercise-name">
+      <div className="history-exercise-name noselect">
         <span className="black font-16">{name}</span>
         {(isRejected || dayRejected) && (
           <div className="flex-ai-center exercise-card-rejected-container">

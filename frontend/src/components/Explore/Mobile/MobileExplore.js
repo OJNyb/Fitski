@@ -102,7 +102,7 @@ const MobileExplore = ({
       />
       <div className="explore-mobile-cards-container">{view}</div>
       {reachedEnd && !!results.length && (
-        <p className="text-center black">You've reached the end</p>
+        <p className="text-center color-light-gray">You've reached the end</p>
       )}
     </>
   );

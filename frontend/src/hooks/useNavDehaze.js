@@ -3,7 +3,7 @@ import { useLayoutEffect, useContext } from "react";
 import { NavContext } from "../context/navContext";
 import { SHOW_DEHAZE } from "../types/navTypes";
 
-function useNavRedDehaze() {
+function useNavDehaze() {
   const { dispatch } = useContext(NavContext);
   useLayoutEffect(() => {
     function setNav() {
@@ -14,4 +14,4 @@ function useNavRedDehaze() {
   }, [dispatch]);
 }
 
-export default useNavRedDehaze;
+export default useNavDehaze;

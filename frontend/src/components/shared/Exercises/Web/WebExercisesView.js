@@ -248,7 +248,6 @@ const ExerciseDropdown = ({
   setShowDropdown,
   onEditDeleteClick
 }) => {
-  console.log(moreBtn.current);
   const { current } = moreBtn;
 
   const rect = current.getBoundingClientRect();

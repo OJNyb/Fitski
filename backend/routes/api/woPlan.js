@@ -397,8 +397,6 @@ router.delete(
 
     const { week_id: weekId } = params;
 
-    console.log("gay");
-
     const { woPlan } = body;
 
     woPlan

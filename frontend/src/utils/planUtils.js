@@ -25,7 +25,6 @@ function createWeekdayIds(copyWeek) {
     const day = days[i];
     const { exercises: copyExercises } = day;
     const exercises = [];
-    console.log(copyExercises);
     for (let i = 0; i < copyExercises.length; i++) {
       const exercise = copyExercises[i];
       const { sets } = exercise;

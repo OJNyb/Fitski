@@ -53,8 +53,6 @@ const Profile = ({
     );
   });
 
-  console.log(isPending);
-
   return (
     <>
       <MobileNavMidContainer

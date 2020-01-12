@@ -108,7 +108,7 @@ const DayExercise = ({ dayId, exercise, onEditExercise, onDeleteExercise }) => {
     // {
     //   icon: "edit",
     //   text: "Add note",
-    //   action: () => console.log("gay"),
+    //   action: () => console.log("2"),
     //   outlined: true,
     //   minified: true
     // },

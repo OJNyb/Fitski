@@ -3,6 +3,7 @@ import { Form, Field, Formik } from "formik";
 import axios from "axios";
 import useSetLoading from "../../hooks/useSetLoading";
 import { useParams, Redirect } from "react-router-dom";
+import { getErrorMessage } from "../../utils/errorHandling";
 
 import MobileInput from "../shared/Form/MobileInput";
 
@@ -50,14 +51,8 @@ const ResetPassword = () => {
             })
             .catch(err => {
               // TODO: If err.status !== 404 ???
-              console.log(err.response);
-              const { response } = err;
-              const { data } = response;
-              const { error } = data;
-              const { details } = error;
-              console.log(response);
-
-              setBackendError(details[0].message);
+              const { message } = getErrorMessage(err)[0];
+              setBackendError(message);
               setSubmitting(false);
             });
         }}

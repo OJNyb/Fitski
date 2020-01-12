@@ -7,8 +7,7 @@ function getUser() {
       return res.data;
     })
     .catch(err => {
-      console.log(err.response);
-      return Promise.reject(err);
+      Promise.reject(err);
     });
 }
 
@@ -31,11 +30,9 @@ function logout(values) {
       ...values
     })
     .then(res => {
-      console.log(res);
       return Promise.resolve(res.data);
     })
     .catch(err => {
-      console.log(err);
       return Promise.reject(err.response.data);
     });
 }

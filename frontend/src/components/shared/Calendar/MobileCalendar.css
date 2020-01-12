@@ -1,4 +1,6 @@
 .DayPickerNavigation__verticalDefault_3 {
+  position: fixed !important;
+  bottom: 0;
   display: flex;
 }
 

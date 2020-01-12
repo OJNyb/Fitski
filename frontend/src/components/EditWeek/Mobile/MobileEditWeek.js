@@ -27,7 +27,7 @@ const MobileEditWeek = ({
   const [showExercises, setShowExercises] = useState(false);
   const [activeExercise, setActiveExercise] = useState(null);
   useSetLoading(false);
-  useNavBack(`/api/plans/${planId}`);
+  useNavBack(`/plans/${planId}`);
 
   const { days, _id: weekId } = currentWeek;
   const currentDay = days[currentDayIndex];

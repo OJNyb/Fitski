@@ -21,6 +21,14 @@
   max-width: 500px;
 }
 
+.padding-15-r-40 {
+  padding: 15px 40px 15px 15px;
+}
+
+.padding-15-l-40 {
+  padding: 15px 15px 15px 40px;
+}
+
 /* VIEW */
 .history-mobile-container {
   margin: 0 auto;

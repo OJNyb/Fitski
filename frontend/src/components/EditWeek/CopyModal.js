@@ -22,8 +22,6 @@ const CopyModal = ({ weekIndex, hideModal }) => {
 
   const { cwRejected, cwPending } = woPlan;
 
-  console.log(woPlan);
-
   function onClose() {
     delete woPlan.cwPending;
     delete woPlan.cwRejected;
