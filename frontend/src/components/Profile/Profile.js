@@ -102,15 +102,16 @@ const Profile = () => {
   }
 
   function handleEditProfile(values) {
-    const { description: oldDescription } = user;
-    const { avatar, description } = values;
+    const { bio: oldBio } = user;
+    const { avatar, bio } = values;
     if (!avatar) delete values.avatar;
-    if (description === oldDescription) delete values.description;
+    if (bio === oldBio) delete values.bio;
 
     if (Object.keys(values).length) {
-      editUser(userDispatch, dispatch, values);
+      editUser(userDispatch, dispatch, values).then(() => setShowModal(false));
+    } else {
+      setShowModal(false);
     }
-    setShowModal(false);
   }
 
   if (isPending || accessPending) {
@@ -145,11 +146,9 @@ const Profile = () => {
         />
       );
     } else if (showModal.modal === "edit") {
-      const { bio, avatar } = user;
       modal = (
         <EditProfileModal
-          bio={bio}
-          avatar={avatar}
+          user={user}
           onSubmit={handleEditProfile}
           hideModal={() => setShowModal(false)}
         />
