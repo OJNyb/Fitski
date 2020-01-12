@@ -249,9 +249,9 @@ const TrackListItem = ({
         onClick={() => onItemClick(setId)}
       >
         <div className="history-mobile-exercise-list-action-index flex-center-space-bw">
-          <button onClick={onCommentClick}>
+          {/* <button onClick={onCommentClick}>
             <i className="material-icons">comment</i>
-          </button>
+          </button> */}
           <b className="font-16">{index + 1}</b>
         </div>
         <div className="history-mobile-exercise-list-kg-reps">

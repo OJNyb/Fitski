@@ -7,10 +7,12 @@ const TrackNav = ({ exerciseName, setShowExercise }) => {
         className="padding-5 color-white"
         onClick={() => setShowExercise(false)}
       >
-        <i className="material-icons">arrow_back</i>
+        <i className="material-icons font-22">arrow_back</i>
       </button>
 
-      <span className="font-15 font-w-400 color-white">{exerciseName}</span>
+      <span className="font-17 font-w-400 color-white m-l-10 mb-1">
+        {exerciseName}
+      </span>
     </div>
   );
 };

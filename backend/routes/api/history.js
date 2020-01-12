@@ -523,10 +523,10 @@ router.post(
 
     let update = {};
     const base = "days.$[d].exercises.$[e].sets.$[s].";
-    if (weight) {
+    if (weight || weight === 0) {
       update[`${base}weight`] = weight;
     }
-    if (reps) {
+    if (reps || reps === 0) {
       update[`${base}reps`] = reps;
     }
 
