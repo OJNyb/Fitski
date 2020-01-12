@@ -4,7 +4,9 @@ import {
   IS_REJECTED,
   EDIT_USER,
   ACTIVATE_PLAN,
-  DEACTIVATE_PLAN
+  DEACTIVATE_PLAN,
+  EDIT_USER_SUCCESS,
+  EDIT_USER_FAILED
 } from "../types/userTypes";
 
 function userReducer(state, action) {
@@ -38,13 +40,63 @@ function userReducer(state, action) {
         isPending: false
       };
     }
+
     case EDIT_USER: {
-      const { values } = payload;
+      const { image } = payload;
+      const { user } = state;
+      const newUser = {
+        ...user
+      };
+      if (image) {
+        newUser.imagePending = true;
+        newUser.imageRejected = false;
+      } else {
+        newUser.isPending = true;
+        newUser.isRejected = false;
+      }
+
+      return {
+        ...state,
+        user: newUser
+      };
+    }
+
+    case EDIT_USER_SUCCESS: {
+      const { image, values } = payload;
       const { user } = state;
       const newUser = {
         ...user,
         ...values
       };
+
+      if (image) {
+        newUser.imagePending = false;
+        newUser.imageRejected = false;
+      } else {
+        newUser.isPending = false;
+        newUser.isRejected = false;
+      }
+
+      return {
+        ...state,
+        user: newUser
+      };
+    }
+
+    case EDIT_USER_FAILED: {
+      const { image } = payload;
+      const { user } = state;
+      const newUser = {
+        ...user
+      };
+
+      if (image) {
+        newUser.imagePending = false;
+        newUser.imageRejected = true;
+      } else {
+        newUser.isPending = false;
+        newUser.isRejected = true;
+      }
 
       return {
         ...state,

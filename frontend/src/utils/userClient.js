@@ -1,82 +1,108 @@
 import axios from "axios";
 import {
   EDIT_USER,
+  EDIT_USER_FAILED,
+  EDIT_USER_SUCCESS,
   ACTIVATE_PLAN,
-  DEACTIVATE_PLAN,
-  REQUEST_FAILED
+  DEACTIVATE_PLAN
 } from "../types/userTypes";
 import { isSuccessful } from "../utils/errorHandling";
 import { EDIT_PROFILE } from "../types/profileTypes";
 
 function editUser(dispatch, profileDispatch, values) {
-  const { avatar } = values;
+  return new Promise((resolve, reject) => {
+    const { avatar } = values;
+    if (avatar) {
+      let fD = new FormData();
+      fD.append("avatar", avatar);
+      const payload = { image: true };
 
-  if (avatar) {
-    let fD = new FormData();
-    fD.append("avatar", avatar);
-    axios
-      .post("/api/image/avatar", fD)
-      .then(res => {
-        let isSucc = isSuccessful(res);
+      dispatch({
+        type: EDIT_USER,
+        payload
+      });
 
-        if (!isSucc) {
-          return dispatch({
-            type: REQUEST_FAILED
-          });
-        }
+      axios
+        .post("/api/image/avatar", fD)
+        .then(res => {
+          let isSucc = isSuccessful(res);
 
-        const {
-          data: { location }
-        } = res;
-        const payload = { values: { avatar: location } };
-        dispatch({
-          type: EDIT_USER,
-          payload
-        });
-        if (profileDispatch) {
-          profileDispatch({
-            type: EDIT_PROFILE,
+          if (!isSucc) {
+            dispatch({
+              type: EDIT_USER_FAILED,
+              payload
+            });
+            return reject();
+          }
+
+          const {
+            data: { location }
+          } = res;
+          const payload = { values: { avatar: location }, image: true };
+          dispatch({
+            type: EDIT_USER_SUCCESS,
             payload
           });
-        }
-      })
-      .catch(err => console.log(err.response));
-    delete values.avatar;
-  }
-
-  if (Object.keys(values).length === 0) return;
-
-  const payload = { values };
-  dispatch({
-    type: EDIT_USER,
-    payload
-  });
-
-  if (profileDispatch) {
-    profileDispatch({
-      type: EDIT_PROFILE,
-      payload
-    });
-  }
-
-  axios
-    .post(`/api/user/edit`, {
-      ...values
-    })
-    .then(res => {
-      let isSucc = isSuccessful(res);
-      if (!isSucc) {
-        return dispatch({
-          type: REQUEST_FAILED
+          if (profileDispatch) {
+            profileDispatch({
+              type: EDIT_PROFILE,
+              payload
+            });
+          }
+          if (!values.bio) {
+            return resolve();
+          }
+        })
+        .catch(() => {
+          dispatch({
+            type: EDIT_USER_FAILED,
+            payload
+          });
+          return reject();
         });
-      }
-    })
-    .catch(err => {
+      delete values.avatar;
+    }
+
+    if (Object.keys(values).length > 0) {
+      const payload = { values };
       dispatch({
-        type: REQUEST_FAILED,
-        payload: { err }
+        type: EDIT_USER,
+        payload
       });
-    });
+
+      axios
+        .post(`/api/user/edit`, {
+          ...values
+        })
+        .then(res => {
+          let isSucc = isSuccessful(res);
+          if (!isSucc) {
+            dispatch({
+              type: EDIT_USER_FAILED
+            });
+            return reject();
+          }
+          dispatch({
+            type: EDIT_USER_SUCCESS,
+            payload
+          });
+          if (profileDispatch) {
+            profileDispatch({
+              type: EDIT_PROFILE,
+              payload
+            });
+          }
+          resolve();
+        })
+        .catch(err => {
+          dispatch({
+            type: EDIT_USER_FAILED,
+            payload: { err }
+          });
+          reject();
+        });
+    }
+  });
 }
 
 function activatePlan(dispatch, planId, startDate) {
