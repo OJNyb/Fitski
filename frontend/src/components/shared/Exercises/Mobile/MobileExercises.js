@@ -42,7 +42,7 @@ const MobileExerciseView = ({
     }
   }
 
-  let header = shouldShowExercises
+  let header = muscleGroup.length
     ? muscleGroups.find(x => x._id === muscleGroup[0]).name
     : "Exercises";
 
