@@ -1,15 +1,9 @@
 import React, { useState } from "react";
 import Plus20 from "../../SVGs/Plus20";
 
-import AddExerciseModal from "./AddExerciseModal";
+import AddExerciseModal from "../AddExerciseModal";
 
-const MobileExercisesNav = ({
-  header,
-  onBackClick,
-  handleAddCustomExercise
-}) => {
-  const [showModal, setShowModal] = useState(false);
-
+const MobileExercisesNav = ({ header, onBackClick, setShowModal }) => {
   return (
     <div className="fixed z-max height-50 width-100p top-0 padding-s-10 flex-ai-center bc-a6 color-white stretch">
       <button className="padding-5 color-white" onClick={onBackClick}>
@@ -21,21 +15,15 @@ const MobileExercisesNav = ({
           <h2 className="font-18 font-w-500 margin-0 mb-1 ml-3">{header}</h2>
         </div>
 
-        <div className="nav-mid-header-item nav-mid-header-button-container padding-5">
-          <button onClick={() => setShowModal(true)}>
+        <div className="nav-mid-header-item nav-mid-header-button-container">
+          <button
+            className="padding-7"
+            onClick={() => setShowModal({ type: "add" })}
+          >
             <Plus20 fill={"#fff"} />
           </button>
         </div>
       </div>
-
-      {showModal && (
-        <AddExerciseModal
-          buttonText={"Add"}
-          header={"New Exercise"}
-          hideModal={() => setShowModal(false)}
-          handleSubmit={handleAddCustomExercise}
-        />
-      )}
     </div>
   );
 };

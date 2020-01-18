@@ -13,7 +13,16 @@ import {
   EDIT_EXERCISE_SUCCESS,
   DELETE_EXERCISE,
   DELETE_EXERCISE_FAILED,
-  DELETE_EXERCISE_SUCCESS
+  DELETE_EXERCISE_SUCCESS,
+  ADD_MUSCLEGROUP,
+  ADD_MUSCLEGROUP_FAILED,
+  ADD_MUSCLEGROUP_SUCCESS,
+  EDIT_MUSCLEGROUP,
+  EDIT_MUSCLEGROUP_FAILED,
+  EDIT_MUSCLEGROUP_SUCCESS,
+  DELETE_MUSCLEGROUP,
+  DELETE_MUSCLEGROUP_FAILED,
+  DELETE_MUSCLEGROUP_SUCCESS
 } from "../types/exerciseTypes";
 
 // TODO: If !week/day/woplan
@@ -39,13 +48,15 @@ function planReducer(state, action) {
     }
 
     case SET_EXERCISES: {
-      const { exercises } = payload;
+      const { data } = payload;
+      const { exercises, muscleGroups } = data;
 
       exercises.sort((a, b) => (a.name > b.name ? 1 : -1));
 
       return {
         ...state,
         exercises,
+        muscleGroups,
         isPending: false,
         getExercises: false
       };
@@ -60,14 +71,15 @@ function planReducer(state, action) {
 
     case ADD_EXERCISE: {
       const { exercises } = state;
-      const { name, category, exerciseId } = payload;
+      const { name, muscleGroup, exerciseId } = payload;
 
       let newExercise = {
         name,
         custom: true,
         _id: exerciseId,
-        muscleGroup: category,
-        isPending: true
+        muscleGroup,
+        isPending: true,
+        isRejected: false
       };
 
       exercises.push(newExercise);
@@ -128,7 +140,8 @@ function planReducer(state, action) {
       exercises[exerciseIndex] = {
         ...exercises[exerciseIndex],
         ...values,
-        isPending: true
+        isPending: true,
+        isRejected: false
       };
 
       return {
@@ -227,6 +240,147 @@ function planReducer(state, action) {
       return {
         ...state,
         exercises
+      };
+    }
+
+    case ADD_MUSCLEGROUP: {
+      const { muscleGroups } = state;
+      const { name, color, muscleGroupId } = payload;
+
+      let newMuscleGroup = {
+        name,
+        custom: true,
+        _id: muscleGroupId,
+        isPending: true,
+        isRejected: false
+      };
+
+      muscleGroups.push(newMuscleGroup);
+      return {
+        ...state,
+        muscleGroups
+      };
+    }
+
+    case ADD_MUSCLEGROUP_SUCCESS: {
+      const { muscleGroups } = state;
+      const { muscleGroupId } = payload;
+
+      const muscleGroup = muscleGroups.find(x => x._id === muscleGroupId);
+      muscleGroup.isPending = false;
+
+      return {
+        ...state,
+        muscleGroups
+      };
+    }
+
+    case ADD_MUSCLEGROUP_FAILED: {
+      const { muscleGroups } = state;
+      const { muscleGroupId } = payload;
+
+      const muscleGroup = muscleGroups.find(x => x._id === muscleGroupId);
+      muscleGroup.isPending = false;
+      muscleGroup.isRejected = true;
+
+      return {
+        ...state,
+        muscleGroups
+      };
+    }
+
+    case EDIT_MUSCLEGROUP: {
+      const { muscleGroups } = state;
+      const { values, muscleGroupId } = payload;
+
+      let muscleGroupIndex = muscleGroups
+        .map(x => x._id)
+        .indexOf(muscleGroupId);
+
+      muscleGroups[muscleGroupIndex] = {
+        ...muscleGroups[muscleGroupIndex],
+        ...values,
+        isPending: true,
+        isRejected: false
+      };
+
+      return {
+        ...state,
+        muscleGroups
+      };
+    }
+
+    case EDIT_MUSCLEGROUP_SUCCESS: {
+      const { muscleGroups } = state;
+      const { muscleGroupId } = payload;
+
+      const muscleGroup = muscleGroups.find(x => x._id === muscleGroupId);
+      muscleGroup.isPending = false;
+
+      return {
+        ...state,
+        muscleGroups
+      };
+    }
+
+    case EDIT_MUSCLEGROUP_FAILED: {
+      const { muscleGroups } = state;
+      const { muscleGroupId } = payload;
+
+      const muscleGroup = muscleGroups.find(x => x._id === muscleGroupId);
+
+      muscleGroup.isPending = false;
+      muscleGroup.isRejected = true;
+
+      return {
+        ...state,
+        muscleGroups
+      };
+    }
+
+    case DELETE_MUSCLEGROUP: {
+      const { muscleGroups } = state;
+      const { muscleGroupId } = payload;
+
+      let muscleGroupIndex = muscleGroups
+        .map(x => x._id)
+        .indexOf(muscleGroupId);
+
+      muscleGroups[muscleGroupIndex] = {
+        ...muscleGroups[muscleGroupIndex],
+        isPending: true,
+        isRejected: false
+      };
+
+      return {
+        ...state,
+        muscleGroups
+      };
+    }
+
+    case DELETE_MUSCLEGROUP_SUCCESS: {
+      const { muscleGroups } = state;
+      const { muscleGroupId } = payload;
+
+      const newMuscleGroups = muscleGroups.filter(x => muscleGroupId !== x._id);
+
+      return {
+        ...state,
+        muscleGroups: newMuscleGroups
+      };
+    }
+
+    case DELETE_MUSCLEGROUP_FAILED: {
+      const { muscleGroups } = state;
+      const { muscleGroupId } = payload;
+
+      const muscleGroup = muscleGroups.find(x => x._id === muscleGroupId);
+      muscleGroup.isPending = false;
+      muscleGroup.isRejected = true;
+
+      return {
+        ...state,
+        muscleGroups
       };
     }
 

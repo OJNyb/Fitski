@@ -135,7 +135,7 @@ const EditProfileModal = ({ plan, onSubmit, hideModal }) => {
             className={
               isMobile
                 ? "mobile-modal-submit-btn"
-                : "web-modal-submit-btn theme-btn-filled padding-10-0 width-80p margin-a"
+                : "web-modal-submit-btn theme-btn-filled"
             }
             disabled={isSubmitting || isPending}
             type="submit"

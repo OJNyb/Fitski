@@ -119,7 +119,7 @@ const CreatePlanForm = ({ isMobile, setRedir }) => {
             className={
               isMobile
                 ? "mobile-modal-submit-btn"
-                : "web-modal-submit-btn theme-btn-filled padding-10-0 width-80p margin-a margin-top-20"
+                : "web-modal-submit-btn theme-btn-filled"
             }
             type="submit"
             disabled={isSubmitting}

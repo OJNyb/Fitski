@@ -53,7 +53,7 @@ const PlusMinusModal = ({
       <button
         className={
           "theme-btn-filled " +
-          (isMobile ? "mobile-modal-submit-btn" : "bs-modal-submit-btn")
+          (isMobile ? "mobile-modal-submit-btn" : "web-modal-submit-btn")
         }
         onClick={onSubmit}
         disabled={isPending}

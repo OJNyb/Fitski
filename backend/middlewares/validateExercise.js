@@ -1,8 +1,9 @@
 const UserExercise = require("../models/UserExercise");
+const MuscleGroup = require("../models/MuscleGroup");
 
 const createErrorObject = require("../utils/createErrorObject");
 
-let StandardExerciseIds = [
+const StandardExerciseIds = [
   "5d406ab23beac01b7035c2aa",
   "5d406ab23beac01b7035c2ab",
   "5d406ab23beac01b7035c2ac",
@@ -70,6 +71,18 @@ let StandardExerciseIds = [
   "5d406ab23beac01b7035c2f5",
   "5d406ab23beac01b7035c2f6",
   "5d406ab23beac01b7035c2f7"
+];
+
+const StandardMuscleGroupIds = [
+  "5e1efe709ed6895950a94b88",
+  "5e1efec21c9d440000a301f8",
+  "5e1eff241c9d440000a301f9",
+  "5e1eff431c9d440000a301fa",
+  "5e1effe01c9d440000a301fb",
+  "5e1f00201c9d440000a301fc",
+  "5e1f005a1c9d440000a301fd",
+  "5e1f03941c9d440000a301fe",
+  "5e1f12311c9d440000a301ff"
 ];
 
 async function validateExercise(req, res, next) {
@@ -146,4 +159,68 @@ async function validateDeleteExercises(req, res, next) {
   return next();
 }
 
-module.exports = { validateExercise, validateDeleteExercises };
+async function validateMuscleGroup(req, res, next) {
+  const { body, params, session } = req;
+  const { userId } = session;
+  const { musclegroup_id: muscleGroupId } = params;
+
+  const muscleGroup = await MuscleGroup.findById(muscleGroupId);
+
+  if (!muscleGroup) {
+    return res
+      .status(404)
+      .json(createErrorObject(["No muscle group with this ID"]));
+  }
+
+  if (userId !== muscleGroup.user.toString()) {
+    return res
+      .status(403)
+      .json(
+        createErrorObject([
+          "You do not have permission to make changes to this muscle group"
+        ])
+      );
+  }
+
+  body.muscleGroup = muscleGroup;
+
+  return next();
+}
+
+async function validateDeleteMuscleGroup(req, res, next) {
+  const { body, params, session } = req;
+  const { userId } = session;
+  const { musclegroup_id: muscleGroupId } = params;
+
+  if (StandardMuscleGroupIds.indexOf(muscleGroupId) > -1) {
+    body.defaultMuscleGroupToDelete = muscleGroupId;
+  } else {
+    const muscleGroup = await MuscleGroup.findById(muscleGroupId);
+
+    if (!muscleGroup) {
+      return res
+        .status(404)
+        .json(createErrorObject(["No muscle group with this ID"]));
+    }
+
+    if (userId !== muscleGroup.user.toString()) {
+      return res
+        .status(403)
+        .json(
+          createErrorObject([
+            "You do not have permission to make changes to this muscle group"
+          ])
+        );
+    }
+    body.customMuscleGroupToDelete = muscleGroupId;
+  }
+
+  return next();
+}
+
+module.exports = {
+  validateExercise,
+  validateDeleteExercises,
+  validateMuscleGroup,
+  validateDeleteMuscleGroup
+};

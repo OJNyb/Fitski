@@ -159,7 +159,8 @@ const History = () => {
         let muscleGroups = formatMuscleGroups(days[index].exercises);
 
         let circles = muscleGroups.map(x => {
-          let color = addMGC(x);
+          let color = x.color;
+          console.log(x);
           return (
             <div key={x}>
               <CalendarMuscleGroupCircle fill={color} />

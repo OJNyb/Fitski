@@ -32,7 +32,10 @@ router.get("/", ensureSignedIn, (req, res) => {
   const { userId } = session;
 
   History.findOne({ user: userId })
-    .populate("days.exercises.exercise")
+    .populate({
+      path: "days.exercises.exercise",
+      populate: { path: "muscleGroup" }
+    })
     .then(history => res.json(history));
 });
 

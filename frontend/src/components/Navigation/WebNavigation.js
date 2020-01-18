@@ -33,6 +33,7 @@ const BigScreenNavigation = () => {
       if (
         isSmallScreen &&
         target.id !== "ss-more-btn" &&
+        target.parentNode &&
         target.parentNode.id !== "ss-more-btn"
       ) {
         setShowMenu(false);
@@ -87,7 +88,7 @@ const SmallScreenLogo = ({ showMenu, setShowMenu }) => {
       <div className="flex-col-cen">
         <div className="flex-ai-center">
           <i className="material-icons font-22 tc mt-6">fitness_center</i>
-          <h1 className="margin-0 black line-height-11 font-22">Fitnut</h1>
+          <h1 className="margin-0 black line-height-11 font-22">Chadify</h1>
         </div>
         <span className="color-light-gray line-height-11 header-small-screen-beta-text">
           Beta v0.01
@@ -105,7 +106,7 @@ const BigScreenLogo = () => {
           fitness_center
         </i>
         <h1 className="margin-0 black line-height-11 font-32 header-big-screen-logo">
-          Fitnut
+          Chadify
         </h1>
       </div>
       <span className="color-light-gray font-12 line-height-11">

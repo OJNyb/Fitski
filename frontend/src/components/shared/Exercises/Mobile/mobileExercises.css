@@ -85,7 +85,7 @@
 }
 
 .mobile-exercise-item-selected {
-  background-color: rgb(240, 166, 166);
+  background-color: rgb(255, 209, 209);
   border-color: #fff;
   color: black;
 }
@@ -103,4 +103,8 @@
 .mobile-exercise-nav-wrapper {
   width: calc(100% - 42px);
   padding: 0 10px 0 2px;
+}
+
+.padding-7 {
+  padding: 7px;
 }

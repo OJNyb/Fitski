@@ -2,11 +2,14 @@ const mongoose = require("mongoose");
 const { model, Schema } = mongoose;
 const { ObjectId } = Schema.Types;
 
-const UserExerciseSchema = new Schema({
+const MuscleGroupSchema = new Schema({
   _id: ObjectId,
-  user: { type: ObjectId, ref: "user" },
-  name: String,
-  muscleGroup: { type: ObjectId, ref: "muscleGroup" },
+  name: { type: String },
+  color: { type: String },
+  user: {
+    type: ObjectId,
+    ref: "user"
+  },
   custom: {
     type: Boolean,
     default: true
@@ -17,4 +20,4 @@ const UserExerciseSchema = new Schema({
   }
 });
 
-module.exports = Exercise = model("userExercise", UserExerciseSchema);
+module.exports = MuscleGroup = model("muscleGroup", MuscleGroupSchema);

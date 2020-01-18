@@ -44,7 +44,7 @@ const CopyDayModal = ({
       {dayView}
       <button
         disabled={dayIndex === -1}
-        className="theme-btn-filled bs-modal-submit-btn"
+        className="theme-btn-filled web-modal-submit-btn"
         onClick={onCopySubmit}
       >
         Copy
