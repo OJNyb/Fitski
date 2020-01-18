@@ -17,7 +17,8 @@
   align-items: center;
 }
 
-.modal-mobile-delete-btn-container button {
+.mobile-modal-delete-btn,
+.cancel-btn {
   height: 40px;
   width: 40vw;
   border-radius: 999px;
@@ -48,4 +49,8 @@
   padding: 2px 5px;
   border-radius: 4px;
   border: 1px solid #e69191;
+}
+
+.confirm-modal-p {
+  margin: 0 0 24px;
 }

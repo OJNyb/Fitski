@@ -59,7 +59,7 @@ const MobileNavigation = () => {
         <div className="mobile-nav-header padding-15 border-box flex-col-cen">
           <div className="flex-ai-center tc">
             <i className="material-icons font-30">fitness_center</i>
-            <h1 className="margin-0 black line-height-11">Fitnut</h1>
+            <h1 className="margin-0 black line-height-11">Chadify</h1>
           </div>
           <span className="color-gray font-12 line-height-11">Beta v0.01</span>
         </div>

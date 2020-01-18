@@ -14,6 +14,8 @@ const history = require("./routes/api/history");
 const exercise = require("./routes/api/exercise");
 const feedback = require("./routes/api/feedback");
 
+const Exercise = require("./models/Exercise");
+
 const createErrorObject = require("./utils/createErrorObject");
 
 const {
@@ -39,7 +41,9 @@ const {
         useCreateIndex: true
       })
 
-      .then(() => console.log("MongoDB Connected"))
+      .then(() => {
+        console.log("MongoDB Connected");
+      })
       .catch(err => console.log(err));
 
     const app = express();

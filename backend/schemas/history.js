@@ -19,11 +19,6 @@ const notes = Joi.string()
   .max(9999)
   .label("Notes");
 
-const sets = Joi.number()
-  .min(1)
-  .max(50)
-  .label("Sets");
-
 const reps = Joi.number()
   .min(0)
   .max(9999)

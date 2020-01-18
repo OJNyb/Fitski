@@ -12,6 +12,8 @@ const UserAccess = require("../../models/UserAccess");
 const PlanAccess = require("../../models/PlanAccess");
 const PlanTrend = require("../../models/PlanTrend");
 const DefaultExerciseDelete = require("../../models/DefaultExerciseDelete");
+const DefaultMuscleGroupDelete = require("../../models/DefaultMuscleGroupDelete");
+
 const { formatHistoryDate } = require("../../utils/formatHistoryDate");
 
 // Validation
@@ -56,6 +58,10 @@ router.post("/register", ensureSignedOut, validateRequest, (req, res, next) => {
     user: _id
   });
 
+  const newMuscleGroupDelete = new DefaultMuscleGroupDelete({
+    user: _id
+  });
+
   newUser
     .save()
     .then(async user => {
@@ -63,6 +69,7 @@ router.post("/register", ensureSignedOut, validateRequest, (req, res, next) => {
         await newHistory.save();
         await newDefaultExerciseDelete.save();
         await newUserAccess.save();
+        await newMuscleGroupDelete.save();
       } catch (err) {
         try {
           newUser.remove();

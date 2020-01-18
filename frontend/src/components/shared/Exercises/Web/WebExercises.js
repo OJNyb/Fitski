@@ -1,53 +1,33 @@
 import React, { useRef, useState } from "react";
 import useSetLoading from "../../../../hooks/useSetLoading";
 import Search from "../../SVGs/Search";
-import EditAddExerciseModal from "./WebAddExerciseModal";
-import ConfirmModal from "../../Modal/ConfirmModal";
 
 import "./webExercises.css";
 import DropDown from "../../DropDown/DropDown";
 import MuscleGroupDropdown from "./MuscleGroupDropdown";
 
-const ExercisesBigView = ({
+const Exercises = ({
   search,
   isPending,
   muscleGroup,
+  setShowModal,
+  muscleGroups,
   onAddExercise,
   setMuscleGroup,
   exercisesToShow,
   handleSearchChange,
-  handleEditExercise,
   handleDeleteExercises,
   handleAddExerciseRetry,
   handleEditExerciseRetry,
   handleAddCustomExercise
 }) => {
   const [showFilter, setShowFilter] = useState(false);
-  const [showModal, setShowModal] = useState(false);
 
   useSetLoading(false);
 
   function handleEditDeleteClick(e, type, exercise) {
     e.stopPropagation();
-    setShowModal({ type, exercise });
-  }
-
-  function handleAddCustom(name, category) {
-    setShowModal(false);
-    handleAddCustomExercise(name, category);
-  }
-
-  function handleEditSubmit(name, category) {
-    const {
-      exercise: { _id }
-    } = showModal;
-    handleEditExercise(_id, { name, category });
-    setShowModal(false);
-  }
-
-  function handleDeleteSubmit() {
-    handleDeleteExercises([showModal.exercise._id]);
-    setShowModal(false);
+    setShowModal({ type, exercises: [exercise] });
   }
 
   function handleMuscleGroupCheck(muscle) {
@@ -78,52 +58,8 @@ const ExercisesBigView = ({
     ));
   }
 
-  let modal;
-  if (showModal) {
-    const { type, exercise } = showModal;
-    if (type === "add") {
-      modal = (
-        <EditAddExerciseModal
-          header={"Add Exercise"}
-          hideModal={() => setShowModal(false)}
-          buttonText={"Add"}
-          handleSubmit={handleAddCustom}
-        />
-      );
-    } else if (type === "edit") {
-      const { name, muscleGroup, custom } = exercise;
-      modal = (
-        <EditAddExerciseModal
-          header={"Edit Exercise"}
-          cantEdit={!custom}
-          hideModal={() => setShowModal(false)}
-          buttonText={"Edit"}
-          initName={name}
-          initCategory={muscleGroup}
-          handleSubmit={handleEditSubmit}
-        />
-      );
-    } else if (type === "delete") {
-      const { name } = exercise;
-      modal = (
-        <ConfirmModal
-          text={
-            <>
-              Are you sure you want to delete{" "}
-              <span className="font-w-500">{name}?</span>
-            </>
-          }
-          header={"Delete exercise"}
-          hideModal={() => setShowModal(false)}
-          onSubmit={handleDeleteSubmit}
-        />
-      );
-    }
-  }
-
   return (
     <>
-      {modal}
       <div className="exercises-container">
         <div className="exercises-head">
           <div className="exercise-search-container flex-center-space-bw">
@@ -161,6 +97,7 @@ const ExercisesBigView = ({
           {showFilter && (
             <MuscleGroupDropdown
               muscleGroup={muscleGroup}
+              muscleGroups={muscleGroups}
               hideDropdown={() => setShowFilter(false)}
               onMuscleGroupCheck={handleMuscleGroupCheck}
             />
@@ -187,15 +124,15 @@ const ExerciseItem = ({
   const moreBtn = useRef(null);
   const { name, request, isPending, isRejected } = exercise;
 
-  function onRetryClick() {
-    if (request === "add") {
-      onAddExerciseRetry(exercise);
-    } else if (request === "edit") {
-      onEditExerciseRetry(exercise);
-    } else if (request === "delete") {
-      onDeleteExercises([exercise._id]);
-    }
-  }
+  // function onRetryClick() {
+  //   if (request === "add") {
+  //     onAddExerciseRetry(exercise);
+  //   } else if (request === "edit") {
+  //     onEditExerciseRetry(exercise);
+  //   } else if (request === "delete") {
+  //     onDeleteExercises([exercise._id]);
+  //   }
+  // }
 
   return (
     <>
@@ -227,17 +164,6 @@ const ExerciseItem = ({
           />
         )}
       </div>
-      {isRejected && (
-        <div className="flex-ai-center exercises-rejected-container">
-          <span className="color-light-gray">Request failed</span>
-          <button
-            className="padding-5 theme-btn-no-border"
-            onClick={onRetryClick}
-          >
-            <i className="material-icons">refresh</i>
-          </button>
-        </div>
-      )}
     </>
   );
 };
@@ -288,4 +214,4 @@ const ExerciseDropdown = ({
     </div>
   );
 };
-export default ExercisesBigView;
+export default Exercises;

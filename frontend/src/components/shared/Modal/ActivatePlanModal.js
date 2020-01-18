@@ -87,7 +87,7 @@ const ActivatePlanModal = ({ hideModal, onActivateSubmit }) => {
           </div>
         )}
         <button
-          className="theme-btn-filled bs-modal-submit-btn"
+          className="theme-btn-filled web-modal-submit-btn"
           onClick={() => onActivateSubmit(startDate)}
         >
           Activate

@@ -10,12 +10,17 @@ import {
   deleteExercise
 } from "../../../utils/exerciseClient";
 
+import ErrorPrompt from "./ErrorPrompt";
 import SetLoading from "../../SetLoading";
 
 import "./exercises.css";
 
-const ExercisesBigView = lazy(() => import("./Web/WebExercisesView"));
-const MobileExerciseView = lazy(() => import("./Mobile/MobileExerciseView"));
+const ExercisesBigView = lazy(() => import("./Web/WebExercises"));
+const MobileExerciseView = lazy(() => import("./Mobile/MobileExercises"));
+const loadAddExerciseModal = () => import("./AddExerciseModal");
+const loadDeleteExercisesModal = () => import("./DeleteExercisesModal");
+const AddExerciseModal = lazy(loadAddExerciseModal);
+const DeleteExercisesModal = lazy(loadDeleteExercisesModal);
 
 const Exercises = ({ handleAddExercise, closeExercises }) => {
   const { state, dispatch } = useContext(ExerciseContext);
@@ -23,15 +28,22 @@ const Exercises = ({ handleAddExercise, closeExercises }) => {
   const [muscleGroup, setMuscleGroup] = useState([]);
   const [exercisesToShow, setExercisesToShow] = useState(null);
   const [edit, setEdit] = useState(0);
+  const [showModal, setShowModal] = useState(false);
+  const [reqError, setReqError] = useState(null);
 
   const isMobile = useMobile();
 
-  const { exercises, isPending, isRejected } = state;
+  const { exercises, muscleGroups, isPending, isRejected } = state;
 
   let length;
   if (exercises) {
     length = exercises.length;
   }
+
+  useEffect(() => {
+    loadAddExerciseModal();
+    loadDeleteExercisesModal();
+  }, []);
 
   useEffect(() => {
     function filterExercises() {
@@ -46,9 +58,9 @@ const Exercises = ({ handleAddExercise, closeExercises }) => {
         let regex = RegExp(search, "i");
         exercisesToShow = exercises.filter(x => regex.test(x.name));
       } else if (search === "" && muscleGroup.length) {
-        exercisesToShow = exercises.filter(
-          x => muscleGroup.indexOf(x.muscleGroup) !== -1
-        );
+        exercisesToShow = exercises.filter(x => {
+          return muscleGroup.indexOf(x.muscleGroup._id) !== -1;
+        });
       } else {
         let regex = RegExp(search, "i");
         exercisesToShow = exercises.filter(x => {
@@ -65,12 +77,43 @@ const Exercises = ({ handleAddExercise, closeExercises }) => {
   }, [search, muscleGroup, isMobile, length, exercises, edit]);
 
   function handleAddCustomExercise(name, category) {
-    addExercise(dispatch, name, category);
+    const { type } = showModal;
+    addExercise(dispatch, name, category)
+      .then(() => setEdit(edit + 1))
+      .catch(error => {
+        setReqError({
+          type,
+          exercises: [{ name, muscleGroup: category }],
+          error
+        });
+      });
+    setShowModal(false);
   }
 
   function handleEditExercise(exerciseId, values) {
-    editExercise(dispatch, exerciseId, values);
-    setEdit(edit + 1);
+    const { type, exercises } = showModal;
+    const { name, category } = values;
+    editExercise(dispatch, exerciseId, values)
+      .then(() => {
+        setEdit(edit + 1);
+      })
+      .catch(error => {
+        setReqError({
+          type,
+          exercises: [{ ...exercises[0], name, muscleGroup: category }],
+          error
+        });
+      });
+
+    setShowModal(false);
+  }
+
+  function handleDeleteExercises(exerciseIds) {
+    const { type, exercises } = showModal;
+    deleteExercise(dispatch, exerciseIds).catch(error => {
+      setReqError({ type, exercises, error });
+    });
+    setShowModal(false);
   }
 
   function handleAddExerciseRetry(exercise) {
@@ -81,9 +124,6 @@ const Exercises = ({ handleAddExercise, closeExercises }) => {
     retryEditExercise(dispatch, exercise);
   }
 
-  function handleDeleteExercises(exerciseIds) {
-    deleteExercise(dispatch, exerciseIds);
-  }
   function handleSearchChange(e) {
     const { value } = e.target;
     setSearch(value);
@@ -100,11 +140,52 @@ const Exercises = ({ handleAddExercise, closeExercises }) => {
     return <p>Error...</p>;
   }
 
+  let modal;
+  if (showModal) {
+    const { type, exercises } = showModal;
+    if (type === "edit") {
+      modal = (
+        <AddExerciseModal
+          buttonText={"Edit"}
+          exercise={exercises[0]}
+          header={"Edit Exercise"}
+          muscleGroups={muscleGroups}
+          handleSubmit={handleEditExercise}
+          hideModal={() => setShowModal(false)}
+        />
+      );
+    } else if (type === "add") {
+      let exc;
+      if (exercises) {
+        exc = exercises[0];
+      }
+      modal = (
+        <AddExerciseModal
+          exercise={exc}
+          buttonText={"Add"}
+          header={"Add Exercise"}
+          muscleGroups={muscleGroups}
+          hideModal={() => setShowModal(false)}
+          handleSubmit={handleAddCustomExercise}
+        />
+      );
+    } else {
+      modal = (
+        <DeleteExercisesModal
+          exercises={exercises}
+          onSubmit={handleDeleteExercises}
+          hideModal={() => setShowModal(false)}
+        />
+      );
+    }
+  }
+
   let view = isMobile ? (
     <MobileExerciseView
       search={search}
       isPending={isPending}
       muscleGroup={muscleGroup}
+      muscleGroups={muscleGroups}
       setMuscleGroup={setMuscleGroup}
       closeExercises={closeExercises}
       exercisesToShow={exercisesToShow}
@@ -115,12 +196,14 @@ const Exercises = ({ handleAddExercise, closeExercises }) => {
       handleAddExerciseRetry={handleAddExerciseRetry}
       handleEditExerciseRetry={handleEditExerciseRetry}
       handleAddCustomExercise={handleAddCustomExercise}
+      setShowModal={setShowModal}
     />
   ) : (
     <ExercisesBigView
       search={search}
       isPending={isPending}
       muscleGroup={muscleGroup}
+      muscleGroups={muscleGroups}
       onAddExercise={handleAddExercise}
       setMuscleGroup={setMuscleGroup}
       exercisesToShow={exercisesToShow}
@@ -131,10 +214,26 @@ const Exercises = ({ handleAddExercise, closeExercises }) => {
       handleAddExerciseRetry={handleAddExerciseRetry}
       handleEditExerciseRetry={handleEditExerciseRetry}
       handleAddCustomExercise={handleAddCustomExercise}
+      setShowModal={setShowModal}
     />
   );
 
-  return <Suspense fallback={<SetLoading />}>{view}</Suspense>;
+  return (
+    <>
+      <Suspense fallback={<SetLoading />}>{view}</Suspense>
+      <Suspense fallback={null}>{modal}</Suspense>
+      {reqError && (
+        <ErrorPrompt
+          data={reqError}
+          onClose={() => setReqError(null)}
+          onClick={() => {
+            setShowModal(reqError);
+            setReqError(null);
+          }}
+        />
+      )}
+    </>
+  );
 };
 
 export default Exercises;

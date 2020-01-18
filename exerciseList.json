@@ -1,0 +1,1001 @@
+[
+  {
+    "name": "Rickshaw Carry",
+    "muscleGroup": "5e1f03941c9d440000a301fe",
+    "equipment": "Other"
+  },
+
+  {
+    "name": "One-Arm Medicine Ball Slam",
+    "muscleGroup": "5e1f005a1c9d440000a301fd",
+    "equipment": "Medicine Ball"
+  },
+
+  {
+    "name": "Weighted Pull Ups",
+    "muscleGroup": "5e1efec21c9d440000a301f8",
+    "equipment": "Other"
+  },
+
+  {
+    "name": "Atlas Stones",
+    "muscleGroup": "5e1efec21c9d440000a301f8",
+    "equipment": "Other"
+  },
+
+  {
+    "name": "Barbell Glute Bridge",
+    "muscleGroup": "5e1eff431c9d440000a301fa",
+    "equipment": "Barbell"
+  },
+
+  {
+    "name": "Farmer's Walk",
+    "muscleGroup": "5e1f03941c9d440000a301fe",
+    "equipment": "Other"
+  },
+
+  {
+    "name": "Deficit Deadlift",
+    "muscleGroup": "5e1efec21c9d440000a301f8",
+    "equipment": "Barbell"
+  },
+
+  {
+    "name": "Deadlift",
+    "muscleGroup": "5e1eff431c9d440000a301fa",
+    "equipment": "Barbell"
+  },
+  {
+    "name": "Rack Pull",
+    "muscleGroup": "5e1eff431c9d440000a301fa",
+    "equipment": "Barbell"
+  },
+  {
+    "name": "Plank",
+    "muscleGroup": "5e1f005a1c9d440000a301fd",
+    "equipment": "Body Only"
+  },
+
+  {
+    "name": "Bottoms Up",
+    "muscleGroup": "5e1f005a1c9d440000a301fd",
+    "equipment": "Body Only"
+  },
+
+  {
+    "name": "Snatch",
+    "muscleGroup": "5e1eff431c9d440000a301fa",
+    "equipment": "Barbell"
+  },
+
+  {
+    "name": "Sumo Deadlift",
+    "muscleGroup": "5e1eff431c9d440000a301fa",
+    "equipment": "Barbell"
+  },
+
+  {
+    "name": "Standing Cable Lift",
+    "muscleGroup": "5e1f005a1c9d440000a301fd",
+    "equipment": "Cable"
+  },
+
+  {
+    "name": "Wide-Grip Standing Barbell Curl",
+    "muscleGroup": "5e1effe01c9d440000a301fb",
+    "equipment": "Barbell"
+  },
+
+  {
+    "name": "Spell Caster",
+    "muscleGroup": "5e1f005a1c9d440000a301fd",
+    "equipment": "Dumbbell"
+  },
+
+  {
+    "name": "Dumbbell Floor Press",
+    "muscleGroup": "5e1f00201c9d440000a301fc",
+    "equipment": "Dumbbell"
+  },
+
+  {
+    "name": "Lying Face Down Plate Neck Resistance",
+    "muscleGroup": "Neck",
+    "equipment": "Other"
+  },
+
+  {
+    "name": "Incline Dumbbell Bench Press",
+    "muscleGroup": "5e1efe709ed6895950a94b88",
+    "equipment": "Dumbbell"
+  },
+
+  {
+    "name": "Flat Dumbbell Bench Press",
+    "muscleGroup": "5e1efe709ed6895950a94b88",
+    "equipment": "Dumbbell"
+  },
+
+  {
+    "name": "Decline Dumbbell Bench Press",
+    "muscleGroup": "5e1efe709ed6895950a94b88",
+    "equipment": "Dumbbell"
+  },
+
+  {
+    "name": "Flat Barbell Bench Press",
+    "muscleGroup": "5e1efe709ed6895950a94b88",
+    "equipment": "Barbell"
+  },
+
+  {
+    "name": "Incline Barbell Bench Press",
+    "muscleGroup": "5e1efe709ed6895950a94b88",
+    "equipment": "Barbell"
+  },
+
+  {
+    "name": "Seated Military Press",
+    "muscleGroup": "5e1eff241c9d440000a301f9",
+    "equipment": "Barbell"
+  },
+
+  {
+    "name": "Spider Curl",
+    "muscleGroup": "5e1effe01c9d440000a301fb",
+    "equipment": "Barbell"
+  },
+
+  {
+    "name": "Romanian Deadlift",
+    "muscleGroup": "5e1eff431c9d440000a301fa",
+    "equipment": "Barbell"
+  },
+
+  {
+    "name": "Power Snatch",
+    "muscleGroup": "5e1eff431c9d440000a301fa",
+    "equipment": "Barbell"
+  },
+
+  {
+    "name": "Barbell Walking Lunge",
+    "muscleGroup": "5e1eff431c9d440000a301fa",
+    "equipment": "Barbell"
+  },
+
+  {
+    "name": "Barbell Front Squat",
+    "muscleGroup": "5e1eff431c9d440000a301fa",
+    "equipment": "Barbell"
+  },
+
+  {
+    "name": "Spider Crawl",
+    "muscleGroup": "5e1f005a1c9d440000a301fd",
+    "equipment": "Body Only"
+  },
+
+  {
+    "name": "Seated Two-Arm Palms-Up Low-Pulley Wrist Curl",
+    "muscleGroup": "5e1f03941c9d440000a301fe",
+    "equipment": "Cable"
+  },
+
+  {
+    "name": "Close-Grip Barbell Bench Press",
+    "muscleGroup": "5e1f00201c9d440000a301fc",
+    "equipment": "Barbell"
+  },
+
+  {
+    "name": "Cocoons",
+    "muscleGroup": "5e1f005a1c9d440000a301fd",
+    "equipment": "Body Only"
+  },
+
+  {
+    "name": "Dumbbell Flyes",
+    "muscleGroup": "5e1efe709ed6895950a94b88",
+    "equipment": "Dumbbell"
+  },
+
+  {
+    "name": "Low Cable Crossover",
+    "muscleGroup": "5e1efe709ed6895950a94b88",
+    "equipment": "Cable"
+  },
+
+  {
+    "name": "Standing Dumbbell Press",
+    "muscleGroup": "5e1eff241c9d440000a301f9",
+    "equipment": "Dumbbell"
+  },
+
+  {
+    "name": "One-Arm Side Laterals",
+    "muscleGroup": "5e1eff241c9d440000a301f9",
+    "equipment": "Dumbbell"
+  },
+
+  {
+    "name": "Power Partials",
+    "muscleGroup": "5e1eff241c9d440000a301f9",
+    "equipment": "Dumbbell"
+  },
+
+  {
+    "name": "Barbell Shrug",
+    "muscleGroup": "5e1f12311c9d440000a301ff",
+    "equipment": "Barbell"
+  },
+
+  {
+    "name": "Triceps Pushdown - V-Bar Attachment",
+    "muscleGroup": "5e1f00201c9d440000a301fc",
+    "equipment": "Cable"
+  },
+
+  {
+    "name": "Wrist Roller",
+    "muscleGroup": "5e1f03941c9d440000a301fe",
+    "equipment": "Other"
+  },
+
+  {
+    "name": "Reverse Flyes",
+    "muscleGroup": "5e1eff241c9d440000a301f9",
+    "equipment": "Dumbbell"
+  },
+
+  {
+    "name": "Step Mill",
+    "muscleGroup": "5e1eff431c9d440000a301fa",
+    "equipment": "Machine"
+  },
+
+  {
+    "name": "Standing Dumbbell Straight-Arm Front Delt Raise Above Head",
+    "muscleGroup": "5e1eff241c9d440000a301f9",
+    "equipment": "Dumbbell"
+  },
+
+  {
+    "name": "Weighted Bench Dip",
+    "muscleGroup": "5e1f00201c9d440000a301fc",
+    "equipment": "Body Only"
+  },
+
+  {
+    "name": "Barbell Hip Thrust",
+    "muscleGroup": "5e1eff431c9d440000a301fa",
+    "equipment": "Barbell"
+  },
+
+  {
+    "name": "Dips - Chest Version",
+    "muscleGroup": "5e1efe709ed6895950a94b88",
+    "equipment": "Other"
+  },
+
+  {
+    "name": "Dumbbell Shoulder Press",
+    "muscleGroup": "5e1eff241c9d440000a301f9",
+    "equipment": "Dumbbell"
+  },
+
+  {
+    "name": "One-Arm Dumbbell Row",
+    "muscleGroup": "5e1efec21c9d440000a301f8",
+    "equipment": "Dumbbell"
+  },
+
+  {
+    "name": "Decline Crunch",
+    "muscleGroup": "5e1f005a1c9d440000a301fd",
+    "equipment": "Body Only"
+  },
+
+  {
+    "name": "Decline Dumbbell Flyes",
+    "muscleGroup": "5e1efe709ed6895950a94b88",
+    "equipment": "Dumbbell"
+  },
+
+  {
+    "name": "Reverse Grip Triceps Pushdown",
+    "muscleGroup": "5e1f00201c9d440000a301fc",
+    "equipment": "Cable"
+  },
+
+  {
+    "name": "Rocky Pull-Ups/Pulldowns",
+    "muscleGroup": "5e1efec21c9d440000a301f8",
+    "equipment": "Other"
+  },
+
+  {
+    "name": "Seated One-Arm Dumbbell Palms-Up Wrist Curl",
+    "muscleGroup": "5e1f03941c9d440000a301fe",
+    "equipment": "Dumbbell"
+  },
+
+  {
+    "name": "Overhead Cable Curl",
+    "muscleGroup": "5e1effe01c9d440000a301fb",
+    "equipment": "Cable"
+  },
+
+  {
+    "name": "Single Dumbbell Raise",
+    "muscleGroup": "5e1eff241c9d440000a301f9",
+    "equipment": "Dumbbell"
+  },
+
+  {
+    "name": "Weighted Suitcase Crunch",
+    "muscleGroup": "5e1f005a1c9d440000a301fd",
+    "equipment": "Medicine Ball"
+  },
+
+  {
+    "name": "Plate Twist",
+    "muscleGroup": "5e1f005a1c9d440000a301fd",
+    "equipment": "Other"
+  },
+
+  {
+    "name": "Weighted Jump Squat",
+    "muscleGroup": "5e1eff431c9d440000a301fa",
+    "equipment": "Barbell"
+  },
+
+  {
+    "name": "Gorilla Chin/Crunch",
+    "muscleGroup": "5e1f005a1c9d440000a301fd",
+    "equipment": "Body Only"
+  },
+
+  {
+    "name": "Kneeling Cable Triceps Extension",
+    "muscleGroup": "5e1f00201c9d440000a301fc",
+    "equipment": "Cable"
+  },
+
+  {
+    "name": "Cable One Arm Tricep Extension",
+    "muscleGroup": "5e1f00201c9d440000a301fc",
+    "equipment": "Cable"
+  },
+
+  {
+    "name": "Cable Crunch",
+    "muscleGroup": "5e1f005a1c9d440000a301fd",
+    "equipment": "Cable"
+  },
+
+  {
+    "name": "Hanging Leg Raise",
+    "muscleGroup": "5e1f005a1c9d440000a301fd",
+    "equipment": "Body Only"
+  },
+
+  {
+    "name": "Barbell Squat",
+    "muscleGroup": "5e1eff431c9d440000a301fa",
+    "equipment": "Barbell"
+  },
+
+  {
+    "name": "Dumbbell Bicep Curl",
+    "muscleGroup": "5e1effe01c9d440000a301fb",
+    "equipment": "Dumbbell"
+  },
+
+  {
+    "name": "V-Bar Pulldown",
+    "muscleGroup": "5e1efec21c9d440000a301f8",
+    "equipment": "Cable"
+  },
+
+  {
+    "name": "Smith Machine Overhead Shoulder Press",
+    "muscleGroup": "5e1eff241c9d440000a301f9",
+    "equipment": "Machine"
+  },
+
+  {
+    "name": "Seated Triceps Press",
+    "muscleGroup": "5e1f00201c9d440000a301fc",
+    "equipment": "Dumbbell"
+  },
+
+  {
+    "name": "Dumbbell Lying Supination",
+    "muscleGroup": "5e1f03941c9d440000a301fe",
+    "equipment": "Dumbbell"
+  },
+
+  {
+    "name": "Wide-Grip Barbell Bench Press",
+    "muscleGroup": "5e1efe709ed6895950a94b88",
+    "equipment": "Barbell"
+  },
+
+  {
+    "name": "Bent Over Two-Arm Long Bar Row",
+    "muscleGroup": "5e1efec21c9d440000a301f8",
+    "equipment": "Barbell"
+  },
+
+  {
+    "name": "Muscle Up",
+    "muscleGroup": "5e1efec21c9d440000a301f8",
+    "equipment": "Body Only"
+  },
+
+  {
+    "name": "Machine Shoulder Press",
+    "muscleGroup": "5e1eff241c9d440000a301f9",
+    "equipment": "Machine"
+  },
+
+  {
+    "name": "Decline Barbell Bench Press",
+    "muscleGroup": "5e1efe709ed6895950a94b88",
+    "equipment": "Barbell"
+  },
+
+  {
+    "name": "Front Plate Raise",
+    "muscleGroup": "5e1eff241c9d440000a301f9",
+    "equipment": "Other"
+  },
+
+  {
+    "name": "Decline Close-Grip Bench To Skull Crusher",
+    "muscleGroup": "5e1f00201c9d440000a301fc",
+    "equipment": "Barbell"
+  },
+
+  {
+    "name": "Cross Body Hammer Curl",
+    "muscleGroup": "5e1effe01c9d440000a301fb",
+    "equipment": "Dumbbell"
+  },
+
+  {
+    "name": "Ab Roller",
+    "muscleGroup": "5e1f005a1c9d440000a301fd",
+    "equipment": "Other"
+  },
+
+  {
+    "name": "Stiff-Legged Dumbbell Deadlift",
+    "muscleGroup": "5e1eff431c9d440000a301fa",
+    "equipment": "Dumbbell"
+  },
+
+  {
+    "name": "Cable Crossover",
+    "muscleGroup": "5e1efe709ed6895950a94b88",
+    "equipment": "Cable"
+  },
+
+  {
+    "name": "Incline Dumbbell Flyes",
+    "muscleGroup": "5e1efe709ed6895950a94b88",
+    "equipment": "Dumbbell"
+  },
+
+  {
+    "name": "Seated Cable Rows",
+    "muscleGroup": "5e1efec21c9d440000a301f8",
+    "equipment": "Cable"
+  },
+
+  {
+    "name": "Tricep Dumbbell Kickback",
+    "muscleGroup": "5e1f00201c9d440000a301fc",
+    "equipment": "Dumbbell"
+  },
+
+  {
+    "name": "Barbell Lunge",
+    "muscleGroup": "5e1eff431c9d440000a301fa",
+    "equipment": "Barbell"
+  },
+
+  {
+    "name": "3/4 Sit-Up",
+    "muscleGroup": "5e1f005a1c9d440000a301fd",
+    "equipment": "Body Only"
+  },
+
+  {
+    "name": "Ball Leg Curl",
+    "muscleGroup": "5e1eff431c9d440000a301fa",
+    "equipment": "Exercise Ball"
+  },
+
+  {
+    "name": "Close-Grip Front Lat Pulldown",
+    "muscleGroup": "5e1efec21c9d440000a301f8",
+    "equipment": "Cable"
+  },
+
+  {
+    "name": "Dip Machine",
+    "muscleGroup": "5e1f00201c9d440000a301fc",
+    "equipment": "Cable"
+  },
+
+  {
+    "name": "Reverse Crunch",
+    "muscleGroup": "5e1f005a1c9d440000a301fd",
+    "equipment": "Body Only"
+  },
+
+  {
+    "name": "Elliptical Trainer",
+    "muscleGroup": "5e1eff431c9d440000a301fa",
+    "equipment": "Machine"
+  },
+
+  {
+    "name": "Trap Bar Deadlift",
+    "muscleGroup": "5e1eff431c9d440000a301fa",
+    "equipment": "Other"
+  },
+
+  {
+    "name": "Narrow Stance Leg Press",
+    "muscleGroup": "5e1eff431c9d440000a301fa",
+    "equipment": "Machine"
+  },
+
+  {
+    "name": "Single Leg Glute Bridge",
+    "muscleGroup": "5e1eff431c9d440000a301fa",
+    "equipment": "Body Only"
+  },
+
+  {
+    "name": "Standing Hip Circles",
+    "muscleGroup": "5e1eff431c9d440000a301fa",
+    "equipment": "Body Only"
+  },
+
+  {
+    "name": "Dumbbell Lying Pronation",
+    "muscleGroup": "5e1f03941c9d440000a301fe",
+    "equipment": "Dumbbell"
+  },
+
+  {
+    "name": "EZ-Bar Preacher Curls",
+    "muscleGroup": "5e1effe01c9d440000a301fb",
+    "equipment": "EZ-Bar"
+  },
+
+  {
+    "name": "Incline Push-Up",
+    "muscleGroup": "5e1efe709ed6895950a94b88",
+    "equipment": "Body Only"
+  },
+
+  {
+    "name": "Standing One-Arm Cable Curl",
+    "muscleGroup": "5e1effe01c9d440000a301fb",
+    "equipment": "Cable"
+  },
+
+  {
+    "name": "Seated Calf Raise",
+    "muscleGroup": "5e1eff431c9d440000a301fa",
+    "equipment": "Machine"
+  },
+
+  {
+    "name": "Dumbbell Shrug",
+    "muscleGroup": "5e1f12311c9d440000a301ff",
+    "equipment": "Dumbbell"
+  },
+
+  {
+    "name": "Calf Press On The Leg Press Machine",
+    "muscleGroup": "5e1eff431c9d440000a301fa",
+    "equipment": "Machine"
+  },
+
+  {
+    "name": "Bench Dips",
+    "muscleGroup": "5e1f00201c9d440000a301fc",
+    "equipment": "Body Only"
+  },
+
+  {
+    "name": "Crunches",
+    "muscleGroup": "5e1f005a1c9d440000a301fd",
+    "equipment": "Body Only"
+  },
+
+  {
+    "name": "Dumbbell Rear Delt Row",
+    "muscleGroup": "5e1eff241c9d440000a301f9",
+    "equipment": "Dumbbell"
+  },
+
+  {
+    "name": "One Arm Dumbbell Preacher Curl",
+    "muscleGroup": "5e1effe01c9d440000a301fb",
+    "equipment": "Dumbbell"
+  },
+
+  {
+    "name": "Front Cable Raise",
+    "muscleGroup": "5e1eff241c9d440000a301f9",
+    "equipment": "Cable"
+  },
+
+  {
+    "name": "Military Press",
+    "muscleGroup": "5e1eff241c9d440000a301f9",
+    "equipment": "Barbell"
+  },
+
+  {
+    "name": "Rope Climb",
+    "muscleGroup": "5e1efec21c9d440000a301f8",
+    "equipment": "Body Only"
+  },
+
+  {
+    "name": "Cable Chest Press",
+    "muscleGroup": "5e1efe709ed6895950a94b88",
+    "equipment": "Cable"
+  },
+
+  {
+    "name": "Standing Concentration Curl",
+    "muscleGroup": "5e1effe01c9d440000a301fb",
+    "equipment": "Dumbbell"
+  },
+
+  {
+    "name": "Rope Straight-Arm Pulldown",
+    "muscleGroup": "5e1efec21c9d440000a301f8",
+    "equipment": "Cable"
+  },
+
+  {
+    "name": "Hang Snatch",
+    "muscleGroup": "5e1eff431c9d440000a301fa",
+    "equipment": "Barbell"
+  },
+
+  {
+    "name": "Rocking Standing Calf Raise",
+    "muscleGroup": "5e1eff431c9d440000a301fa",
+    "equipment": "Barbell"
+  },
+
+  {
+    "name": "Goblet Squat",
+    "muscleGroup": "5e1eff431c9d440000a301fa",
+    "equipment": "Dumbbell"
+  },
+
+  {
+    "name": "Seated Palm-Up Barbell Wrist Curl",
+    "muscleGroup": "5e1f03941c9d440000a301fe",
+    "equipment": "Barbell"
+  },
+
+  {
+    "name": "Reverse Cable Curl",
+    "muscleGroup": "5e1effe01c9d440000a301fb",
+    "equipment": "Cable"
+  },
+
+  {
+    "name": "Wide-Grip Lat Pulldown",
+    "muscleGroup": "5e1efec21c9d440000a301f8",
+    "equipment": "Cable"
+  },
+
+  {
+    "name": "Side Lateral Raise",
+    "muscleGroup": "5e1eff241c9d440000a301f9",
+    "equipment": "Dumbbell"
+  },
+
+  {
+    "name": "Incline Dumbbell Curl",
+    "muscleGroup": "5e1effe01c9d440000a301fb",
+    "equipment": "Dumbbell"
+  },
+
+  {
+    "name": "Alternate Hammer Curl",
+    "muscleGroup": "5e1effe01c9d440000a301fb",
+    "equipment": "Dumbbell"
+  },
+
+  {
+    "name": "Knee/Hip Raise On Parallel Bars",
+    "muscleGroup": "5e1f005a1c9d440000a301fd",
+    "equipment": "Other"
+  },
+
+  {
+    "name": "Triceps Overhead Extension with Rope",
+    "muscleGroup": "5e1f00201c9d440000a301fc",
+    "equipment": "Cable"
+  },
+
+  {
+    "name": "Single-Arm Cable Crossover",
+    "muscleGroup": "5e1efe709ed6895950a94b88",
+    "equipment": "Cable"
+  },
+
+  {
+    "name": "Single-Arm Push-Up",
+    "muscleGroup": "5e1efe709ed6895950a94b88",
+    "equipment": "Body Only"
+  },
+
+  {
+    "name": "Preacher Hammer Dumbbell Curl",
+    "muscleGroup": "5e1effe01c9d440000a301fb",
+    "equipment": "Dumbbell"
+  },
+
+  {
+    "name": "Split Squat with Dumbbells",
+    "muscleGroup": "5e1eff431c9d440000a301fa",
+    "equipment": "Dumbbell"
+  },
+
+  {
+    "name": "Close-Grip Standing Barbell Curl",
+    "muscleGroup": "5e1effe01c9d440000a301fb",
+    "equipment": "Barbell"
+  },
+
+  {
+    "name": "Standing Rope Crunch",
+    "muscleGroup": "5e1f005a1c9d440000a301fd",
+    "equipment": "Cable"
+  },
+
+  {
+    "name": "Cable Lying Triceps Extension",
+    "muscleGroup": "5e1f00201c9d440000a301fc",
+    "equipment": "Cable"
+  },
+
+  {
+    "name": "Crunch - Hands Overhead",
+    "muscleGroup": "5e1f005a1c9d440000a301fd",
+    "equipment": "Body Only"
+  },
+
+  {
+    "name": "Cable Internal Rotation",
+    "muscleGroup": "5e1eff241c9d440000a301f9",
+    "equipment": "Cable"
+  },
+
+  {
+    "name": "Dumbbell One-Arm Triceps Extension",
+    "muscleGroup": "5e1f00201c9d440000a301fc",
+    "equipment": "Dumbbell"
+  },
+
+  {
+    "name": "Butterfly",
+    "muscleGroup": "5e1efe709ed6895950a94b88",
+    "equipment": "Machine"
+  },
+
+  {
+    "name": "Wide Stance Stiff 5e1eff431c9d440000a301fa",
+    "muscleGroup": "5e1eff431c9d440000a301fa",
+    "equipment": "Barbell"
+  },
+
+  {
+    "name": "Decline Oblique Crunch",
+    "muscleGroup": "5e1f005a1c9d440000a301fd",
+    "equipment": "None"
+  },
+
+  {
+    "name": "Power Clean",
+    "muscleGroup": "5e1eff431c9d440000a301fa",
+    "equipment": "Barbell"
+  },
+
+  {
+    "name": "Bosu Ball Cable Crunch With Side Bends",
+    "muscleGroup": "5e1f005a1c9d440000a301fd",
+    "equipment": "Cable"
+  },
+
+  {
+    "name": "Jumping Jacks",
+    "muscleGroup": "5e1eff431c9d440000a301fa",
+    "equipment": "Body Only"
+  },
+
+  {
+    "name": "Push-Ups With Feet On An Exercise Ball",
+    "muscleGroup": "5e1efe709ed6895950a94b88",
+    "equipment": "Body Only"
+  },
+
+  {
+    "name": "Seated Cable Shoulder Press",
+    "muscleGroup": "5e1eff241c9d440000a301f9",
+    "equipment": "Cable"
+  },
+
+  {
+    "name": "Barbell Hack Squat",
+    "muscleGroup": "5e1eff431c9d440000a301fa",
+    "equipment": "Barbell"
+  },
+
+  {
+    "name": "Push-Ups With Feet Elevated",
+    "muscleGroup": "5e1efe709ed6895950a94b88",
+    "equipment": "Body Only"
+  },
+
+  {
+    "name": "Machine Chest Press",
+    "muscleGroup": "5e1efe709ed6895950a94b88",
+    "equipment": "Machine"
+  },
+
+  {
+    "name": "Seated Bent-Over Rear Delt Raise",
+    "muscleGroup": "5e1eff241c9d440000a301f9",
+    "equipment": "Dumbbell"
+  },
+
+  {
+    "name": "Face Pull",
+    "muscleGroup": "5e1eff241c9d440000a301f9",
+    "equipment": "Cable"
+  },
+
+  {
+    "name": "Russian Twist",
+    "muscleGroup": "5e1f005a1c9d440000a301fd",
+    "equipment": "Body Only"
+  },
+
+  {
+    "name": "Face Pull",
+    "muscleGroup": "5e1eff241c9d440000a301f9",
+    "equipment": "Cable"
+  },
+
+  {
+    "name": "Pallof Press",
+    "muscleGroup": "5e1f005a1c9d440000a301fd",
+    "equipment": "Other"
+  },
+
+  {
+    "name": "Cable Iron Cross",
+    "muscleGroup": "5e1efe709ed6895950a94b88",
+    "equipment": "Cable"
+  },
+
+  {
+    "name": "Seated Dumbbell Palms-Down Wrist Curl",
+    "muscleGroup": "5e1f03941c9d440000a301fe",
+    "equipment": "Dumbbell"
+  },
+
+  {
+    "name": "Dumbbell Raise",
+    "muscleGroup": "5e1eff241c9d440000a301f9",
+    "equipment": "Dumbbell"
+  },
+
+  {
+    "name": "Barbell Thruster",
+    "muscleGroup": "5e1eff431c9d440000a301fa",
+    "equipment": "Barbell"
+  },
+
+  {
+    "name": "Smith Machine Bench Press",
+    "muscleGroup": "5e1efe709ed6895950a94b88",
+    "equipment": "Machine"
+  },
+
+  {
+    "name": "Seated Side Lateral Raise",
+    "muscleGroup": "5e1eff241c9d440000a301f9",
+    "equipment": "Dumbbell"
+  },
+
+  {
+    "name": "Dumbbell Lying Rear Lateral Raise",
+    "muscleGroup": "5e1eff241c9d440000a301f9",
+    "equipment": "Dumbbell"
+  },
+
+  {
+    "name": "Front Raise And Pullover",
+    "muscleGroup": "5e1efe709ed6895950a94b88",
+    "equipment": "Barbell"
+  },
+
+  {
+    "name": "Barbell Shrug",
+    "muscleGroup": "5e1efec21c9d440000a301f8",
+    "equipment": "Dumbbell"
+  },
+
+  {
+    "name": "Bodyweight Reverse Lunge",
+    "muscleGroup": "5e1eff431c9d440000a301fa",
+    "equipment": "Body Only"
+  },
+
+  {
+    "name": "Seated One-Arm Dumbbell Palms-Down Wrist Curl",
+    "muscleGroup": "5e1f03941c9d440000a301fe",
+    "equipment": "Dumbbell"
+  },
+
+  {
+    "name": "Machine Preacher Curls",
+    "muscleGroup": "5e1effe01c9d440000a301fb",
+    "equipment": "Machine"
+  },
+
+  {
+    "name": "Standing Low-Pulley Deltoid Raise",
+    "muscleGroup": "5e1eff241c9d440000a301f9",
+    "equipment": "Cable"
+  },
+
+  {
+    "name": "Reverse Barbell Curl",
+    "muscleGroup": "5e1effe01c9d440000a301fb",
+    "equipment": "Barbell"
+  },
+
+  {
+    "name": "Band Pull Apart",
+    "muscleGroup": "5e1eff241c9d440000a301f9",
+    "equipment": "Bands"
+  },
+
+  {
+    "name": "Cable Rear Delt Fly",
+    "muscleGroup": "5e1eff241c9d440000a301f9",
+    "equipment": "Cable"
+  },
+
+  {
+    "name": "Reverse Machine Flyes",
+    "muscleGroup": "5e1eff241c9d440000a301f9",
+    "equipment": "Machine"
+  },
+
+  {
+    "name": "Machine Bench Press",
+    "muscleGroup": "5e1efe709ed6895950a94b88",
+    "equipment": "Machine"
+  }
+]

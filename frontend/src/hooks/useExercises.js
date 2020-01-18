@@ -30,7 +30,7 @@ const useExercises = () => {
             if (!isCancelled) {
               dispatch({
                 type: SET_EXERCISES,
-                payload: { exercises: res.data }
+                payload: { data: res.data }
               });
             }
           })

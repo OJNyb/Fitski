@@ -84,13 +84,12 @@
 }
 
 .exercise-muscle-checkbox-container {
-  margin-top: 85px;
+  margin-top: 30px;
   overflow: hidden;
   z-index: 2;
   background-color: white;
   border: 1px solid rgb(206, 191, 191);
   border-radius: 4px;
-  /* box-shadow: -3px 1px 4px 1px rgba(0, 0, 0, 0.19); */
   position: fixed;
 }
 

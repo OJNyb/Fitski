@@ -44,7 +44,7 @@ const EditWeek = () => {
   const { plan_id: planId, week_id: weekId } = useParams();
 
   if (!user) {
-    return <p>Only the author of a plan can view weeks</p>;
+    return null;
   }
 
   const { _id: userId } = user;

@@ -1,11 +1,6 @@
 import React, { useEffect, useCallback } from "react";
 
-const MuscleGroupDropdown = ({
-  muscleGroup,
-  muscleGroups,
-  hideDropdown,
-  onMuscleGroupCheck
-}) => {
+const Categories = ({ selectedMG, muscleGroups, hideDropdown, onClick }) => {
   const outsideClickHandler = useCallback(() => {
     hideDropdown();
   }, [hideDropdown]);
@@ -22,9 +17,9 @@ const MuscleGroupDropdown = ({
     return (
       <MuscleGroupCheck
         key={x._id}
-        muscle={x}
-        checked={muscleGroup.includes(x._id)}
-        onClick={onMuscleGroupCheck}
+        muscleGroup={x}
+        checked={selectedMG._id === x._id}
+        onClick={onClick}
       />
     );
   });
@@ -37,7 +32,8 @@ const MuscleGroupDropdown = ({
   );
 };
 
-const MuscleGroupCheck = ({ muscle, checked, onClick }) => {
+const MuscleGroupCheck = ({ muscleGroup, checked, onClick }) => {
+  const { name } = muscleGroup;
   return (
     <div
       className={
@@ -47,14 +43,13 @@ const MuscleGroupCheck = ({ muscle, checked, onClick }) => {
           : " color-gray font-w-400")
       }
       onClick={e => {
-        e.stopPropagation();
-        onClick(muscle._id);
+        onClick(e, muscleGroup);
       }}
     >
-      <span className="font-14">{muscle.name}</span>
+      <span className="font-14">{name}</span>
       {checked && <i className="material-icons">checked</i>}
     </div>
   );
 };
 
-export default MuscleGroupDropdown;
+export default Categories;
