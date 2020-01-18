@@ -50,9 +50,7 @@ const Exercises = ({ handleAddExercise, closeExercises }) => {
       if (!exercises) return;
 
       let exercisesToShow;
-      if (search === "" && muscleGroup === "All" && isMobile) {
-        return null;
-      } else if (search === "" && !muscleGroup.length && !isMobile) {
+      if (search === "" && !muscleGroup.length && !isMobile) {
         exercisesToShow = exercises;
       } else if (search !== "" && !muscleGroup.length) {
         let regex = RegExp(search, "i");
@@ -65,7 +63,7 @@ const Exercises = ({ handleAddExercise, closeExercises }) => {
         let regex = RegExp(search, "i");
         exercisesToShow = exercises.filter(x => {
           return (
-            regex.test(x.name) && muscleGroup.indexOf(x.muscleGroup) !== -1
+            regex.test(x.name) && muscleGroup.indexOf(x.muscleGroup._id) !== -1
           );
         });
       }
