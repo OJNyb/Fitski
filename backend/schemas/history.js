@@ -1,9 +1,5 @@
 const Joi = require("./joi");
 
-// TODO: Add optional to categories and description, on edit ???
-
-// AD
-
 const _id = Joi.string().objectId();
 
 const planId = _id.label("Workout plan ID");
@@ -75,6 +71,22 @@ const addDay = Joi.object()
   .or("notes", "exerciseId")
   .and("exerciseId", "setId", "custom");
 
+const reorderExercise = Joi.object().keys({
+  day_id: dayId,
+  exerId: exerciseId,
+  to: Joi.number()
+    .integer()
+    .min(0)
+    .required()
+    .label("To")
+    .disallow(Joi.ref("from")),
+  from: Joi.number()
+    .integer()
+    .min(0)
+    .required()
+    .label("From")
+});
+
 const deleteDay = Joi.object().keys({
   day_id: dayId
 });
@@ -139,6 +151,7 @@ module.exports = {
   "post/history/activate/:plan_id": activatePlan,
   "post/history/deactivate/:plan_id": deactivatePlan,
   "post/history": addDay,
+  "patch/history/reorder/:day_id": reorderExercise,
   "delete/history/:day_id": deleteDay,
   "post/history/exercise/:day_id": addExercise,
   "delete/history/exercise/:day_id": deleteExercises,

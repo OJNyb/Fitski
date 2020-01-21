@@ -30,6 +30,10 @@ import {
   DELETE_SET_FAILED,
   DELETE_SET_SUCCESS,
   COPY_DAY,
+  REORDER_EXERCISE,
+  REORDER_EXERCISE_FAILED,
+  REORDER_EXERCISE_SUCCESS,
+  // TODO:
   REQUEST_FAILED
 } from "../types/historyTypes";
 import { isSuccessful } from "./errorHandling";
@@ -239,6 +243,43 @@ function retryAddExercise(dispatch, dayId, exer) {
     .catch(() => {
       dispatch({
         type: ADD_EXERCISE_FAILED,
+        payload
+      });
+    });
+}
+
+function reorderExercise(dispatch, dayId, result) {
+  const { source, destination, draggableId } = result;
+  const payload = { result, dayId };
+
+  dispatch({
+    type: REORDER_EXERCISE,
+    payload
+  });
+
+  axios
+    .patch(`/api/history/reorder/${dayId}`, {
+      exerId: draggableId,
+      from: source.index,
+      to: destination.index
+    })
+    .then(res => {
+      let isSucc = isSuccessful(res);
+      if (!isSucc) {
+        dispatch({
+          type: REORDER_EXERCISE_FAILED,
+          payload
+        });
+      } else {
+        dispatch({
+          type: REORDER_EXERCISE_SUCCESS,
+          payload
+        });
+      }
+    })
+    .catch(() => {
+      dispatch({
+        type: REORDER_EXERCISE_FAILED,
         payload
       });
     });
@@ -509,6 +550,7 @@ export {
   deleteDay,
   addExercise,
   retryAddExercise,
+  reorderExercise,
   deleteExercise,
   deleteExercises,
   addSet,

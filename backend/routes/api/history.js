@@ -321,6 +321,48 @@ router.post("/", ensureSignedIn, validateRequest, async (req, res, next) => {
     .catch(next);
 });
 
+// @route PATCH api/history/reorder/:day_id
+// @desc  Reorder exercise
+// @access Private
+
+// TODO: Validation, see if date is already there
+router.patch(
+  "/reorder/:day_id",
+  ensureSignedIn,
+  validateRequest,
+  async (req, res, next) => {
+    const { body, params, session } = req;
+    const { userId } = session;
+    const { day_id: dayId } = params;
+    const { to, from, exerId } = body;
+
+    const history = await History.findOne({ user: userId });
+
+    const { days } = history;
+    const dayIndex = days.map(x => x._id).indexOf(dayId);
+    if (dayIndex !== 0 && !dayIndex) return next();
+    const day = days[dayIndex];
+
+    const exercise = day.exercises[from];
+
+    if (exercise._id.toString() !== exerId) {
+      return res
+        .status(404)
+        .json(createErrorObject(["An error occured, please refresh the page"]));
+    }
+
+    day.exercises.splice(from, 1);
+    day.exercises.splice(to, 0, exercise);
+
+    history
+      .save()
+      .then(() => {
+        res.json({ message: "success" });
+      })
+      .catch(next);
+  }
+);
+
 // @route DELETE api/history/:day_id
 // @desc  Delete day
 // @access Private

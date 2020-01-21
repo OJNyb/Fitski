@@ -1,6 +1,6 @@
 import React, { lazy, useState, Suspense } from "react";
 import useHistory from "../../hooks/useHistory";
-import { addMGC, formatHistoryDate } from "../../utils/formatHistoryDate";
+import { formatHistoryDate } from "../../utils/formatHistoryDate";
 import { formatMuscleGroups } from "../../utils/displayMuscleGroups";
 import useMobile from "../../hooks/useMobile";
 import useSetLoading from "../../hooks/useSetLoading";
@@ -22,15 +22,16 @@ import {
   editSet,
   retryEditSet,
   deleteSet,
-  copyDay
+  copyDay,
+  reorderExercise
 } from "../../utils/historyClient";
 
 import SetLoading from "../SetLoading";
 
 import "./history.css";
 
-const MobileView = lazy(() => import("./Mobile/MobileView"));
-const WebView = lazy(() => import("./Web/WebView"));
+const MobileView = lazy(() => import("./Mobile/MobileHistory"));
+const WebView = lazy(() => import("./Web/WebHistory"));
 
 const History = () => {
   const { state, dispatch } = useHistory();
@@ -150,6 +151,22 @@ const History = () => {
     copyDay(dispatch, dayToCopy, formattedDate);
   }
 
+  function handleReorderExercise(result) {
+    const { destination, source, draggableId } = result;
+
+    if (!destination) {
+      return;
+    }
+    if (
+      destination.droppableId === source.droppableId &&
+      destination.index === source.index
+    ) {
+      return;
+    }
+
+    reorderExercise(dispatch, dayId, result);
+  }
+
   function displayGroupCircle(dateski) {
     dateski = formatHistoryDate(dateski);
 
@@ -191,6 +208,7 @@ const History = () => {
         handleEditSetRetry={handleEditSetRetry}
         displayGroupCircle={displayGroupCircle}
         handleDeleteExercises={handleDeleteExercises}
+        handleReorderExercise={handleReorderExercise}
         handleAddExerciseRetry={handleAddExerciseRetry}
       />
     );
@@ -211,6 +229,7 @@ const History = () => {
         handleEditSetRetry={handleEditSetRetry}
         displayGroupCircle={displayGroupCircle}
         handleDeleteExercise={handleDeleteExercise}
+        handleReorderExercise={handleReorderExercise}
         handleAddExerciseRetry={handleAddExerciseRetry}
       />
     );

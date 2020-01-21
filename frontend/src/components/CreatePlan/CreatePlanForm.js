@@ -32,7 +32,7 @@ const CreatePlanForm = ({ isMobile, setRedir }) => {
 
         const planId = new ObjectId().toHexString();
         axios
-          .post("/api/exercise", { planId, ...values })
+          .post("/api/plan", { planId, ...values })
           .then(res => {
             const { data } = res;
             const { message } = data;

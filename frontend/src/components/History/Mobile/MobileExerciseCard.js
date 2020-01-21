@@ -2,10 +2,14 @@ import React, { useState, useLayoutEffect } from "react";
 import { ensureDecimal } from "../../../utils/ensureDecimal";
 import useLongPressAndClick from "../../../hooks/useLongPressAndClick";
 
+import { Draggable } from "react-beautiful-dnd";
+import DragIcon from "../../shared/SVGs/DragIcon";
+
 import "../../../styles/exerciseCard.css";
 import "../editDay.css";
 
 const MobileExerciseCard = ({
+  index,
   exercise,
   onCardHold,
   dayPending,
@@ -61,36 +65,59 @@ const MobileExerciseCard = ({
   ));
 
   return (
-    <div
-      className={
-        "history-add-card margin-10 pointer" +
-        (isActive ? " history-add-card-active" : "") +
-        (isPending || dayPending ? " exercise-card-pending" : "") +
-        (isRejected || dayRejected ? " exercise-card-rejected" : "")
-      }
-      onTouchStart={onTouchStart}
-      onTouchEnd={onTouchEnd}
-      onTouchMove={onTouchMove}
+    <Draggable
+      draggableId={exerId}
+      index={index}
+      isDragDisabled={!selectedExercises.length}
     >
-      <div className="history-exercise-name noselect">
-        <span className="black font-16">{name}</span>
-        {(isRejected || dayRejected) && (
-          <div className="flex-ai-center exercise-card-rejected-container">
-            <span className="color-gray text-center">Request failed</span>
-            <button
-              className="padding-5"
-              onClick={onRetryClick}
-              onTouchEnd={stopPropagation}
-              onTouchStart={stopPropagation}
-            >
-              <i className="material-icons">refresh</i>
-            </button>
+      {(provided, snapshot) => (
+        <div
+          className="padding-10"
+          ref={provided.innerRef}
+          {...provided.draggableProps}
+        >
+          <div
+            className={
+              "history-add-card pointer" +
+              (isActive ? " history-add-card-active" : "") +
+              (isPending || dayPending ? " exercise-card-pending" : "") +
+              (isRejected || dayRejected ? " exercise-card-rejected" : "") +
+              (snapshot.isDragging ? " exercise-card-dragging" : "")
+            }
+            onTouchStart={onTouchStart}
+            onTouchEnd={onTouchEnd}
+            onTouchMove={onTouchMove}
+          >
+            <div className="history-exercise-name noselect">
+              <span className="black font-16">{name}</span>
+              {!!selectedExercises.length && (!isRejected || !dayRejected) && (
+                <div
+                  className="exercise-drag-handle padding-5"
+                  {...provided.dragHandleProps}
+                  onTouchStart={e => e.stopPropagation()}
+                >
+                  <DragIcon />
+                </div>
+              )}
+              {(isRejected || dayRejected) && (
+                <div className="flex-ai-center exercise-card-rejected-container">
+                  <span className="color-gray text-center">Request failed</span>
+                  <button
+                    className="padding-5"
+                    onClick={onRetryClick}
+                    onTouchEnd={stopPropagation}
+                    onTouchStart={stopPropagation}
+                  >
+                    <i className="material-icons">refresh</i>
+                  </button>
+                </div>
+              )}
+            </div>
+            <div className="add-card-body">{setDisplay}</div>
           </div>
-        )}
-      </div>
-
-      <div className="add-card-body">{setDisplay}</div>
-    </div>
+        </div>
+      )}
+    </Draggable>
   );
 };
 
