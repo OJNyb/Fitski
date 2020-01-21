@@ -1,10 +1,14 @@
 import React, { useRef, useState, useEffect, useCallback } from "react";
 import { withRouter } from "react-router-dom";
 
+import { Draggable } from "react-beautiful-dnd";
+import DragIcon from "../../shared/SVGs/DragIcon";
+
 import "../../../styles/exerciseCard.css";
 
 const ExerciseCard = ({
   dayId,
+  index,
   exercise,
   onAddSet,
   onCardClick,
@@ -82,61 +86,82 @@ const ExerciseCard = ({
   }
 
   return (
-    <div
-      className={
-        "history-add-card margin-10" +
-        (isActive ? " edit-week-mobile-add-card-active" : "") +
-        (isPending ? " exercise-card-pending" : "") +
-        (isRejected ? " exercise-card-rejected" : "")
-      }
-      onClick={e => {
-        e.stopPropagation();
-        onCardClick(exerId);
-      }}
+    <Draggable
+      draggableId={exerId}
+      index={index}
+      isDragDisabled={!activeExercise}
     >
-      <div className="history-exercise-name">
-        <span className="black height-20 flex-ai-center">
-          <span className="black font-16 noselect">{name}</span>
-        </span>
+      {(provided, snapshot) => (
+        <div
+          className={
+            "history-add-card margin-10" +
+            (isActive ? " edit-week-mobile-add-card-active" : "") +
+            (isPending ? " exercise-card-pending" : "") +
+            (isRejected ? " exercise-card-rejected" : "") +
+            (snapshot.isDragging ? " exercise-card-dragging" : "")
+          }
+          ref={provided.innerRef}
+          {...provided.draggableProps}
+          onClick={e => {
+            e.stopPropagation();
+            onCardClick(exerId);
+          }}
+        >
+          <div className="history-exercise-name">
+            <span className="black height-20 flex-ai-center">
+              <span className="black font-16 noselect">{name}</span>
+            </span>
 
-        <div className="add-card-btn-container">
-          {isRejected && (
-            <div className="flex-ai-center exercise-card-rejected-container">
-              <span className="color-gray text-center">Request failed</span>
-              <button className="padding-5" onClick={onRetryClick}>
-                <i className="material-icons">refresh</i>
-              </button>
+            <div className="add-card-btn-container">
+              {isRejected && (
+                <div className="flex-ai-center exercise-card-rejected-container">
+                  <span className="color-gray text-center">Request failed</span>
+                  <button className="padding-5" onClick={onRetryClick}>
+                    <i className="material-icons">refresh</i>
+                  </button>
+                </div>
+              )}
+
+              {!!activeExercise && !isRejected && (
+                <div
+                  className="exercise-drag-handle padding-5"
+                  {...provided.dragHandleProps}
+                  onTouchStart={e => e.stopPropagation()}
+                >
+                  <DragIcon />
+                </div>
+              )}
+              {isActive && !isRejected && (
+                <>
+                  <button
+                    className="add-card-remove-btn theme-btn-no-border"
+                    onClick={e => {
+                      e.stopPropagation();
+                      onDeleteExercise(exerId);
+                    }}
+                  >
+                    <i className="material-icons ">delete_outline</i>
+                  </button>
+
+                  <button
+                    className="theme-btn-no-border"
+                    onClick={e => {
+                      e.stopPropagation();
+                      onAddSet(exerId, exerciseId);
+                    }}
+                  >
+                    <i className="material-icons ">add</i>
+                  </button>
+                </>
+              )}
             </div>
-          )}
-          {isActive && !isRejected && (
-            <>
-              <button
-                className="add-card-remove-btn theme-btn-no-border"
-                onClick={e => {
-                  e.stopPropagation();
-                  onDeleteExercise(exerId);
-                }}
-              >
-                <i className="material-icons ">delete_outline</i>
-              </button>
+          </div>
 
-              <button
-                className="theme-btn-no-border"
-                onClick={e => {
-                  e.stopPropagation();
-                  onAddSet(exerId, exerciseId);
-                }}
-              >
-                <i className="material-icons ">add</i>
-              </button>
-            </>
-          )}
+          {headDropdown}
+          <div className="add-card-body">{cardView}</div>
         </div>
-      </div>
-
-      {headDropdown}
-      <div className="add-card-body">{cardView}</div>
-    </div>
+      )}
+    </Draggable>
   );
 };
 

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import useSetLoading from "../../../hooks/useSetLoading";
 import useNavBack from "../../../hooks/useNavBack";
 
+import { Droppable, DragDropContext } from "react-beautiful-dnd";
 import ExerciseCard from "./ExerciseCard";
 import Exercises from "../../shared/Exercises/Exercises";
 import { Link } from "react-router-dom";
@@ -22,7 +23,8 @@ const MobileEditWeek = ({
   handleDeleteExercise,
   handleAddExerciseRetry,
   handleAddSetRetry,
-  handleEditSetRetry
+  handleEditSetRetry,
+  onDragEnd
 }) => {
   const [showExercises, setShowExercises] = useState(false);
   const [activeExercise, setActiveExercise] = useState(null);
@@ -41,24 +43,6 @@ const MobileEditWeek = ({
       setActiveExercise(exerId);
     }
   }
-
-  let mainView = exercises.map((x, y) => (
-    <ExerciseCard
-      key={x._id}
-      index={y}
-      exercise={x}
-      dayId={dayId}
-      onAddSet={handleAddSet}
-      handleEditSet={handleEditSet}
-      handleDeleteSet={handleDeleteSet}
-      activeExercise={activeExercise}
-      onCardClick={handleCardClick}
-      onDeleteExercise={() => handleDeleteExercise(x._id)}
-      handleAddSetRetry={handleAddSetRetry}
-      handleEditSetRetry={handleEditSetRetry}
-      onAddExerciseRetry={handleAddExerciseRetry}
-    />
-  ));
 
   if (showExercises) {
     return (
@@ -144,7 +128,43 @@ const MobileEditWeek = ({
             </div>
           </div>
         </div>
-        <div className="pb-50">{mainView}</div>
+        <div className="pb-50">
+          <DragDropContext onDragEnd={onDragEnd}>
+            <Droppable droppableId={"1"} isDropDisabled={!activeExercise}>
+              {(provided, snapshot) => (
+                <div
+                  ref={provided.innerRef}
+                  {...provided.droppableProps}
+                  className={
+                    "mobile-droppable-container" +
+                    (snapshot.isDraggingOver
+                      ? "exercise-container-dragging-over"
+                      : "")
+                  }
+                >
+                  {exercises.map((x, y) => (
+                    <ExerciseCard
+                      key={x._id}
+                      index={y}
+                      exercise={x}
+                      dayId={dayId}
+                      onAddSet={handleAddSet}
+                      handleEditSet={handleEditSet}
+                      handleDeleteSet={handleDeleteSet}
+                      activeExercise={activeExercise}
+                      onCardClick={handleCardClick}
+                      onDeleteExercise={() => handleDeleteExercise(x._id)}
+                      handleAddSetRetry={handleAddSetRetry}
+                      handleEditSetRetry={handleEditSetRetry}
+                      onAddExerciseRetry={handleAddExerciseRetry}
+                    />
+                  ))}
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
+          </DragDropContext>
+        </div>
       </div>
     </>
   );

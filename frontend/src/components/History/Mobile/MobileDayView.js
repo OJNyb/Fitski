@@ -4,6 +4,7 @@ import {
   incrementDate,
   decrementDate
 } from "../../../utils/formatHistoryDate";
+import { DragDropContext, Droppable } from "react-beautiful-dnd";
 
 import MobileExerciseCard from "./MobileExerciseCard";
 import Plus20 from "../../shared/SVGs/Plus20";
@@ -15,6 +16,7 @@ import { useUser } from "../../../context/userContext";
 const MobileDayView = ({
   date,
   dayIndex,
+  onDragEnd,
   currentDay,
   onDateChange,
   onCopyDayClick,
@@ -95,30 +97,51 @@ const MobileDayView = ({
   if (dayIndex !== -1) {
     const { exercises, request, isPending, isRejected } = currentDay;
 
-    view = exercises.map(exercise => {
-      if (!exercise || !exercise.exercise) {
-        return null;
-      } else {
-        return (
-          <MobileExerciseCard
-            key={exercise._id}
-            exercise={exercise}
-            dayRequest={request}
-            dayPending={isPending}
-            dayRejected={isRejected}
-            defaultUnit={defaultUnit}
-            onCardClick={handleCardClick}
-            onCardHold={handleCardHold}
-            setShowExercise={setShowExercise}
-            selectedExercises={selectedExercises}
-            handleAddSetRetry={handleAddSetRetry}
-            handleEditSetRetry={handleEditSetRetry}
-            onDeleteExercises={handleDeleteExercises}
-            onAddExerciseRetry={handleAddExerciseRetry}
-          />
-        );
-      }
-    });
+    view = (
+      <DragDropContext onDragEnd={onDragEnd}>
+        <Droppable droppableId={"1"} isDropDisabled={!selectedExercises.length}>
+          {(provided, snapshot) => (
+            <div
+              ref={provided.innerRef}
+              {...provided.droppableProps}
+              className={
+                "mobile-droppable-container" +
+                (snapshot.isDraggingOver
+                  ? "exercise-container-dragging-over"
+                  : "")
+              }
+            >
+              {exercises.map((exercise, index) => {
+                if (!exercise || !exercise.exercise) {
+                  return null;
+                } else {
+                  return (
+                    <MobileExerciseCard
+                      index={index}
+                      key={exercise._id}
+                      exercise={exercise}
+                      dayRequest={request}
+                      dayPending={isPending}
+                      dayRejected={isRejected}
+                      defaultUnit={defaultUnit}
+                      onCardClick={handleCardClick}
+                      onCardHold={handleCardHold}
+                      setShowExercise={setShowExercise}
+                      selectedExercises={selectedExercises}
+                      handleAddSetRetry={handleAddSetRetry}
+                      handleEditSetRetry={handleEditSetRetry}
+                      onDeleteExercises={handleDeleteExercises}
+                      onAddExerciseRetry={handleAddExerciseRetry}
+                    />
+                  );
+                }
+              })}
+              {provided.placeholder}
+            </div>
+          )}
+        </Droppable>
+      </DragDropContext>
+    );
   } else {
     view = (
       <MobileEmpty

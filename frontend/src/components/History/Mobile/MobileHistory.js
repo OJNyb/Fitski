@@ -38,6 +38,7 @@ const MobileView = ({
   displayGroupCircle,
   handleEditSetRetry,
   handleDeleteExercises,
+  handleReorderExercise,
   handleAddExerciseRetry
 }) => {
   const [showHistory, setShowHistory] = useState(false);
@@ -147,6 +148,7 @@ const MobileView = ({
         setShowExercise={setShowExercise}
         onCopyDayClick={handleCopyDayClick}
         setShowExercises={setShowExercises}
+        onDragEnd={handleReorderExercise}
         onCalendarClick={handleCalendarClick}
         onExercisesClick={handleExercisesClick}
         handleDeleteExercises={handleDeleteExercises}

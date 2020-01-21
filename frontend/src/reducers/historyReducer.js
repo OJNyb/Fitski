@@ -13,6 +13,9 @@ import {
   ADD_EXERCISE_RETRY,
   ADD_EXERCISE_FAILED,
   ADD_EXERCISE_SUCCESS,
+  REORDER_EXERCISE,
+  REORDER_EXERCISE_FAILED,
+  REORDER_EXERCISE_SUCCESS,
   DELETE_EXERCISE,
   DELETE_EXERCISE_FAILED,
   DELETE_EXERCISE_SUCCESS,
@@ -286,6 +289,47 @@ function historyReducer(state, action) {
       exercise.isPending = false;
       exercise.isRejected = true;
       exercise.request = "add";
+
+      return {
+        ...state,
+        history
+      };
+    }
+
+    case REORDER_EXERCISE: {
+      const { result, dayId } = payload;
+      const { history } = state;
+      const { days } = history;
+      const { source, destination, draggableId } = result;
+
+      let day = days.find(x => x._id === dayId);
+
+      console.log(days, dayId);
+
+      const exercise = day.exercises[source.index];
+
+      day.exercises.splice(source.index, 1);
+      day.exercises.splice(destination.index, 0, exercise);
+
+      return {
+        ...state,
+        history
+      };
+    }
+
+    case REORDER_EXERCISE_FAILED: {
+      const { result, dayId } = payload;
+      const { history } = state;
+      const { days } = history;
+
+      const { draggableId: exerId } = result;
+
+      const day = days.find(x => x._id === dayId);
+      const exercise = day.exercises.find(x => x._id === exerId);
+
+      exercise.isPending = false;
+      exercise.isRejected = true;
+      exercise.request = "REORDER";
 
       return {
         ...state,
