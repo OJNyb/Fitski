@@ -546,10 +546,6 @@
   color: #1a1414;
 }
 
-.min-h-93vh-10 {
-  min-height: calc(93vh - 10px);
-}
-
 .flex-1-50p {
   flex: 1 50%;
 }

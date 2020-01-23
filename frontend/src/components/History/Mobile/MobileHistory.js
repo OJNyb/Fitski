@@ -10,7 +10,7 @@ import { NavContext } from "../../../context/navContext";
 import useSetLoading from "../../../hooks/useSetLoading";
 import { SHOW_NONE, SHOW_DEHAZE } from "../../../types/navTypes";
 
-import MobileDayView from "./MobileDayView";
+import HistoryDays from "./MobileHistoryDays";
 import SetLoading from "../../SetLoading";
 
 import "./mobileView.css";
@@ -25,7 +25,8 @@ const CopyDayView = lazy(loadCopyDayView);
 
 const MobileView = ({
   date,
-  dayIndex,
+  prevDay,
+  nextDay,
   currentDay,
   historyDays,
   handleDateChange,
@@ -140,16 +141,16 @@ const MobileView = ({
     );
   } else {
     view = (
-      <MobileDayView
+      <HistoryDays
         date={date}
-        dayIndex={dayIndex}
+        prevDay={prevDay}
+        nextDay={nextDay}
         currentDay={currentDay}
         onDateChange={handleDateChange}
         setShowExercise={setShowExercise}
-        onCopyDayClick={handleCopyDayClick}
-        setShowExercises={setShowExercises}
-        onDragEnd={handleReorderExercise}
+        handleDragEnd={handleReorderExercise}
         onCalendarClick={handleCalendarClick}
+        handleCopyDayClick={handleCopyDayClick}
         onExercisesClick={handleExercisesClick}
         handleDeleteExercises={handleDeleteExercises}
         handleAddExerciseRetry={handleAddExerciseRetry}

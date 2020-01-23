@@ -71,6 +71,21 @@ const addDay = Joi.object()
   .or("notes", "exerciseId")
   .and("exerciseId", "setId", "custom");
 
+const deleteDay = Joi.object().keys({
+  day_id: dayId
+});
+
+const addExercise = Joi.object().keys({
+  unit,
+  reps,
+  weight,
+  day_id: dayId,
+  exerId: exerciseId,
+  exerciseId: exerciseId.required(),
+  setId: setId.required(),
+  custom: custom.required()
+});
+
 const reorderExercise = Joi.object().keys({
   day_id: dayId,
   exerId: exerciseId,
@@ -85,21 +100,6 @@ const reorderExercise = Joi.object().keys({
     .min(0)
     .required()
     .label("From")
-});
-
-const deleteDay = Joi.object().keys({
-  day_id: dayId
-});
-
-const addExercise = Joi.object().keys({
-  unit,
-  reps,
-  weight,
-  day_id: dayId,
-  exerId: exerciseId,
-  exerciseId: exerciseId.required(),
-  setId: setId.required(),
-  custom: custom.required()
 });
 
 const deleteExercise = Joi.object().keys({
@@ -151,9 +151,9 @@ module.exports = {
   "post/history/activate/:plan_id": activatePlan,
   "post/history/deactivate/:plan_id": deactivatePlan,
   "post/history": addDay,
-  "patch/history/reorder/:day_id": reorderExercise,
   "delete/history/:day_id": deleteDay,
   "post/history/exercise/:day_id": addExercise,
+  "patch/history/reorder/:day_id": reorderExercise,
   "delete/history/exercise/:day_id": deleteExercises,
   "delete/history/exercise/:day_id/:exercise_id": deleteExercise,
   "post/history/exercise/:day_id/:exercise_id": addSet,

@@ -22,6 +22,9 @@ import {
   ADD_EXERCISE_RETRY,
   ADD_EXERCISE_FAILED,
   ADD_EXERCISE_SUCCESS,
+  REORDER_EXERCISE,
+  REORDER_EXERCISE_FAILED,
+  REORDER_EXERCISE_SUCCESS,
   DELETE_EXERCISE,
   DELETE_EXERCISE_FAILED,
   DELETE_EXERCISE_SUCCESS,
@@ -285,6 +288,43 @@ function retryAddExercise(dispatch, planId, weekId, dayId, exer) {
     });
 }
 
+function reorderExercise(dispatch, planId, weekId, dayId, result) {
+  const { source, destination, draggableId } = result;
+  const payload = { weekId, result, dayId };
+
+  dispatch({
+    type: REORDER_EXERCISE,
+    payload
+  });
+
+  axios
+    .patch(`/api/plan/exercise/reorder/${planId}/${weekId}/${dayId}`, {
+      exerId: draggableId,
+      from: source.index,
+      to: destination.index
+    })
+    .then(res => {
+      let isSucc = isSuccessful(res);
+      if (!isSucc) {
+        dispatch({
+          type: REORDER_EXERCISE_FAILED,
+          payload
+        });
+      } else {
+        dispatch({
+          type: REORDER_EXERCISE_SUCCESS,
+          payload
+        });
+      }
+    })
+    .catch(() => {
+      dispatch({
+        type: REORDER_EXERCISE_FAILED,
+        payload
+      });
+    });
+}
+
 function deleteExercise(dispatch, planId, weekId, dayId, exerId) {
   const payload = { weekId, dayId, exerId };
   dispatch({
@@ -502,6 +542,7 @@ export {
   deleteWeek,
   addExercise,
   retryAddExercise,
+  reorderExercise,
   deleteExercise,
   addSet,
   retryAddSet,

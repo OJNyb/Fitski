@@ -18,8 +18,7 @@ const Exercises = ({
   handleSearchChange,
   handleDeleteExercises,
   handleAddExerciseRetry,
-  handleEditExerciseRetry,
-  handleAddCustomExercise
+  handleEditExerciseRetry
 }) => {
   const [showFilter, setShowFilter] = useState(false);
 
@@ -112,17 +111,10 @@ const Exercises = ({
   );
 };
 
-const ExerciseItem = ({
-  onClick,
-  exercise,
-  onDeleteExercises,
-  onAddExerciseRetry,
-  onEditExerciseRetry,
-  handleEditDeleteClick
-}) => {
+const ExerciseItem = ({ onClick, exercise, handleEditDeleteClick }) => {
   const [showDropdown, setShowDropdown] = useState(false);
   const moreBtn = useRef(null);
-  const { name, request, isPending, isRejected } = exercise;
+  const { name, isPending, isRejected } = exercise;
 
   // function onRetryClick() {
   //   if (request === "add") {

@@ -29,8 +29,7 @@ function editUser(dispatch, profileDispatch, values) {
 
           if (!isSucc) {
             dispatch({
-              type: EDIT_USER_FAILED,
-              payload
+              type: EDIT_USER_FAILED
             });
             return reject();
           }

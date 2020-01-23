@@ -13,16 +13,17 @@ const WebView = ({
   dayIndex,
   currentDay,
   historyDays,
-  handleCopyDay,
   handleAddSet,
+  handleCopyDay,
   handleEditSet,
   handleDeleteSet,
   handleDateChange,
   handleAddExercise,
-  displayGroupCircle,
-  handleDeleteExercise,
   handleAddSetRetry,
+  displayGroupCircle,
   handleEditSetRetry,
+  handleDeleteExercise,
+  handleReorderExercise,
   handleAddExerciseRetry
 }) => {
   const [focused, setFocused] = useState(false);
@@ -63,16 +64,18 @@ const WebView = ({
             displayGroupCircle={displayGroupCircle}
             onFocusChange={({ focused }) => setFocused(focused)}
           />
-          <WebViewLeft
+
+          <DayView
             dayIndex={dayIndex}
             currentDay={currentDay}
             handleAddSet={handleAddSet}
+            onCopyClick={handleCopyClick}
             handleEditSet={handleEditSet}
             handleDeleteSet={handleDeleteSet}
-            handleCopyClick={handleCopyClick}
             handleDeleteExercise={handleDeleteExercise}
             handleAddSetRetry={handleAddSetRetry}
             handleEditSetRetry={handleEditSetRetry}
+            onDragEnd={handleReorderExercise}
             handleAddExerciseRetry={handleAddExerciseRetry}
           />
         </div>
@@ -82,38 +85,6 @@ const WebView = ({
         </div>
       </div>
     </>
-  );
-};
-
-const WebViewLeft = ({
-  dayIndex,
-  currentDay,
-  handleAddSet,
-  handleEditSet,
-  handleDeleteSet,
-  handleCopyClick,
-  setShowExercises,
-  handleDeleteExercise,
-  handleAddSetRetry,
-  handleEditSetRetry,
-  handleAddExerciseRetry
-}) => {
-  return (
-    <div className="history-add-container">
-      <DayView
-        dayIndex={dayIndex}
-        currentDay={currentDay}
-        handleAddSet={handleAddSet}
-        onCopyClick={handleCopyClick}
-        handleEditSet={handleEditSet}
-        handleDeleteSet={handleDeleteSet}
-        setShowExercises={setShowExercises}
-        handleDeleteExercise={handleDeleteExercise}
-        handleAddSetRetry={handleAddSetRetry}
-        handleEditSetRetry={handleEditSetRetry}
-        handleAddExerciseRetry={handleAddExerciseRetry}
-      />
-    </div>
   );
 };
 

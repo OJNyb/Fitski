@@ -2,7 +2,7 @@ import React, { lazy, useState, useContext, Suspense } from "react";
 import useMobile from "../../hooks/useMobile";
 import { PlanContext } from "../../context/planContext";
 import useSetLoading from "../../hooks/useSetLoading";
-import { deleteWeek } from "../../utils/planClient";
+import { deleteWeek, reorderExercise } from "../../utils/planClient";
 import { useParams, useHistory } from "react-router-dom";
 
 import { findLastOccurenceOfExercisePlan } from "../../utils/findAllOccurencesOfExercise";
@@ -121,6 +121,22 @@ const EditWeek = () => {
       .catch(err => console.log(err));
   }
 
+  function handleReorderExercise(result) {
+    const { destination, source } = result;
+
+    if (!destination) {
+      return;
+    }
+    if (
+      destination.droppableId === source.droppableId &&
+      destination.index === source.index
+    ) {
+      return;
+    }
+
+    reorderExercise(dispatch, planId, weekId, dayId, result);
+  }
+
   let view = null;
   if (isMobile) {
     view = (
@@ -130,15 +146,16 @@ const EditWeek = () => {
         weekIndex={weekIndex}
         currentWeek={currentWeek}
         handleAddSet={handleAddSet}
-        currentDayIndex={currentDayIndex}
-        setCurrentDayIndex={setCurrentDayIndex}
         handleEditSet={handleEditSet}
+        currentDayIndex={currentDayIndex}
         handleDeleteSet={handleDeleteSet}
+        onDragEnd={handleReorderExercise}
         handleAddExercise={handleAddExercise}
+        handleAddSetRetry={handleAddSetRetry}
+        setCurrentDayIndex={setCurrentDayIndex}
+        handleEditSetRetry={handleEditSetRetry}
         handleDeleteExercise={handleDeleteExercise}
         handleAddExerciseRetry={handleAddExerciseRetry}
-        handleAddSetRetry={handleAddSetRetry}
-        handleEditSetRetry={handleEditSetRetry}
       />
     );
   } else {
@@ -149,15 +166,16 @@ const EditWeek = () => {
         weekIndex={weekIndex}
         currentWeek={currentWeek}
         handleAddSet={handleAddSet}
-        currentDayIndex={currentDayIndex}
-        setCurrentDayIndex={setCurrentDayIndex}
         handleEditSet={handleEditSet}
+        currentDayIndex={currentDayIndex}
+        onDragEnd={handleReorderExercise}
         handleDeleteSet={handleDeleteSet}
+        handleAddSetRetry={handleAddSetRetry}
         handleAddExercise={handleAddExercise}
+        setCurrentDayIndex={setCurrentDayIndex}
+        handleEditSetRetry={handleEditSetRetry}
         handleDeleteExercise={handleDeleteExercise}
         handleAddExerciseRetry={handleAddExerciseRetry}
-        handleAddSetRetry={handleAddSetRetry}
-        handleEditSetRetry={handleEditSetRetry}
       />
     );
   }

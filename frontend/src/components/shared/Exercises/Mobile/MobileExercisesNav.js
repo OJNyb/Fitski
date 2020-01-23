@@ -1,7 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
 import Plus20 from "../../SVGs/Plus20";
-
-import AddExerciseModal from "../AddExerciseModal";
 
 const MobileExercisesNav = ({ header, onBackClick, setShowModal }) => {
   return (

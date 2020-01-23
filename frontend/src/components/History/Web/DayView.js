@@ -2,9 +2,11 @@ import React from "react";
 import { useUser } from "../../../context/userContext";
 
 import WebExerciseCard from "./WebExerciseCard";
+import { Droppable, DragDropContext } from "react-beautiful-dnd";
 
 const DayView = ({
   dayIndex,
+  onDragEnd,
   currentDay,
   handleAddSet,
   onCopyClick,
@@ -18,21 +20,15 @@ const DayView = ({
   const user = useUser();
   const { defaultUnit } = user;
   if (dayIndex !== -1) {
-    const {
-      exercises,
-      request,
-      isPending,
-      isRejected,
-      _id: dayId
-    } = currentDay;
+    const { exercises, request, isPending, isRejected } = currentDay;
 
-    let exerciseDisplay = exercises.map(exercise => {
+    let exerciseDisplay = exercises.map((exercise, y) => {
       if (!exercise || !exercise.exercise) {
         return null;
       } else {
         return (
           <WebExerciseCard
-            dayId={dayId}
+            index={y}
             key={exercise._id}
             exercise={exercise}
             dayRequest={request}
@@ -51,7 +47,27 @@ const DayView = ({
       }
     });
 
-    return <div className="history-add-body">{exerciseDisplay}</div>;
+    return (
+      <DragDropContext onDragEnd={onDragEnd}>
+        <Droppable droppableId={"1"} isDropDisabled={!exercises.length}>
+          {(provided, snapshot) => (
+            <div
+              ref={provided.innerRef}
+              {...provided.droppableProps}
+              className={
+                "history-add-container web-exercise-droppable-container" +
+                (snapshot.isDraggingOver
+                  ? " web-exercise-container-dragging-over"
+                  : "")
+              }
+            >
+              {exerciseDisplay}
+              {provided.placeholder}
+            </div>
+          )}
+        </Droppable>
+      </DragDropContext>
+    );
   } else {
     return (
       <div className="history-empty-log-container">

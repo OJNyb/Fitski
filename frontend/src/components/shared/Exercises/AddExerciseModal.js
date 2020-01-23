@@ -46,7 +46,7 @@ const AddEditModal = ({
     } else {
       loadWC();
     }
-  }, []);
+  }, [isMobile]);
 
   function onSubmit() {
     if (!name.length) {

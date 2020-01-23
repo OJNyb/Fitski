@@ -103,7 +103,7 @@ const WebExerciseColumn = ({
         )}
       </div>
 
-      <span className="font-w-500 color-gray edit-week-card-rep-index">
+      <span className="font-14 color-gray edit-week-card-rep-index">
         {index + 1}
       </span>
 
@@ -132,7 +132,7 @@ const ExerciseForm = ({ setId, onChange, inputReps, onInputBlur }) => {
       >
         <label
           htmlFor={`reps-${setId}`}
-          className="padding-5 flex-ai-center font-12 font-w-300 color-gray"
+          className="flex-ai-center font-12 font-w-300 color-gray"
         >
           <input
             name="reps"

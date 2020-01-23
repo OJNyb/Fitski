@@ -245,7 +245,7 @@ function planReducer(state, action) {
 
     case ADD_MUSCLEGROUP: {
       const { muscleGroups } = state;
-      const { name, color, muscleGroupId } = payload;
+      const { name, muscleGroupId } = payload;
 
       let newMuscleGroup = {
         name,

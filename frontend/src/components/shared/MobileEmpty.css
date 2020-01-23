@@ -1,7 +1,7 @@
 .mobile-empty-container {
-  height: 87vh;
+  height: calc(100vh - 100px);
   position: fixed;
-  top: 13vh;
+  top: 100px;
   width: 100vw;
   justify-content: space-between;
   padding: 10% 0 15%;

@@ -3,10 +3,12 @@ import React from "react";
 import WebExerciseCard from "./WebExerciseCard";
 import Exercises from "../../shared/Exercises/Exercises";
 import useSetLoading from "../../../hooks/useSetLoading";
+import { Droppable, DragDropContext } from "react-beautiful-dnd";
 
 import "./webEditWeek.css";
 
 const WebEditWeek = ({
+  onDragEnd,
   currentWeek,
   handleEditSet,
   handleAddSet,
@@ -35,8 +37,9 @@ const WebEditWeek = ({
     </button>
   ));
 
-  let exerciseCards = exercises.map(x => (
+  let exerciseCards = exercises.map((x, y) => (
     <WebExerciseCard
+      index={y}
       key={x._id}
       dayId={dayId}
       exercise={x}
@@ -56,7 +59,26 @@ const WebEditWeek = ({
         <h2 className="edit-week-header color-gray">Days</h2>
 
         <div className="edit-week-add-days-container">{dayBtns}</div>
-        {exerciseCards}
+        <DragDropContext onDragEnd={onDragEnd}>
+          <Droppable droppableId={"1"} isDropDisabled={!exercises.length}>
+            {(provided, snapshot) => (
+              <div
+                ref={provided.innerRef}
+                {...provided.droppableProps}
+                // TODO
+                className={
+                  "web-exercise-droppable-container" +
+                  (snapshot.isDraggingOver
+                    ? " web-exercise-container-dragging-over"
+                    : "")
+                }
+              >
+                {exerciseCards}
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
+        </DragDropContext>
       </div>
       <div className="edit-week-exercise-container">
         <h2 className="edit-week-header color-gray">Exercises</h2>

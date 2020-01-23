@@ -15,7 +15,6 @@ import {
   ADD_EXERCISE_SUCCESS,
   REORDER_EXERCISE,
   REORDER_EXERCISE_FAILED,
-  REORDER_EXERCISE_SUCCESS,
   DELETE_EXERCISE,
   DELETE_EXERCISE_FAILED,
   DELETE_EXERCISE_SUCCESS,
@@ -300,11 +299,9 @@ function historyReducer(state, action) {
       const { result, dayId } = payload;
       const { history } = state;
       const { days } = history;
-      const { source, destination, draggableId } = result;
+      const { source, destination } = result;
 
       let day = days.find(x => x._id === dayId);
-
-      console.log(days, dayId);
 
       const exercise = day.exercises[source.index];
 
@@ -322,14 +319,14 @@ function historyReducer(state, action) {
       const { history } = state;
       const { days } = history;
 
-      const { draggableId: exerId } = result;
+      const { source, destination } = result;
 
-      const day = days.find(x => x._id === dayId);
-      const exercise = day.exercises.find(x => x._id === exerId);
+      let day = days.find(x => x._id === dayId);
 
-      exercise.isPending = false;
-      exercise.isRejected = true;
-      exercise.request = "REORDER";
+      const exercise = day.exercises[destination.index];
+
+      day.exercises.splice(destination.index, 1);
+      day.exercises.splice(source.index, 0, exercise);
 
       return {
         ...state,
