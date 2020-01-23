@@ -92,7 +92,7 @@ const MobileNavMid = ({
           className="nav-mid-header-more-btn"
           onClick={handleMoreActionClick}
         >
-          <svg
+          {/* <svg
             width="19"
             height="21"
             viewBox="0 0 19 21"
@@ -102,6 +102,18 @@ const MobileNavMid = ({
             <rect x="7" y="1" width="5" height="5" fill="white" />
             <rect x="7" y="8" width="5" height="5" fill="white" />
             <rect x="7" y="15" width="5" height="5" fill="white" />
+          </svg> */}
+
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 20 20"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <rect x="8" width="4.5" height="4.5" fill="#fff" />
+            <rect x="8" y="7.75" width="4.5" height="4.5" fill="#fff" />
+            <path d="M8 15.5H12.5V20H8V15.5Z" fill="#fff" />
           </svg>
         </button>
       </div>

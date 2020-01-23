@@ -142,11 +142,29 @@ const addExercise = Joi.object().keys({
   plan_id: planId,
   week_id: weekId,
   day_id: dayId,
-  exerciseId: exerciseId.required(),
+  exerciseId: exerciseId,
   exerId,
   setId,
   reps,
   custom
+});
+
+const reorderExercise = Joi.object().keys({
+  plan_id: planId,
+  week_id: weekId,
+  day_id: dayId,
+  exerId: exerciseId,
+  to: Joi.number()
+    .integer()
+    .min(0)
+    .required()
+    .label("To")
+    .disallow(Joi.ref("from")),
+  from: Joi.number()
+    .integer()
+    .min(0)
+    .required()
+    .label("From")
 });
 
 const deleteExercise = Joi.object().keys({
@@ -200,6 +218,7 @@ module.exports = {
   "delete/plan/day/:plan_id/:week_id/:day_id": clearDay,
   "delete/plan/day/clear/:plan_id/:week_id/:day_id": clearDay,
   "post/plan/exercise/:plan_id/:week_id/:day_id": addExercise,
+  "patch/plan/exercise/reorder/:plan_id/:week_id/:day_id": reorderExercise,
   "delete/plan/exercise/:plan_id/:week_id/:day_id/:exercise_id": deleteExercise,
   "post/plan/exercise/:plan_id/:week_id/:day_id/:exercise_id": addSet,
   "post/plan/exercise/:plan_id/:week_id/:day_id/:exercise_id/:set_id": editSet,

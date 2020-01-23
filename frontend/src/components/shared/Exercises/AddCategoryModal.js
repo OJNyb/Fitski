@@ -73,7 +73,7 @@ const AddCategoryModal = ({
     }
 
     findFirstUnusedColor();
-  }, []);
+  }, [initColor.length, muscleGroups]);
 
   function onChange(e) {
     setName(e.target.value);

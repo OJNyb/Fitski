@@ -5,6 +5,7 @@
   box-shadow: 0.5px 0.5px 3px 1px rgba(0, 0, 0, 0.11);
   overflow: hidden;
   transition: opacity 0.1s ease;
+  max-width: 450px;
 }
 
 .history-exercise-name {
@@ -14,6 +15,7 @@
   justify-content: space-between;
   border-bottom: 1px solid #a60000;
   min-height: 34px;
+  transition: background-color 0.3s ease;
 }
 
 .add-card-btn-container {
@@ -58,8 +60,23 @@
   opacity: 0.75;
 }
 
+/* WEB */
+.web-exercise-droppable-container {
+  min-height: 60vh;
+  padding: 0 20px;
+}
+
+.web-exercise-container-dragging-over {
+  background-color: rgba(155, 221, 169, 0.2);
+  transition: background-color 0.3s ease;
+  border-radius: 10px;
+}
+
 /* MOBILE */
 
 .mobile-droppable-container {
   min-height: calc(100vh - 100px);
+  justify-content: center;
+  flex-direction: column;
+  display: flex;
 }

@@ -106,13 +106,12 @@
   background-color: transparent;
   border: 1px solid transparent;
   text-align: center;
-  font-size: 20px;
-  font-family: "Oswald", sans-serif;
+  font-size: 18px;
   font-weight: 500;
 }
 
 .edit-week-mobile-reps-input-wrapper .border-with-sides {
-  margin-top: -1px;
+  margin-top: -3px;
 }
 
 .edit-week-mobile-reps-input-wrapper:focus-within .border-with-sides {
@@ -126,9 +125,65 @@
 }
 
 .edit-week-mobile-set-delete-btn {
-  color: #d90000;
+  color: #a60000;
 }
 
 .height-20 {
   height: 20px;
+}
+
+/* TODO */
+.history-mobile-days-wrapper {
+  position: fixed;
+  left: -100vw;
+}
+
+.history-mobile-days-box {
+  position: relative;
+  width: 300vw;
+  display: flex;
+}
+
+.history-mobile-days-box > div {
+  flex: 0.3333333;
+}
+
+.history-mobile-days-box-transition {
+  transition: left 70ms ease;
+}
+
+.mobile-history-days-np-day {
+  font-size: 24px;
+  color: gray;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: calc(100vh - 100px);
+}
+
+.edit-week-sub-nav-btn {
+  width: 50px;
+  height: 50px;
+  padding: 0;
+}
+
+.edit-week-sub-nav-btn-filler {
+  width: 50px;
+  height: 50px;
+}
+
+.bc-8c1 {
+  background-color: #8c1c1c;
+}
+
+.edit-week-sub-nav-container {
+  transition: background-color 0.3s ease;
+}
+
+.edit-week-mobile-add-btn-container {
+  position: fixed;
+  z-index: 1999;
+  top: calc(25px - 12.5px);
+  right: 54px;
+  height: 25px;
 }

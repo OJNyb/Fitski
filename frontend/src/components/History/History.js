@@ -152,7 +152,7 @@ const History = () => {
   }
 
   function handleReorderExercise(result) {
-    const { destination, source, draggableId } = result;
+    const { destination, source } = result;
 
     if (!destination) {
       return;
@@ -196,7 +196,6 @@ const History = () => {
       <MobileView
         historyDays={days}
         date={moment(date)}
-        dayIndex={dayIndex}
         currentDay={currentDay}
         handleAddSet={handleAddSet}
         handleEditSet={handleEditSet}

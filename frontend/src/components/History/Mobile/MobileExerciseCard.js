@@ -96,7 +96,7 @@ const MobileExerciseCard = ({
                   {...provided.dragHandleProps}
                   onTouchStart={e => e.stopPropagation()}
                 >
-                  <DragIcon />
+                  <DragIcon fill={"#a60000"} />
                 </div>
               )}
               {(isRejected || dayRejected) && (

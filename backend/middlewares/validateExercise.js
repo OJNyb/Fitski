@@ -1,77 +1,20 @@
 const UserExercise = require("../models/UserExercise");
 const MuscleGroup = require("../models/MuscleGroup");
+const Exercise = require("../models/Exercise");
 
 const createErrorObject = require("../utils/createErrorObject");
 
-const StandardExerciseIds = [
-  "5d406ab23beac01b7035c2aa",
-  "5d406ab23beac01b7035c2ab",
-  "5d406ab23beac01b7035c2ac",
-  "5d406ab23beac01b7035c2ad",
-  "5d406ab23beac01b7035c2ae",
-  "5d406ab23beac01b7035c2af",
-  "5d406ab23beac01b7035c2b0",
-  "5d406ab23beac01b7035c2b1",
-  "5d406ab23beac01b7035c2b2",
-  "5d406ab23beac01b7035c2b6",
-  "5d406ab23beac01b7035c2b7",
-  "5d406ab23beac01b7035c2b8",
-  "5d406ab23beac01b7035c2b9",
-  "5d406ab23beac01b7035c2ba",
-  "5d406ab23beac01b7035c2bb",
-  "5d406ab23beac01b7035c2bc",
-  "5d406ab23beac01b7035c2bd",
-  "5d406ab23beac01b7035c2be",
-  "5d406ab23beac01b7035c2bf",
-  "5d406ab23beac01b7035c2c0",
-  "5d406ab23beac01b7035c2c1",
-  "5d406ab23beac01b7035c2c2",
-  "5d406ab23beac01b7035c2c5",
-  "5d406ab23beac01b7035c2c6",
-  "5d406ab23beac01b7035c2c7",
-  "5d406ab23beac01b7035c2c8",
-  "5d406ab23beac01b7035c2c9",
-  "5d406ab23beac01b7035c2ca",
-  "5d406ab23beac01b7035c2cb",
-  "5d406ab23beac01b7035c2cc",
-  "5d406ab23beac01b7035c2cd",
-  "5d406ab23beac01b7035c2ce",
-  "5d406ab23beac01b7035c2cf",
-  "5d406ab23beac01b7035c2d2",
-  "5d406ab23beac01b7035c2d3",
-  "5d406ab23beac01b7035c2d4",
-  "5d406ab23beac01b7035c2d5",
-  "5d406ab23beac01b7035c2d6",
-  "5d406ab23beac01b7035c2d7",
-  "5d406ab23beac01b7035c2d8",
-  "5d406ab23beac01b7035c2d9",
-  "5d406ab23beac01b7035c2da",
-  "5d406ab23beac01b7035c2db",
-  "5d406ab23beac01b7035c2dc",
-  "5d406ab23beac01b7035c2dd",
-  "5d406ab23beac01b7035c2de",
-  "5d406ab23beac01b7035c2df",
-  "5d406ab23beac01b7035c2e0",
-  "5d406ab23beac01b7035c2e1",
-  "5d406ab23beac01b7035c2e4",
-  "5d406ab23beac01b7035c2e5",
-  "5d406ab23beac01b7035c2e6",
-  "5d406ab23beac01b7035c2e7",
-  "5d406ab23beac01b7035c2e8",
-  "5d406ab23beac01b7035c2e9",
-  "5d406ab23beac01b7035c2ea",
-  "5d406ab23beac01b7035c2eb",
-  "5d406ab23beac01b7035c2ec",
-  "5d406ab23beac01b7035c2ed",
-  "5d406ab23beac01b7035c2f0",
-  "5d406ab23beac01b7035c2f1",
-  "5d406ab23beac01b7035c2f2",
-  "5d406ab23beac01b7035c2f3",
-  "5d406ab23beac01b7035c2f4",
-  "5d406ab23beac01b7035c2f5",
-  "5d406ab23beac01b7035c2f6",
-  "5d406ab23beac01b7035c2f7"
-];
+let StandardExerciseIds;
+
+(() => {
+  Exercise.find({})
+    .then(exercises => {
+      StandardExerciseIds = exercises.map(x => x._id.toString());
+    })
+    .catch(e => {
+      console.log(e);
+    });
+})();
 
 const StandardMuscleGroupIds = [
   "5e1efe709ed6895950a94b88",

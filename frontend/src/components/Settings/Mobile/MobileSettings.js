@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import useSetLoading from "../../../hooks/useSetLoading";
 
 import NavMid from "../../shared/NavMid/NavMid";

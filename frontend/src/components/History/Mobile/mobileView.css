@@ -49,3 +49,60 @@
 .history-mobile-selected-check-n-span-wrapper button {
   margin-right: 13px;
 }
+
+.history-mobile-days-container {
+  width: 100vw;
+  background-color: rgb(251, 248, 248);
+  overflow: hidden;
+}
+
+.mobile-history-empty-container {
+  height: calc(100vh - 100px);
+  top: 100px;
+  width: 100vw;
+  justify-content: space-between;
+  padding: 10% 0 5%;
+  box-sizing: border-box;
+}
+
+.mobile-history-empty-container button:first-child,
+.mobile-history-empty-container a:first-child {
+  margin-bottom: 20px;
+}
+
+.mobile-history-empty-container i {
+  color: #a60000;
+}
+
+.mobile-history-empty-container span {
+  margin-top: 5px;
+  font-size: 14px;
+}
+
+.history-mobile-days-wrapper {
+  position: fixed;
+  left: -100vw;
+}
+
+.history-mobile-days-box {
+  position: relative;
+  width: 300vw;
+  display: flex;
+}
+
+.history-mobile-days-box > div {
+  flex: 0.3333333;
+}
+
+.history-mobile-days-box-transition {
+  transition: left 70ms ease;
+}
+
+.mobile-history-days-np-day {
+  font-size: 24px;
+  color: gray;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: calc(100vh - 100px);
+}

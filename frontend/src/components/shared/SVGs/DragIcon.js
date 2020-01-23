@@ -1,6 +1,6 @@
 import React from "react";
 
-const DragIcon = () => {
+const DragIcon = ({ fill }) => {
   return (
     <svg
       width="19"
@@ -10,9 +10,9 @@ const DragIcon = () => {
       xmlns="http://www.w3.org/2000/svg"
     >
       <g clipPath="url(#clip0)">
-        <rect y="6.75" width="19" height="1.5" fill="#A60000" />
-        <path d="M9.5 2L13.3971 5H5.60289L9.5 2Z" fill="#A60000" />
-        <path d="M9.5 13L5.60289 10L13.3971 10L9.5 13Z" fill="#A60000" />
+        <rect y="6.75" width="19" height="1.5" fill={fill} />
+        <path d="M9.5 2L13.3971 5H5.60289L9.5 2Z" fill={fill} />
+        <path d="M9.5 13L5.60289 10L13.3971 10L9.5 13Z" fill={fill} />
       </g>
       <defs>
         <clipPath id="clip0">

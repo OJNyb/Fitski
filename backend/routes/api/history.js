@@ -324,8 +324,6 @@ router.post("/", ensureSignedIn, validateRequest, async (req, res, next) => {
 // @route PATCH api/history/reorder/:day_id
 // @desc  Reorder exercise
 // @access Private
-
-// TODO: Validation, see if date is already there
 router.patch(
   "/reorder/:day_id",
   ensureSignedIn,

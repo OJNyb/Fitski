@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect, useCallback } from "react";
 import { withRouter } from "react-router-dom";
 
 import { Draggable } from "react-beautiful-dnd";
-import DragIcon from "../../shared/SVGs/DragIcon";
+import DragIconBig from "../../shared/SVGs/DragIconBig";
 
 import "../../../styles/exerciseCard.css";
 
@@ -28,15 +28,6 @@ const ExerciseCard = ({
     _id: exerId,
     exercise: { name, _id: exerciseId }
   } = exercise;
-  const [activeSet, setActiveSet] = useState(null);
-
-  function handleSetClick(setId) {
-    if (activeSet === setId) {
-      setActiveSet(null);
-    } else {
-      setActiveSet(setId);
-    }
-  }
 
   function onRetryClick(e) {
     e.stopPropagation();
@@ -62,8 +53,6 @@ const ExerciseCard = ({
         key={x._id}
         dayId={dayId}
         exerId={exerId}
-        activeSet={activeSet}
-        onSetClick={handleSetClick}
         handleEditSet={handleEditSet}
         onDeleteSet={handleDeleteSet}
         onAddSetRetry={handleAddSetRetry}
@@ -89,76 +78,84 @@ const ExerciseCard = ({
     <Draggable
       draggableId={exerId}
       index={index}
-      isDragDisabled={!activeExercise}
+      isDragDisabled={!isActive || isRejected}
     >
       {(provided, snapshot) => (
         <div
-          className={
-            "history-add-card margin-10" +
-            (isActive ? " edit-week-mobile-add-card-active" : "") +
-            (isPending ? " exercise-card-pending" : "") +
-            (isRejected ? " exercise-card-rejected" : "") +
-            (snapshot.isDragging ? " exercise-card-dragging" : "")
-          }
+          className="pt-10"
           ref={provided.innerRef}
           {...provided.draggableProps}
-          onClick={e => {
-            e.stopPropagation();
-            onCardClick(exerId);
-          }}
         >
-          <div className="history-exercise-name">
-            <span className="black height-20 flex-ai-center">
-              <span className="black font-16 noselect">{name}</span>
-            </span>
+          <div
+            className={
+              "history-add-card margin-0-10" +
+              (isActive ? " edit-week-mobile-add-card-active" : "") +
+              (isPending ? " exercise-card-pending" : "") +
+              (isRejected ? " exercise-card-rejected" : "") +
+              (snapshot.isDragging ? " exercise-card-dragging" : "")
+            }
+            onClick={e => {
+              e.stopPropagation();
+              onCardClick(exerId);
+            }}
+          >
+            <div className="history-exercise-name">
+              <span className="black height-20 flex-ai-center">
+                <span className="black font-16 noselect">{name}</span>
+              </span>
 
-            <div className="add-card-btn-container">
-              {isRejected && (
-                <div className="flex-ai-center exercise-card-rejected-container">
-                  <span className="color-gray text-center">Request failed</span>
-                  <button className="padding-5" onClick={onRetryClick}>
-                    <i className="material-icons">refresh</i>
-                  </button>
-                </div>
-              )}
+              <div className="add-card-btn-container">
+                {isRejected && (
+                  <div className="flex-ai-center exercise-card-rejected-container">
+                    <span className="color-gray text-center">
+                      Request failed
+                    </span>
+                    <button className="padding-5" onClick={onRetryClick}>
+                      <i className="material-icons">refresh</i>
+                    </button>
+                  </div>
+                )}
 
-              {!!activeExercise && !isRejected && (
-                <div
-                  className="exercise-drag-handle padding-5"
-                  {...provided.dragHandleProps}
-                  onTouchStart={e => e.stopPropagation()}
-                >
-                  <DragIcon />
-                </div>
-              )}
-              {isActive && !isRejected && (
-                <>
-                  <button
-                    className="add-card-remove-btn theme-btn-no-border"
-                    onClick={e => {
-                      e.stopPropagation();
-                      onDeleteExercise(exerId);
-                    }}
-                  >
-                    <i className="material-icons ">delete_outline</i>
-                  </button>
+                {isActive && !isRejected && (
+                  <>
+                    <button
+                      className="add-card-remove-btn theme-btn-no-border"
+                      onClick={e => {
+                        e.stopPropagation();
+                        onDeleteExercise(exerId);
+                      }}
+                    >
+                      <i className="material-icons font-20">delete_outline</i>
+                    </button>
 
-                  <button
-                    className="theme-btn-no-border"
-                    onClick={e => {
-                      e.stopPropagation();
-                      onAddSet(exerId, exerciseId);
-                    }}
-                  >
-                    <i className="material-icons ">add</i>
-                  </button>
-                </>
-              )}
+                    <div
+                      className="exercise-drag-handle padding-5"
+                      {...provided.dragHandleProps}
+                      onTouchStart={e => e.stopPropagation()}
+                    >
+                      <DragIconBig fill={"white"} />
+                    </div>
+                  </>
+                )}
+                {!isActive && !isRejected && (
+                  <>
+                    <button
+                      className="theme-btn-no-border"
+                      onClick={e => {
+                        e.stopPropagation();
+                        onAddSet(exerId, exerciseId);
+                      }}
+                    >
+                      <i className="material-icons ">add</i>
+                    </button>
+                  </>
+                )}
+              </div>
             </div>
-          </div>
 
-          {headDropdown}
-          <div className="add-card-body">{cardView}</div>
+            {headDropdown}
+            <div className="add-card-body">{cardView}</div>
+          </div>
         </div>
       )}
     </Draggable>
@@ -320,13 +317,13 @@ const EditColumn = ({
 
       <div className="flex-center edit-week-mobile-reps-wrapper">
         <div className="flex-center" onClick={e => e.stopPropagation()}>
-          <button
+          {/* <button
             className="edit-week-mobile-reps-btn"
             onClick={() => handleRepsChange(Number(inputReps) - 1)}
             onBlur={onInputBlur}
           >
             <i className="material-icons">remove</i>
-          </button>
+          </button> */}
           <div className="edit-week-mobile-reps-input-wrapper">
             <input
               type="tel"
@@ -339,13 +336,13 @@ const EditColumn = ({
             />
             <div className="border-with-sides" />
           </div>
-          <button
+          {/* <button
             className="edit-week-mobile-reps-btn"
             onClick={() => handleRepsChange(Number(inputReps) + 1)}
             onBlur={onInputBlur}
           >
             <i className="material-icons">add</i>
-          </button>
+          </button> */}
         </div>
       </div>
     </div>

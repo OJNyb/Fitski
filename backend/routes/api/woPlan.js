@@ -526,6 +526,47 @@ router.post(
   }
 );
 
+// @route PATCH api/plan/exercise/reorder/:plan_id/:week_id/:day_id
+// @desc  Reorder exercise
+// @access Private
+router.patch(
+  "/exercise/reorder/:plan_id/:week_id/:day_id",
+  ensureSignedIn,
+  validateRequest,
+  validateWOPlan,
+  async (req, res, next) => {
+    const { body, params } = req;
+    const { week_id: weekId, day_id: dayId } = params;
+    const { woPlan, to, from, exerId } = body;
+
+    const { weeks } = woPlan;
+    const week = weeks[weeks.map(x => x._id.toString()).indexOf(weekId)];
+    if (!week) return next();
+
+    const { days } = week;
+    const day = days[days.map(x => x._id).indexOf(dayId)];
+    if (!day) return next();
+
+    const exercise = day.exercises[from];
+
+    if (exercise._id.toString() !== exerId) {
+      return res
+        .status(404)
+        .json(createErrorObject(["An error occured, please refresh the page"]));
+    }
+
+    day.exercises.splice(from, 1);
+    day.exercises.splice(to, 0, exercise);
+
+    woPlan
+      .save()
+      .then(() => {
+        res.json({ message: "success" });
+      })
+      .catch(next);
+  }
+);
+
 // @route DELETE api/plan/exercise/:plan_id/:week_id/:day_id/:exercise_id
 // @desc Delete exercise
 // @access Private

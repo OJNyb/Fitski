@@ -1,12 +1,14 @@
 import React from "react";
 
 import WebExerciseColumn from "./WebExerciseColumn";
+import { Draggable } from "react-beautiful-dnd";
+import DragIcon from "../../shared/SVGs/DragIcon";
 
 import "../editDay.css";
 import "../../../styles/exerciseCard.css";
 
 const ExerciseCard = ({
-  dayId,
+  index,
   exercise,
   onAddSet,
   dayPending,
@@ -53,52 +55,72 @@ const ExerciseCard = ({
   }
 
   return (
-    <div
-      className={
-        "history-add-card margin-10" +
-        (isPending || dayPending ? " exercise-card-pending" : "") +
-        (isRejected || dayRejected ? " exercise-card-rejected" : "")
-      }
-    >
-      <div className="history-exercise-name">
-        <span className="black font-14">{name}</span>
+    <Draggable draggableId={exerId} index={index} isDragDisabled={isRejected}>
+      {(provided, snapshot) => (
+        <div
+          ref={provided.innerRef}
+          {...provided.draggableProps}
+          className="pt-10"
+        >
+          <div
+            className={
+              "history-add-card" +
+              (isPending || dayPending ? " exercise-card-pending" : "") +
+              (isRejected || dayRejected ? " exercise-card-rejected" : "") +
+              (snapshot.isDragging ? " exercise-card-dragging" : "")
+            }
+          >
+            <div className="history-exercise-name">
+              <span className="black font-14">{name}</span>
 
-        <div className="add-card-btn-container">
-          {isRejected || dayRejected ? (
-            <div className="exercise-card-rejected-container flex-ai-center">
-              <span className="color-gray text-center">Request failed</span>
-              <button className="padding-5 tc" onClick={onRetryClick}>
-                <i className="material-icons">refresh</i>
-              </button>
+              <div className="add-card-btn-container">
+                {isRejected || dayRejected ? (
+                  <div className="exercise-card-rejected-container flex-ai-center">
+                    <span className="color-gray text-center">
+                      Request failed
+                    </span>
+                    <button className="padding-5 tc" onClick={onRetryClick}>
+                      <i className="material-icons">refresh</i>
+                    </button>
+                  </div>
+                ) : (
+                  <>
+                    <button
+                      className="exercise-drag-handle padding-5"
+                      onTouchStart={e => e.stopPropagation()}
+                      {...provided.dragHandleProps}
+                    >
+                      <DragIcon fill={"#a60000"} />
+                    </button>
+                    <button
+                      className="theme-btn-no-border"
+                      onClick={e => {
+                        e.stopPropagation();
+                        onAddSet(exerId, exerciseId);
+                      }}
+                    >
+                      <i className="material-icons ">add</i>
+                    </button>
+                    <button
+                      className="add-card-remove-btn theme-btn-no-border"
+                      onClick={e => {
+                        e.stopPropagation();
+                        onDeleteExercise(exerId);
+                      }}
+                    >
+                      <i className="material-icons ">delete_outline</i>
+                    </button>
+                  </>
+                )}
+              </div>
             </div>
-          ) : (
-            <>
-              <button
-                className="theme-btn-no-border"
-                onClick={e => {
-                  e.stopPropagation();
-                  onAddSet(exerId, exerciseId);
-                }}
-              >
-                <i className="material-icons ">add</i>
-              </button>
-              <button
-                className="add-card-remove-btn theme-btn-no-border"
-                onClick={e => {
-                  e.stopPropagation();
-                  onDeleteExercise(exerId);
-                }}
-              >
-                <i className="material-icons ">delete_outline</i>
-              </button>
-            </>
-          )}
-        </div>
-      </div>
 
-      {headDropdown}
-      <div className="add-card-body ">{setDisplay}</div>
-    </div>
+            {headDropdown}
+            <div className="add-card-body ">{setDisplay}</div>
+          </div>
+        </div>
+      )}
+    </Draggable>
   );
 };
 

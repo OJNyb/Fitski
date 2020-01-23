@@ -14,7 +14,25 @@
   {
     "name": "Weighted Pull Ups",
     "muscleGroup": "5e1efec21c9d440000a301f8",
-    "equipment": "Other"
+    "equipment": "Body Only"
+  },
+
+  {
+    "name": "Pull Ups",
+    "muscleGroup": "5e1efec21c9d440000a301f8",
+    "equipment": "Body Only"
+  },
+
+  {
+    "name": "Chin Ups",
+    "muscleGroup": "5e1efec21c9d440000a301f8",
+    "equipment": "Body Only"
+  },
+
+  {
+    "name": "Weighted Chin Ups",
+    "muscleGroup": "5e1efec21c9d440000a301f8",
+    "equipment": "Body Only"
   },
 
   {
@@ -36,42 +54,67 @@
   },
 
   {
-    "name": "Deficit Deadlift",
-    "muscleGroup": "5e1efec21c9d440000a301f8",
-    "equipment": "Barbell"
-  },
-
-  {
     "name": "Deadlift",
-    "muscleGroup": "5e1eff431c9d440000a301fa",
+    "muscleGroup": "5e1efec21c9d440000a301f8",
     "equipment": "Barbell"
   },
   {
     "name": "Rack Pull",
-    "muscleGroup": "5e1eff431c9d440000a301fa",
+    "muscleGroup": "5e1efec21c9d440000a301f8",
     "equipment": "Barbell"
+  },
+  {
+    "name": "Meadow Row",
+    "muscleGroup": "5e1efec21c9d440000a301f8",
+    "equipment": "Barbell"
+  },
+  {
+    "name": "Barbell Row",
+    "muscleGroup": "5e1efec21c9d440000a301f8",
+    "equipment": "Barbell"
+  },
+  {
+    "name": "T-Bar Row",
+    "muscleGroup": "5e1efec21c9d440000a301f8",
+    "equipment": "Barbell"
+  },
+  {
+    "name": "Pendlay Row",
+    "muscleGroup": "5e1efec21c9d440000a301f8",
+    "equipment": "Barbell"
+  },
+  {
+    "name": "Cable Pullover",
+    "muscleGroup": "5e1efec21c9d440000a301f8",
+    "equipment": "Cable"
+  },
+  {
+    "name": "Dumbbell Pullover - Lat Version",
+    "muscleGroup": "5e1efec21c9d440000a301f8",
+    "equipment": "Dumbbell"
+  },
+  {
+    "name": "Dumbbell Pullover - Chest Version",
+    "muscleGroup": "5e1efe709ed6895950a94b88",
+    "equipment": "Dumbbell"
   },
   {
     "name": "Plank",
     "muscleGroup": "5e1f005a1c9d440000a301fd",
-    "equipment": "Body Only"
+    "equipment": "Body Only",
+    "unit": "s"
   },
 
   {
     "name": "Bottoms Up",
     "muscleGroup": "5e1f005a1c9d440000a301fd",
-    "equipment": "Body Only"
-  },
-
-  {
-    "name": "Snatch",
-    "muscleGroup": "5e1eff431c9d440000a301fa",
-    "equipment": "Barbell"
+    "equipment": "Body Only",
+    "unit": "r"
   },
 
   {
     "name": "Sumo Deadlift",
-    "muscleGroup": "5e1eff431c9d440000a301fa",
+    "muscleGroup": "5e1efec21c9d440000a301f8",
     "equipment": "Barbell"
   },
 
@@ -82,7 +125,7 @@
   },
 
   {
-    "name": "Wide-Grip Standing Barbell Curl",
+    "name": "Wide-Grip Barbell Curl",
     "muscleGroup": "5e1effe01c9d440000a301fb",
     "equipment": "Barbell"
   },
@@ -97,12 +140,6 @@
     "name": "Dumbbell Floor Press",
     "muscleGroup": "5e1f00201c9d440000a301fc",
     "equipment": "Dumbbell"
-  },
-
-  {
-    "name": "Lying Face Down Plate Neck Resistance",
-    "muscleGroup": "Neck",
-    "equipment": "Other"
   },
 
   {
@@ -142,6 +179,19 @@
   },
 
   {
+    "name": "Arnold Press",
+    "muscleGroup": "5e1eff241c9d440000a301f9",
+    "equipment": "Dumbbell"
+  },
+
+  {
+    "name": "Static Dumbbell Hold",
+    "muscleGroup": "5e1eff241c9d440000a301f9",
+    "equipment": "Dumbbell",
+    "unit": "s"
+  },
+
+  {
     "name": "Spider Curl",
     "muscleGroup": "5e1effe01c9d440000a301fb",
     "equipment": "Barbell"
@@ -166,7 +216,7 @@
   },
 
   {
-    "name": "Barbell Front Squat",
+    "name": "Front Squat",
     "muscleGroup": "5e1eff431c9d440000a301fa",
     "equipment": "Barbell"
   },
@@ -174,7 +224,8 @@
   {
     "name": "Spider Crawl",
     "muscleGroup": "5e1f005a1c9d440000a301fd",
-    "equipment": "Body Only"
+    "equipment": "Body Only",
+    "unit": "r"
   },
 
   {
@@ -192,11 +243,12 @@
   {
     "name": "Cocoons",
     "muscleGroup": "5e1f005a1c9d440000a301fd",
-    "equipment": "Body Only"
+    "equipment": "Body Only",
+    "unit": "r"
   },
 
   {
-    "name": "Dumbbell Flyes",
+    "name": "Flat Dumbbell Flyes",
     "muscleGroup": "5e1efe709ed6895950a94b88",
     "equipment": "Dumbbell"
   },
@@ -250,12 +302,6 @@
   },
 
   {
-    "name": "Step Mill",
-    "muscleGroup": "5e1eff431c9d440000a301fa",
-    "equipment": "Machine"
-  },
-
-  {
     "name": "Standing Dumbbell Straight-Arm Front Delt Raise Above Head",
     "muscleGroup": "5e1eff241c9d440000a301f9",
     "equipment": "Dumbbell"
@@ -294,7 +340,8 @@
   {
     "name": "Decline Crunch",
     "muscleGroup": "5e1f005a1c9d440000a301fd",
-    "equipment": "Body Only"
+    "equipment": "Body Only",
+    "unit": "r"
   },
 
   {
@@ -310,19 +357,13 @@
   },
 
   {
-    "name": "Rocky Pull-Ups/Pulldowns",
-    "muscleGroup": "5e1efec21c9d440000a301f8",
-    "equipment": "Other"
-  },
-
-  {
     "name": "Seated One-Arm Dumbbell Palms-Up Wrist Curl",
     "muscleGroup": "5e1f03941c9d440000a301fe",
     "equipment": "Dumbbell"
   },
 
   {
-    "name": "Overhead Cable Curl",
+    "name": "Cable Curl - Straight Bar Attachment",
     "muscleGroup": "5e1effe01c9d440000a301fb",
     "equipment": "Cable"
   },
@@ -364,6 +405,18 @@
   },
 
   {
+    "name": "Lying Triceps Extension",
+    "muscleGroup": "5e1f00201c9d440000a301fc",
+    "equipment": "EZ-Bar"
+  },
+
+  {
+    "name": "Skullcrushers",
+    "muscleGroup": "5e1f00201c9d440000a301fc",
+    "equipment": "EZ-Bar"
+  },
+
+  {
     "name": "Cable One Arm Tricep Extension",
     "muscleGroup": "5e1f00201c9d440000a301fc",
     "equipment": "Cable"
@@ -378,11 +431,12 @@
   {
     "name": "Hanging Leg Raise",
     "muscleGroup": "5e1f005a1c9d440000a301fd",
-    "equipment": "Body Only"
+    "equipment": "Body Only",
+    "unit": "r"
   },
 
   {
-    "name": "Barbell Squat",
+    "name": "Squat",
     "muscleGroup": "5e1eff431c9d440000a301fa",
     "equipment": "Barbell"
   },
@@ -432,7 +486,8 @@
   {
     "name": "Muscle Up",
     "muscleGroup": "5e1efec21c9d440000a301f8",
-    "equipment": "Body Only"
+    "equipment": "Body Only",
+    "unit": "r"
   },
 
   {
@@ -454,21 +509,10 @@
   },
 
   {
-    "name": "Decline Close-Grip Bench To Skull Crusher",
-    "muscleGroup": "5e1f00201c9d440000a301fc",
-    "equipment": "Barbell"
-  },
-
-  {
-    "name": "Cross Body Hammer Curl",
-    "muscleGroup": "5e1effe01c9d440000a301fb",
-    "equipment": "Dumbbell"
-  },
-
-  {
     "name": "Ab Roller",
     "muscleGroup": "5e1f005a1c9d440000a301fd",
-    "equipment": "Other"
+    "equipment": "Other",
+    "unit": "r"
   },
 
   {
@@ -496,9 +540,15 @@
   },
 
   {
-    "name": "Tricep Dumbbell Kickback",
+    "name": "Triceps Dumbbell Kickback",
     "muscleGroup": "5e1f00201c9d440000a301fc",
     "equipment": "Dumbbell"
+  },
+
+  {
+    "name": "Triceps Cable Kickback",
+    "muscleGroup": "5e1f00201c9d440000a301fc",
+    "equipment": "Cable"
   },
 
   {
@@ -508,15 +558,28 @@
   },
 
   {
-    "name": "3/4 Sit-Up",
-    "muscleGroup": "5e1f005a1c9d440000a301fd",
-    "equipment": "Body Only"
+    "name": "Dumbbell Lunge",
+    "muscleGroup": "5e1eff431c9d440000a301fa",
+    "equipment": "Dumbbell"
   },
 
   {
-    "name": "Ball Leg Curl",
+    "name": "3/4 Sit-Up",
+    "muscleGroup": "5e1f005a1c9d440000a301fd",
+    "equipment": "Body Only",
+    "unit": "r"
+  },
+
+  {
+    "name": "Lying Leg Curl",
     "muscleGroup": "5e1eff431c9d440000a301fa",
-    "equipment": "Exercise Ball"
+    "equipment": "Machine"
+  },
+
+  {
+    "name": "Seated Leg Curl",
+    "muscleGroup": "5e1eff431c9d440000a301fa",
+    "equipment": "Machine"
   },
 
   {
@@ -534,18 +597,13 @@
   {
     "name": "Reverse Crunch",
     "muscleGroup": "5e1f005a1c9d440000a301fd",
-    "equipment": "Body Only"
-  },
-
-  {
-    "name": "Elliptical Trainer",
-    "muscleGroup": "5e1eff431c9d440000a301fa",
-    "equipment": "Machine"
+    "equipment": "Body Only",
+    "unit": "r"
   },
 
   {
     "name": "Trap Bar Deadlift",
-    "muscleGroup": "5e1eff431c9d440000a301fa",
+    "muscleGroup": "5e1efec21c9d440000a301f8",
     "equipment": "Other"
   },
 
@@ -558,13 +616,8 @@
   {
     "name": "Single Leg Glute Bridge",
     "muscleGroup": "5e1eff431c9d440000a301fa",
-    "equipment": "Body Only"
-  },
-
-  {
-    "name": "Standing Hip Circles",
-    "muscleGroup": "5e1eff431c9d440000a301fa",
-    "equipment": "Body Only"
+    "equipment": "Body Only",
+    "unit": "r"
   },
 
   {
@@ -582,7 +635,8 @@
   {
     "name": "Incline Push-Up",
     "muscleGroup": "5e1efe709ed6895950a94b88",
-    "equipment": "Body Only"
+    "equipment": "Body Only",
+    "unit": "r"
   },
 
   {
@@ -612,13 +666,15 @@
   {
     "name": "Bench Dips",
     "muscleGroup": "5e1f00201c9d440000a301fc",
-    "equipment": "Body Only"
+    "equipment": "Body Only",
+    "unit": "r"
   },
 
   {
     "name": "Crunches",
     "muscleGroup": "5e1f005a1c9d440000a301fd",
-    "equipment": "Body Only"
+    "equipment": "Body Only",
+    "unit": "r"
   },
 
   {
@@ -646,12 +702,6 @@
   },
 
   {
-    "name": "Rope Climb",
-    "muscleGroup": "5e1efec21c9d440000a301f8",
-    "equipment": "Body Only"
-  },
-
-  {
     "name": "Cable Chest Press",
     "muscleGroup": "5e1efe709ed6895950a94b88",
     "equipment": "Cable"
@@ -664,21 +714,15 @@
   },
 
   {
-    "name": "Rope Straight-Arm Pulldown",
-    "muscleGroup": "5e1efec21c9d440000a301f8",
-    "equipment": "Cable"
-  },
-
-  {
     "name": "Hang Snatch",
     "muscleGroup": "5e1eff431c9d440000a301fa",
     "equipment": "Barbell"
   },
 
   {
-    "name": "Rocking Standing Calf Raise",
+    "name": "Standing Calf Raise",
     "muscleGroup": "5e1eff431c9d440000a301fa",
-    "equipment": "Barbell"
+    "equipment": "Machine"
   },
 
   {
@@ -718,7 +762,7 @@
   },
 
   {
-    "name": "Alternate Hammer Curl",
+    "name": "Hammer Curl",
     "muscleGroup": "5e1effe01c9d440000a301fb",
     "equipment": "Dumbbell"
   },
@@ -744,7 +788,8 @@
   {
     "name": "Single-Arm Push-Up",
     "muscleGroup": "5e1efe709ed6895950a94b88",
-    "equipment": "Body Only"
+    "equipment": "Body Only",
+    "unit": "r"
   },
 
   {
@@ -766,7 +811,7 @@
   },
 
   {
-    "name": "Standing Rope Crunch",
+    "name": "Kneeling Rope Crunch",
     "muscleGroup": "5e1f005a1c9d440000a301fd",
     "equipment": "Cable"
   },
@@ -780,7 +825,8 @@
   {
     "name": "Crunch - Hands Overhead",
     "muscleGroup": "5e1f005a1c9d440000a301fd",
-    "equipment": "Body Only"
+    "equipment": "Body Only",
+    "unit": "r"
   },
 
   {
@@ -796,15 +842,9 @@
   },
 
   {
-    "name": "Butterfly",
+    "name": "Machine Fly",
     "muscleGroup": "5e1efe709ed6895950a94b88",
     "equipment": "Machine"
-  },
-
-  {
-    "name": "Wide Stance Stiff 5e1eff431c9d440000a301fa",
-    "muscleGroup": "5e1eff431c9d440000a301fa",
-    "equipment": "Barbell"
   },
 
   {
@@ -828,13 +868,8 @@
   {
     "name": "Jumping Jacks",
     "muscleGroup": "5e1eff431c9d440000a301fa",
-    "equipment": "Body Only"
-  },
-
-  {
-    "name": "Push-Ups With Feet On An Exercise Ball",
-    "muscleGroup": "5e1efe709ed6895950a94b88",
-    "equipment": "Body Only"
+    "equipment": "Body Only",
+    "unit": "r"
   },
 
   {
@@ -848,11 +883,29 @@
     "muscleGroup": "5e1eff431c9d440000a301fa",
     "equipment": "Barbell"
   },
+  {
+    "name": "Hack Squat",
+    "muscleGroup": "5e1eff431c9d440000a301fa",
+    "equipment": "Machine"
+  },
+
+  {
+    "name": "Good Morning",
+    "muscleGroup": "5e1eff431c9d440000a301fa",
+    "equipment": "Barbell"
+  },
+
+  {
+    "name": "Seated Good Morning",
+    "muscleGroup": "5e1eff431c9d440000a301fa",
+    "equipment": "Barbell"
+  },
 
   {
     "name": "Push-Ups With Feet Elevated",
     "muscleGroup": "5e1efe709ed6895950a94b88",
-    "equipment": "Body Only"
+    "equipment": "Body Only",
+    "unit": "r"
   },
 
   {
@@ -877,12 +930,6 @@
     "name": "Russian Twist",
     "muscleGroup": "5e1f005a1c9d440000a301fd",
     "equipment": "Body Only"
-  },
-
-  {
-    "name": "Face Pull",
-    "muscleGroup": "5e1eff241c9d440000a301f9",
-    "equipment": "Cable"
   },
 
   {
@@ -940,15 +987,10 @@
   },
 
   {
-    "name": "Barbell Shrug",
-    "muscleGroup": "5e1efec21c9d440000a301f8",
-    "equipment": "Dumbbell"
-  },
-
-  {
     "name": "Bodyweight Reverse Lunge",
     "muscleGroup": "5e1eff431c9d440000a301fa",
-    "equipment": "Body Only"
+    "equipment": "Body Only",
+    "unit": "r"
   },
 
   {
@@ -978,7 +1020,8 @@
   {
     "name": "Band Pull Apart",
     "muscleGroup": "5e1eff241c9d440000a301f9",
-    "equipment": "Bands"
+    "equipment": "Bands",
+    "unit": "r"
   },
 
   {
