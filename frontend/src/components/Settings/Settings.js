@@ -31,13 +31,14 @@ const Settings = () => {
     view = <WebSettings unit={unit} onUnitChange={handleUnitChange} />;
   }
 
-  let uniqueId = "secret";
+  const uniqueId = "secret";
+  const clientId = "ca_GbJab9cP8cKD92X9M9hjDdiCwlG0HAxz";
 
   return (
     <Suspense fallback={null}>
       {view}
       <a
-        href={`https://connect.stripe.com/express/oauth/authorize?redirect_uri=localhost:3000/stripe/register&client_id=ca_GbJab9cP8cKD92X9M9hjDdiCwlG0HAxz&state=${uniqueId}&stripe_user[email]=${email}`}
+        href={`https://connect.stripe.com/express/oauth/authorize?/client_id=${clientId}&state=${uniqueId}&stripe_user[email]=${email}`}
         className="theme-btn padding-10"
       >
         Become a seller
