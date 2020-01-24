@@ -23,6 +23,9 @@ router.post("/register/:code", ensureSignedIn, (req, res, next) => {
   const { userId } = session;
   const { code } = params;
 
+  console.log(code);
+
+  console.log(params);
   stripe.oauth
     .token({
       grant_type: "authorization_code",
@@ -50,6 +53,17 @@ router.post("/register/:code", ensureSignedIn, (req, res, next) => {
         .catch(next);
     })
     .catch(next);
+});
+
+router.use(function(err, req, res, next) {
+  console.log(err);
+  console.error(err.stack);
+  if (err.isCustom) {
+    res.status(400).json(err);
+  }
+  if (err.noRes) return;
+
+  res.status(500).json(createErrorObject(["Something gnarly happened"]));
 });
 
 module.exports = router;
