@@ -23,34 +23,31 @@ router.post("/register/:code", ensureSignedIn, (req, res, next) => {
   const { userId } = session;
   const { code } = params;
 
-  console.log(code);
-
-  console.log(params);
   stripe.oauth
     .token({
       grant_type: "authorization_code",
       code
     })
-    .then(response => {
+    .then(async response => {
       const { error_description, stripe_user_id } = response;
       if (error_description) {
         return res.status(404).json(createErrorObject([error_description]));
       }
       const newStripeId = new StripeId({
-        userId,
+        user: userId,
         stripeId: stripe_user_id
       });
 
-      user.isMerchant = true;
-
-      newStripeId
-        .save()
-        .then(() => {
-          user.save().then(() => {
-            res.status(200).json({ message: "success" });
-          });
-        })
-        .catch(next);
+      try {
+        let user = await User.findById(userId);
+        user.isMerchant = true;
+        user.save();
+        newStripeId.save();
+      } catch (e) {
+        return next(e);
+      } finally {
+        res.status(200).json({ message: "success" });
+      }
     })
     .catch(next);
 });
