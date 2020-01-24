@@ -31,7 +31,7 @@ router.post("/register/:code", ensureSignedIn, (req, res, next) => {
       grant_type: "authorization_code",
       code
     })
-    .then(res => {
+    .then(response => {
       const { error_description, stripe_user_id } = response;
       if (error_description) {
         return res.status(404).json(createErrorObject([error_description]));
@@ -53,17 +53,6 @@ router.post("/register/:code", ensureSignedIn, (req, res, next) => {
         .catch(next);
     })
     .catch(next);
-});
-
-router.use(function(err, req, res, next) {
-  console.log(err);
-  console.error(err.stack);
-  if (err.isCustom) {
-    res.status(400).json(err);
-  }
-  if (err.noRes) return;
-
-  res.status(500).json(createErrorObject(["Something gnarly happened"]));
 });
 
 module.exports = router;
