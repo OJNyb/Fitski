@@ -8,6 +8,7 @@ const path = require("path");
 
 const user = require("./routes/api/user");
 const image = require("./routes/api/image");
+const stripe = require("./routes/api/stripe");
 const woPlan = require("./routes/api/woPlan");
 const explore = require("./routes/api/explore");
 const history = require("./routes/api/history");
@@ -78,6 +79,7 @@ const {
     app.use("/api/user", user);
     app.use("/api/plan", woPlan);
     app.use("/api/image", image);
+    app.use("/api/stripe", stripe);
     app.use("/api/explore", explore);
     app.use("/api/history", history);
     app.use("/api/exercise", exercise);
