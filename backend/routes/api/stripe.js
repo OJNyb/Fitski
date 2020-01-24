@@ -3,6 +3,7 @@ const stripe = require("stripe")(process.env.STRIPE_API_KEY);
 
 // Models
 const User = require("../../models/User");
+const StripeId = require("../../models/StripeId");
 
 // Validation
 const { ensureSignedIn, ensureSignedOut } = require("../../middlewares/auth");
