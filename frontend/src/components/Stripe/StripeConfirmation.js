@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import LoadingSpinner from "../shared/SVGs/LoadingSpinner";
 import { useLocation, Redirect } from "react-router-dom";
 import axios from "axios";
 import { isSuccessful, getErrorMessage } from "../../utils/errorHandling";

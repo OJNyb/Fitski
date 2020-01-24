@@ -3,7 +3,7 @@ const { model, Schema } = mongoose;
 const { ObjectId } = Schema.Types;
 
 const StripeIdSchema = new Schema({
-  userId: { type: ObjectId, ref: "user" },
+  user: { type: ObjectId, ref: "user" },
   stripeId: String
 });
 

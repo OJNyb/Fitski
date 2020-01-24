@@ -35,7 +35,7 @@ const router = express.Router();
 router.post("/register", ensureSignedOut, validateRequest, (req, res, next) => {
   const { body, session } = req;
 
-  return res.status(409).json({ message: "Registration is closed." });
+  // return res.status(409).json({ message: "Registration is closed." });
 
   const _id = Types.ObjectId();
 

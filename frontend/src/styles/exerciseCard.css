@@ -76,7 +76,6 @@
 
 .mobile-droppable-container {
   min-height: calc(100vh - 100px);
-  justify-content: center;
   flex-direction: column;
   display: flex;
 }
