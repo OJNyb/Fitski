@@ -3,7 +3,6 @@ const { Types } = require("mongoose");
 const crypto = require("crypto");
 const nodemailer = require("nodemailer");
 
-const { SESS_NAME } = process.env;
 // Models
 const User = require("../../models/User");
 const History = require("../../models/History");
@@ -24,7 +23,7 @@ const validateRequest = SchemaValidator(true);
 const createMongoError = require("../../utils/createMongoError");
 const createErrorObject = require("../../utils/createErrorObject");
 
-const { MAILGUN_EMAIL, MAILGUN_PASSWORD } = process.env;
+const { SESS_NAME, MAILGUN_EMAIL, MAILGUN_PASSWORD } = process.env;
 
 const router = express.Router();
 

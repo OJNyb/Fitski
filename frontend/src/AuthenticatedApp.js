@@ -13,6 +13,9 @@ import Navigation from "./components/Navigation/Navigation";
 import "./App.css";
 import "./styles/common.css";
 
+const StripeConfirmation = lazy(() =>
+  import("./components/Stripe/StripeConfirmation.js")
+);
 const CreatePlan = lazy(() => import("./components/CreatePlan/CreatePlan.js"));
 const Plans = lazy(() => import("./components/PlanDashboard/Plans"));
 const PlanHOC = lazy(() => import("./components/PlanHOC"));
@@ -74,6 +77,12 @@ function App() {
             <Switch>
               <Route exact path="/plans" component={Plans} />
               <Route exact path="/create-plan" component={CreatePlan} />
+              <Route
+                exact
+                path="/stripe/register"
+                component={StripeConfirmation}
+              />
+
               <Route exact path="/settings" component={Settings} />
               <Route exact path="/" component={History} />
               <Route exact path="/explore" component={Explore} />

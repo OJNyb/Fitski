@@ -2,6 +2,7 @@ import React, { lazy, useState, Suspense } from "react";
 import { useAuth } from "../../context/authContext";
 import useSetLoading from "../../hooks/useSetLoading";
 import { editUser } from "../../utils/userClient";
+import { Link } from "react-router-dom";
 
 import "./settings.css";
 import useMobile from "../../hooks/useMobile";
@@ -11,9 +12,9 @@ const MobileSettings = lazy(() => import("./Mobile/MobileSettings"));
 const Settings = () => {
   const isMobile = useMobile();
   const { state, dispatch } = useAuth();
-  useSetLoading(false);
+
   const { user } = state;
-  const { defaultUnit } = user;
+  const { defaultUnit, email } = user;
   const [unit, setUnit] = useState(defaultUnit);
 
   function handleUnitChange(e) {
@@ -30,7 +31,19 @@ const Settings = () => {
     view = <WebSettings unit={unit} onUnitChange={handleUnitChange} />;
   }
 
-  return <Suspense>{view}</Suspense>;
+  let uniqueId = "secret";
+
+  return (
+    <Suspense fallback={null}>
+      {view}
+      <a
+        href={`https://connect.stripe.com/express/oauth/authorize?redirect_uri=localhost:3000/stripe/register&client_id=ca_GbJab9cP8cKD92X9M9hjDdiCwlG0HAxz&state=${uniqueId}&stripe_user[email]=${email}`}
+        className="theme-btn padding-10"
+      >
+        Become a seller
+      </a>
+    </Suspense>
+  );
 };
 
 const WebSettings = ({ unit, onUnitChange }) => {
