@@ -3,12 +3,18 @@ import { Types } from "mongoose";
 import axios from "axios";
 import MobileInput from "../shared/Form/MobileInput";
 import CustomRadio from "../shared/Form/CustomRadio";
+import PriceInput from "./PriceInput";
 
 import { Form, Field, Formik } from "formik";
+import { useUser } from "../../context/userContext";
+import StripeConnect from "../Stripe/StripeConnect";
 
 const { ObjectId } = Types;
 
 const CreatePlanForm = ({ isMobile, setRedir }) => {
+  const user = useUser();
+
+  const { isMerchant } = user;
   return (
     <Formik
       initialValues={{
@@ -16,7 +22,8 @@ const CreatePlanForm = ({ isMobile, setRedir }) => {
         description: "",
         goal: "",
         difficulty: "",
-        access: "private"
+        access: "paywall",
+        price: 100
       }}
       validate={({ name }) => {
         let errors = {};
@@ -44,7 +51,7 @@ const CreatePlanForm = ({ isMobile, setRedir }) => {
         setSubmitting(false);
       }}
     >
-      {({ isSubmitting }) => (
+      {({ values, isSubmitting }) => (
         <Form className="stretch flex-col width-100p border-box padding-10-0 create-plan-form">
           <Field
             name="name"
@@ -67,13 +74,15 @@ const CreatePlanForm = ({ isMobile, setRedir }) => {
             component={MobileInput}
             label="Description"
             textarea={true}
-            maxLength={1000}
+            verticalResize={true}
+            maxLength={30000}
           />
 
           <div className="create-plan-radio-container border-box padding-10-15">
             <div>
               <span>Access</span>
 
+              {console.log(values)}
               <Field
                 component={CustomRadio}
                 text="Private"
@@ -86,6 +95,13 @@ const CreatePlanForm = ({ isMobile, setRedir }) => {
                 text="Public"
                 name="access"
                 valueski="public"
+              />
+
+              <Field
+                component={CustomRadio}
+                text="Paywall"
+                name="access"
+                valueski="paywall"
               />
             </div>
 
@@ -114,6 +130,17 @@ const CreatePlanForm = ({ isMobile, setRedir }) => {
               />
             </div>
           </div>
+
+          {values.access === "paywall" && (
+            <div>
+              <Field
+                component={PriceInput}
+                name="price"
+                isMerchant={isMerchant}
+              />
+              {!isMerchant && <StripeConnect />}
+            </div>
+          )}
 
           <button
             className={

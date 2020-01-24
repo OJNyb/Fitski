@@ -695,3 +695,9 @@
   -ms-user-select: none;
   user-select: none;
 }
+
+.web-modal-submit-btn {
+  padding: 10px 40%;
+  margin-top: 20px;
+  margin: auto;
+}

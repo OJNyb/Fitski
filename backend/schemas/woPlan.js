@@ -28,7 +28,7 @@ const name = Joi.string()
 
 const description = Joi.string()
   .allow("")
-  .max(1000)
+  .max(30000)
   .label("Description");
 
 const goal = Joi.string()
@@ -47,12 +47,18 @@ const reps = Joi.number()
   .label("Reps");
 
 const access = Joi.string()
-  .regex(/public|private/)
+  .regex(/public|private|paywall/)
   .label("Access");
 
 const getWorkoutPlan = Joi.object().keys({
   plan_id: planId
 });
+
+const price = Joi.number()
+  .min(1)
+  .max(1000)
+  .precision(2)
+  .label("Price");
 
 const createWorkoutPlan = Joi.object().keys({
   name: name.required(),
@@ -60,7 +66,8 @@ const createWorkoutPlan = Joi.object().keys({
   planId,
   difficulty,
   description,
-  access
+  access,
+  price
 });
 
 const editWorkoutPlan = Joi.object()
@@ -70,9 +77,10 @@ const editWorkoutPlan = Joi.object()
     difficulty,
     description,
     plan_id: planId,
-    access
+    access,
+    price
   })
-  .or("name", "goal", "access", "description", "difficulty");
+  .or("name", "goal", "access", "description", "difficulty", "price");
 
 const deleteWorkoutPlan = Joi.object().keys({
   plan_id: planId

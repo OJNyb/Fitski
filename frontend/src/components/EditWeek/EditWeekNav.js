@@ -18,8 +18,8 @@ const EditWeekNav = ({
   const [showModal, setShowModal] = useState(false);
 
   function redirect(weekId) {
-    if (!weekId) push(`/api/plans/${planId}`);
-    push(`/api/plans/${planId}/${weekId}`);
+    if (!weekId) push(`/plans/${planId}`);
+    push(`/plans/${planId}/${weekId}`);
   }
 
   function handleRepeatClick() {

@@ -8,7 +8,8 @@ const MobileInput = ({
   form,
   textarea,
   maxLength,
-  autoComplete
+  autoComplete,
+  verticalResize
 }) => {
   const { name, value, onChange } = field;
   let onInputChange = onChange;
@@ -30,7 +31,10 @@ const MobileInput = ({
   if (textarea) {
     input = (
       <textarea
-        className="width-100p border-box font-16 black"
+        className={
+          "width-100p border-box font-16 black" +
+          (verticalResize ? " vertical-resize" : "")
+        }
         {...field}
         onChange={onInputChange}
       />

@@ -2,15 +2,13 @@ const express = require("express");
 const stripe = require("stripe")(process.env.STRIPE_API_KEY);
 
 // Models
-
-const { formatHistoryDate } = require("../../utils/formatHistoryDate");
+const User = require("../../models/User");
 
 // Validation
 const { ensureSignedIn, ensureSignedOut } = require("../../middlewares/auth");
 const SchemaValidator = require("../../middlewares/SchemaValidator");
 const validateRequest = SchemaValidator(true);
 
-const createMongoError = require("../../utils/createMongoError");
 const createErrorObject = require("../../utils/createErrorObject");
 
 const router = express.Router();
@@ -39,9 +37,16 @@ router.post("/register/:code", ensureSignedIn, (req, res, next) => {
         userId,
         stripeId: stripe_user_id
       });
+
+      user.isMerchant = true;
+
       newStripeId
         .save()
-        .then(() => res.status(200).json({ message: "success" }))
+        .then(() => {
+          user.save().then(() => {
+            res.status(200).json({ message: "success" });
+          });
+        })
         .catch(next);
     })
     .catch(next);

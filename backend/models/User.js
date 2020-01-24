@@ -10,6 +10,7 @@ const UserSchema = new Schema(
     avatar: String,
     resetPasswordToken: String,
     resetPasswordExpires: Date,
+    isMerchant: Boolean,
     bio: String,
     password: {
       type: String,

@@ -24,6 +24,7 @@ const WOPlanSchema = new Schema(
       type: String,
       default: "owner"
     },
+    price: Number,
     weeks: [
       {
         _id,
@@ -65,6 +66,15 @@ WOPlanSchema.index({
   name: "text",
   goal: "text",
   description: "text"
+});
+
+WOPlanSchema.path("price").get(function(num) {
+  return (num / 100).toFixed(2);
+});
+
+// Setter
+WOPlanSchema.path("price").set(function(num) {
+  return num * 100;
 });
 
 const WOPlan = model("woPlan", WOPlanSchema);

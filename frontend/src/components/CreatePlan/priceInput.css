@@ -1,0 +1,9 @@
+.price-input-dollar {
+  padding: 2px 0 5px 10px;
+  color: #866565;
+  font-size: 15px;
+}
+
+.mobile-input-wrapper:focus-within .price-input-dollar {
+  color: #a60000;
+}
