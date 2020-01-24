@@ -1,5 +1,6 @@
 import React from "react";
 import { Formik, Form, Field } from "formik";
+import { useUser } from "../../context/userContext";
 
 import Modal from "../shared/Modal/Modal";
 import ErrorMessage from "../shared/Modal/ErrorMessage";
@@ -15,10 +16,14 @@ const EditProfileModal = ({ plan, onSubmit, hideModal }) => {
     difficulty,
     description,
     access,
+    price,
     isPending,
     isRejected
   } = plan;
+  const user = useUser();
   const isMobile = useMobile();
+
+  const { isMerchant } = user;
 
   function onClose() {
     delete plan.isRejected;
@@ -33,17 +38,25 @@ const EditProfileModal = ({ plan, onSubmit, hideModal }) => {
   let children = (
     <Formik
       initialValues={{
-        name: name,
-        access: access,
+        name,
+        access,
+        price: price || 0,
         goal: goal || "",
         difficulty: difficulty || "",
         description: description || ""
       }}
       validate={({ values }) => {
-        const { name } = values;
+        const { name, price } = values;
         let errors = {};
         if (!name.length) {
           errors.name = "Name is required";
+        }
+        if (price < 100) {
+          errors.price = "Price must be at least 1$";
+        }
+
+        if (price > 99999) {
+          errors.price = "Price can not exceed 999.99$";
         }
         return errors;
       }}
@@ -52,12 +65,13 @@ const EditProfileModal = ({ plan, onSubmit, hideModal }) => {
         setSubmitting(false);
       }}
     >
-      {({ isSubmitting }) => (
+      {({ errors, values, isSubmitting, setFieldValue }) => (
         <Form className="flex-col border-box edit-plan-modal-form">
           {isRejected && (
             <ErrorMessage message="Couldn't apply update, please try again." />
           )}
           <div className="edit-plan-input-wrapper custom-scrollbar">
+            {console.log(errors)}
             <Field
               name="name"
               component={MobileInput}
@@ -79,7 +93,8 @@ const EditProfileModal = ({ plan, onSubmit, hideModal }) => {
               component={MobileInput}
               label="Description"
               textarea={true}
-              maxLength={1000}
+              verticalResize={true}
+              maxLength={30000}
             />
 
             <div
@@ -102,6 +117,13 @@ const EditProfileModal = ({ plan, onSubmit, hideModal }) => {
                   text="Public"
                   name="access"
                   valueski="public"
+                />
+
+                <Field
+                  component={CustomRadio}
+                  text="Paywall"
+                  name="access"
+                  valueski="paywall"
                 />
               </div>
 
@@ -129,6 +151,32 @@ const EditProfileModal = ({ plan, onSubmit, hideModal }) => {
                 />
               </div>
             </div>
+            {console.log(access)}
+            {values.access === "paywall" && (
+              <div>
+                {isMerchant ? (
+                  <input
+                    type="number"
+                    step="0.01"
+                    min={1}
+                    max={999}
+                    value={values.price.toFixed(2)}
+                    onChange={e => setFieldValue("price", e.target.value * 100)}
+                  />
+                ) : (
+                  <div>
+                    <div>Become a merchant</div>
+                    {/* <a href=""></>
+                      <img
+                        src="/api/image/resources/stripeconnect.png"
+                        alt="Connect to Stripe"
+                      
+                      />
+                    </a> */}
+                  </div>
+                )}
+              </div>
+            )}
           </div>
 
           <button
@@ -150,7 +198,7 @@ const EditProfileModal = ({ plan, onSubmit, hideModal }) => {
   return (
     <Modal
       children={children}
-      header={"Edit Profile"}
+      header={"Edit Plan"}
       toggleModal={onClose}
       onlyHideOnBtnClick={true}
     />

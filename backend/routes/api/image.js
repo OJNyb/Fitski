@@ -75,25 +75,44 @@ function removeFile(filename, next) {
   }
 }
 
-// @route GET api/images/avatar/:filename
+// @route GET api/image/avatar/:filename
 // @desc Get users avatar
 // @access Public
 router.get("/avatar/:filename", function(req, res, next) {
   const { params } = req;
   const { filename } = params;
   const pathToFile = path.join(UPLOAD_PATH, filename);
-  const r = fs.createReadStream(pathToFile); // or any other way to get a readable stream
-  const ps = new stream.PassThrough(); // <---- this makes a trick with stream error handling
-  stream.pipeline(
-    r,
-    ps, // <---- this makes a trick with stream error handling
-    err => {
-      if (err) {
-        res.status(404).json(createErrorObject(["Couldn't find image"]));
-      }
+  const r = fs.createReadStream(pathToFile);
+  const ps = new stream.PassThrough();
+  stream.pipeline(r, ps, err => {
+    if (err) {
+      res.status(404).json(createErrorObject(["Couldn't find image"]));
     }
+  });
+  ps.pipe(res);
+});
+
+// @route GET api/image/resources/:filename
+// @desc Get file
+// @access Public
+router.get("/resources/:filename", function(req, res, next) {
+  const { params } = req;
+  const { filename } = params;
+  var pathToFile = path.resolve(
+    __dirname,
+    "../..",
+    "uploads",
+    "resources",
+    filename
   );
-  ps.pipe(res); // <---- this makes a trick with stream error handling
+  const r = fs.createReadStream(pathToFile);
+  const ps = new stream.PassThrough();
+  stream.pipeline(r, ps, err => {
+    if (err) {
+      res.status(404).json(createErrorObject(["Couldn't find image"]));
+    }
+  });
+  ps.pipe(res);
 });
 
 // @route POST api/image/avatar

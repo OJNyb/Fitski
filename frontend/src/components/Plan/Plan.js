@@ -41,7 +41,15 @@ const Plan = () => {
   const [isSelf, setIsSelf] = useState(false);
   const { user: currUser } = userState;
   const { _id: userId, activeWOPlan } = currUser;
-  const { name, goal, access, difficulty, description, _id: planId } = woPlan;
+  const {
+    name,
+    goal,
+    access,
+    price,
+    difficulty,
+    description,
+    _id: planId
+  } = woPlan;
   const { state: accessState, dispatch: accessDispatch } = useUserAccess();
   const { accessedPlans, isPending: accessPending } = accessState;
   const { state: navState, dispatch: navDispatch } = useContext(NavContext);
@@ -93,7 +101,8 @@ const Plan = () => {
       goal: vGoal,
       access: vAccess,
       difficulty: vDifficulty,
-      description: vDescription
+      description: vDescription,
+      price: vPrice
     } = submitValues;
     if (name === vName) {
       delete submitValues.name;
@@ -104,11 +113,14 @@ const Plan = () => {
     if (access === vAccess) {
       delete submitValues.access;
     }
-    if (difficulty === vDifficulty) {
+    if (difficulty === vDifficulty || !vDifficulty.length) {
       delete submitValues.difficulty;
     }
     if (description === vDescription) {
       delete submitValues.description;
+    }
+    if (price === vPrice || access !== "paywall") {
+      delete submitValues.price;
     }
 
     if (Object.keys(submitValues).length) {

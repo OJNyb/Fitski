@@ -2,6 +2,7 @@
   border-bottom: 2px solid rgb(134, 101, 101);
   background-color: rgb(241, 235, 235);
   border-radius: 2px;
+  cursor: pointer;
 }
 
 .mobile-label-box {
@@ -36,4 +37,12 @@
 
 .mobile-input-error span {
   color: #d90000;
+}
+
+.vertical-resize {
+  resize: vertical;
+}
+
+.mobile-input-wrapper[aria-disabled="true"] {
+  opacity: 0.6;
 }

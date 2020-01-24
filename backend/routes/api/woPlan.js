@@ -154,35 +154,31 @@ router.post(
   async (req, res, next) => {
     const { body } = req;
 
-    const { name, goal, access, difficulty, description, woPlan } = body;
-    let update = {};
+    const { name, goal, price, access, difficulty, description, woPlan } = body;
 
     if (name) {
-      update["name"] = name;
+      woPlan["name"] = name;
     }
     if (goal) {
-      update["goal"] = goal;
+      woPlan["goal"] = goal;
     }
     if (access) {
-      update["access"] = access;
+      woPlan["access"] = access;
     }
     if (description) {
-      update["description"] = description;
+      woPlan["description"] = description;
     }
     if (difficulty) {
-      update["difficulty"] = difficulty;
+      woPlan["difficulty"] = difficulty;
+    }
+    if (price) {
+      woPlan["price"] = price;
     }
 
     woPlan
-      .updateOne({
-        $set: update
-      })
-      .then(reski => {
-        if (reski.nModified) {
-          res.json({ message: "success" });
-        } else {
-          res.status(404).json(createErrorObject(["Couldn't apply update"]));
-        }
+      .save()
+      .then(() => {
+        res.json({ message: "success" });
       })
       .catch(next);
   }
