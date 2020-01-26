@@ -1,11 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 
 import StripeIcon from "./StripeIcon";
 import StripeConnectButton from "./StripeConnectButton";
 
 import "./stripeConnect.css";
+import useUser from "../../hooks/useUser";
 
 const StripeConnect = () => {
+  const [isLinkClicked, setIsLinkClicked] = useState(false);
+
+  const { reload, setReload } = useUser();
   return (
     <div className="flex-col-cen pb-50">
       <div className="stripe-information">
@@ -19,7 +23,16 @@ const StripeConnect = () => {
           <StripeIcon />
         </div>
       </div>
-      <StripeConnectButton />
+      <StripeConnectButton onClick={() => setIsLinkClicked(true)} />
+      {isLinkClicked && (
+        <div className="color-gray">
+          Click{" "}
+          <strong className="tc pointer" onClick={() => setReload(reload + 1)}>
+            here
+          </strong>{" "}
+          if the registration was successful to add the price.
+        </div>
+      )}
     </div>
   );
 };

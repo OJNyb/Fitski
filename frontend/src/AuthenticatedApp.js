@@ -25,6 +25,7 @@ const Settings = lazy(() => import("./components/Settings/Settings"));
 const Profile = lazy(() => import("./components/Profile/Profile"));
 const Explore = lazy(() => import("./components/Explore/Explore"));
 const NoMatch = lazy(() => import("./components/NoMatch"));
+const Checkout = lazy(() => import("./components/Stripe/Checkout"));
 
 const TermsAndConditions = lazy(() =>
   import("./components/Terms/TermsAndConditions")
@@ -86,6 +87,8 @@ function App() {
               <Route exact path="/settings" component={Settings} />
               <Route exact path="/" component={History} />
               <Route exact path="/explore" component={Explore} />
+              <Route exact path="/checkout" component={Checkout} />
+
               <Route path="/profile/:username" component={Profile} />
               <Route path="/plans/:plan_id" component={PlanHOC} />
               <Route path="/login">
