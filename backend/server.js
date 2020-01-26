@@ -33,7 +33,6 @@ const {
 (async () => {
   try {
     mongoose
-
       .connect(mongoURI, {
         useNewUrlParser: true,
         useFindAndModify: false,
@@ -84,6 +83,10 @@ const {
     app.use("/api/history", history);
     app.use("/api/exercise", exercise);
     app.use("/api/feedback", feedback);
+    app.use(
+      "/.well-known",
+      express.static(path.join(__dirname, "./.well-known"))
+    );
 
     if (process.env.NODE_ENV === "production") {
       app.use(express.static(path.join(__dirname, "..", "frontend", "build")));

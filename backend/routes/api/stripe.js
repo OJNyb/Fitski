@@ -6,7 +6,7 @@ const User = require("../../models/User");
 const StripeId = require("../../models/StripeId");
 
 // Validation
-const { ensureSignedIn, ensureSignedOut } = require("../../middlewares/auth");
+const { ensureSignedIn } = require("../../middlewares/auth");
 const SchemaValidator = require("../../middlewares/SchemaValidator");
 const validateRequest = SchemaValidator(true);
 
@@ -52,5 +52,12 @@ router.post("/register/:code", ensureSignedIn, (req, res, next) => {
     })
     .catch(next);
 });
+
+(async () => {
+  const paymentIntent = await stripe.paymentIntents.create({
+    amount: 1099,
+    currency: "nok"
+  });
+})();
 
 module.exports = router;
