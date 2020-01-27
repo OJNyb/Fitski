@@ -131,9 +131,9 @@ router.post(
     let event;
 
     try {
-      event = JSON.parse(request.body);
+      event = JSON.parse(req.body);
     } catch (err) {
-      response.status(400).send(`Webhook Error: ${err.message}`);
+      res.status(400).send(`Webhook Error: ${err.message}`);
     }
 
     // Handle the event
@@ -156,11 +156,11 @@ router.post(
       // ... handle other event types
       default:
         // Unexpected event type
-        return response.status(400).end();
+        return res.status(400).end();
     }
 
-    // Return a 200 response to acknowledge receipt of the event
-    response.json({ received: true });
+    // Return a 200 res to acknowledge receipt of the event
+    res.json({ received: true });
   }
 );
 
