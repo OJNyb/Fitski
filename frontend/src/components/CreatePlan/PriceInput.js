@@ -45,10 +45,8 @@ const PriceInput = ({ field, form, defaultValue, isMerchant }) => {
         setCursor(cursor);
       }
       setStateValue(formattedValue);
+      setFieldValue(name, Number(valueOnly));
     }
-
-    console.log(valueOnly);
-    setFieldValue(name, Number(valueOnly));
   };
 
   useEffect(() => {

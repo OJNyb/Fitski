@@ -68,10 +68,6 @@ WOPlanSchema.index({
   description: "text"
 });
 
-WOPlanSchema.path("price").get(function(num) {
-  return (num / 100).toFixed(2);
-});
-
 // Setter
 WOPlanSchema.path("price").set(function(num) {
   return num * 100;
