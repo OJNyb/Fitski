@@ -33,16 +33,16 @@ router.post("/register/:code", ensureSignedIn, (req, res, next) => {
       if (error_description) {
         return res.status(404).json(createErrorObject([error_description]));
       }
-      const newStripeId = new StripeId({
-        user: userId,
-        stripeId: stripe_user_id
-      });
+      // const newStripeId = new StripeId({
+      //   user: userId,
+      //   stripeId: stripe_user_id
+      // });
 
       try {
         let user = await User.findById(userId);
-        user.isMerchant = true;
+        user.stripeId = stripe_user_id;
         user.save();
-        newStripeId.save();
+        // newStripeId.save();
       } catch (e) {
         return next(e);
       } finally {
