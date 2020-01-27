@@ -55,7 +55,7 @@ const BigScreenNavigation = () => {
     <>
       <div className="header">
         {logo}
-        {!isSmallScreen && (
+        {/* {!isSmallScreen && (
           <div className="header-user flex-center">
             <img
               className="header-avatar"
@@ -64,12 +64,12 @@ const BigScreenNavigation = () => {
             />
             <p className="header-name color-gray">{username}</p>
           </div>
-        )}
+        )} */}
       </div>
       {isSmallScreen && showMenu && (
         <div className="nav-small-screen-background"></div>
       )}
-      <NavigationMenu marginTop={true} show={showMenu} />
+      <NavigationMenu marginTop={false} show={showMenu} />
     </>
   );
 };
