@@ -17,7 +17,7 @@ const createErrorObject = require("../../utils/createErrorObject");
 const router = express.Router();
 
 // @route POST api/user/register
-// @desc Register for stripeuser
+// @desc Register for stripe user
 // @access Private
 router.post("/register/:code", ensureSignedIn, (req, res, next) => {
   const { params, session } = req;
@@ -94,10 +94,11 @@ router.post("/payment/:plan_id", ensureSignedIn, async (req, res, next) => {
       let currency = "usd";
       let amount = price;
 
-      stripe.paymentIntents
+      stripe.charges
         .create({
           amount,
           currency,
+          source: "tok_visa",
           transfer_data: {
             destination: stripeId
           },
@@ -108,8 +109,7 @@ router.post("/payment/:plan_id", ensureSignedIn, async (req, res, next) => {
           }
         })
         .then(paymentIntent => {
-          console.log(paymentIntent);
-          return res.json({});
+          return res.json({ message: "success" });
         });
     });
   // Check if access === 'paywall'
@@ -119,17 +119,6 @@ router.post("/payment/:plan_id", ensureSignedIn, async (req, res, next) => {
   // do shiz on frontend
   // hook on success
   //
-
-  try {
-    let user = await User.findById(userId);
-    user.isMerchant = true;
-    user.save();
-    newStripeId.save();
-  } catch (e) {
-    return next(e);
-  } finally {
-    res.status(200).json({ message: "success" });
-  }
 });
 
 // @route POST api/stripe/webhook
@@ -151,6 +140,12 @@ router.post(
     switch (event.type) {
       case "payment_intent.succeeded":
         const paymentIntent = event.data.object;
+        console.log(paymentIntent);
+        console.log("PaymentIntent was successful!");
+        break;
+      case "charge.succeeded":
+        console.log(event.data);
+        const charge = event.data.object;
         console.log(paymentIntent);
         console.log("PaymentIntent was successful!");
         break;
