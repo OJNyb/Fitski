@@ -14,7 +14,9 @@ const { ObjectId } = Types;
 const CreatePlanForm = ({ isMobile, setRedir }) => {
   const user = useUser();
 
-  const { isMerchant } = user;
+  const { stripeId } = user;
+  const isMerchant = !!stripeId;
+
   return (
     <Formik
       initialValues={{
