@@ -131,9 +131,10 @@ router.post(
     let event;
 
     try {
+      console.log(req.body);
       event = JSON.parse(req.body);
     } catch (err) {
-      res.status(400).send(`Webhook Error: ${err.message}`);
+      return res.status(400).send(`Webhook Error: ${err.message}`);
     }
 
     // Handle the event
