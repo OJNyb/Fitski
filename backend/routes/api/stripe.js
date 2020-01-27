@@ -135,7 +135,7 @@ router.post("/payment/:plan_id", ensureSignedIn, async (req, res, next) => {
 // @route POST api/stripe/webhook
 // @desc Payment webhook
 // @access Private
-app.post(
+router.post(
   "/webhook",
   bodyParser.raw({ type: "application/json" }),
   (req, res) => {
