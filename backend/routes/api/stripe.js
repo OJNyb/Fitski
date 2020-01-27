@@ -94,11 +94,10 @@ router.post("/payment/:plan_id", ensureSignedIn, async (req, res, next) => {
       let currency = "usd";
       let amount = price;
 
-      stripe.charges
+      stripe.paymentIntents
         .create({
           amount,
           currency,
-          source: "tok_visa",
           transfer_data: {
             destination: stripeId
           },
@@ -109,7 +108,8 @@ router.post("/payment/:plan_id", ensureSignedIn, async (req, res, next) => {
           }
         })
         .then(paymentIntent => {
-          return res.json({ message: "success" });
+          const { client_secret } = paymentIntent;
+          return res.json({ message: "success", client_secret });
         });
     });
   // Check if access === 'paywall'
