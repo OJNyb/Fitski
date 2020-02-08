@@ -124,7 +124,7 @@ const BigScreenLanding = () => {
                 fitness_center
               </i>
               <h1>Get with the program, bitch</h1>
-              <h2>Join Fitnut today</h2>
+              <h2>Join Chadify today</h2>
               <div>
                 <button
                   className="theme-btn-filled landing-upper-button"

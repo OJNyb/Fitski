@@ -38,8 +38,8 @@ const SubNav = ({ weeks, weekIndex, currentDayIndex, setCurrentDayIndex }) => {
   return (
     <div
       className={
-        "width-100p flex-center-space-bw color-white padding-0 border-box height-50 fixed edit-week-sub-nav-container " +
-        (showWeek ? "bc-8c1" : "bc-d9")
+        "width-100p flex-center-space-bw color-white padding-0 border-box edit-week-sub-nav-container z-mid " +
+        (showWeek ? "bc-8c1" : "bc-theme-ligther")
       }
       onClick={() => setShowWeek(!showWeek)}
     >

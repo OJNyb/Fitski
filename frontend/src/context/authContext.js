@@ -5,7 +5,7 @@ import useUser from "../hooks/useUser";
 const AuthContext = createContext();
 
 function AuthProvider(props) {
-  const { state, dispatch, setReload } = useUser();
+  const { state, dispatch, updateUser } = useUser();
   const { error, isPending, isRejected } = state;
 
   if (isPending) {
@@ -23,19 +23,18 @@ function AuthProvider(props) {
     }
   }
 
-  const login = values =>
-    authClient.login(values).then(() => setReload(r => r + 1));
+  const login = values => authClient.login(values).then(() => updateUser());
   const logout = values =>
     authClient
       .logout(values)
-      .then(() => setReload(r => r + 1))
-      .catch(() => setReload(r => r + 1));
+      .then(() => updateUser())
+      .catch(() => updateUser());
   const register = values =>
-    authClient.register(values).then(() => setReload(r => r + 1));
+    authClient.register(values).then(() => updateUser());
 
   return (
     <AuthContext.Provider
-      value={{ state, dispatch, login, logout, register }}
+      value={{ state, dispatch, login, logout, register, updateUser }}
       {...props}
     />
   );

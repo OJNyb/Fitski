@@ -28,7 +28,11 @@ const PlusMinusModal = ({
       {isRejected && (
         <ErrorMessage message="Couldn't apply update, please try again" />
       )}
-      <div className="plus-minus-modal-input-wrapper">
+      <div
+        className={
+          "plus-minus-modal-input-wrapper" + (isMobile ? "" : " padding-10")
+        }
+      >
         <button
           onClick={() => {
             if (value > 0) setValue(Number(value) - 1);

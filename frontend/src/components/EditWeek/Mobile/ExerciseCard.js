@@ -26,7 +26,7 @@ const ExerciseCard = ({
     isPending,
     isRejected,
     _id: exerId,
-    exercise: { name, _id: exerciseId }
+    exercise: { name, unit, _id: exerciseId }
   } = exercise;
 
   function onRetryClick(e) {
@@ -52,6 +52,7 @@ const ExerciseCard = ({
         index={y}
         key={x._id}
         dayId={dayId}
+        unit={unit}
         exerId={exerId}
         handleEditSet={handleEditSet}
         onDeleteSet={handleDeleteSet}
@@ -64,6 +65,7 @@ const ExerciseCard = ({
       <SetColumn
         set={x}
         index={y}
+        unit={unit}
         key={x._id}
         dayId={dayId}
         exerId={exerId}
@@ -88,7 +90,7 @@ const ExerciseCard = ({
         >
           <div
             className={
-              "history-add-card margin-0-10" +
+              "history-add-card" +
               (isActive ? " edit-week-mobile-add-card-active" : "") +
               (isPending ? " exercise-card-pending" : "") +
               (isRejected ? " exercise-card-rejected" : "") +
@@ -164,6 +166,7 @@ const ExerciseCard = ({
 
 const SetColumn = ({
   set,
+  unit,
   index,
   exerId,
   onDeleteSet,
@@ -181,6 +184,13 @@ const SetColumn = ({
     } else if (request === "delete") {
       onDeleteSet(exerId, setId);
     }
+  }
+
+  let lastRowUnit;
+  if (unit === "s") {
+    lastRowUnit = "seconds";
+  } else {
+    lastRowUnit = "reps";
   }
 
   return (
@@ -208,7 +218,9 @@ const SetColumn = ({
       </span>
       <div className="edit-week-mobile-reps-wrapper flex-ai-center">
         <span className="font-15 black mr-1 noselect">{reps || 0}</span>
-        <span className="font-12 color-gray font-w-300 noselect">reps</span>
+        <span className="font-12 color-gray font-w-300 noselect">
+          {lastRowUnit}
+        </span>
       </div>
     </div>
   );
@@ -317,13 +329,6 @@ const EditColumn = ({
 
       <div className="flex-center edit-week-mobile-reps-wrapper">
         <div className="flex-center" onClick={e => e.stopPropagation()}>
-          {/* <button
-            className="edit-week-mobile-reps-btn"
-            onClick={() => handleRepsChange(Number(inputReps) - 1)}
-            onBlur={onInputBlur}
-          >
-            <i className="material-icons">remove</i>
-          </button> */}
           <div className="edit-week-mobile-reps-input-wrapper">
             <input
               type="tel"
@@ -336,13 +341,6 @@ const EditColumn = ({
             />
             <div className="border-with-sides" />
           </div>
-          {/* <button
-            className="edit-week-mobile-reps-btn"
-            onClick={() => handleRepsChange(Number(inputReps) + 1)}
-            onBlur={onInputBlur}
-          >
-            <i className="material-icons">add</i>
-          </button> */}
         </div>
       </div>
     </div>

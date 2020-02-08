@@ -33,7 +33,7 @@ const UnauthenticatedApp = () => {
         <Route exact path="/create-plan">
           <Redirect to="/login" />
         </Route>
-        <Route exact path="/explore">
+        <Route exact path="/discover">
           <Redirect to="/login" />
         </Route>
         <Route exact path="/signup">

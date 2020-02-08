@@ -1,38 +1,55 @@
-import React from "react";
+import React, { useState, useEffect, useContext } from "react";
 import useSetLoading from "../../../hooks/useSetLoading";
+import { NavContext } from "../../../context/navContext";
 
 import NavMid from "../../shared/NavMid/NavMid";
-import RadioLong from "./SettingsRadioLong";
+import SettingsView from "../SettingsView";
+
+import { MainTile } from "../../shared/Layout";
 
 import "./mobileSettings.css";
+import { SHOW_DEHAZE, SHOW_NONE } from "../../../types/navTypes";
 
-const MobileSettings = ({ unit, onUnitChange }) => {
+const MobileSettings = ({ unit, email, onUnitChange }) => {
   useSetLoading(false);
+  const [selected, setSelected] = useState(null);
+  const { dispatch } = useContext(NavContext);
+
+  useEffect(() => {
+    if (selected) {
+      dispatch({ type: SHOW_NONE });
+    } else {
+      dispatch({ type: SHOW_DEHAZE });
+    }
+  }, [selected]);
+
+  function hideView() {
+    setSelected(null);
+  }
 
   return (
-    <>
-      <NavMid backText={"Settings"} />
-      <div className="settings-mobile-setting-container padding-15">
-        <div className="settings-mobile-setting-header-container">
-          <h6 className="settings-mobile-setting-header black">Weight unit</h6>
-          <p className="settings-mobile-setting-label color-gray">
-            Choose whether you want to use kilograms or pounds
-          </p>
+    <MainTile>
+      {selected ? (
+        <div className="height-50 width-100p padding-0-5 flex-ai-center bc-a6 fixed">
+          <button className="color-white padding-5" onClick={hideView}>
+            <i className="material-icons">arrow_back</i>
+          </button>
+          <span className="color-white font-18 ml-5">{selected}</span>
         </div>
-        <RadioLong
-          text="Kilogram"
-          value={"kg"}
-          checked={"kg" === unit}
-          onChange={onUnitChange}
-        />
-        <RadioLong
-          text="Pounds"
-          value={"lbs"}
-          checked={"lbs" === unit}
-          onChange={onUnitChange}
+      ) : (
+        <NavMid backText={"Settings"} />
+      )}
+      <div className="pt-50">
+        <SettingsView
+          selected={selected}
+          hideView={hideView}
+          unit={unit}
+          email={email}
+          onUnitChange={onUnitChange}
+          setSelected={setSelected}
         />
       </div>
-    </>
+    </MainTile>
   );
 };
 

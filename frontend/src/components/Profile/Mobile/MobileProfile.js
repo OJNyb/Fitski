@@ -5,6 +5,7 @@ import { SHOW_BACK, SHOW_DEHAZE } from "../../../types/navTypes";
 import PlanCard from "../../shared/PlanCard/MobilePlanCard";
 import MobileNavMidContainer from "../../shared/NavMid/MobileNavMidContainer";
 import LoadingSpinner from "../../shared/SVGs/LoadingSpinner";
+import { MainTile } from "../../shared/Layout";
 
 import "./mobileProfile.css";
 
@@ -72,33 +73,35 @@ const Profile = ({
           </>
         }
       />
-      <div>
-        <div className="profile-info-container padding-10-15">
-          <img
-            src={`/api/image/avatar/${avatar}_sm.jpg`}
-            alt="Avatar"
-            className="mobile-profile-picture"
-          />
-          <div className="flex-col padding-s-10">
-            <span className="black font-w-500 font-16">{username}</span>
-            <span className="color-gray font-14">
-              Pleighboi who's been gymsharkin' since 2014
-            </span>
+      <MainTile>
+        <div className="pt-50">
+          <div className="profile-info-container padding-10-15  theme-border-bottom">
+            <img
+              src={`/api/image/avatar/${avatar}_md.jpg`}
+              alt="Avatar"
+              className="mobile-profile-picture"
+            />
+            <div className="flex-col padding-s-10">
+              <span className="black font-w-500 font-16">{username}</span>
+              <span className="color-gray font-14">
+                Pleighboi who's been gymsharkin' since 2014
+              </span>
+            </div>
+          </div>
+          <div>
+            <p className="color-light-gray font-14 text-center margin-0 padding-10-0">
+              Workout Plans
+            </p>
+            <div>{cards}</div>
+            {!cards.length && (
+              <p className="color-gray text-center margin-0">
+                This user doesn't have any workout plans
+              </p>
+            )}
+            {isPending && <LoadingSpinner />}
           </div>
         </div>
-        <div>
-          <p className="color-light-gray font-14 text-center margin-0 profile-mobile-plans-header">
-            Workout Plans
-          </p>
-          <div>{cards}</div>
-          {!cards.length && (
-            <p className="color-gray text-center">
-              This user doesn't have any workout plans
-            </p>
-          )}
-          {isPending && <LoadingSpinner />}
-        </div>
-      </div>
+      </MainTile>
     </>
   );
 };

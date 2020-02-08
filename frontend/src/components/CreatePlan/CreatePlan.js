@@ -14,7 +14,7 @@ const MobileView = lazy(() => import("./MobileCreatePlan"));
 const CreatePlan = () => {
   const [redir, setRedir] = useState(false);
   const isMobile = useMobile();
-  useTitle("Fitnut - Create Plan");
+  useTitle("Chadify - Create Plan");
   let view;
   if (isMobile) {
     view = <MobileView setRedir={setRedir} />;
@@ -26,12 +26,7 @@ const CreatePlan = () => {
     return <Redirect to={`plans/${redir}`} />;
   }
 
-  return (
-    <>
-      <NavMid backText={"Create plan"} />
-      <Suspense fallback={<SetLoading />}>{view}</Suspense>
-    </>
-  );
+  return <Suspense fallback={<SetLoading />}>{view}</Suspense>;
 };
 
 export default CreatePlan;

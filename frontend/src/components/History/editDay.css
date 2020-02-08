@@ -1,9 +1,3 @@
-.history-add-container {
-  width: 400px;
-  position: relative;
-  margin-top: 20px;
-}
-
 .history-empty-log-container {
   display: flex;
   justify-content: center;
@@ -46,7 +40,8 @@
 }
 
 .add-card-remove-btn i {
-  font-size: 20px;
+  font-size: 19px;
+  padding-top: 3px;
 }
 
 .add-card-set-remove-btn i {
@@ -70,6 +65,7 @@
   text-align: end;
   border-radius: 0;
   border-bottom: 1px solid transparent;
+  font-weight: 300;
 }
 
 .web-card-input:focus {

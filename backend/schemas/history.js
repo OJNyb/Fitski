@@ -10,10 +10,10 @@ const exerciseId = _id.label("Exercise ID");
 
 const setId = _id.label("Set ID");
 
-const notes = Joi.string()
+const note = Joi.string()
   .min(1)
   .max(9999)
-  .label("Notes");
+  .label("Note");
 
 const reps = Joi.number()
   .min(0)
@@ -59,17 +59,21 @@ const addDay = Joi.object()
     date,
     unit,
     reps,
-    notes,
+    note,
     dayId,
     setId,
-    weight,
     exerciseId,
     exerId: exerciseId,
     date: date.label("Date"),
     custom
   })
-  .or("notes", "exerciseId")
+  .or("note", "exerciseId")
   .and("exerciseId", "setId", "custom");
+
+const editDay = Joi.object().keys({
+  note: note.required(),
+  dayId
+});
 
 const deleteDay = Joi.object().keys({
   day_id: dayId
@@ -125,6 +129,7 @@ const editSet = Joi.object()
   .keys({
     reps,
     weight,
+    note,
     day_id: dayId,
     exercise_id: exerciseId,
     set_id: setId
@@ -151,6 +156,7 @@ module.exports = {
   "post/history/activate/:plan_id": activatePlan,
   "post/history/deactivate/:plan_id": deactivatePlan,
   "post/history": addDay,
+  "patch/history": editDay,
   "delete/history/:day_id": deleteDay,
   "post/history/exercise/:day_id": addExercise,
   "patch/history/reorder/:day_id": reorderExercise,

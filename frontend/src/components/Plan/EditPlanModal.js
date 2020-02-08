@@ -8,6 +8,8 @@ import useMobile from "../../hooks/useMobile";
 import MobileInput from "../shared/Form/MobileInput";
 import CustomRadio from "../shared/Form/CustomRadio";
 import LoadingSpinner from "../shared/SVGs/LoadingSpinner";
+import PriceInput from "../shared/Form/PriceInput";
+import StripeConnect from "../Stripe/StripeConnect";
 
 const EditProfileModal = ({ plan, onSubmit, hideModal }) => {
   const {
@@ -23,6 +25,7 @@ const EditProfileModal = ({ plan, onSubmit, hideModal }) => {
   const user = useUser();
   const isMobile = useMobile();
 
+  // TODO
   const { isMerchant } = user;
 
   function onClose() {
@@ -70,8 +73,12 @@ const EditProfileModal = ({ plan, onSubmit, hideModal }) => {
           {isRejected && (
             <ErrorMessage message="Couldn't apply update, please try again." />
           )}
-          <div className="edit-plan-input-wrapper custom-scrollbar">
-            {console.log(errors)}
+          <div
+            className={
+              "edit-plan-input-wrapper custom-scrollbar" +
+              (isMobile ? " padding-0-10-77" : "")
+            }
+          >
             <Field
               name="name"
               component={MobileInput}
@@ -97,12 +104,7 @@ const EditProfileModal = ({ plan, onSubmit, hideModal }) => {
               maxLength={30000}
             />
 
-            <div
-              className={
-                "edit-plan-modal-radio-container border-box padding-10-15" +
-                (isMobile ? " padding-0-10-77" : "")
-              }
-            >
+            <div className="edit-plan-modal-radio-container border-box padding-10-15">
               <div>
                 <span>Access</span>
                 <Field
@@ -151,28 +153,16 @@ const EditProfileModal = ({ plan, onSubmit, hideModal }) => {
                 />
               </div>
             </div>
-            {console.log(access)}
             {values.access === "paywall" && (
               <div>
-                {isMerchant ? (
-                  <input
-                    type="number"
-                    step="0.01"
-                    min={1}
-                    max={999}
-                    value={values.price.toFixed(2)}
-                    onChange={e => setFieldValue("price", e.target.value * 100)}
-                  />
-                ) : (
-                  <div>
-                    <div>Become a merchant</div>
-                    {/* <a href=""></>
-                      <img
-                        src="/api/image/resources/stripeconnect.png"
-                        alt="Connect to Stripe"
-                      
-                      />
-                    </a> */}
+                <Field
+                  component={PriceInput}
+                  name="price"
+                  isMerchant={isMerchant}
+                />
+                {!isMerchant && (
+                  <div className="padding-10">
+                    <StripeConnect />
                   </div>
                 )}
               </div>

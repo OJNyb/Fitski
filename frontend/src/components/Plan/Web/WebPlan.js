@@ -27,7 +27,7 @@ const WebPlan = ({ woPlan, isSelf, setShowModal }) => {
         <p>Workout Plan Empty</p>
         {isSelf && (
           <button
-            className="theme-btn-filled"
+            className="theme-btn-filled plans-web-empty-add-btn"
             onClick={() => setShowModal("addWeeks")}
           >
             Add weeks
@@ -37,9 +37,7 @@ const WebPlan = ({ woPlan, isSelf, setShowModal }) => {
     );
   }
   return (
-    <div style={{ padding: "10px 0 50px" }}>
-      {/* <p className="plan-description-label black">Description</p>
-<p className="plan-description">{description}</p> */}
+    <div style={{ padding: "0 0 50px" }}>
       <PlanOverview woPlan={woPlan} />
       {weeksDisplay}
     </div>

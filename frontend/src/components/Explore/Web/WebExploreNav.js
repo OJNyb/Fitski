@@ -11,7 +11,7 @@ const ExploreNav = ({
 }) => {
   return (
     <NavMid
-      backText={"Explore"}
+      backText={"Discover"}
       midContent={
         <></>
         // <div className="flex-col-cen">

@@ -1,11 +1,19 @@
 .history-add-card {
   background-color: rgb(255, 255, 255);
-  border-radius: 2px;
+  border-radius: 4px;
   font-family: "Oswald", sans-serif;
-  box-shadow: 0.5px 0.5px 3px 1px rgba(0, 0, 0, 0.11);
+  box-shadow: 0 3.5px 7px 0 rgba(60, 66, 87, 0.12),
+    0 1.5px 3px 0 rgba(0, 0, 0, 0.12);
   overflow: hidden;
   transition: opacity 0.1s ease;
-  max-width: 450px;
+  width: 100%;
+  font-weight: 300 !important;
+}
+
+.exercise-card-container {
+  max-width: 380px;
+  min-width: 250px;
+  width: 100%;
 }
 
 .history-exercise-name {
@@ -20,11 +28,14 @@
 
 .add-card-btn-container {
   display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .add-card-btn-container button {
-  padding: 3px;
   margin: 0 2px;
+  width: 26px;
+  height: 26px;
 }
 
 .add-card-body {
@@ -62,20 +73,29 @@
 
 /* WEB */
 .web-exercise-droppable-container {
-  min-height: 60vh;
-  padding: 0 20px;
+  min-height: 80vh;
+  width: 100%;
+  padding-top: 10px;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 50px;
+  align-items: center;
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px;
 }
 
 .web-exercise-container-dragging-over {
   background-color: rgba(155, 221, 169, 0.2);
   transition: background-color 0.3s ease;
-  border-radius: 10px;
 }
 
 /* MOBILE */
 
 .mobile-droppable-container {
-  min-height: calc(100vh - 100px);
+  max-height: calc(100vh - 50px);
   flex-direction: column;
   display: flex;
+  padding: 50px 10px;
+  box-sizing: border-box;
+  overflow-y: scroll;
 }

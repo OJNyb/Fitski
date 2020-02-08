@@ -5,6 +5,9 @@ import {
   ADD_DAY_RETRY,
   ADD_DAY_FAILED,
   ADD_DAY_SUCCESS,
+  EDIT_DAY,
+  EDIT_DAY_FAILED,
+  EDIT_DAY_SUCCESS,
   DELETE_DAY,
   DELETE_DAY_FAILED,
   DELETE_DAY_SUCCESS,
@@ -85,6 +88,83 @@ function addDay(dispatch, date, exercise, values) {
         payload
       });
     });
+}
+
+function addNoteToNewDay(dispatch, date, note) {
+  const dayId = new ObjectId().toHexString();
+  const payload = { date, dayId, note };
+
+  dispatch({
+    type: ADD_DAY,
+    payload
+  });
+
+  axios
+    .post("/api/history", {
+      date,
+      dayId,
+      note
+    })
+    .then(res => {
+      let isSucc = isSuccessful(res);
+      if (!isSucc) {
+        dispatch({
+          type: ADD_DAY_FAILED,
+          payload
+        });
+      } else {
+        dispatch({
+          type: ADD_DAY_SUCCESS,
+          payload
+        });
+      }
+    })
+    .catch(() => {
+      dispatch({
+        type: ADD_DAY_FAILED,
+        payload
+      });
+    });
+}
+
+function editDay(dispatch, dayId, note) {
+  return new Promise((resolve, reject) => {
+    const payload = { dayId, note };
+
+    dispatch({
+      type: EDIT_DAY,
+      payload
+    });
+
+    axios
+      .patch("/api/history", {
+        dayId,
+        note
+      })
+      .then(res => {
+        let isSucc = isSuccessful(res);
+        if (!isSucc) {
+          dispatch({
+            type: EDIT_DAY_FAILED,
+            payload
+          });
+          return reject();
+        } else {
+          dispatch({
+            type: EDIT_DAY_SUCCESS,
+            payload
+          });
+          resolve();
+        }
+      })
+      .catch(() => {
+        dispatch({
+          type: EDIT_DAY_FAILED,
+          payload
+        });
+        reject();
+      });
+  });
 }
 
 function retryAddDay(dispatch, day) {
@@ -547,7 +627,9 @@ function copyDay(dispatch, dayToCopy, formattedDate) {
 export {
   addDay,
   retryAddDay,
+  editDay,
   deleteDay,
+  addNoteToNewDay,
   addExercise,
   retryAddExercise,
   reorderExercise,

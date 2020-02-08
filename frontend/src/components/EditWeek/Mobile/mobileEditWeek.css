@@ -5,42 +5,6 @@
   margin: 10px;
 }
 
-.edit-week-mobile-date-btn {
-  width: 40px;
-  height: 40px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  border-radius: 3px;
-  justify-content: center;
-  color: rgb(65, 55, 55);
-}
-
-.edit-week-mobile-date-btn > span {
-  font-size: 12px;
-  line-height: 11px;
-}
-
-.edit-week-mobile-date-btn div span {
-  font-size: 24px;
-}
-
-.edit-week-mobile-date-btn div button,
-.edit-week-mobile-date-btn div a {
-  padding: 0 6px;
-}
-
-.edit-week-mobile-date-btn div a {
-  display: flex;
-}
-
-.edit-week-mobile-date-container {
-  display: flex;
-  align-items: center;
-  width: 30%;
-  justify-content: space-around;
-}
-
 /* EXERCISE CARD */
 .edit-week-mobile-add-card {
   width: 90%;
@@ -145,7 +109,7 @@
 }
 
 .history-mobile-days-box > div {
-  flex: 0.3333333;
+  flex: 0.3333333 100vw;
 }
 
 .history-mobile-days-box-transition {
@@ -178,6 +142,15 @@
 
 .edit-week-sub-nav-container {
   transition: background-color 0.3s ease;
+  position: fixed;
+  top: 50px;
+  left: 0;
+  width: 100vw;
+  z-index: 998;
+}
+
+.bc-8c1 {
+  background-color: #830000;
 }
 
 .edit-week-mobile-add-btn-container {

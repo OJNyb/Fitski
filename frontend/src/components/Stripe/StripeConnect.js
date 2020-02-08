@@ -4,12 +4,12 @@ import StripeIcon from "./StripeIcon";
 import StripeConnectButton from "./StripeConnectButton";
 
 import "./stripeConnect.css";
-import useUser from "../../hooks/useUser";
+import { useAuth } from "../../context/authContext";
 
 const StripeConnect = () => {
   const [isLinkClicked, setIsLinkClicked] = useState(false);
 
-  const { reload, setReload } = useUser();
+  const { updateUser } = useAuth();
   return (
     <div className="flex-col-cen pb-50">
       <div className="stripe-information">
@@ -27,7 +27,7 @@ const StripeConnect = () => {
       {isLinkClicked && (
         <div className="color-gray">
           Click{" "}
-          <strong className="tc pointer" onClick={() => setReload(reload + 1)}>
+          <strong className="tc pointer" onClick={() => updateUser()}>
             here
           </strong>{" "}
           if the registration was successful to add the price.

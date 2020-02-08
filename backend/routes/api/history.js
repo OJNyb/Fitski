@@ -238,7 +238,7 @@ router.post(
 );
 
 // @route POST api/history
-// @desc  Add exercise/notes to new day
+// @desc  Add exercise/note to new day
 // @access Private
 
 // TODO: Validation, see if date is already there
@@ -250,7 +250,7 @@ router.post("/", ensureSignedIn, validateRequest, async (req, res, next) => {
     exerId,
     date,
     exerciseId,
-    notes,
+    note,
     setId,
     reps,
     weight,
@@ -278,11 +278,10 @@ router.post("/", ensureSignedIn, validateRequest, async (req, res, next) => {
     }
   }
 
-  const onModel = custom ? "userExercise" : "exercise";
-
   let newDay = { _id: dayId, date: formattedDate };
 
   if (exerciseId) {
+    const onModel = custom ? "userExercise" : "exercise";
     newDay.exercises = [
       {
         _id: exerId,
@@ -298,7 +297,7 @@ router.post("/", ensureSignedIn, validateRequest, async (req, res, next) => {
       }
     ];
   } else {
-    newDay.notes = notes;
+    newDay.note = note;
   }
 
   let update = {
@@ -317,6 +316,34 @@ router.post("/", ensureSignedIn, validateRequest, async (req, res, next) => {
       } else {
         res.status(404).json(createErrorObject(["Couldn't apply update"]));
       }
+    })
+    .catch(next);
+});
+
+// @route POST api/history
+// @desc  Edit day
+// @access Private
+
+// TODO: Validation, see if date is already there
+router.patch("/", ensureSignedIn, validateRequest, async (req, res, next) => {
+  const { body, session } = req;
+  const { userId } = session;
+  const { dayId, note } = body;
+
+  const history = await History.findOne({ user: userId });
+  const { days } = history;
+  const dayIndex = days.map(x => x._id.toString()).indexOf(dayId);
+
+  if (dayIndex === -1) {
+    return res.status(404).json(createErrorObject["No day with this ID"]);
+  }
+
+  days[dayIndex].note = note;
+
+  history
+    .save()
+    .then(() => {
+      res.json({ message: "success" });
     })
     .catch(next);
 });

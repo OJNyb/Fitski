@@ -1,6 +1,6 @@
 .mobile-input-wrapper {
   border-bottom: 2px solid rgb(134, 101, 101);
-  background-color: rgb(241, 235, 235);
+  background-color: rgb(233, 220, 220);
   border-radius: 2px;
   cursor: pointer;
 }
@@ -10,7 +10,7 @@
 }
 
 .mobile-input-wrapper span {
-  color: #866565;
+  color: #705454;
   font-size: 14px;
 }
 
@@ -32,11 +32,11 @@
 }
 
 .mobile-input-error {
-  border-color: #d90000;
+  border-color: #c81111;
 }
 
 .mobile-input-error span {
-  color: #d90000;
+  color: #c81111;
 }
 
 .vertical-resize {

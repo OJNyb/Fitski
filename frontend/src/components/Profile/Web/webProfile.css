@@ -1,9 +1,18 @@
 .profile-web-info-container {
   display: flex;
   justify-content: flex-start;
+  border-bottom: 1px solid rgb(233, 220, 220);
+  margin-bottom: 10px;
 }
 
 .profile-web-info-container img {
-  width: 128px;
-  height: 128px;
+  width: 100px;
+  height: 100px;
+}
+
+.edit-profile-btn {
+  border: 1px solid #a60000;
+  padding: 4px 12px;
+  border-radius: 20px;
+  color: #a60000;
 }

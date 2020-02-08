@@ -6,6 +6,9 @@ import {
   ADD_DAY_RETRY,
   ADD_DAY_FAILED,
   ADD_DAY_SUCCESS,
+  EDIT_DAY,
+  EDIT_DAY_FAILED,
+  EDIT_DAY_SUCCESS,
   DELETE_DAY,
   DELETE_DAY_FAILED,
   DELETE_DAY_SUCCESS,
@@ -71,16 +74,20 @@ function historyReducer(state, action) {
     }
 
     case ADD_DAY: {
-      const { date, exercise, dayId, exerId, setId, reps, weight } = payload;
+      const {
+        date,
+        exercise,
+        dayId,
+        exerId,
+        setId,
+        reps,
+        weight,
+        note
+      } = payload;
       const { history } = state;
       const { days } = history;
       let formattedDate = formatHistoryDate(date);
       let insertIndex = days.length - 1;
-
-      let values = {
-        reps: reps ? reps : 0,
-        weight: weight ? ensureDecimal(weight) : 0.0
-      };
 
       if (days.length) {
         for (let i = days.length - 1; i >= 0; i--) {
@@ -95,7 +102,18 @@ function historyReducer(state, action) {
       const newDay = {
         date: formattedDate,
         _id: dayId,
-        exercises: [
+        isPending: true
+      };
+
+      if (note) {
+        newDay.note = note;
+      } else {
+        let values = {
+          reps: reps ? reps : 0,
+          weight: weight ? ensureDecimal(weight) : 0.0
+        };
+
+        newDay.exercises = [
           {
             _id: exerId,
             exercise: exercise,
@@ -106,8 +124,8 @@ function historyReducer(state, action) {
               }
             ]
           }
-        ]
-      };
+        ];
+      }
 
       history.days.splice(insertIndex, 0, newDay);
 
@@ -155,6 +173,56 @@ function historyReducer(state, action) {
       const day = days.find(x => x._id === dayId);
       day.isPending = true;
       day.isRejected = false;
+
+      return {
+        ...state,
+        history
+      };
+    }
+
+    case EDIT_DAY: {
+      const { dayId, note } = payload;
+      const { history } = state;
+
+      const { days } = history;
+
+      const day = days.find(x => x._id === dayId);
+
+      day.notePending = true;
+      day.note = note;
+
+      return {
+        ...state,
+        history
+      };
+    }
+
+    case EDIT_DAY_SUCCESS: {
+      const { dayId } = payload;
+      const { history } = state;
+
+      const { days } = history;
+
+      const day = days.find(x => x._id === dayId);
+
+      day.notePending = false;
+
+      return {
+        ...state,
+        history
+      };
+    }
+
+    case EDIT_DAY_FAILED: {
+      const { dayId } = payload;
+      const { history } = state;
+
+      const { days } = history;
+
+      const day = days.find(x => x._id === dayId);
+
+      day.notePending = false;
+      day.noteRejected = true;
 
       return {
         ...state,

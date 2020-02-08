@@ -8,7 +8,7 @@ const SelectedNavBar = ({
   let text = selectedExercises.length > 1 ? "exercises" : "exercise";
 
   return (
-    <div className="bc-d9 width-100p flex-center-space-bw padding-s-10 border-box height-50 fixed">
+    <div className="bc-theme-ligther width-100p flex-center-space-bw padding-s-10 border-box height-50 fixed">
       <div className="flex-ai-center history-mobile-selected-check-n-span-wrapper">
         <button
           className="padding-5 color-white"

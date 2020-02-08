@@ -5,6 +5,7 @@ import useMobile from "../../hooks/useMobile";
 import "./planText.css";
 
 const PlanText = ({ week, index, isSelf, planId }) => {
+  const isMobile = useMobile();
   const { days, _id: weekId } = week;
 
   let exercises = days
@@ -37,7 +38,13 @@ const PlanText = ({ week, index, isSelf, planId }) => {
   }
 
   return (
-    <div className="plan-week-container flex-col-cen">
+    <div
+      className={
+        "plan-week-container " + "flex-col-cen"
+        //  +
+        // (isMobile ? "flex-col-cen" : "plan-web-week-container")
+      }
+    >
       {weekHeader}
       <div className="plan-days-container">{daysDisplay}</div>
     </div>
@@ -53,17 +60,11 @@ const Day = ({ day, index }) => {
     <Exercise exercise={exercise} key={exercise._id} />
   ));
   return (
-    <div className="plan-day-container flex-col-cen">
+    <div className={"plan-day-container flex-col-cen"}>
       <h2 className="margin-0 color-gray font-30 font-fam-babas">
         DAY {index + 1}
       </h2>
-      <div
-        className={
-          "plan-exercises-container" + (isMobile ? "" : " border-left-2-theme")
-        }
-      >
-        {exerciseDisplay}
-      </div>
+      <div className={"plan-exercises-container"}>{exerciseDisplay}</div>
     </div>
   );
 };
@@ -98,10 +99,8 @@ const Exercise = ({ exercise }) => {
     }, "");
   }
 
-  let view;
-
-  if (isMobile) {
-    view = (
+  if (true) {
+    return (
       <ExerciseMobile
         name={name}
         length={length}
@@ -110,7 +109,7 @@ const Exercise = ({ exercise }) => {
       />
     );
   } else {
-    view = (
+    return (
       <ExerciseWeb
         name={name}
         length={length}
@@ -119,19 +118,17 @@ const Exercise = ({ exercise }) => {
       />
     );
   }
-
-  return <>{view}</>;
 };
 
 const ExerciseMobile = ({ name, length, setText, displayReps }) => {
   return (
     <div className="plan-exercise-container plan-mobile-exercise-container color-gray flex-center font-fam-oswald">
-      <div className="font-15 font-w-500 mr-1">
+      <div className="font-15 font-w-400 mr-1">
         {name}
         {" - "}
       </div>
 
-      <span className="font-15">
+      <span className="font-15 font-w-300">
         {length || 0} {setText} of {displayReps || 0} reps
       </span>
     </div>

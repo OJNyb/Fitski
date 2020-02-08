@@ -3,11 +3,11 @@ import {
   checkIsValidNumber,
   cleanValue,
   formatValue
-} from "../../utils/priceInputUtils";
+} from "../../../utils/priceInputUtils";
 
 import "./priceInput.css";
 
-const PriceInput = ({ field, form, defaultValue, isMerchant }) => {
+const PriceInput = ({ field, form, isMerchant }) => {
   const { name, value } = field;
   const { touched, errors } = form;
   let error = errors[name];
@@ -16,9 +16,7 @@ const PriceInput = ({ field, form, defaultValue, isMerchant }) => {
 
   const { setFieldValue } = form;
 
-  //-----
-
-  const _defaultValue = defaultValue ? formatValue(String(defaultValue)) : "";
+  const _defaultValue = value ? formatValue(String(value)) : "";
   const [stateValue, setStateValue] = useState(_defaultValue);
   const [cursor, setCursor] = useState(0);
   const inputRef = useRef(null);

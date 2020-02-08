@@ -13,6 +13,9 @@ import Navigation from "./components/Navigation/Navigation";
 import "./App.css";
 import "./styles/common.css";
 
+// TODO
+import "./components/shared/NavMid/navMid.css";
+
 const StripeConfirmation = lazy(() =>
   import("./components/Stripe/StripeConfirmation.js")
 );
@@ -39,25 +42,23 @@ function App() {
 
   const { state, dispatch } = useNav();
 
-  let marginTop;
-  let marginLeft = 0;
-  let minHeight;
+  let minHeight = "100vh";
   let width;
 
   if (isMobile) {
-    marginTop = "50px";
-    minHeight = "calc(100vh - 50px)";
-    width = "calc(100%)";
+    width = "100%";
   } else {
-    marginTop = "66px";
-    minHeight = "calc(100vh - 66px)";
     if (winWidth < 1000) {
-      marginLeft = 0;
       width = "100%";
     } else {
       width = "calc(100% - 251px)";
-      marginLeft = "251px";
     }
+  }
+
+  if (winWidth > 1000) {
+    width = "990px";
+  } else {
+    width = "100%";
   }
 
   return (
@@ -66,9 +67,7 @@ function App() {
       <main
         style={{
           width,
-          marginTop,
-          minHeight,
-          marginLeft
+          minHeight
         }}
       >
         <ExerciseContext.Provider
@@ -86,7 +85,7 @@ function App() {
 
               <Route exact path="/settings" component={Settings} />
               <Route exact path="/" component={History} />
-              <Route exact path="/explore" component={Explore} />
+              <Route exact path="/discover" component={Explore} />
               <Route exact path="/checkout" component={Checkout} />
 
               <Route path="/profile/:username" component={Profile} />

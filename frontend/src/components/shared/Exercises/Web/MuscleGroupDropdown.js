@@ -4,11 +4,20 @@ const MuscleGroupDropdown = ({
   muscleGroup,
   muscleGroups,
   hideDropdown,
+  showFilter,
   onMuscleGroupCheck
 }) => {
-  const outsideClickHandler = useCallback(() => {
-    hideDropdown();
-  }, [hideDropdown]);
+  const outsideClickHandler = useCallback(
+    e => {
+      if (
+        e.target.classList.contains("exercise-muscle-group-btn") ||
+        e.target.parentNode.classList.contains("exercise-muscle-group-btn")
+      )
+        return;
+      else hideDropdown();
+    },
+    [hideDropdown]
+  );
   useEffect(() => {
     function setClickHandler() {
       window.addEventListener("click", outsideClickHandler);
@@ -18,6 +27,7 @@ const MuscleGroupDropdown = ({
       window.removeEventListener("click", outsideClickHandler);
     };
   }, [outsideClickHandler]);
+  if (!muscleGroups) return null;
   let muscleGroupFilter = muscleGroups.map(x => {
     return (
       <MuscleGroupCheck
@@ -28,8 +38,14 @@ const MuscleGroupDropdown = ({
       />
     );
   });
+
   return (
-    <div className="exercise-muscle-checkbox-container exercise-muscle-checkbox-container-show">
+    <div
+      className={
+        "exercise-muscle-checkbox-container" +
+        (showFilter ? " exercise-muscle-checkbox-container-show" : "")
+      }
+    >
       <div className="exercise-muscle-group-filter-wrapper flex-col">
         {muscleGroupFilter}
       </div>

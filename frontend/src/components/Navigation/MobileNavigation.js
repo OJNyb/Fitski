@@ -63,7 +63,9 @@ const MobileNavigation = () => {
           </div>
           <span className="color-gray font-12 line-height-11">Beta v0.01</span>
         </div>
-        <NavigationMenu />
+        <div className="mobile-nav-menu-wrapper">
+          <NavigationMenu />
+        </div>
       </div>
     </>
   );

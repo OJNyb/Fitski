@@ -2,6 +2,26 @@
   z-index: 3;
 }
 
-.SingleDatePicker {
-  width: 152px;
+.DateInput {
+  background-color: transparent !important;
+}
+.SingleDatePicker input {
+  background-color: transparent !important;
+}
+
+.DateInput_input {
+  text-align: center;
+  color: #a60000 !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+}
+
+.SingleDatePickerInput {
+  background-color: transparent !important;
+}
+
+.SingleDatePickerInput__withBorder {
+  border-color: transparent !important;
+  border-bottom-color: #a60000 !important;
+  border-bottom-width: 1.5px !important;
 }

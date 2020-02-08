@@ -28,7 +28,7 @@ const MobileExerciseCard = ({
     isRejected,
     request,
     _id: exerId,
-    exercise: { name }
+    exercise: { name, unit }
   } = exercise;
   const { onTouchEnd, onTouchStart, onTouchMove } = useLongPressAndClick(
     () => onCardHold(exerId),
@@ -61,7 +61,7 @@ const MobileExerciseCard = ({
   }, [selectedExercises, exerId]);
 
   let setDisplay = sets.map(set => (
-    <SetColumn set={set} key={set._id} defaultUnit={defaultUnit} />
+    <SetColumn set={set} key={set._id} defaultUnit={defaultUnit} unit={unit} />
   ));
 
   return (
@@ -72,7 +72,7 @@ const MobileExerciseCard = ({
     >
       {(provided, snapshot) => (
         <div
-          className="padding-10"
+          className="pt-10"
           ref={provided.innerRef}
           {...provided.draggableProps}
         >
@@ -121,25 +121,38 @@ const MobileExerciseCard = ({
   );
 };
 
-const SetColumn = ({ set, defaultUnit }) => {
+const SetColumn = ({ set, defaultUnit, unit }) => {
   const { reps, weight } = set;
+
+  let lastRowUnit;
+  if (unit === "s") {
+    lastRowUnit = "seconds";
+  } else {
+    lastRowUnit = "reps";
+  }
 
   return (
     <div className="add-card-column flex-ai-center padding-4-20">
       <div className="history-row">
         <span>
-          <span className="black mr-1 noselect">
-            {ensureDecimal(weight) || 0.0}
-          </span>
-          <span className="color-gray font-12 font-w-300 noselect">
-            {defaultUnit}
-          </span>
+          {unit === "r+w" && (
+            <>
+              <span className="black mr-1 noselect">
+                {ensureDecimal(weight) || 0.0}
+              </span>
+              <span className="color-gray font-12 font-w-300 noselect">
+                {defaultUnit}
+              </span>
+            </>
+          )}
         </span>
       </div>
       <div className="history-row">
         <span>
           <span className="black mr-1 noselect">{reps || 0}</span>
-          <span className="color-gray font-12 font-w-300 noselect">reps</span>
+          <span className="color-gray font-12 font-w-300 noselect">
+            {lastRowUnit}
+          </span>
         </span>
       </div>
     </div>

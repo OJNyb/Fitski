@@ -95,15 +95,17 @@ const MobileExplore = ({
           )
         }
       />
-      <ExploreCategoryNav
-        category={category}
-        onPlanClick={handlePlanClick}
-        onPeopleClick={handlePeopleClick}
-      />
-      <div className="explore-mobile-cards-container">{view}</div>
-      {reachedEnd && !!results.length && (
-        <p className="text-center color-light-gray">You've reached the end</p>
-      )}
+      <div className="pt-50">
+        <ExploreCategoryNav
+          category={category}
+          onPlanClick={handlePlanClick}
+          onPeopleClick={handlePeopleClick}
+        />
+        <div className="explore-mobile-cards-container">{view}</div>
+        {reachedEnd && !!results.length && (
+          <p className="text-center color-light-gray">You've reached the end</p>
+        )}
+      </div>
     </>
   );
 };
@@ -121,7 +123,7 @@ const SearchForm = ({ search, onChange, setShowSearch }) => {
         value={search}
         onChange={onChange}
         onBlur={() => setShowSearch(false)}
-        placeholder="Search Fitnut"
+        placeholder="Search Chadify"
       />
       <Search stroke={"#a60000"} />
     </div>

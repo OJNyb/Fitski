@@ -18,10 +18,9 @@ import {
 } from "../../utils/planClient";
 
 import SetLoading from "../SetLoading";
-import EditWeekNav from "./EditWeekNav";
 
 import "./editWeek.css";
-import useUser from "../../hooks/useUser";
+import { useUser } from "../../context/userContext";
 
 const MobileEditWeek = lazy(() => import("./Mobile/MobileEditWeek"));
 const WebEditWeek = lazy(() => import("./Web/WebEditWeek"));
@@ -32,9 +31,6 @@ const EditWeek = () => {
   const [currentDayIndex, setCurrentDayIndex] = useState(0);
   const isMobile = useMobile();
 
-  const {
-    state: { user }
-  } = useUser();
   useSetLoading(false);
   const { woPlan } = state;
   const {
@@ -43,11 +39,7 @@ const EditWeek = () => {
   } = woPlan;
   const { plan_id: planId, week_id: weekId } = useParams();
 
-  if (!user) {
-    return null;
-  }
-
-  const { _id: userId } = user;
+  const { _id: userId } = useUser();
 
   if (authorId !== userId) {
     return <p>Only the author of a plan can view weeks</p>;
@@ -182,12 +174,6 @@ const EditWeek = () => {
 
   return (
     <>
-      <EditWeekNav
-        weeks={weeks}
-        weekIndex={weekIndex}
-        isMobile={isMobile}
-        handleDeleteWeekSubmit={handleDeleteWeekSubmit}
-      />
       <Suspense fallback={<SetLoading />}>{view}</Suspense>
     </>
   );

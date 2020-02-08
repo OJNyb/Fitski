@@ -19,17 +19,12 @@
   color: #a6000046;
 }
 
-.theme-btn:hover {
-  background-color: #faefef;
-}
-
 .theme-btn-filled:hover,
 .theme-btn-no-border:hover {
   background-color: #a6000010;
 }
 
 .theme-btn {
-  background-color: white;
   border: 1px solid #a60000;
 }
 
@@ -166,7 +161,7 @@
 }
 
 .font-fam-babas {
-  font-family: "Bebas Neue", "Roboto", sans-serif;
+  font-family: "Bebas Neue", sans-serif;
   line-height: 1;
 }
 
@@ -415,6 +410,10 @@
   margin-right: 5px;
 }
 
+.mt-1 {
+  margin-top: 1px;
+}
+
 .mr-15 {
   margin-right: 15px;
 }
@@ -441,6 +440,10 @@
 
 .width-100p {
   width: 100%;
+}
+
+.width-100vw {
+  width: 100vw;
 }
 
 .width-90p-20px {
@@ -477,6 +480,10 @@
 
 .padding-0 {
   padding: 0;
+}
+
+.padding-3 {
+  padding: 3px;
 }
 
 .padding-0-14 {
@@ -571,19 +578,19 @@
 }
 
 .color-d9 {
-  color: #d90000;
+  color: #c81111;
 }
 
 .color-error {
-  color: #d90000;
+  color: #c81111;
 }
 
 .theme-faded {
   color: rgb(153, 108, 108);
 }
 
-.bc-d9 {
-  background-color: #d90000;
+.bc-theme-ligther {
+  background-color: #c81111;
 }
 
 .bc-a6 {
@@ -672,7 +679,7 @@
 
 /* Track */
 .custom-scrollbar::-webkit-scrollbar-track {
-  background: #e4dddd;
+  background: #e7e4e4;
   z-index: 99;
 }
 
@@ -700,4 +707,66 @@
   padding: 10px 40%;
   margin-top: 20px;
   margin: auto;
+}
+
+.shadow-small {
+  box-shadow: 0 2px 5px 0 rgba(60, 66, 87, 0.12),
+    0 1px 1px 0 rgba(0, 0, 0, 0.12);
+}
+
+.shadow-medium {
+  box-shadow: 0 7px 14px 0 rgba(60, 66, 87, 0.12),
+    0 3px 6px 0 rgba(0, 0, 0, 0.12);
+}
+
+.shadow-medium-clickable {
+  box-shadow: rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px,
+    rgba(0, 0, 0, 0.12) 0px 1px 1px 0px, rgba(87, 60, 60, 0.07) 0px 0px 0px 1px,
+    rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px,
+    rgba(87, 60, 60, 0.12) 0px 2px 5px 0px;
+  transition: background-color 240ms, box-shadow 240ms;
+}
+
+.shadow-medium-clickable:hover {
+  box-shadow: rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px,
+    rgba(0, 0, 0, 0.12) 0px 1px 1px 0px, rgba(60, 66, 87, 0.16) 0px 0px 0px 1px,
+    rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(60, 66, 87, 0.12) 0px 3px 9px 0px,
+    rgba(60, 66, 87, 0.12) 0px 2px 5px 0px;
+}
+
+.shadow-medium-clickable:active {
+  box-shadow: rgba(0, 0, 0, 0) 0px 0px 0px 0px,
+    rgba(212, 58, 58, 0.34) 0px 0px 0px 4px, rgba(0, 0, 0, 0.12) 0px 1px 1px 0px,
+    rgba(87, 60, 60, 0.16) 0px 0px 0px 1px, rgba(0, 0, 0, 0) 0px 0px 0px 0px,
+    rgba(87, 60, 60, 0.12) 0px 3px 9px 0px,
+    rgba(87, 60, 60, 0.12) 0px 2px 5px 0px;
+}
+
+.main-tile-arrow-back {
+  margin-right: 5px;
+  margin-left: -5px;
+  padding: 5px;
+}
+
+.theme-border-bottom {
+  border-bottom: 1px solid rgb(233, 220, 220);
+}
+
+.mobile-nav-icon-container .main-nav-icon-fill {
+  fill: #fff;
+}
+
+.mobile-nav-icon-container .main-nav-icon-stroke {
+  stroke: #fff;
+}
+
+.nav-more-btn-horiz-new {
+  border-radius: 50%;
+  padding: 0;
+  z-index: 4999;
+}
+
+.nav-more-btn-horiz-new svg {
+  width: 22px;
+  height: 22px;
 }

@@ -19,7 +19,7 @@ const DayView = ({
 }) => {
   const user = useUser();
   const { defaultUnit } = user;
-  if (dayIndex !== -1) {
+  if (currentDay && currentDay.exercises && currentDay.exercises.length) {
     const { exercises, request, isPending, isRejected } = currentDay;
 
     let exerciseDisplay = exercises.map((exercise, y) => {
@@ -55,7 +55,7 @@ const DayView = ({
               ref={provided.innerRef}
               {...provided.droppableProps}
               className={
-                "history-add-container web-exercise-droppable-container" +
+                "web-exercise-droppable-container" +
                 (snapshot.isDraggingOver
                   ? " web-exercise-container-dragging-over"
                   : "")

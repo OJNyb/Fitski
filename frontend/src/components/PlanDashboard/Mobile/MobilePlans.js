@@ -29,9 +29,7 @@ const PlansMobile = ({
       />
     ));
     view = (
-      <div className="plans-cards-container plans-cards-container-mobile">
-        {cards}
-      </div>
+      <div className="plans-cards-container pt-50 width-100p">{cards}</div>
     );
   } else if (!isPending) {
     view = <NoPlans />;
@@ -42,9 +40,7 @@ const PlansMobile = ({
       <MobileNavMidContainer
         children={
           <>
-            <h2 className="margin-0 font-w-500 mb-2 font-18 color-white">
-              Plans
-            </h2>
+            <h2 className="nav-h2 color-white">Plans</h2>
             <Link
               to="/create-plan"
               className="padding-5 flex-ai-center border-box"
@@ -70,7 +66,7 @@ const NoPlans = () => {
         {
           text: "Find A Workout Plan",
           icon: <Search stroke={"#a60000"} />,
-          to: "/explore"
+          to: "/discover"
         },
         {
           text: "Create Workout Plan",

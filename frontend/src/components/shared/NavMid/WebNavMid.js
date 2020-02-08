@@ -39,18 +39,8 @@ const WebNavMid = props => {
     window.removeEventListener("click", onWindowClick);
   }
 
-  let width;
-  if (winWidth >= 1000) {
-    width = "calc(100% - 200px - 250px)";
-  } else {
-    width = "calc(100% - 250px";
-  }
-
   return (
-    <div
-      style={{ width }}
-      className="nav-mid-web-header-container fixed z-mid-max flex-center-space-bw padding-0-15 border-box"
-    >
+    <div className="nav-mid-web-header-container flex-center-space-bw">
       {backText && (
         <div className="nav-mid-header-item">
           {backAction && (
@@ -62,7 +52,7 @@ const WebNavMid = props => {
             </button>
           )}
 
-          <h2 className="nav-h2 mb-1 m-l-10 font-21">{backText}</h2>
+          <h2 className="nav-h2 black web-nav-h2">{backText}</h2>
         </div>
       )}
 
@@ -71,7 +61,7 @@ const WebNavMid = props => {
       <div className="nav-mid-header-item nav-mid-header-button-container">
         {actionMenuChildren && (
           <button
-            className="nav-mid-header-more-btn theme-btn"
+            className="nav-mid-header-more-btn theme-btn shadow-medium-clickable"
             onClick={handleMoreActionClick}
             ref={moreBtn}
           >
@@ -84,7 +74,7 @@ const WebNavMid = props => {
         {rightBtnText && (
           <button
             className={
-              "nav-mid-header-text-btn " +
+              "nav-mid-header-text-btn shadow-medium-clickable " +
               (rightBtnFilled ? "theme-btn-filled" : "theme-btn")
             }
             onClick={rightBtnAction}
@@ -93,7 +83,10 @@ const WebNavMid = props => {
           </button>
         )}
         {rightLinkText && (
-          <Link className="nav-mid-header-text-btn theme-btn" to={rightLinkTo}>
+          <Link
+            className="nav-mid-header-text-btn theme-btn shadow-medium-clickable"
+            to={rightLinkTo}
+          >
             {rightLinkText}
           </Link>
         )}

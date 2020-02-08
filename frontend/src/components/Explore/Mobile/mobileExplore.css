@@ -20,3 +20,19 @@
 .explore-mobile-cards-container {
   padding-top: 52px;
 }
+
+.explore-category-nav-container {
+  border-bottom: 1px solid rgb(223, 208, 208);
+  position: fixed;
+}
+
+.explore-category-nav-container button {
+  flex: 1;
+  height: 50px;
+  font-weight: 500;
+  font-size: 16px;
+}
+
+.explore-category-nav-active {
+  border-bottom: 2px solid #a60000;
+}

@@ -25,7 +25,7 @@ const Login = () => {
   return (
     <div className="width-100p padding-0-14 margin-top-20 flex-col-cen border-box max-width-600 margin-a">
       <i className="material-icons tc font-30">fitness_center</i>
-      <h2 className="font-21 margin-10-0">Log in to Fitnut</h2>
+      <h2 className="font-21 margin-10-0">Log in to Chadify</h2>
       <Formik
         initialValues={{ email: "", password: "" }}
         validate={values => {
@@ -109,7 +109,7 @@ const Login = () => {
         </Link>
         <span className="color-gray margin-5">·</span>
         <Link to="/register" className="tc">
-          Sign up for Fitnut
+          Sign up for Chadify
         </Link>
       </div>
     </div>

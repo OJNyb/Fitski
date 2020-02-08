@@ -8,11 +8,13 @@ const planId = Joi.string()
 const email = Joi.string()
   .email()
   .label("Email");
+
 const username = Joi.string()
   .alphanum()
   .min(4)
   .max(30)
   .label("Username");
+
 const name = Joi.string()
   .max(30)
   .label("Name");
@@ -24,6 +26,7 @@ const bio = Joi.string()
 
 const password = Joi.string()
   .regex(/^(.{0,7}|[^0-9]*|[^A-Z]*|[^a-z]*)$/, { invert: true })
+  .max(10000)
   .label("Password")
   .options({
     language: {
@@ -58,25 +61,14 @@ const signIn = Joi.object().keys({
 const editUser = Joi.object()
   .keys({
     name,
-    email,
     username,
     defaultUnit: Joi.string()
       .min(0)
       .max(3)
       .label("defaultUnit"),
-    password,
-    confirmPassword,
     bio
   })
-  .or("name", "defaultUnit", "email", "username", "password", "bio")
-  .and("password", "confirmPassword")
-  .options({
-    language: {
-      object: {
-        and: "You must provide both password and confirm password"
-      }
-    }
-  });
+  .or("name", "defaultUnit", "username", "bio");
 
 const forgotPassword = Joi.object().keys({
   email: email.required()
@@ -86,6 +78,16 @@ const resetPassword = Joi.object().keys({
   token: Joi.string(),
   password: password.required(),
   confirmPassword: confirmPassword.required()
+});
+
+const setPassword = Joi.object().keys({
+  oldPassword: Joi.string(),
+  newPassword: password.required()
+});
+
+const editEmail = Joi.object().keys({
+  password: password.required(),
+  email: email.required()
 });
 
 const addPlan = Joi.object().keys({
@@ -100,7 +102,9 @@ module.exports = {
   "post/user/login": signIn,
   "post/user/register": signUp,
   "post/user/edit": editUser,
+  "post/user/edit/email": editEmail,
   "post/user/forgot": forgotPassword,
+  "post/user/password/set": setPassword,
   "post/user/reset/:token": resetPassword,
   "post/user/access/:plan_id": addPlan,
   "delete/user/access/:plan_id": removePlan

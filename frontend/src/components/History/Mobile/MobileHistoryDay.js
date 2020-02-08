@@ -39,7 +39,7 @@ const MobileDayView = ({
     setSelectedExercises(newSelected);
   }
 
-  if (currentDay) {
+  if (currentDay && currentDay.exercises && currentDay.exercises.length) {
     const { exercises, request, isPending, isRejected } = currentDay;
 
     return (

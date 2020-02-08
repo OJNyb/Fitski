@@ -7,7 +7,6 @@
 .modal-content {
   min-width: 224px;
   position: relative;
-  padding: 0 10px 15px;
   border: 1px solid #c29292;
   border-radius: 4px;
 }

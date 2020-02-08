@@ -2,8 +2,14 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import { useUser } from "../../context/userContext";
 import useMobile from "../../hooks/useMobile";
+import CalendarIcon from "./Icons/CalendarIcon";
+import PlanIcon from "./Icons/PlanIcon";
+import DiscoverIcon from "./Icons/DiscoverIcon";
+import SettingsIcon from "./Icons/SettingsIcon";
+import LogoutIcon from "./Icons/LogoutIcon";
+import useWindowWidth from "../../hooks/useWindowWidth";
 
-const NavigationMenu = ({ marginTop, show = true }) => {
+const NavigationMenu = ({ show = true, showText = true }) => {
   const user = useUser();
   const isMobile = useMobile();
 
@@ -13,58 +19,77 @@ const NavigationMenu = ({ marginTop, show = true }) => {
   }
 
   const { avatar, username } = user;
+
   return (
     <nav style={style}>
       <section>
-        <h3 className="nav-header">DASHBOARD</h3>
-
-        <NavItem to="/" icon="calendar_today" text="Calendar" exact={true} />
-        <NavItem to="/plans" icon="view_list" text="Plans" />
-        <NavItem to="/explore" icon="supervised_user_circle" text="Explore" />
-
-        {/* <NavLink
-          to="/create-plan"
-          className="nav-item flex-ai-center line-height-11"
-        >
-          <i className="material-icons nav-icon">library_add</i>
-          <span className="nav-span">Create plan</span>
-        </NavLink> */}
+        <NavItem
+          to="/"
+          icon={<CalendarIcon />}
+          text="Calendar"
+          exact={true}
+          showText={showText}
+        />
+        <NavItem
+          to="/plans"
+          icon={<PlanIcon />}
+          text="Plans"
+          showText={showText}
+        />
+        <NavItem
+          to="/discover"
+          icon={<DiscoverIcon />}
+          text="Discover"
+          showText={showText}
+        />
       </section>
-
-      <section className="nav-account-container">
-        <h3 className="nav-header">ACCOUNT</h3>
-        <NavLink
+      <section>
+        <NavItem
           exact={true}
           to={`/profile/${username}`}
-          className="nav-item flex-ai-center line-height-11"
-        >
-          <div className="nav-sidebar-avatar-container">
-            <img
-              className="nav-sidebar-avatar"
-              src={`/api/image/avatar/${avatar}_sm.jpg`}
-              alt="avatar"
-            />
-          </div>
-          <span className="nav-span">Profile</span>
-        </NavLink>
+          text="Profile"
+          showText={showText}
+          icon={
+            <div className="nav-sidebar-avatar-container">
+              <img
+                className="nav-sidebar-avatar"
+                src={`/api/image/avatar/${avatar}_sm.jpg`}
+                alt="avatar"
+              />
+            </div>
+          }
+        />
 
-        <NavItem to="/settings" icon="settings" text="Settings" />
-        <NavItem to="/logout" icon="power_settings_new" text="Logout" />
+        <NavItem
+          to="/settings"
+          icon={<SettingsIcon />}
+          text="Settings"
+          showText={showText}
+        />
+        <NavItem
+          to="/logout"
+          icon={<LogoutIcon />}
+          text="Logout"
+          showText={showText}
+        />
       </section>
     </nav>
   );
 };
 
-const NavItem = ({ to, icon, text, exact }) => {
+const NavItem = ({ to, icon, text, exact, showText }) => {
   return (
     <NavLink
       exact={exact}
       to={to}
       className="nav-item flex-ai-center line-height-11"
     >
-      <i className="material-icons nav-icon">{icon}</i>
-      <span className="nav-span">{text}</span>
+      <div className="nav-item-wrapper">
+        <div className="nav-icon">{icon}</div>
+        {showText && <span className="nav-span">{text}</span>}
+      </div>
     </NavLink>
   );
 };
+
 export default NavigationMenu;

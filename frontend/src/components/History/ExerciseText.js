@@ -7,12 +7,12 @@ const ExerciseText = ({ exercise }) => {
   const user = useUser();
   const { defaultUnit } = user;
   const {
-    exercise: { name },
+    exercise: { name, unit },
     sets
   } = exercise;
 
   let setsView = sets.map(x => {
-    return <Row key={x._id} set={x} defaultUnit={defaultUnit} />;
+    return <Row key={x._id} set={x} defaultUnit={defaultUnit} unit={unit} />;
   });
   return (
     <div>
@@ -24,17 +24,29 @@ const ExerciseText = ({ exercise }) => {
   );
 };
 
-const Row = ({ set, defaultUnit }) => {
+const Row = ({ set, defaultUnit, unit }) => {
   const { reps, weight } = set;
+
+  let lastRowUnit;
+  if (unit === "s") {
+    lastRowUnit = "seconds";
+  } else {
+    lastRowUnit = "reps";
+  }
+
   return (
     <div className="history-exercise-text-row">
       <div className="history-mobile-exercise-list-label-wrapper">
-        <b className="color-gray mr-1 font-14">{ensureDecimal(weight)}</b>
-        <span className="black font-12 font-w-300">{defaultUnit}</span>
+        {unit === "r+w" && (
+          <>
+            <b className="color-gray mr-1 font-14">{ensureDecimal(weight)}</b>
+            <span className="black font-12 font-w-300">{defaultUnit}</span>
+          </>
+        )}
       </div>
       <div className="history-mobile-exercise-list-label-wrapper">
         <b className="color-gray mr-1 font-14">{reps}</b>
-        <span className="black font-12 font-w-300">reps</span>
+        <span className="black font-12 font-w-300">{lastRowUnit}</span>
       </div>
     </div>
   );
