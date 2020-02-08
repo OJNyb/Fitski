@@ -8,7 +8,7 @@ import {
 import { Row } from "../ExerciseText";
 
 const HistoryView = ({ exercise, historyDays }) => {
-  const { _id: exerciseId } = exercise;
+  const { _id: exerciseId, unit } = exercise;
   const todayFormatted = formatHistoryDate(new Date());
 
   let exerciseHistory = findAllOccurencesOfExercise(historyDays, exerciseId);
@@ -28,14 +28,14 @@ const HistoryView = ({ exercise, historyDays }) => {
 
   let dayView = exerciseHistory
     .reverse()
-    .map((x, y) => <Day day={x} key={y} />);
+    .map((x, y) => <Day day={x} key={y} unit={unit} />);
   return <div className="history-mobile-exercise-history-body">{dayView}</div>;
 };
 
-const Day = ({ day }) => {
+const Day = ({ day, unit }) => {
   const { date, sets } = day;
   let setsView = sets.map(x => {
-    return <Row set={x} key={x._id} />;
+    return <Row set={x} key={x._id} unit={unit} />;
   });
   return (
     <div className="margin-top-10">

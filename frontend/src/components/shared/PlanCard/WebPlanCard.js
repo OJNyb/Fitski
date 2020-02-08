@@ -47,7 +47,7 @@ const PlanCard = ({ plan, profile, search, category }) => {
   let created = displayDate(new Date(createdAt));
   return (
     <div
-      className="plans-plan-card flex-center-space-bw"
+      className="plans-plan-card flex-center-space-bw shadow-medium-clickable"
       onClick={() => setRedirect(true)}
     >
       <div className="plans-plan-name">{name}</div>

@@ -4,7 +4,7 @@
   height: 6.5vh;
   margin-left: -45px;
   justify-content: space-between;
-  background-color: #d90000;
+  background-color: #c81111;
   color: white;
 }
 
@@ -91,7 +91,7 @@
 }
 
 .history-mobile-days-box > div {
-  flex: 0.3333333;
+  flex: 0.3333333 100vw;
 }
 
 .history-mobile-days-box-transition {

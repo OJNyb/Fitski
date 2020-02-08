@@ -24,7 +24,7 @@ const UserCard = ({ user, search, category }) => {
   return (
     <div
       onClick={() => setRedirect(true)}
-      className="padding-10 border-box explore-web-user-card black"
+      className="padding-10 border-box explore-web-user-card black shadow-medium-clickable"
     >
       <div className="explore-web-avatar-container margin-0-5">
         <div style={{ backgroundImage: `url(${avatarUrl})` }}>

@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect, useCallback } from "react";
 
 const WebExerciseColumn = ({
   set,
+  unit,
   index,
   exerId,
   onDeleteSet,
@@ -108,6 +109,7 @@ const WebExerciseColumn = ({
       </span>
 
       <ExerciseForm
+        unit={unit}
         onChange={onChange}
         inputReps={inputReps}
         onInputBlur={onInputBlur}
@@ -118,8 +120,15 @@ const WebExerciseColumn = ({
   );
 };
 
-const ExerciseForm = ({ setId, onChange, inputReps, onInputBlur }) => {
+const ExerciseForm = ({ unit, setId, onChange, inputReps, onInputBlur }) => {
   const inputEl = useRef(null);
+
+  let lastRowUnit;
+  if (unit === "s") {
+    lastRowUnit = "seconds";
+  } else {
+    lastRowUnit = "reps";
+  }
 
   return (
     <div className="edit-week-web-reps-wrapper flex-ai-center">
@@ -145,7 +154,7 @@ const ExerciseForm = ({ setId, onChange, inputReps, onInputBlur }) => {
             onFocus={e => e.target.select()}
             className="black font-14 mr-1 web-card-input"
           />
-          reps
+          {lastRowUnit}
         </label>
       </form>
     </div>

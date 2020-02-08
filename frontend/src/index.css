@@ -1,4 +1,39 @@
 body {
   font-family: "Oswald", sans-serif;
   margin: 0;
+  background-color: #f8efef;
+}
+
+#root {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  align-items: stretch;
+}
+
+header,
+main {
+  flex-grow: 1;
+  flex-basis: auto;
+  position: relative;
+}
+
+header {
+  flex-shrink: 0;
+}
+
+/* TODO */
+main {
+  display: flex;
+  flex-shrink: 1;
+  align-items: flex-start;
+  border-left: 1px solid rgb(233, 220, 220);
+
+  /* border-right: 1px solid;
+  border-left: 1px solid;
+  border-color: rgb(240, 230, 230); */
+}
+
+body div {
+  box-sizing: border-box;
 }

@@ -12,6 +12,7 @@ import CalendarMuscleGroupCircle from "./CalendarMuscleGroupCircle";
 import {
   addDay,
   retryAddDay,
+  addNoteToNewDay,
   deleteDay,
   addExercise,
   retryAddExercise,
@@ -23,7 +24,8 @@ import {
   retryEditSet,
   deleteSet,
   copyDay,
-  reorderExercise
+  reorderExercise,
+  editDay
 } from "../../utils/historyClient";
 
 import SetLoading from "../SetLoading";
@@ -42,7 +44,7 @@ const History = () => {
   );
   const { history, isPending, isRejected } = state;
   const isMobile = useMobile();
-  useTitle("Fitnut - Calendar");
+  useTitle("Chadify - Calendar");
 
   useSetLoading(isPending);
 
@@ -151,6 +153,14 @@ const History = () => {
     copyDay(dispatch, dayToCopy, formattedDate);
   }
 
+  function handleEditDay(note) {
+    if (dayIndex === -1) {
+      addNoteToNewDay(dispatch, date, note);
+    } else {
+      editDay(dispatch, dayId, note);
+    }
+  }
+
   function handleReorderExercise(result) {
     const { destination, source } = result;
 
@@ -177,9 +187,9 @@ const History = () => {
 
         let circles = muscleGroups.map(x => {
           let color = x.color;
-          console.log(x);
+
           return (
-            <div key={x}>
+            <div key={x._id}>
               <CalendarMuscleGroupCircle fill={color} />
             </div>
           );
@@ -197,9 +207,11 @@ const History = () => {
         historyDays={days}
         date={moment(date)}
         currentDay={currentDay}
+        handleEditDay={handleEditDay}
         handleAddSet={handleAddSet}
         handleEditSet={handleEditSet}
         handleCopyDay={handleCopyDay}
+        handleEditDay={handleEditDay}
         handleDeleteSet={handleDeleteSet}
         handleDateChange={handleDateChange}
         handleAddExercise={handleAddExercise}
@@ -220,6 +232,7 @@ const History = () => {
         currentDay={currentDay}
         handleAddSet={handleAddSet}
         handleEditSet={handleEditSet}
+        handleEditDay={handleEditDay}
         handleCopyDay={handleCopyDay}
         handleDeleteSet={handleDeleteSet}
         handleDateChange={handleDateChange}

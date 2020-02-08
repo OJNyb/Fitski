@@ -42,7 +42,7 @@ const WebExerciseCard = ({
     }
   }
 
-  const { name, _id: exerciseId } = nExercise;
+  const { name, unit, _id: exerciseId } = nExercise;
 
   let headDropdown = null;
 
@@ -50,6 +50,7 @@ const WebExerciseCard = ({
     <WebExerciseColumn
       set={x}
       index={y}
+      unit={unit}
       key={x._id}
       dayId={dayId}
       exerId={exerId}
@@ -66,7 +67,7 @@ const WebExerciseCard = ({
         <div
           ref={provided.innerRef}
           {...provided.draggableProps}
-          className="pt-10"
+          className="pt-10 exercise-card-container"
         >
           <div
             className={

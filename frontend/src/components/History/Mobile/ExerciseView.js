@@ -18,7 +18,7 @@ const ExerciseView = ({
   handleEditSetRetry
 }) => {
   const { _id: exerId, sets, exercise } = exer;
-  const { _id: exerciseId } = exercise;
+  const { unit, _id: exerciseId } = exercise;
   const [exerciseView, setExerciseView] = useState("track");
 
   let viewDisplay;
@@ -26,6 +26,7 @@ const ExerciseView = ({
     viewDisplay = (
       <TrackView
         sets={sets}
+        unit={unit}
         exerId={exerId}
         exerciseId={exerciseId}
         onAddSet={handleAddSet}
@@ -41,7 +42,7 @@ const ExerciseView = ({
     viewDisplay = <GraphView />;
   }
   return (
-    <>
+    <div className="pt-50 width-100vw">
       <TrackNav
         exerciseName={exer.exercise.name}
         setShowExercise={setShowExercise}
@@ -84,7 +85,7 @@ const ExerciseView = ({
         </div>
       </>
       <div className="history-mobile-exercise-body flex-col">{viewDisplay}</div>
-    </>
+    </div>
   );
 };
 

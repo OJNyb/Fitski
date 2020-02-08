@@ -5,6 +5,8 @@ import Search from "../../SVGs/Search";
 import "./webExercises.css";
 import DropDown from "../../DropDown/DropDown";
 import MuscleGroupDropdown from "./MuscleGroupDropdown";
+import FilterIcon from "../FilterIcon";
+import AddExerciseIcon from "../AddExerciseIcon";
 
 const Exercises = ({
   search,
@@ -60,51 +62,47 @@ const Exercises = ({
   return (
     <>
       <div className="exercises-container">
-        <div className="exercises-head">
-          <div className="exercise-search-container flex-center-space-bw">
-            <input value={search} onChange={handleSearchChange} />
-            <Search />
-          </div>
+        <div className="exercise-search-container flex-center-space-bw shadow-small">
+          <input value={search} onChange={handleSearchChange} />
+          <Search />
+        </div>
 
-          <div className="exercise-muscle-group-wrapper flex-center-space-bw">
-            <button
-              className={
-                "exercise-muscle-group-btn flex-ai-center bc-white" +
-                (muscleGroup.length
-                  ? " exercises-muscle-group-item-checked font-w-500"
-                  : "")
-              }
-              onClick={() => setShowFilter(!showFilter)}
-            >
-              <span>Muscle group</span>
-              <i
+        <div className="exercises-body-wrapper shadow-medium">
+          <div className="exercises-head">
+            <div className="exercise-muscle-group-wrapper flex-center-space-bw">
+              <button
                 className={
-                  "material-icons-round" + (showFilter ? " rotate-180" : "")
+                  "exercise-muscle-group-btn flex-ai-center bc-white shadow-medium-clickable" +
+                  (muscleGroup.length
+                    ? " exercises-muscle-group-item-checked font-w-500"
+                    : "")
                 }
+                onClick={() => setShowFilter(!showFilter)}
               >
-                keyboard_arrow_down
-              </i>
-            </button>
+                <FilterIcon />
+                <span className="color-gray">Filter</span>
+              </button>
 
-            <button
-              className="tc flex-ai-center"
-              onClick={() => setShowModal({ type: "add" })}
-            >
-              <span>Add Exercise</span>
-            </button>
-          </div>
-          {showFilter && (
+              <button
+                className="theme-btn-no-border padding-5 flex-ai-center"
+                onClick={() => setShowModal({ type: "add" })}
+              >
+                <AddExerciseIcon />
+              </button>
+            </div>
+
             <MuscleGroupDropdown
               muscleGroup={muscleGroup}
               muscleGroups={muscleGroups}
               hideDropdown={() => setShowFilter(false)}
+              showFilter={showFilter}
               onMuscleGroupCheck={handleMuscleGroupCheck}
             />
-          )}
-        </div>
-        <div className="exercises-body custom-scrollbar">
-          <div></div>
-          <div>{exercisesDisplay}</div>
+          </div>
+          <div className="exercises-body custom-scrollbar">
+            <div></div>
+            <div>{exercisesDisplay}</div>
+          </div>
         </div>
       </div>
     </>

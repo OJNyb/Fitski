@@ -9,11 +9,17 @@ export function isSuccessful(res) {
 
 export function getErrorMessage(err) {
   if (err) {
-    const { error } = err;
-    if (error) {
-      const { details } = error;
-      if (details) {
-        return details;
+    const { response } = err;
+    if (response) {
+      const { data } = response;
+      if (data) {
+        const { error } = data;
+        if (error) {
+          const { details } = error;
+          if (details) {
+            return details;
+          }
+        }
       }
     }
   }

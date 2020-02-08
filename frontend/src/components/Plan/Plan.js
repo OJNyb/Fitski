@@ -23,6 +23,7 @@ import RemovePlanModal from "./RemovePlanModal";
 import ActivatePlanModal from "../shared/Modal/ActivatePlanModal";
 import ConfirmModal from "../shared/Modal/ConfirmModal";
 import SetLoading from "../SetLoading";
+import { MainTile, MainContainer, SecondTile } from "../shared/Layout";
 
 import "./plan.css";
 
@@ -193,20 +194,28 @@ const Plan = () => {
 
   return (
     <>
-      <PlanNav
-        planId={planId}
-        isSelf={isSelf}
-        planName={name}
-        isMobile={isMobile}
-        isActive={isActive}
-        navState={navState}
-        navDispatch={navDispatch}
-        setShowModal={setShowModal}
-        accessedPlans={accessedPlans}
-        onGetClick={handleGetClick}
-      />
-      <Suspense fallback={<SetLoading />}>{view}</Suspense>
-
+      <MainContainer>
+        <MainTile maxWidth={710}>
+          <PlanNav
+            planId={planId}
+            isSelf={isSelf}
+            planName={name}
+            isMobile={isMobile}
+            isActive={isActive}
+            navState={navState}
+            navDispatch={navDispatch}
+            setShowModal={setShowModal}
+            accessedPlans={accessedPlans}
+            onGetClick={handleGetClick}
+          />
+          <Suspense fallback={<SetLoading />}>{view}</Suspense>
+        </MainTile>
+        <SecondTile>
+          <ul>
+            <li>Week navigation ?</li>
+          </ul>
+        </SecondTile>
+      </MainContainer>
       {modal}
     </>
   );

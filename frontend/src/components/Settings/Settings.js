@@ -1,13 +1,12 @@
 import React, { lazy, useState, Suspense } from "react";
 import { useAuth } from "../../context/authContext";
-import useSetLoading from "../../hooks/useSetLoading";
 import { editUser } from "../../utils/userClient";
-import { Link } from "react-router-dom";
 
 import "./settings.css";
 import useMobile from "../../hooks/useMobile";
 
 const MobileSettings = lazy(() => import("./Mobile/MobileSettings"));
+const WebSettings = lazy(() => import("./Web/WebSettings"));
 
 const Settings = () => {
   const isMobile = useMobile();
@@ -26,30 +25,20 @@ const Settings = () => {
   let view;
 
   if (isMobile) {
-    view = <MobileSettings unit={unit} onUnitChange={handleUnitChange} />;
+    view = (
+      <MobileSettings
+        unit={unit}
+        email={email}
+        onUnitChange={handleUnitChange}
+      />
+    );
   } else {
-    view = <WebSettings unit={unit} onUnitChange={handleUnitChange} />;
+    view = (
+      <WebSettings unit={unit} email={email} onUnitChange={handleUnitChange} />
+    );
   }
 
-  const uniqueId = "secret";
-  const clientId = "ca_GbJab9cP8cKD92X9M9hjDdiCwlG0HAxz";
-
-  return (
-    <Suspense fallback={null}>
-      {view}
-      <a
-        href={`https://connect.stripe.com/express/oauth/authorize?/client_id=${clientId}&state=${uniqueId}&stripe_user[email]=${email}`}
-        className="theme-btn padding-10"
-      >
-        Become a seller
-      </a>
-    </Suspense>
-  );
-};
-
-const WebSettings = ({ unit, onUnitChange }) => {
-  useSetLoading(false);
-  return <MobileSettings unit={unit} onUnitChange={onUnitChange} />;
+  return <Suspense fallback={null}>{view}</Suspense>;
 };
 
 // const SettingsForm = () => {

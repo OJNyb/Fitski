@@ -6,12 +6,15 @@ import {
 } from "../../../utils/formatHistoryDate";
 import useSwipe from "../../../hooks/useSwipe";
 import DeleteExerciseModal from "./DeleteExerciseModal";
+import NoteIcon from "./NoteIcon";
+import CalendarIcon from "./CalendarIcon";
+import NoteModal from "../NoteModal";
 
 import LoadingSpinner from "../../shared/SVGs/LoadingSpinner";
 
 import Day from "./MobileHistoryDay";
 
-import Plus20 from "../../shared/SVGs/Plus20";
+import Plus24 from "../../shared/SVGs/Plus24";
 import NavigateDays from "./NavigateDays";
 import SelectedNavBar from "./SelectedNavBar";
 
@@ -27,6 +30,7 @@ const MobileDayView = ({
   handleDragEnd,
   currentDay,
   onDateChange,
+  handleEditDay,
   handleCopyDayClick,
   onCalendarClick,
   setShowExercise,
@@ -34,16 +38,10 @@ const MobileDayView = ({
   handleDeleteExercises,
   handleAddExerciseRetry
 }) => {
+  const [showNoteModal, setShowNoteModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedExercises, setSelectedExercises] = useState([]);
-  const {
-    onTouchStart,
-    onTouchMove,
-    onTouchEnd,
-
-    x,
-    transition
-  } = useSwipe(
+  const { onTouchStart, onTouchMove, onTouchEnd, x, transition } = useSwipe(
     () => onDateChange(modifyDate(new Date(_d), -1)),
 
     () => onDateChange(modifyDate(new Date(_d), 1))
@@ -69,7 +67,7 @@ const MobileDayView = ({
     );
   } else {
     bottomNavContent = (
-      <div className="bc-d9 width-100p flex-center-space-bw color-white padding-0 border-box height-50 fixed">
+      <div className="bc-theme-ligther width-100p flex-center-space-bw color-white padding-0 border-box height-50 fixed">
         <NavigateDays
           centerText={displayDate(_d)}
           leftArrowAction={() => onDateChange(decrementDate(_d))}
@@ -99,25 +97,43 @@ const MobileDayView = ({
       />
     );
   }
+  if (showNoteModal) {
+    let note;
+    if (currentDay) {
+      note = currentDay.note;
+    }
+    modal = (
+      <NoteModal
+        pNote={note}
+        hideModal={() => setShowNoteModal(false)}
+        onSubmit={handleEditDay}
+      />
+    );
+  }
   return (
     <>
+      {modal}
       <div className="mobile-nav-icon-container flex-ai-center border-box fixed">
+        <button className="padding-5" onClick={() => setShowNoteModal(true)}>
+          <NoteIcon />
+        </button>
         <button
           className="white-material-btn padding-5"
           onClick={onCalendarClick}
         >
-          <i className="material-icons material-icons-22">calendar_today</i>
+          <CalendarIcon />
+          {/* <i className="material-icons material-icons-22">calendar_today</i> */}
         </button>
 
         <button
           className="white-material-btn padding-5"
           onClick={onExercisesClick}
         >
-          <Plus20 fill={"#fff"} />
+          <Plus24 fill={"#fff"} />
         </button>
       </div>
       {bottomNavContent}
-      <div className="pt-50 history-mobile-body-container margin-a">
+      <div className="history-mobile-body-container margin-a">
         <div className="history-mobile-days-container">
           <div className="history-mobile-days-wrapper">
             <div

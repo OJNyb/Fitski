@@ -4,6 +4,7 @@ import { ensureDecimal } from "../../../utils/ensureDecimal";
 const WebExerciseColumn = ({
   set,
   exerId,
+  unit,
   defaultUnit,
   onDeleteSet,
   handleEditSet,
@@ -128,6 +129,7 @@ const WebExerciseColumn = ({
       </div>
 
       <ExerciseForm
+        unit={unit}
         onChange={onChange}
         inputReps={inputReps}
         defaultUnit={defaultUnit}
@@ -140,6 +142,7 @@ const WebExerciseColumn = ({
 };
 
 const ExerciseForm = ({
+  unit,
   setId,
   onChange,
   inputReps,
@@ -155,35 +158,45 @@ const ExerciseForm = ({
     repsInputEl.current.blur();
     weightInputEl.current.blur();
   }
+
+  let lastRowUnit;
+  if (unit === "s") {
+    lastRowUnit = "seconds";
+  } else {
+    lastRowUnit = "reps";
+  }
+
   return (
     <form
       className="flex-ai-center history-web-column-form"
       onSubmit={onSubmit}
     >
       <div className="history-web-row">
-        <label
-          htmlFor={`weight-${setId}`}
-          className="padding-5 font-12 color-gray font-w-300"
-        >
-          <input
-            name="weight"
-            id={`weight-${setId}`}
-            type="number"
-            ref={weightInputEl}
-            value={inputWeight}
-            onChange={onChange}
-            onBlur={onInputBlur}
-            onFocus={e => e.target.select()}
-            className="black font-14 mr-1 web-card-input"
-          />
-          {defaultUnit}
-        </label>
+        {unit === "r+w" && (
+          <label
+            htmlFor={`weight-${setId}`}
+            className="padding-3 font-12 color-gray font-w-300"
+          >
+            <input
+              name="weight"
+              id={`weight-${setId}`}
+              type="number"
+              ref={weightInputEl}
+              value={inputWeight}
+              onChange={onChange}
+              onBlur={onInputBlur}
+              onFocus={e => e.target.select()}
+              className="black font-14 mr-1 web-card-input"
+            />
+            {defaultUnit}
+          </label>
+        )}
       </div>
 
       <div className="history-web-row">
         <label
           htmlFor={`reps-${setId}`}
-          className="padding-5 font-12 color-gray font-w-300"
+          className="padding-3 font-12 color-gray font-w-300"
         >
           <input
             name="reps"
@@ -196,7 +209,7 @@ const ExerciseForm = ({
             onFocus={e => e.target.select()}
             className="black font-14 mr-1 web-card-input"
           />
-          reps
+          {lastRowUnit}
         </label>
       </div>
     </form>

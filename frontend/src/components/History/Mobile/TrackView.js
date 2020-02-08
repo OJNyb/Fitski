@@ -8,6 +8,7 @@ import Minus20 from "../../shared/SVGs/Minus20";
 
 const TrackView = ({
   sets,
+  unit,
   exerId,
   exerciseId,
   onAddSet,
@@ -18,6 +19,7 @@ const TrackView = ({
 }) => {
   const [selectedSet, setSelectedSet] = useState({});
   const [weight, setWeight] = useState(ensureDecimal(0));
+  const [initSetSet, setInitSetSet] = useState(false);
   const [reps, setReps] = useState(0);
   const user = useUser();
   const { defaultUnit } = user;
@@ -38,6 +40,10 @@ const TrackView = ({
   );
 
   useEffect(() => {
+    if (!initSetSet) {
+      setInitialSet();
+      setInitSetSet(true);
+    }
     function setInitialInput() {
       if (sets.length) {
         const { reps: dReps, weight: dWeight } = sets[sets.length - 1];
@@ -54,7 +60,6 @@ const TrackView = ({
       }
     }
     setInitialInput();
-    setInitialSet();
   }, [exerId, selectedSet, sets, onItemClick]);
 
   useSetLoading(false);
@@ -93,6 +98,7 @@ const TrackView = ({
       key={x._id}
       set={x}
       index={y}
+      unit={unit}
       exerId={exerId}
       selectedSetId={setId}
       onDeleteSet={onDeleteSet}
@@ -117,22 +123,31 @@ const TrackView = ({
     }
   }
 
+  let lastRowUnit;
+  if (unit === "s") {
+    lastRowUnit = "SECONDS";
+  } else {
+    lastRowUnit = "REPS";
+  }
+
   return (
     <>
-      <TrackInput
-        label={`WEIGHT (${defaultUnit})`}
-        onChange={onWeightChange}
-        onDecrement={() => {
-          if (weight - 2.5 >= 0) {
-            setWeight(ensureDecimal(Number(weight) - 2.5));
-          }
-        }}
-        onIncrement={() => setWeight(ensureDecimal(Number(weight) + 2.5))}
-        value={weight}
-      />
+      {unit === "r+w" && (
+        <TrackInput
+          label={`WEIGHT (${defaultUnit})`}
+          onChange={onWeightChange}
+          onDecrement={() => {
+            if (weight - 2.5 >= 0) {
+              setWeight(ensureDecimal(Number(weight) - 2.5));
+            }
+          }}
+          onIncrement={() => setWeight(ensureDecimal(Number(weight) + 2.5))}
+          value={weight}
+        />
+      )}
 
       <TrackInput
-        label={"REPS"}
+        label={lastRowUnit}
         onDecrement={() => {
           if (reps > 0) setReps(Number(reps) - 1);
         }}
@@ -212,6 +227,7 @@ const TrackInput = ({ label, onDecrement, onIncrement, onChange, value }) => {
 
 const TrackListItem = ({
   set,
+  unit,
   index,
   exerId,
   defaultUnit,
@@ -235,11 +251,18 @@ const TrackListItem = ({
     }
   }
 
+  let lastRowUnit;
+  if (unit === "s") {
+    lastRowUnit = "seconds";
+  } else {
+    lastRowUnit = "reps";
+  }
+
   return (
     <>
       <div
         className={
-          "history-mobile-exercise-list-item" +
+          "history-mobile-exercise-list-item theme-border-bottom" +
           (setId === selectedSetId
             ? " history-mobile-exercise-list-item-active"
             : "") +
@@ -256,17 +279,21 @@ const TrackListItem = ({
         </div>
         <div className="history-mobile-exercise-list-kg-reps">
           <div className="history-mobile-exercise-list-label-wrapper">
-            <span>
-              <b className="mr-1">{ensureDecimal(weight)}</b>
-              <span className="font-12 color-gray font-w-400 color-light-gray">
-                {defaultUnit}
+            {unit === "r+w" && (
+              <span>
+                <b className="mr-1">{ensureDecimal(weight)}</b>
+                <span className="font-12 color-gray font-w-400 color-light-gray">
+                  {defaultUnit}
+                </span>
               </span>
-            </span>
+            )}
           </div>
           <div className="history-mobile-exercise-list-label-wrapper">
             <span>
               <b className="mr-1 font-16 font-w-700">{reps}</b>
-              <span className="font-12 font-w-400 color-light-gray">reps</span>
+              <span className="font-12 font-w-400 color-light-gray">
+                {lastRowUnit}
+              </span>
             </span>
           </div>
         </div>

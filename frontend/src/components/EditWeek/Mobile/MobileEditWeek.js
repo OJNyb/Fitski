@@ -7,6 +7,7 @@ import { Droppable, DragDropContext } from "react-beautiful-dnd";
 import ExerciseCard from "./ExerciseCard";
 import Exercises from "../../shared/Exercises/Exercises";
 import LoadingSpinner from "../../shared/SVGs/LoadingSpinner";
+import EditWeekNav from "../EditWeekNav";
 import SubNav from "./MobileSubNav";
 import Plus20 from "../../shared/SVGs/Plus20";
 
@@ -27,7 +28,8 @@ const MobileEditWeek = ({
   handleDeleteExercise,
   handleAddExerciseRetry,
   handleAddSetRetry,
-  handleEditSetRetry
+  handleEditSetRetry,
+  handleDeleteWeekSubmit
 }) => {
   const [showExercises, setShowExercises] = useState(false);
   const [activeExercise, setActiveExercise] = useState(null);
@@ -95,61 +97,19 @@ const MobileEditWeek = ({
   return (
     <>
       <div onClick={() => setActiveExercise(null)}>
+        <EditWeekNav
+          weeks={weeks}
+          weekIndex={weekIndex}
+          isMobile={true}
+          handleDeleteWeekSubmit={handleDeleteWeekSubmit}
+        />
         <SubNav
           weeks={weeks}
           weekIndex={weekIndex}
           currentDayIndex={currentDayIndex}
           setCurrentDayIndex={setCurrentDayIndex}
         />
-        {/* <div className="edit-week-mobile-head-container">
-          <div className="edit-week-mobile-date-container">
-            <div className="edit-week-mobile-date-btn">
-              <span>Week</span>
-              <div className="flex-center">
-                <Link
-                  to={prevWeekLink || weekId}
-                  className="theme-btn-no-border"
-                  aria-disabled={!prevWeekLink}
-                >
-                  <i className="material-icons">keyboard_arrow_left</i>
-                </Link>
-                <span className="black">{weekIndex + 1}</span>
-                <Link
-                  className="theme-btn-no-border"
-                  to={nextWeekLink || weekId}
-                  aria-disabled={!nextWeekLink}
-                >
-                  <i className="material-icons">keyboard_arrow_right</i>
-                </Link>
-              </div>
-            </div>
-          </div>
 
-    
-
-          <div className="edit-week-mobile-date-container">
-            <div className="edit-week-mobile-date-btn">
-              <span>Day</span>
-              <div className="flex-center">
-                <button
-                  className="theme-btn-no-border"
-                  disabled={!currentDayIndex}
-                  onClick={() => setCurrentDayIndex(currentDayIndex - 1)}
-                >
-                  <i className="material-icons">keyboard_arrow_left</i>
-                </button>
-                <span className="black">{currentDayIndex + 1}</span>
-                <button
-                  className="theme-btn-no-border"
-                  disabled={currentDayIndex === 6}
-                  onClick={() => setCurrentDayIndex(currentDayIndex + 1)}
-                >
-                  <i className="material-icons">keyboard_arrow_right</i>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div> */}
         <div className="edit-week-mobile-add-btn-container">
           <button
             className="theme-btn-no-border"

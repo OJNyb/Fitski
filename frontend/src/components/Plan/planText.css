@@ -1,6 +1,12 @@
 .plan-week-container {
+  border-top: 1px solid rgb(233, 220, 220);
+  padding-top: 15px;
   margin-top: 20px;
   position: relative;
+}
+
+.plan-week-container:nth-child(4) {
+  border-top: 0px !important;
 }
 
 .plan-week-container h1 {
@@ -9,7 +15,7 @@
 }
 
 .plan-text-week-header-link:hover {
-  color: #d90000;
+  color: #c81111;
 }
 
 .plan-days-container {
@@ -20,7 +26,13 @@
 }
 
 .plan-day-container {
-  margin: 0 10px 10px;
+  padding: 0 10px 10px;
+  width: 100%;
+  max-width: 350px;
+}
+
+.plan-web-day-container h2 {
+  margin-left: 8px;
 }
 
 .plan-exercise-container {

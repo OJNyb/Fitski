@@ -1,6 +1,6 @@
 /* Plan text */
 .plan-mobile-exercise-container {
-  width: 90vw;
+  width: 100%;
   max-width: 350px;
   border-color: transparent !important;
   margin: 5px 0;

@@ -107,9 +107,61 @@ router.post(
 
     const { userId } = session;
 
-    User.findByIdAndUpdate(userId, {
-      $set: { ...body }
-    })
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return next("No user");
+    }
+
+    const newUser = {
+      ...user,
+      ...body
+    };
+
+    newUser
+      .save()
+      .then(() => res.json({ message: "success" }))
+      .catch(err => {
+        const { name, error } = err;
+        if (name === "ValidationError") {
+          return res.status(400).json(createMongoError(err));
+        } else if (name === "preSaveError") {
+          res.status(409).json(createErrorObject([error]));
+        } else {
+          next(err);
+        }
+      });
+  }
+);
+
+// @route POST api/user/edit/email
+// @desc Edit Email
+// @access Private
+router.post(
+  "/edit/email",
+  ensureSignedIn,
+  validateRequest,
+  async (req, res, next) => {
+    const { body, session } = req;
+    const { email, password } = body;
+    const { userId } = session;
+
+    const user = await User.findById(userId).select("password");
+
+    if (!user) {
+      return next("No user");
+    }
+
+    if (!(await user.matchesPassword(password))) {
+      return res
+        .status(401)
+        .json(createErrorObject(["Incorrect password. Please try again"]));
+    }
+
+    user.email = email;
+
+    user
+      .save()
       .then(() => res.json({ message: "success" }))
       .catch(err => {
         const { name, error } = err;
@@ -146,7 +198,7 @@ router.delete("/", ensureSignedIn, async (req, res, next) => {
 
       req.session.destroy(err => {
         if (err) {
-          next(err);
+          return next(err);
         }
 
         return res
@@ -186,7 +238,7 @@ router.post("/login", ensureSignedOut, validateRequest, async (req, res) => {
 router.get("/logout", ensureSignedIn, (req, res, next) => {
   req.session.destroy(err => {
     if (err) {
-      next(err);
+      return next(err);
     }
 
     return res
@@ -267,16 +319,15 @@ router.post(
           });
           const mailOptions = {
             to: user.email,
-            from: "postmaster@mg.fitnut.no",
-            subject: "Fitnut Password Reset",
+            from: "postmaster@mg.chadify.me",
+            subject: "Chadify Password Reset",
             text: `Hello,\n\nWe've recieved a request to reset your password\n\nIf you didn't make the request, just ignore this message.\n\nOtherwise, you can reset your password clicking this link:\n\nhttp://localhost:3000/reset/${token}\n\nThanks,\nChad\n`
           };
           smtpTransport.sendMail(mailOptions, function(err) {
             if (err) {
-              next(err);
-            } else {
-              return res.status(200).json({ message: "success" });
+              return next(err);
             }
+            res.status(200).json({ message: "success" });
           });
         })
         .catch(next);
@@ -325,19 +376,77 @@ router.post(
       });
       const mailOptions = {
         to: user.email,
-        from: "Fitnut",
+        from: "Chadify",
         subject: "Your password has been changed",
         text: `Hello,\n\nThis is a confirmation that the password for your account ${user.email} has just been changed.\n`
       };
       smtpTransport.sendMail(mailOptions, function(err) {
-        if (err)
-          res
+        if (err) {
+          return res
             .status(500)
             .json(
-              createErrorObject(["Something wen't wrong, please try again"])
+              createErrorObject(["Something went wrong, please try again"])
             );
+        }
         res.status(200).json({ message: "success" });
       });
+    });
+  }
+);
+
+// @route POST api/user/password/set
+// @desc Set password
+// @access Private
+router.post(
+  "/password/set",
+  ensureSignedIn,
+  validateRequest,
+  async (req, res) => {
+    const { body, session } = req;
+    const { userId } = session;
+    const { oldPassword, newPassword } = body;
+
+    const user = await User.findById(userId).select("password");
+
+    if (!user) {
+      return next("No user");
+    }
+
+    if (!(await user.matchesPassword(oldPassword))) {
+      return res
+        .status(401)
+        .json(createErrorObject(["Incorrect password. Please try again"]));
+    }
+
+    user.password = newPassword;
+
+    user.save().then(() => {
+      const smtpTransport = nodemailer.createTransport({
+        port: 587,
+        host: "smtp.eu.mailgun.org",
+        secure: false,
+        auth: {
+          user: MAILGUN_EMAIL,
+          pass: MAILGUN_PASSWORD
+        }
+      });
+      // TODO
+      const mailOptions = {
+        to: user.email,
+        from: "Chadify",
+        subject: "Your password has been changed",
+        text: `Hello,\n\nThis is a confirmation that the password for your account ${user.email} has just been changed.\n`
+      };
+      // smtpTransport.sendMail(mailOptions, function(err) {
+      //   if (err) {
+      //     return res
+      //       .status(500)
+      //       .json(
+      //         createErrorObject(["Something went wrong, please try again"])
+      //       );
+      //   }
+      //  });
+      res.status(200).json({ message: "success" });
     });
   }
 );

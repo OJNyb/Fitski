@@ -28,7 +28,7 @@ const ExerciseCard = ({
     isPending,
     isRejected,
     _id: exerId,
-    exercise: { name, _id: exerciseId }
+    exercise: { name, unit, _id: exerciseId }
   } = exercise;
 
   let headDropdown = null;
@@ -38,6 +38,7 @@ const ExerciseCard = ({
       set={set}
       key={set._id}
       exerId={exerId}
+      unit={unit}
       defaultUnit={defaultUnit}
       handleEditSet={handleEditSet}
       onDeleteSet={handleDeleteSet}
@@ -60,7 +61,7 @@ const ExerciseCard = ({
         <div
           ref={provided.innerRef}
           {...provided.draggableProps}
-          className="pt-10"
+          className="pt-10 exercise-card-container"
         >
           <div
             className={

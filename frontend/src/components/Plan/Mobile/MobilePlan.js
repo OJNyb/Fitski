@@ -50,7 +50,7 @@ const MobilePlan = ({ woPlan, isSelf, navState, setShowModal }) => {
     );
   }
   return (
-    <div style={{ padding: "10px 0 50px" }}>
+    <div style={{ padding: "50px 0 50px" }}>
       {!!weeks.length && <Overview woPlan={woPlan} />}
       {weeksDisplay}
     </div>

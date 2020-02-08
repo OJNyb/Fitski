@@ -68,11 +68,6 @@ WOPlanSchema.index({
   description: "text"
 });
 
-// Setter
-WOPlanSchema.path("price").set(function(num) {
-  return num * 100;
-});
-
 const WOPlan = model("woPlan", WOPlanSchema);
 
 module.exports = WOPlan;

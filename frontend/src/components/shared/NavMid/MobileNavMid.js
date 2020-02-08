@@ -75,7 +75,8 @@ const MobileNavMid = ({
       <div className="nav-mid-header-item">
         <h2
           className={
-            "nav-h2 m-l-3 font-18 color-white " + (showDehaze ? "mb-2" : "mb-1")
+            "nav-h2 font-18 color-white mobile-nav-h2 " +
+            (showDehaze ? "mt-0" : "mt-1")
           }
         >
           {backText}

@@ -1,10 +1,10 @@
 import React from "react";
 import { Types } from "mongoose";
 import axios from "axios";
+
 import MobileInput from "../shared/Form/MobileInput";
 import CustomRadio from "../shared/Form/CustomRadio";
-import PriceInput from "./PriceInput";
-
+import PriceInput from "../shared/Form/PriceInput";
 import { Form, Field, Formik } from "formik";
 import { useUser } from "../../context/userContext";
 import StripeConnect from "../Stripe/StripeConnect";
@@ -55,94 +55,101 @@ const CreatePlanForm = ({ isMobile, setRedir }) => {
     >
       {({ values, isSubmitting }) => (
         <Form className="stretch flex-col width-100p border-box padding-10-0 create-plan-form">
-          <Field
-            name="name"
-            component={MobileInput}
-            label="Name"
-            maxLength={30}
-            autoComplete="off"
-          />
+          {console.log(values)}
+          <div className="create-plan-input-wrapper">
+            <Field
+              name="name"
+              component={MobileInput}
+              label="Name"
+              maxLength={30}
+              autoComplete="off"
+            />
 
-          <Field
-            name="goal"
-            component={MobileInput}
-            label="Goal"
-            maxLength={20}
-            autoComplete="off"
-          />
+            <Field
+              name="goal"
+              component={MobileInput}
+              label="Goal"
+              maxLength={20}
+              autoComplete="off"
+            />
 
-          <Field
-            name="description"
-            component={MobileInput}
-            label="Description"
-            textarea={true}
-            verticalResize={true}
-            maxLength={30000}
-          />
+            <Field
+              name="description"
+              component={MobileInput}
+              label="Description"
+              textarea={true}
+              verticalResize={true}
+              maxLength={30000}
+            />
 
-          <div className="create-plan-radio-container border-box padding-10-15">
-            <div>
-              <span>Access</span>
+            <div className="create-plan-radio-container border-box padding-10-15">
+              <div>
+                <span>Access</span>
 
-              {console.log(values)}
-              <Field
-                component={CustomRadio}
-                text="Private"
-                name="access"
-                valueski="private"
-              />
+                {console.log(values)}
+                <Field
+                  component={CustomRadio}
+                  text="Private"
+                  name="access"
+                  valueski="private"
+                />
 
-              <Field
-                component={CustomRadio}
-                text="Public"
-                name="access"
-                valueski="public"
-              />
+                <Field
+                  component={CustomRadio}
+                  text="Public"
+                  name="access"
+                  valueski="public"
+                />
 
-              <Field
-                component={CustomRadio}
-                text="Paywall"
-                name="access"
-                valueski="paywall"
-              />
+                <Field
+                  component={CustomRadio}
+                  text="Paywall"
+                  name="access"
+                  valueski="paywall"
+                />
+              </div>
+
+              <div>
+                <span>Difficulty</span>
+
+                <Field
+                  component={CustomRadio}
+                  text="Beginner"
+                  name="difficulty"
+                  valueski="Beginner"
+                />
+
+                <Field
+                  component={CustomRadio}
+                  text="Intermediate"
+                  name="difficulty"
+                  valueski="Intermediate"
+                />
+
+                <Field
+                  component={CustomRadio}
+                  text="Advanced"
+                  name="difficulty"
+                  valueski="Advanced"
+                />
+              </div>
             </div>
 
-            <div>
-              <span>Difficulty</span>
-
-              <Field
-                component={CustomRadio}
-                text="Beginner"
-                name="difficulty"
-                valueski="Beginner"
-              />
-
-              <Field
-                component={CustomRadio}
-                text="Intermediate"
-                name="difficulty"
-                valueski="Intermediate"
-              />
-
-              <Field
-                component={CustomRadio}
-                text="Advanced"
-                name="difficulty"
-                valueski="Advanced"
-              />
-            </div>
+            {values.access === "paywall" && (
+              <div>
+                <Field
+                  component={PriceInput}
+                  name="price"
+                  isMerchant={isMerchant}
+                />
+                {!isMerchant && (
+                  <div className="padding-10">
+                    <StripeConnect />
+                  </div>
+                )}
+              </div>
+            )}
           </div>
-
-          {values.access === "paywall" && (
-            <div>
-              <Field
-                component={PriceInput}
-                name="price"
-                isMerchant={isMerchant}
-              />
-              {!isMerchant && <StripeConnect />}
-            </div>
-          )}
 
           <button
             className={

@@ -1,27 +1,20 @@
 /* NAV */
 
-.edit-week-nav-arrow-btn {
-  padding: 5px;
-}
-
-.edit-week-nav-arrow-btn i {
-  font-size: 16px;
+.edit-week-web-nav {
+  position: relative;
+  margin-top: -36px;
 }
 
 .edit-week-nav-week-btn {
   padding: 4px 10px;
-  color: rgba(0, 0, 0, 0.9);
-  font-size: 20px;
-  font-weight: 500;
-
-  border-radius: 9999px;
-
-  transition: all 0.2s;
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: #1a1414;
 }
 
 .edit-week-nav-week-btn:hover {
   color: #a60000;
-  background-color: #a6000010;
 }
 
 .edit-week-nav-filler {
@@ -30,35 +23,18 @@
 
 /* OVERVIEW */
 
-.edit-week-container {
-  display: flex;
-  justify-content: space-around;
-}
-
-.edit-week-header {
-  text-align: center;
-  font-size: 14px;
-  font-weight: 500;
-}
-
 /* DAY CONTENT */
-.edit-week-add-container {
-  width: 400px;
-  margin-top: 10px;
-  position: relative;
-}
-
 .edit-week-add-days-container {
   display: flex;
+  width: 100%;
 }
 
 .edit-week-add-days-container button {
   padding: 10px 0;
   width: 100%;
-  color: rgb(134, 101, 101);
-  border-bottom: 1.5px solid rgb(134, 101, 101);
-  background-color: #fff;
-  font-size: 14px;
+  color: #866565;
+  border-bottom: 0.5px solid rgb(233, 220, 220);
+  font-size: 11px;
   font-weight: 500;
   transition: background-color 0.2s;
 }
@@ -70,7 +46,7 @@
 
 .edit-week-add-days-container .edit-week-day-active {
   color: #a60000;
-  border-bottom: 2px solid #a60000;
+  border-bottom: 1.5px solid #a60000;
 }
 
 .edit-week-add-header {
@@ -139,12 +115,6 @@
 }
 
 /* EXERCISE SIDE */
-.edit-week-exercise-container {
-  margin-top: 10px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
 
 .edit-week-web-reps-wrapper {
   flex: 0.5 50%;

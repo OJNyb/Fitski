@@ -1,5 +1,5 @@
 .mobile-landing-container {
-  width: calc(100% - 30px);
+  width: 100%;
   max-width: 380px;
 }
 

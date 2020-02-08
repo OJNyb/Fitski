@@ -19,7 +19,7 @@ const Plans = () => {
   const { dispatch: userDispatch } = useAuth();
   const [showModal, setShowModal] = useState(false);
   const { isPending, isRejected, woPlans } = state;
-  useTitle("Fitnut - Plans");
+  useTitle("Chadify - Plans");
   useCleanNavState();
 
   function handleActivateClick(e, planId) {

@@ -1,69 +1,29 @@
 /** NAV HEADER **/
 
 .header {
-  top: 0px;
-  height: 60px;
-  width: 100%;
-  position: fixed;
+  height: 100vh;
   display: flex;
-  justify-content: space-between;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-
-  box-shadow: inset -7px 0 20px -7px rgba(0, 0, 0, 0.11);
-  background-color: white;
   z-index: 9;
+  flex-direction: column;
+  align-items: flex-end;
 }
 
 .header-logo-container {
-  min-width: 250px;
-  border-right: 1px solid rgba(0, 0, 0, 0.1);
-  background-color: white;
-  z-index: 99999;
+  display: flex;
+  padding-left: 15px;
+  font-weight: 300;
+}
+
+.header-logo-container h1,
+.header-logo-container span {
+  font-weight: 300;
 }
 
 .mt-6 {
   margin-top: 6px;
 }
 
-.header-user {
-  width: 200px;
-  border-left: 1px solid rgba(0, 0, 0, 0.1);
-}
-.header-name {
-  font-size: 16px;
-  margin-left: 10px;
-  font-weight: 400;
-}
-
-.header-avatar {
-  border-radius: 50%;
-  width: 36px;
-  height: 36px;
-}
-
 .header-big-screen-icon {
-  margin-right: 5px;
-}
-
-.header-big-screen-logo {
-  margin-right: 39px;
-}
-
-.header-small-screen-beta-text {
-  margin-left: 22px;
-  font-size: 10px;
-}
-
-.small-screen-dehaze-button {
-  margin: 0 37px 0 20px;
-}
-
-.nav-small-screen-background {
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.4);
-  z-index: 998;
-  right: 0;
-  top: 66px;
-  position: fixed;
+  margin-right: 10px;
+  font-size: 28px;
 }

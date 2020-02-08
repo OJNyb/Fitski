@@ -17,7 +17,7 @@ const WorkoutPlans = ({ woPlans, profile, search, category, isPending }) => {
       />
     ));
   } else if (!isPending) {
-    return <p className="text-center">No workout plans</p>;
+    return <p className="text-center color-gray">No workout plans</p>;
   }
 
   return (

@@ -10,7 +10,7 @@ const HistorySchema = new Schema(
       {
         _id,
         date: Number,
-        notes: String,
+        note: String,
         woPlan: ObjectId,
         exercises: [
           {
@@ -23,7 +23,8 @@ const HistorySchema = new Schema(
               {
                 _id,
                 reps: Number,
-                weight: Number
+                weight: Number,
+                note: String
               }
             ]
           }

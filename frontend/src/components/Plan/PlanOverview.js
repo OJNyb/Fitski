@@ -26,7 +26,7 @@ const Overview = ({ woPlan }) => {
   }
   return (
     <>
-      <h2 className="color-gray text-center">{name}</h2>
+      <h2 className="color-gray text-center margin-10">{name}</h2>
       <div className="plan-overview-category-container">
         <CategoryHeader
           header={"Overview"}
@@ -34,8 +34,8 @@ const Overview = ({ woPlan }) => {
           onClick={() => setShowOverview(!showOverview)}
         />
         {showOverview && (
-          <div className="pt-10 flex-col-cen">
-            <div className="plan-overview-autho-container">
+          <div className="plan-overview-dropdown-content flex-col-cen">
+            {/* <div className="plan-overview-autho-container">
               <img src={`/api/image/avatar/${avatar}_sm.jpg`} alt="Avatar" />
               <div className="flex-col">
                 <span className="font-w-300 font-14 black">Author</span>
@@ -47,6 +47,17 @@ const Overview = ({ woPlan }) => {
                   {username}
                 </Link>
               </div>
+            </div> */}
+            <div>
+              <Label label={"Author"} />
+
+              <Link
+                to={`/profile/${username}`}
+                className="tc font-15"
+                onClick={onLinkClick}
+              >
+                {username}
+              </Link>
             </div>
             <div>
               <Label label={"Length"} />
@@ -58,7 +69,7 @@ const Overview = ({ woPlan }) => {
             </div>
             <div>
               <Label label={"Difficulty"} />
-              <Content content={difficulty} />
+              <Content content={difficulty ? difficulty : "N/A"} />
             </div>
             <div>
               <Label label={"Goal"} />
@@ -76,8 +87,8 @@ const Overview = ({ woPlan }) => {
         />
 
         {showDescription && (
-          <div className="flex-col-cen">
-            <p className="margin-0 pt-10 font-w-300 font-18 line-height-12 black">
+          <div className="flex-col-cen plan-overview-dropdown-content">
+            <p className="margin-0 font-w-300 font-15 line-height-12 black">
               {description}
             </p>
           </div>
@@ -104,10 +115,10 @@ const CategoryHeader = ({ header, rotateIcon, onClick }) => {
 };
 
 const Label = ({ label }) => {
-  return <span className="black font-16">{label}: </span>;
+  return <span className="black font-15">{label}: </span>;
 };
 const Content = ({ content }) => {
-  return <span className="black font-w-300 font-16">{content}</span>;
+  return <span className="black font-w-300 font-15">{content}</span>;
 };
 
 export default Overview;

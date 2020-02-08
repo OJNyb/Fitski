@@ -1,8 +1,7 @@
 /* Plan card */
 
 .plans-web-container {
-  width: 80%;
-  margin: auto;
+  padding: 0 14px;
 }
 
 .plans-cards-header {
@@ -11,8 +10,8 @@
 }
 
 .plans-cards-header {
-  font-weight: 400;
-  color: #a60000;
+  font-weight: 300;
+  color: #554b4b;
 }
 
 .plans-plan-card {
@@ -21,21 +20,15 @@
   border-radius: 3px;
   font-size: 14px;
   cursor: pointer;
-  color: rgb(94, 53, 53);
+  color: #1a1414;
   background-color: white;
-  border: 1px solid rgb(230, 230, 230);
-  box-shadow: 1px 1px 4px 0 rgba(0, 0, 0, 0.11);
-  transition: background-color 0.15s;
+  font-weight: 300;
 }
 
 .plans-cards-header > div,
 .plans-plan-card > div,
 .plans-plan-card > a {
   flex: 1;
-}
-
-.plans-plan-card:hover {
-  background-color: rgb(243, 235, 235);
 }
 
 .plans-plan-author a {

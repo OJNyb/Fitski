@@ -21,6 +21,10 @@ const useUser = () => {
     };
   }, []);
 
+  const updateUser = () => {
+    setReload(reload + 1);
+  };
+
   useEffect(() => {
     let isCancelled = false;
 
@@ -53,8 +57,7 @@ const useUser = () => {
   return {
     state,
     dispatch,
-    reload,
-    setReload
+    updateUser
   };
 };
 

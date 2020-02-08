@@ -1,32 +1,39 @@
 /* BODY */
-.plan-week-container button {
-  border-radius: 3px;
-  padding: 5px 15px;
-  font-size: 16px;
+.plan-container {
+  display: flex;
+  flex-direction: column;
 }
 
 /* Overview */
 .plan-overview-category-container {
-  max-width: 500px;
-  width: 84%;
-  margin: 0 auto;
+  width: 100%;
 }
 
 .plan-overview-header-wrapper {
-  border-bottom: 1px solid silver;
   text-align: center;
   padding: 7px;
   font-size: 16px;
   font-weight: 500;
   position: relative;
   cursor: pointer;
+  border-bottom: 1px solid rgb(233, 220, 220);
 }
 
 .plan-overview-arrow-icon {
   position: absolute;
-  right: 0px;
+  right: 9px;
   top: 6px;
   font-size: 24px;
+}
+
+.plan-overview-dropdown-content {
+  padding: 10px 0;
+  border-bottom: 1px solid rgb(233, 220, 220);
+  position: relative;
+}
+
+.plan-overview-dropdown-content p {
+  max-width: 80%;
 }
 
 .plan-overview-autho-container {
@@ -64,4 +71,9 @@
 .edit-plan-modal-radio-container {
   display: flex;
   justify-content: space-around;
+}
+
+.plans-web-empty-add-btn {
+  padding: 4px 9px;
+  border-radius: 2px;
 }

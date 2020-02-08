@@ -6,6 +6,7 @@ import WebWorkoutPlans from "../../shared/PlanCard/WebWorkoutPlans";
 import NavMid from "../../shared/NavMid/NavMid";
 
 import "./webProfile.css";
+import { MainTile, MainTileNav, MainTileHeader } from "../../shared/Layout";
 
 const Profile = ({
   isSelf,
@@ -37,37 +38,54 @@ const Profile = ({
 
   return (
     <>
-      <NavMid
-        backText={username}
-        backAction={backAction}
-        rightBtnText={isSelf ? (editView ? false : "Edit Profile") : false}
-        rightBtnAction={
-          isSelf
-            ? editView
-              ? false
-              : () => setShowModal({ modal: "edit" })
-            : false
-        }
-      />
-      <div>
-        <div className="profile-web-info-container width-80p margin-a padding-10-0">
-          <img
-            src={`/api/image/avatar/${avatar}_lg.jpg`}
-            alt="Avatar"
-            className="mobile-profile-picture"
+      <MainTile>
+        <MainTileNav>
+          <MainTileHeader
+            text={username}
+            customIcon={
+              isSelf ? (
+                editView ? (
+                  false
+                ) : (
+                  <button
+                    className="edit-profile-btn shadow-medium-clickable"
+                    onClick={
+                      isSelf
+                        ? editView
+                          ? false
+                          : () => setShowModal({ modal: "edit" })
+                        : false
+                    }
+                  >
+                    Edit Profile
+                  </button>
+                )
+              ) : (
+                false
+              )
+            }
           />
-          <div className="flex-col padding-s-10">
-            <span className="black font-w-400 font-28">{username}</span>
-            <span className="color-gray font-14">{bioDisplay}</span>
+        </MainTileNav>
+        <div>
+          <div className="profile-web-info-container padding-10">
+            <img
+              src={`/api/image/avatar/${avatar}_lg.jpg`}
+              alt="Avatar"
+              className="mobile-profile-picture"
+            />
+            <div className="flex-col padding-s-10">
+              <span className="black font-w-500 font-24">{username}</span>
+              <span className="color-gray font-14">{bioDisplay}</span>
+            </div>
+          </div>
+          <div>
+            <p className="color-light-gray font-14 text-center margin-0">
+              Workout Plans
+            </p>
+            <WebWorkoutPlans woPlans={woPlans} profile={profile} />
           </div>
         </div>
-        <div>
-          <p className="color-light-gray font-14 text-center margin-0">
-            Workout Plans
-          </p>
-          <WebWorkoutPlans woPlans={woPlans} profile={profile} />
-        </div>
-      </div>
+      </MainTile>
     </>
   );
 };

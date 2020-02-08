@@ -1,9 +1,3 @@
-.log-container {
-  display: flex;
-  justify-content: space-around;
-  padding-top: 30px;
-}
-
 .calendar-circle-container {
   bottom: 0px;
   display: flex;
@@ -27,7 +21,7 @@
 
 .history-exercise-input-header {
   border-bottom: 1.5px solid #a60000;
-  margin-bottom: 17px;
+  margin-bottom: 15px;
 }
 
 .history-exercise-text-row {
@@ -44,10 +38,14 @@
 .history-mobile-exercise-list-label-wrapper:first-child {
   display: flex;
   align-items: center;
-  flex: 0.35 35%;
+  flex: 0.3 30%;
   justify-content: flex-end;
 }
 
 .history-mobile-exercise-history-body {
   padding-top: 10px;
+}
+
+.history-note-container {
+  min-width: 350px;
 }

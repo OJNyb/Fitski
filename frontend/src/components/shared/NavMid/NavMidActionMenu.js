@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import "./navMid.css";
 
 const NavActionMenu = ({ children, hideActionMenu, moreBtn }) => {
   const [offsetLeft, setOffsetLeft] = useState(0);
@@ -9,8 +10,8 @@ const NavActionMenu = ({ children, hideActionMenu, moreBtn }) => {
     function handleWindowResize() {
       const { current } = moreBtn;
       const { offsetLeft, offsetTop } = current;
-      setOffsetLeft(offsetLeft + 251 - 180 + 30 - 2);
-      setOffsetTop(offsetTop + 6.5);
+      setOffsetLeft(offsetLeft - 180 + 26 - 1);
+      setOffsetTop(offsetTop + 1);
     }
 
     handleWindowResize();
@@ -23,6 +24,8 @@ const NavActionMenu = ({ children, hideActionMenu, moreBtn }) => {
     top
   };
 
+  console.log(offsetLeft);
+
   if (!offsetLeft) {
     return null;
   }
@@ -30,6 +33,8 @@ const NavActionMenu = ({ children, hideActionMenu, moreBtn }) => {
   let items = children.map(x => (
     <NavMidActionMenuItem element={x} key={x.text} />
   ));
+
+  console.log("gay");
 
   return (
     <div

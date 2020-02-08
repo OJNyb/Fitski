@@ -10,6 +10,10 @@
   box-sizing: border-box;
 }
 
+.create-plan-input-wrapper {
+  margin-bottom: 20px;
+}
+
 .create-plan-form {
   max-width: 500px;
   margin: auto;

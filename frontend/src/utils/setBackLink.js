@@ -9,7 +9,7 @@ export function setBackLink(dispatch, id, args) {
     if (profile._id === id) return;
     payload = { [id]: `/profile/${username}` };
   } else if (search || search === "") {
-    payload = { [id]: "/explore", search, searchCategory };
+    payload = { [id]: "/discover", search, searchCategory };
   } else if (planId) {
     payload = { [id]: `/plans/${planId}` };
   } else {

@@ -1,34 +1,37 @@
+.explore-web-nav-container {
+  height: 37px;
+}
+
 .explore-web-search-container {
-  background-color: rgb(252, 246, 246);
+  background-color: rgb(219, 210, 210);
   border: 1px solid rgb(240, 232, 232);
   width: 300px;
   height: 25px;
-  padding: 0 15px;
-  border-radius: 2px;
+  padding: 2px 10px 2px 15px;
+  border-radius: 99px;
   position: relative;
-  margin-top: 1px;
 }
 
 .explore-web-search-container:focus-within {
   background-color: #fff;
-  border: 1px solid #ddcdcd;
+  border: 1px solid #a60000;
 }
 
 .explore-web-search-container input {
   width: calc(100% - 18px - 10px);
-}
-
-.explore-web-search-container svg rect {
-  fill: #877878;
+  font-size: 14px;
 }
 
 .explore-web-search-container svg {
-  position: absolute;
-  right: 10px;
+  height: 15px;
+}
+
+.explore-web-search-container svg rect {
+  fill: #6d6060;
 }
 
 .explore-web-search-container svg circle {
-  stroke: #877878;
+  stroke: #6d6060;
 }
 
 .explore-web-search-container:focus-within rect {
@@ -39,20 +42,30 @@
   stroke: #a60000;
 }
 
-.explore-web-search-category-button {
-  border: 1px solid #a60000;
+.explore-web-category-container {
+  display: flex;
+  margin-top: 2px;
+  padding-bottom: 0.5px;
+}
+
+.explore-web-category-container button {
+  flex: 1 1;
+  color: rgb(134, 101, 101);
+  font-weight: 900;
+  height: 45px;
+  border-bottom: 1.5px solid transparent;
+  font-family: "Raleway", sans-serif;
+  font-size: 12px;
+}
+
+.explore-web-category-btn-active {
+  color: #a60000 !important;
+  border-color: #a60000 !important;
+}
+
+.explore-web-category-container button:hover {
+  background-color: #a6000010;
   color: #a60000;
-  line-height: 1;
-  padding: 2px 6px;
-}
-
-.explore-web-search-category-button:first-child {
-  border-right: 0;
-}
-
-.explore-web-search-category-button-active {
-  background-color: #a60000 !important;
-  color: white;
 }
 
 /* USER CARD */
@@ -72,10 +85,6 @@
   cursor: pointer;
   min-height: 80px;
   border-radius: 5px;
-}
-
-.explore-web-user-card:hover {
-  background-color: rgb(254, 243, 243);
 }
 
 .explore-web-avatar-container {

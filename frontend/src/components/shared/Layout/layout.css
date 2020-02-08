@@ -1,0 +1,74 @@
+.main-tile {
+  border-right: 1px solid rgb(233, 220, 220);
+  width: 100%;
+  min-height: 100vh;
+}
+
+.second-tile {
+  width: 375px;
+  padding-bottom: 60px;
+  margin-right: 10px;
+  padding-left: 10px;
+  position: relative;
+  top: 0;
+}
+
+.second-tile-wrapper {
+  position: fixed;
+}
+
+.main-container {
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.main-tile-nav {
+  border-bottom: 1px solid rgb(233, 220, 220);
+  min-height: 37px;
+  position: sticky;
+  top: 0;
+  background-color: #f8efef;
+}
+
+.main-tile-header-upper {
+  padding: 7px 12px 7px 17px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.main-tile-header-upper span {
+  color: #1a1414;
+  font-weight: 900;
+  font-size: 16px;
+  font-family: "Raleway", sans-serif;
+}
+
+.main-tile-header-icon-container {
+  padding: 5px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.main-tile-header-icon-container svg {
+  width: 20px;
+  height: 20px;
+}
+
+.main-tile-header-icon-container:hover {
+  background-color: #a6000010;
+}
+
+.main-tile-header-icon-container .main-nav-icon-stroke {
+  stroke: #a60000;
+}
+
+.main-tile-header-icon-container .main-nav-icon-fill {
+  fill: #a60000;
+}

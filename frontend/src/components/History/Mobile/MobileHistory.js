@@ -32,6 +32,7 @@ const MobileView = ({
   handleDateChange,
   handleAddSet,
   handleEditSet,
+  handleEditDay,
   handleCopyDay,
   handleDeleteSet,
   handleAddSetRetry,
@@ -146,6 +147,7 @@ const MobileView = ({
         prevDay={prevDay}
         nextDay={nextDay}
         currentDay={currentDay}
+        handleEditDay={handleEditDay}
         onDateChange={handleDateChange}
         setShowExercise={setShowExercise}
         handleDragEnd={handleReorderExercise}

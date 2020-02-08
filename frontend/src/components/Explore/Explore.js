@@ -41,7 +41,7 @@ const Explore = () => {
   const [search, setSearch] = useState(navState.search || "");
   const [category, setCategory] = useState(navState.searchCategory || "plans");
 
-  useTitle("Fitnut - Explore");
+  useTitle("Chadify - Explore");
   useCleanNavState();
 
   useEffect(() => {
