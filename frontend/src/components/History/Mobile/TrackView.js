@@ -60,7 +60,7 @@ const TrackView = ({
       }
     }
     setInitialInput();
-  }, [exerId, selectedSet, sets, onItemClick]);
+  }, [exerId, selectedSet, sets, onItemClick, initSetSet]);
 
   useSetLoading(false);
 
@@ -235,8 +235,7 @@ const TrackListItem = ({
   onDeleteSet,
   selectedSetId,
   onAddSetRetry,
-  onEditSetRetry,
-  onCommentClick
+  onEditSetRetry
 }) => {
   const { reps, weight, _id: setId, isRejected, isPending, request } = set;
 

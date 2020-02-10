@@ -21,7 +21,7 @@ const MobileSettings = ({ unit, email, onUnitChange }) => {
     } else {
       dispatch({ type: SHOW_DEHAZE });
     }
-  }, [selected]);
+  }, [selected, dispatch]);
 
   function hideView() {
     setSelected(null);

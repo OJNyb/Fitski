@@ -1,9 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import useSetLoading from "../../../hooks/useSetLoading";
-import { Redirect } from "react-router-dom";
+//import { Redirect } from "react-router-dom";
 
 import WebWorkoutPlans from "../../shared/PlanCard/WebWorkoutPlans";
-import NavMid from "../../shared/NavMid/NavMid";
 
 import "./webProfile.css";
 import { MainTile, MainTileNav, MainTileHeader } from "../../shared/Layout";
@@ -13,27 +12,23 @@ const Profile = ({
   woPlans,
   profile,
   editView,
-  setShowModal,
-  navState
+  setShowModal
+  // navState
 }) => {
   useSetLoading(false);
-  const { bio, avatar, username, _id: profileId } = profile;
-  const [redirect, setRedirect] = useState(false);
+  const { bio, avatar, username } = profile;
 
-  let to = navState[profileId];
-  if (redirect) {
-    return <Redirect to={to} />;
-  }
+  // TODO
+  // const [redirect, setRedirect] = useState(false);
+  // if (redirect) {
+  //   return <Redirect to={to} />;
+  // }
+
+  // let to = navState[profileId];
 
   let bioDisplay = bio;
   if (!bio || bio.length === 0) {
     bioDisplay = "This gymshark doesn't have a bio";
-  }
-
-  let backAction;
-
-  if (to) {
-    backAction = () => setRedirect(true);
   }
 
   return (

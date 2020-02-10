@@ -3,7 +3,6 @@ import React, { useRef, useState } from "react";
 import WebExerciseCard from "./WebExerciseCard";
 import Exercises from "../../shared/Exercises/Exercises";
 import useSetLoading from "../../../hooks/useSetLoading";
-import EditWeekNav from "../EditWeekNav";
 import { Link } from "react-router-dom";
 import { Droppable, DragDropContext } from "react-beautiful-dnd";
 import {
@@ -34,7 +33,6 @@ const WebEditWeek = ({
   handleAddExerciseRetry,
   handleDeleteWeekSubmit,
   planId,
-  weeks,
   weekIndex,
   handleAddSetRetry,
   handleEditSetRetry

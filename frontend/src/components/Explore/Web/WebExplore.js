@@ -2,7 +2,6 @@ import React from "react";
 import useSetLoading from "../../../hooks/useSetLoading";
 
 import WebUserCard from "./WebUserCard";
-import ExploreNav from "./WebExploreNav";
 import WorkoutPlans from "../../shared/PlanCard/WebWorkoutPlans";
 import {
   MainContainer,

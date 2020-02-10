@@ -211,7 +211,6 @@ const History = () => {
         handleAddSet={handleAddSet}
         handleEditSet={handleEditSet}
         handleCopyDay={handleCopyDay}
-        handleEditDay={handleEditDay}
         handleDeleteSet={handleDeleteSet}
         handleDateChange={handleDateChange}
         handleAddExercise={handleAddExercise}

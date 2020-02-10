@@ -14,7 +14,7 @@ const SchemaValidator = require("../../middlewares/SchemaValidator");
 const validateRequest = SchemaValidator(true);
 
 new CronJob(
-  "5 0 * * * *",
+  "5 0 * * *",
   function() {
     console.log("Cron Job: ", new Date());
     PlanTrend.deleteMany({
