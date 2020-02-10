@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { useLocation, Redirect } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import axios from "axios";
 import { isSuccessful, getErrorMessage } from "../../utils/errorHandling";
 import useSetLoading from "../../hooks/useSetLoading";
 
 const StripeConfirmation = () => {
-  const { search } = useLocation();
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
   const [isPending, setIsPending] = useState(true);

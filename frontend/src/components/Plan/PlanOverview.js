@@ -18,7 +18,7 @@ const Overview = ({ woPlan }) => {
     user: author
   } = woPlan;
 
-  const { avatar, username, _id: authorId } = author;
+  const { username, _id: authorId } = author;
 
   function onLinkClick() {
     if (state[authorId]) return;

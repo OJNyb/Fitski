@@ -37,7 +37,7 @@ const MobileEditWeek = ({
   useSetLoading(false);
   useNavBack(`/plans/${planId}`);
 
-  const { days, _id: weekId } = currentWeek;
+  const { days } = currentWeek;
   const currentDay = days[currentDayIndex];
   const { _id: dayId } = currentDay;
   const { exercises } = currentDay;
@@ -55,7 +55,7 @@ const MobileEditWeek = ({
 
   useEffect(() => {
     setCurrentDayIndex(0);
-  }, [weekIndex]);
+  }, [weekIndex, setCurrentDayIndex]);
   function onDecDate(or) {
     if (currentDayIndex > 0) setCurrentDayIndex(currentDayIndex - 1);
     else or();

@@ -11,7 +11,7 @@ const SubNav = ({ weeks, weekIndex, currentDayIndex, setCurrentDayIndex }) => {
     if (regex.test(search)) {
       setShowWeek(true);
     }
-  }, [weekIndex]);
+  }, [search, weekIndex]);
 
   let leftArrowAction;
   let rightArrowAction;

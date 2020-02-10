@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import useSetLoading from "../../../hooks/useSetLoading";
 
 import SettingsView from "../SettingsView";
-import { MainTile, MainTileNav, MainTileHeader } from "../../shared/Layout";
+import { MainTile, MainTileNav } from "../../shared/Layout";
 
 import "../settings.css";
 

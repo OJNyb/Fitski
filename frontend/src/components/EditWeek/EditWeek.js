@@ -147,6 +147,7 @@ const EditWeek = () => {
         setCurrentDayIndex={setCurrentDayIndex}
         handleEditSetRetry={handleEditSetRetry}
         handleDeleteExercise={handleDeleteExercise}
+        handleDeleteWeekSubmit={handleDeleteWeekSubmit}
         handleAddExerciseRetry={handleAddExerciseRetry}
       />
     );
@@ -165,6 +166,7 @@ const EditWeek = () => {
         handleAddSetRetry={handleAddSetRetry}
         handleAddExercise={handleAddExercise}
         setCurrentDayIndex={setCurrentDayIndex}
+        handleDeleteWeekSubmit={handleDeleteWeekSubmit}
         handleEditSetRetry={handleEditSetRetry}
         handleDeleteExercise={handleDeleteExercise}
         handleAddExerciseRetry={handleAddExerciseRetry}

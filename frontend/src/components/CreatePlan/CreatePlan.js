@@ -4,7 +4,6 @@ import useMobile from "../../hooks/useMobile";
 import useTitle from "../../hooks/useTitle";
 
 import SetLoading from "../SetLoading";
-import NavMid from "../shared/NavMid/NavMid";
 
 import "./createPlan.css";
 

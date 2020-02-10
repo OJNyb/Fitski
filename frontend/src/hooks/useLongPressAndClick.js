@@ -9,11 +9,11 @@ function useLongPress(
   const [cancelled, setCancelled] = useState(true);
   const [type, setType] = useState("short");
 
-  function onTouchski() {
+  const onTouchski = useCallback(() => {
     holdCallback();
     setType("short");
     setCancelled(true);
-  }
+  }, [holdCallback]);
 
   useEffect(() => {
     let timerId;
@@ -32,7 +32,16 @@ function useLongPress(
     return () => {
       clearTimeout(timerId);
     };
-  }, [ms, type, holdCallback, clickCallback, startLongPress, cancelled]);
+  }, [
+    ms,
+    type,
+    holdCallback,
+    clickCallback,
+    startLongPress,
+    cancelled,
+    onTouchski
+  ]);
+  // TODO
 
   const start = useCallback(() => {
     setStartLongPress(true);

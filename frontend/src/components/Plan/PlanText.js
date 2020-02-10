@@ -1,11 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import useMobile from "../../hooks/useMobile";
 
 import "./planText.css";
 
 const PlanText = ({ week, index, isSelf, planId }) => {
-  const isMobile = useMobile();
   const { days, _id: weekId } = week;
 
   let exercises = days
@@ -38,13 +36,7 @@ const PlanText = ({ week, index, isSelf, planId }) => {
   }
 
   return (
-    <div
-      className={
-        "plan-week-container " + "flex-col-cen"
-        //  +
-        // (isMobile ? "flex-col-cen" : "plan-web-week-container")
-      }
-    >
+    <div className="plan-week-container flex-col-cen">
       {weekHeader}
       <div className="plan-days-container">{daysDisplay}</div>
     </div>
@@ -53,7 +45,6 @@ const PlanText = ({ week, index, isSelf, planId }) => {
 
 const Day = ({ day, index }) => {
   const { exercises } = day;
-  const isMobile = useMobile();
 
   if (!exercises.length) return null;
   const exerciseDisplay = exercises.map(exercise => (
@@ -70,7 +61,6 @@ const Day = ({ day, index }) => {
 };
 
 const Exercise = ({ exercise }) => {
-  const isMobile = useMobile();
   if (!exercise.exercise) return null;
 
   let {

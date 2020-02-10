@@ -2,12 +2,12 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import { useUser } from "../../context/userContext";
 import useMobile from "../../hooks/useMobile";
+
 import CalendarIcon from "./Icons/CalendarIcon";
 import PlanIcon from "./Icons/PlanIcon";
 import DiscoverIcon from "./Icons/DiscoverIcon";
 import SettingsIcon from "./Icons/SettingsIcon";
 import LogoutIcon from "./Icons/LogoutIcon";
-import useWindowWidth from "../../hooks/useWindowWidth";
 
 const NavigationMenu = ({ show = true, showText = true }) => {
   const user = useUser();

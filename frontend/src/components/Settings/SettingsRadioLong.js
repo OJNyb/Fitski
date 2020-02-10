@@ -1,21 +1,8 @@
-import React, { useState } from "react";
-import useMobile from "../../hooks/useMobile";
+import React from "react";
 
 const RadioLong = ({ text, value, checked, onChange }) => {
-  const [pressed, setPressed] = useState(false);
-  const isMobile = useMobile();
   return (
-    <label
-      className="custom-radio-long-container flex-ai-center"
-      onTouchStart={() => setPressed(true)}
-      onTouchEnd={() => setPressed(false)}
-      onMouseEnter={() => {
-        if (!isMobile) {
-          setPressed(true);
-        }
-      }}
-      onMouseLeave={() => setPressed(false)}
-    >
+    <label className="custom-radio-long-container flex-ai-center">
       <span className="black font-16 font-w-300">{text}</span>
 
       <div

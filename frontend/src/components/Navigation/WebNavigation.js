@@ -1,15 +1,12 @@
-import React, { useState, useEffect, useLayoutEffect } from "react";
+import React, { useState, useLayoutEffect } from "react";
 
 import NavigationMenu from "./NavigationMenu";
-import { useUser } from "../../context/userContext";
 import useWindowWidth from "../../hooks/useWindowWidth";
 
 import "./webNavigation.css";
 
 const BigScreenNavigation = () => {
-  const user = useUser();
   const width = useWindowWidth();
-  const [showMenu, setShowMenu] = useState(true);
 
   const [showText, setShowText] = useState(true);
   const [navWrapperStyle, setNavWrapperStyle] = useState({});
@@ -29,7 +26,7 @@ const BigScreenNavigation = () => {
       setNavContainerStyle({});
       setNavWrapperStyle({});
     }
-  }, [width]);
+  }, [width, showText]);
 
   return (
     <>

@@ -3,12 +3,10 @@ import { Link } from "react-router-dom";
 import NavMidActionMenu from "./NavMidActionMenu";
 
 import "./mobileNav.css";
-import useWindowWidth from "../../../hooks/useWindowWidth";
 
 const WebNavMid = props => {
   const [showActionMenu, setShowActionMenu] = useState(false);
   const moreBtn = useRef(null);
-  const winWidth = useWindowWidth();
   const {
     backText,
     midContent,

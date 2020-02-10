@@ -1,6 +1,8 @@
 const express = require("express");
+const router = express.Router();
 const stripe = require("stripe")(process.env.STRIPE_API_KEY);
 const bodyParser = require("body-parser");
+const sendMail = require("../../helpers/sendMail");
 
 // Models
 const User = require("../../models/User");
@@ -13,8 +15,6 @@ const SchemaValidator = require("../../middlewares/SchemaValidator");
 const validateRequest = SchemaValidator(true);
 
 const createErrorObject = require("../../utils/createErrorObject");
-
-const router = express.Router();
 
 // @route POST api/user/register
 // @desc Register for stripe user
@@ -145,14 +145,27 @@ router.post(
         console.log("PaymentIntent was successful!");
         break;
       case "charge.succeeded":
-        console.log(event.data);
         const charge = event.data.object;
-        console.log(paymentIntent);
-        console.log("PaymentIntent was successful!");
+        console.log(charge);
+        console.log("Charge was successful!");
         break;
       case "payment_method.attached":
-        const paymentMethod = event.data.object;
+        console.log(event);
         console.log("PaymentMethod was attached to a Customer!");
+        break;
+      case "payout.failed":
+        console.log(event);
+        console.log("Payout failed");
+        break;
+      case "account.external_account.updated":
+        console.log(event);
+        console.log("External account updated");
+        break;
+      case "account.updated":
+        console.log(event);
+        console.log("Account updated");
+        break;
+
         break;
       // ... handle other event types
       default:
