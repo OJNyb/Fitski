@@ -126,16 +126,15 @@ router.post("/payment/:plan_id", ensureSignedIn, async (req, res, next) => {
 // @access Private
 router.post(
   "/webhook",
-  bodyParser.raw({ type: "application/json" }),
+  // bodyParser.raw({ type: "application/json" }),
   (req, res) => {
-    let event;
+    let event = req.body;
 
-    try {
-      console.log(req.body);
-      event = JSON.parse(req.body);
-    } catch (err) {
-      return res.status(400).send(`Webhook Error: ${err.message}`);
-    }
+    // try {
+    //   event = JSON.parse(req.body);
+    // } catch (err) {
+    //   return res.status(400).send(`Webhook Error: ${err.message}`);
+    // }
 
     // Handle the event
     switch (event.type) {
@@ -156,6 +155,7 @@ router.post(
       case "payout.failed":
         console.log(event);
         console.log("Payout failed");
+
         break;
       case "account.external_account.updated":
         console.log(event);
@@ -164,8 +164,6 @@ router.post(
       case "account.updated":
         console.log(event);
         console.log("Account updated");
-        break;
-
         break;
       // ... handle other event types
       default:
