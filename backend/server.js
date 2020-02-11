@@ -36,7 +36,8 @@ const {
       .connect(mongoURI, {
         useNewUrlParser: true,
         useFindAndModify: false,
-        useCreateIndex: true
+        useCreateIndex: true,
+        useUnifiedTopology: true
       })
 
       .then(() => {

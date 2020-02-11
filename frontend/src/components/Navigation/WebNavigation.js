@@ -45,9 +45,11 @@ const BigScreenNavigation = () => {
 const Logo = ({ showText }) => {
   return (
     <div className="header-logo-container">
-      <i className="material-icons font-34 header-big-screen-icon tc mt-6">
+      {/* <i className="material-icons font-34 header-big-screen-icon tc mt-6">
         fitness_center
-      </i>
+      </i> */}
+
+      <img src="/api/image/resources/Chad.png" alt="Logo" />
       <div className="flex-col-cen">
         {showText && (
           <>
