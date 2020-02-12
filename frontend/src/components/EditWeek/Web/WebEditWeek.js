@@ -107,8 +107,6 @@ const WebEditWeek = ({
     }
   }
 
-  console.log(showActionMenu);
-
   return (
     <MainContainer maxWidth={850}>
       <MainTile maxWidth={500}>
@@ -128,7 +126,7 @@ const WebEditWeek = ({
             }
             customIcon={
               <button
-                className="shadow-medium-clickable nav-more-btn-horiz-new"
+                className="shadow-medium-clickable theme-btn-no-border nav-more-btn-horiz-new"
                 onClick={() => setShowActionMenu(true)}
                 ref={moreBtn}
               >
