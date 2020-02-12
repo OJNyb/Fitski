@@ -8,13 +8,16 @@ const endpointSecret = process.env.STRIPE_ENDPOINT_SECRET;
 // Models
 const User = require("../../models/User");
 const WOPlan = require("../../models/WOPlan");
+const PlanAccess = require("../../models/PlanAccess");
 
 // Validation
 const { ensureSignedIn } = require("../../middlewares/auth");
+const SchemaValidator = require("../../middlewares/SchemaValidator");
+const validateRequest = SchemaValidator(true);
 
 const createErrorObject = require("../../utils/createErrorObject");
 
-// @route POST api/user/register
+// @route POST api/stripe/register/:code
 // @desc Register for stripe user
 // @access Private
 router.post("/register/:code", ensureSignedIn, (req, res, next) => {
@@ -32,16 +35,11 @@ router.post("/register/:code", ensureSignedIn, (req, res, next) => {
       if (error_description) {
         return res.status(404).json(createErrorObject([error_description]));
       }
-      // const newStripeId = new StripeId({
-      //   user: userId,
-      //   stripeId: stripe_user_id
-      // });
 
       try {
         let user = await User.findById(userId);
         user.stripeId = stripe_user_id;
         user.save();
-        // newStripeId.save();
       } catch (e) {
         return next(e);
       } finally {
@@ -51,76 +49,159 @@ router.post("/register/:code", ensureSignedIn, (req, res, next) => {
     .catch(next);
 });
 
-// @route POST api/user/register
-// @desc Make payment
+// // @route POST api/stripe/payment/:plan_id
+// // @desc Create payment intent
+// // @access Private
+// router.post(
+//   "/payment/:plan_id",
+//   ensureSignedIn,
+//   validateRequest,
+//   async (req, res, next) => {
+//     const { params, session } = req;
+//     const { userId } = session;
+//     const { plan_id: planId } = params;
+
+//     WOPlan.findById(planId)
+//       .populate("user")
+//       .then(async plan => {
+//         if (!plan) {
+//           return res
+//             .status(404)
+//             .json(createErrorObject(["No Workout Plan with this ID"]));
+//         }
+
+//         const { user, price, access } = plan;
+//         const { stripeId } = user;
+
+//         const customer = await User.findById(userId);
+
+//         if (access !== "paywall") {
+//           return res
+//             .status(409)
+//             .json(createErrorObject(["You can not purchase this plan"]));
+//         }
+
+//         if (!price || price < 1) {
+//           return res
+//             .status(409)
+//             .json(createErrorObject(["You can not purchase this plan"]));
+//         }
+
+//         if (!stripeId) {
+//           return res
+//             .status(409)
+//             .json(createErrorObject(["This user can not accept payments"]));
+//         }
+
+//         console.log(price);
+
+//         let currency = "usd";
+//         let amount = price * 100;
+
+//         stripe.paymentIntents
+//           .create({
+//             amount,
+//             currency,
+//             transfer_data: {
+//               destination: stripeId
+//             },
+//             application_fee_amount: amount / 10 + 59,
+//             metadata: {
+//               planId,
+//               userId
+//             },
+//             receipt_email: customer.email
+//           })
+//           .then(paymentIntent => {
+//             const { client_secret } = paymentIntent;
+//             return res.json({ message: "success", client_secret });
+//           });
+//       });
+//   }
+// );
+
+// @route POST api/stripe/payment/:plan_id
+// @desc Create checkout session
 // @access Private
-router.post("/payment/:plan_id", ensureSignedIn, async (req, res, next) => {
-  const { params, session } = req;
-  const { userId } = session;
-  const { plan_id: planId } = params;
+router.post(
+  "/payment/:plan_id",
+  ensureSignedIn,
+  validateRequest,
+  async (req, res, next) => {
+    const { params, session } = req;
+    const { userId } = session;
+    const { plan_id: planId } = params;
 
-  WOPlan.findById(planId)
-    .populate("user")
-    .then(async plan => {
-      if (!plan) {
-        return res
-          .status(404)
-          .json(createErrorObject(["No Workout Plan with this ID"]));
-      }
+    WOPlan.findById(planId)
+      .populate("user")
+      .then(async plan => {
+        if (!plan) {
+          return res
+            .status(404)
+            .json(createErrorObject(["No Workout Plan with this ID"]));
+        }
 
-      const { user, price, access } = plan;
-      const { stripeId } = user;
+        const { user, price, access, name, goal } = plan;
+        const { stripeId, _id: authorId } = user;
 
-      if (access !== "paywall") {
-        return res
-          .status(409)
-          .json(createErrorObject(["You can not purchase this plan"]));
-      }
+        const customer = await User.findById(userId);
+        const planAccess = await PlanAccess.findOne({ woPlan: planId });
 
-      if (!price || price < 100) {
-        return res
-          .status(409)
-          .json(createErrorObject(["You can not purchase this plan"]));
-      }
+        if (
+          planAccess.whitelist.map(x => x._id.toString).indexOf(userId) > -1 ||
+          userId === authorId.toString()
+        ) {
+          return res
+            .status(404)
+            .json(createErrorObject(["You already have access to this plan"]));
+        }
 
-      if (!stripeId) {
-        return res
-          .status(409)
-          .json(createErrorObject(["This user can not accept payments"]));
-      }
+        if (access !== "paywall" || !stripeId) {
+          return res
+            .status(409)
+            .json(createErrorObject(["You can not purchase this plan"]));
+        }
 
-      let currency = "usd";
-      let amount = price;
+        let currency = "usd";
+        let amount = price * 100;
 
-      stripe.paymentIntents
-        .create({
-          amount,
-          currency,
-          transfer_data: {
-            destination: stripeId
-          },
-          application_fee_amount: amount / 10 + 59,
-          metadata: {
-            planId,
-            userId
-          }
-        })
-        .then(paymentIntent => {
-          const { client_secret } = paymentIntent;
-          return res.json({ message: "success", client_secret });
-        });
-    });
-  // Check if access === 'paywall'
-  // get price
-  // create payment intent
-  // give client id
-  // do shiz on frontend
-  // hook on success
-  //
-});
+        stripe.checkout.sessions
+          .create({
+            payment_method_types: ["card"],
+            line_items: [
+              {
+                name,
+                description: goal,
+                amount,
+                currency,
+                quantity: 1
+              }
+            ],
+            payment_intent_data: {
+              application_fee_amount: amount / 10 + 59,
+              transfer_data: {
+                destination: stripeId
+              }
+            },
+            success_url: `https://fitnut.heroku.com/stripe/success?session_id={CHECKOUT_SESSION_ID}&plan_id=${planId}`,
+            cancel_url: `https://fitnut.heroku.com/stripe/cancel?plan_id=${planId}`,
+            customer_email: customer.email,
+            metadata: {
+              planId,
+              userId
+            }
+          })
+          .then(checkoutSession => {
+            const { id } = checkoutSession;
+            return res.json({ message: "success", sessionId: id });
+          })
+          .catch(next);
+      });
+  }
+);
 
 // @route POST api/stripe/webhook
-// @desc Payment webhook
+// @desc Stripe webhook
 // @access Private
 router.post("/webhook", async (req, res, next) => {
   const sig = request.headers["stripe-signature"];
@@ -135,8 +216,7 @@ router.post("/webhook", async (req, res, next) => {
   }
 
   switch (event.type) {
-    case "payment_intent.succeeded": {
-      // Add access to user & plan
+    case "checkout.session.completed": {
       const { metadata } = event.data.object;
 
       const { planId, userId } = metadata;

@@ -1,2 +1,6 @@
-.stripe-error-container {
+.stripe-cancel-btn {
+  padding: 4px 9px;
+  border-radius: 2px;
+  margin-bottom: 10px;
+  font-weight: 300;
 }
