@@ -66,11 +66,12 @@ const {
       secret: SESS_SECRET,
       resave: false,
       rolling: true,
+      proxy: true,
       saveUninitialized: false,
       cookie: {
         maxAge: parseInt(SESS_LIFETIME),
         sameSite: true,
-        secure: NODE_ENV === "production12"
+        secure: NODE_ENV === "production"
       }
     });
     app.use(sessionMiddleware);
