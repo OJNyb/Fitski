@@ -70,7 +70,7 @@ const {
       cookie: {
         maxAge: parseInt(SESS_LIFETIME),
         sameSite: true,
-        secure: NODE_ENV === "production"
+        secure: NODE_ENV === "production12"
       }
     });
     app.use(sessionMiddleware);

@@ -24,8 +24,6 @@ const NavActionMenu = ({ children, hideActionMenu, moreBtn }) => {
     top
   };
 
-  console.log(offsetLeft);
-
   if (!offsetLeft) {
     return null;
   }
@@ -33,8 +31,6 @@ const NavActionMenu = ({ children, hideActionMenu, moreBtn }) => {
   let items = children.map(x => (
     <NavMidActionMenuItem element={x} key={x.text} />
   ));
-
-  console.log("gay");
 
   return (
     <div

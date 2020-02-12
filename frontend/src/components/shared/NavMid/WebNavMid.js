@@ -2,6 +2,8 @@ import React, { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import NavMidActionMenu from "./NavMidActionMenu";
 
+import MoreIcon from "../../EditWeek/MoreIcon";
+
 import "./mobileNav.css";
 
 const WebNavMid = props => {
@@ -22,19 +24,6 @@ const WebNavMid = props => {
   function handleMoreActionClick(e) {
     e.preventDefault();
     setShowActionMenu(true);
-    window.addEventListener("click", onWindowClick);
-  }
-
-  function onWindowClick(e) {
-    const { classList } = e.target;
-    if (
-      classList.contains("nav-mid-header-more-btn") ||
-      classList.contains("nav-mid-header-more-icon")
-    ) {
-      return;
-    }
-    setShowActionMenu(false);
-    window.removeEventListener("click", onWindowClick);
   }
 
   return (
@@ -59,13 +48,15 @@ const WebNavMid = props => {
       <div className="nav-mid-header-item nav-mid-header-button-container">
         {actionMenuChildren && (
           <button
-            className="nav-mid-header-more-btn theme-btn shadow-medium-clickable"
+            className="nav-mid-header-more-btn theme-btn-no-border shadow-medium-clickable"
             onClick={handleMoreActionClick}
             ref={moreBtn}
           >
-            <i className="material-icons nav-mid-header-more-icon">
+            {/* <i className="material-icons nav-mid-header-more-icon">
               more_horiz
             </i>
+             */}
+            <MoreIcon d={26} />
           </button>
         )}
 
@@ -91,7 +82,11 @@ const WebNavMid = props => {
       </div>
 
       {showActionMenu && (
-        <NavMidActionMenu children={actionMenuChildren} moreBtn={moreBtn} />
+        <NavMidActionMenu
+          children={actionMenuChildren}
+          hideActionMenu={() => setShowActionMenu(false)}
+          moreBtn={moreBtn}
+        />
       )}
     </div>
   );
