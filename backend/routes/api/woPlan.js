@@ -110,7 +110,6 @@ router.get(
 
     const { user, access } = woPlan;
 
-    woPlan.weeks = createDummyWeeks();
     if (user._id.toString() !== userId && access !== "public") {
       if (woPlan.access === "private") {
         return res
