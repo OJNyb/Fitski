@@ -15,7 +15,8 @@ const StripeView = () => {
 
   return (
     <div>
-      Sales, plan name net$ <button>Disconnect Stripe account</button>,
+      Go to your Stripe Dashboard to view details. If you have any questions
+      email us at payment@chadify.me We take a 10% fee + 59¢ for each plan sold.
     </div>
   );
 };
