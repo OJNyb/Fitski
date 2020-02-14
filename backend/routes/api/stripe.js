@@ -49,77 +49,6 @@ router.post("/register/:code", ensureSignedIn, (req, res, next) => {
     .catch(next);
 });
 
-// // @route POST api/stripe/payment/:plan_id
-// // @desc Create payment intent
-// // @access Private
-// router.post(
-//   "/payment/:plan_id",
-//   ensureSignedIn,
-//   validateRequest,
-//   async (req, res, next) => {
-//     const { params, session } = req;
-//     const { userId } = session;
-//     const { plan_id: planId } = params;
-
-//     WOPlan.findById(planId)
-//       .populate("user")
-//       .then(async plan => {
-//         if (!plan) {
-//           return res
-//             .status(404)
-//             .json(createErrorObject(["No Workout Plan with this ID"]));
-//         }
-
-//         const { user, price, access } = plan;
-//         const { stripeId } = user;
-
-//         const customer = await User.findById(userId);
-
-//         if (access !== "paywall") {
-//           return res
-//             .status(409)
-//             .json(createErrorObject(["You can not purchase this plan"]));
-//         }
-
-//         if (!price || price < 1) {
-//           return res
-//             .status(409)
-//             .json(createErrorObject(["You can not purchase this plan"]));
-//         }
-
-//         if (!stripeId) {
-//           return res
-//             .status(409)
-//             .json(createErrorObject(["This user can not accept payments"]));
-//         }
-
-//         console.log(price);
-
-//         let currency = "usd";
-//         let amount = price * 100;
-
-//         stripe.paymentIntents
-//           .create({
-//             amount,
-//             currency,
-//             transfer_data: {
-//               destination: stripeId
-//             },
-//             application_fee_amount: amount / 10 + 59,
-//             metadata: {
-//               planId,
-//               userId
-//             },
-//             receipt_email: customer.email
-//           })
-//           .then(paymentIntent => {
-//             const { client_secret } = paymentIntent;
-//             return res.json({ message: "success", client_secret });
-//           });
-//       });
-//   }
-// );
-
 // @route POST api/stripe/payment/:plan_id
 // @desc Create checkout session
 // @access Private
@@ -204,14 +133,16 @@ router.post(
 // @desc Stripe webhook
 // @access Private
 router.post("/webhook", async (req, res, next) => {
-  const sig = req.headers["stripe-signature"];
-  const { body } = req;
+  const { body, headers } = req;
+  const sig = headers["stripe-signature"];
   let event = null;
+
+  console.log("Recieved hook");
 
   try {
     event = stripe.webhooks.constructEvent(body, sig, endpointSecret);
   } catch (err) {
-    res.status(400).end();
+    res.status(400).send(`Webhook Error: ${err.message}`);
     return;
   }
 
