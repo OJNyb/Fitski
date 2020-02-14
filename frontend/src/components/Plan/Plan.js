@@ -56,8 +56,6 @@ const Plan = () => {
   const { accessedPlans, isPending: accessPending } = accessState;
   const { state: navState, dispatch: navDispatch } = useContext(NavContext);
 
-  console.log(hasAccess);
-
   useLayoutEffect(() => {
     function setActive() {
       if (userId === woPlan.user._id) {

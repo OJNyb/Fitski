@@ -4,6 +4,7 @@ import { PlanContext } from "../../context/planContext";
 import useSetLoading from "../../hooks/useSetLoading";
 import { deleteWeek, reorderExercise } from "../../utils/planClient";
 import { useParams, useHistory } from "react-router-dom";
+import useTitle from "../../hooks/useTitle";
 
 import { findLastOccurenceOfExercisePlan } from "../../utils/findAllOccurencesOfExercise";
 import {
@@ -34,11 +35,13 @@ const EditWeek = () => {
   useSetLoading(false);
   const { woPlan } = state;
   const {
+    name,
     weeks,
     user: { _id: authorId }
   } = woPlan;
   const { plan_id: planId, week_id: weekId } = useParams();
 
+  useTitle(name);
   const { _id: userId } = useUser();
 
   if (authorId !== userId) {

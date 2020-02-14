@@ -221,18 +221,18 @@ router.post("/webhook", async (req, res, next) => {
 
       const { planId, userId } = metadata;
 
+      console.log("checkout");
+      console.log(metadata);
+
       try {
         let pa = await PlanAccess.findOne({ woPlan: planId });
         let ua = await UserAccess.findOne({ user: userId });
 
-        if (pa) {
-          pa.whitelist.push({ user: userId });
-          pa.save();
-        }
-        if (ua) {
-          ua.plans.push({ woPlan: planId });
-          ua.save();
-        }
+        pa.whitelist.push({ user: userId });
+        pa.save();
+
+        ua.plans.push({ woPlan: planId });
+        ua.save();
       } catch (err) {
         next(err);
       }
@@ -281,12 +281,12 @@ router.post("/webhook", async (req, res, next) => {
 
       break;
 
-    // When user disabled by other means (fraud detected etc)
     default:
       // Unexpected event type
       return res.status(400).end();
   }
 
+  console.log("success");
   // Return a 200 res to acknowledge receipt of the event
   res.json({ received: true });
 });
