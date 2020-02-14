@@ -204,7 +204,7 @@ router.post(
 // @desc Stripe webhook
 // @access Private
 router.post("/webhook", async (req, res, next) => {
-  const sig = request.headers["stripe-signature"];
+  const sig = req.headers["stripe-signature"];
   const { body } = req;
   let event = null;
 
