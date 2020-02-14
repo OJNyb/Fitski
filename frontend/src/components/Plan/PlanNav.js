@@ -1,5 +1,5 @@
 import React, { useState, useLayoutEffect } from "react";
-import { Redirect, withRouter } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import { SET_PLAN_BACKLINK } from "../../types/navTypes";
 
 import NavMid from "../shared/NavMid/NavMid";
@@ -13,7 +13,7 @@ const PlanNav = ({
   navDispatch,
   onGetClick,
   setShowModal,
-  accessedPlans
+  hasAccess
 }) => {
   const [redirect, setRedirect] = useState(false);
 
@@ -42,7 +42,7 @@ const PlanNav = ({
       );
     } else {
       //  actionMenuChildren
-      if (!isSelf && accessedPlans.indexOf(planId) !== -1) {
+      if (!isSelf && hasAccess) {
         actionMenuChildren.push({
           icon: "delete_outline",
           text: "Remove plan",
@@ -51,7 +51,7 @@ const PlanNav = ({
         });
       }
     }
-  }, [isSelf, setShowModal, actionMenuChildren, accessedPlans, planId]);
+  }, [isSelf, setShowModal, actionMenuChildren, hasAccess, planId]);
 
   if (redirect) {
     let to = navState[planId];
@@ -70,7 +70,7 @@ const PlanNav = ({
   let rightBtnIcon;
   let rightBtnFilled;
 
-  if (!isSelf && accessedPlans.indexOf(planId) === -1) {
+  if (!hasAccess) {
     rightBtnText = "Get";
     rightBtnIcon = "assignment_returned";
     rightBtnFilled = false;
@@ -87,20 +87,22 @@ const PlanNav = ({
     rightBtnFilled = false;
   }
 
+  if (!hasAccess) {
+    return <NavMid backText={planName} backAction={() => setRedirect(true)} />;
+  }
+
   return (
-    <>
-      <NavMid
-        backText={planName}
-        backAction={() => setRedirect(true)}
-        rightBtnText={rightBtnText}
-        rightBtnIcon={rightBtnIcon}
-        rightBtnAction={rightBtnAction}
-        rightBtnFilled={rightBtnFilled}
-        rightBtnOutlined={false}
-        actionMenuChildren={actionMenuChildren}
-      />
-    </>
+    <NavMid
+      backText={planName}
+      backAction={() => setRedirect(true)}
+      rightBtnText={rightBtnText}
+      rightBtnIcon={rightBtnIcon}
+      rightBtnAction={rightBtnAction}
+      rightBtnFilled={rightBtnFilled}
+      rightBtnOutlined={false}
+      actionMenuChildren={actionMenuChildren}
+    />
   );
 };
 
-export default withRouter(PlanNav);
+export default PlanNav;

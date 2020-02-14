@@ -183,8 +183,8 @@ router.post(
                 destination: stripeId
               }
             },
-            success_url: `https://fitnut.heroku.com/stripe/success?session_id={CHECKOUT_SESSION_ID}&plan_id=${planId}`,
-            cancel_url: `https://fitnut.heroku.com/stripe/cancel?plan_id=${planId}`,
+            success_url: `https://fitnut.herokuapp.com/stripe/success?session_id={CHECKOUT_SESSION_ID}&plan_id=${planId}`,
+            cancel_url: `https://fitnut.herokuapp.com/stripe/cancel?plan_id=${planId}`,
             customer_email: customer.email,
             metadata: {
               planId,

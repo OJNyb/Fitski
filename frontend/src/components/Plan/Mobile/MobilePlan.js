@@ -9,7 +9,7 @@ import MobileEmpty from "../../shared/MobileEmpty";
 import Plus20 from "../../shared/SVGs/Plus20";
 
 const MobilePlan = ({ woPlan, isSelf, navState, setShowModal }) => {
-  const { weeks, _id: planId } = woPlan;
+  const { weeks, _id: planId, hasAccess } = woPlan;
   useSetLoading(false);
   let to = navState[planId];
   if (!to) {
@@ -18,6 +18,9 @@ const MobilePlan = ({ woPlan, isSelf, navState, setShowModal }) => {
   useNavBack(to);
 
   let weeksDisplay;
+  if (!hasAccess) {
+    return <p>You do not have access</p>;
+  }
   if (weeks.length) {
     weeksDisplay = weeks.map((week, index) => {
       return (

@@ -75,10 +75,12 @@ function planReducer(state, action) {
       };
     }
     case SET_PLAN: {
-      const { woPlan } = payload;
+      const { data } = payload;
+      const { woPlan, hasAccess } = data;
       return {
         ...state,
         woPlan,
+        hasAccess,
         isPending: false
       };
     }

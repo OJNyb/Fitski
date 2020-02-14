@@ -16,6 +16,11 @@ const validateRequest = SchemaValidator(true);
 
 const createErrorObject = require("../../utils/createErrorObject");
 
+const {
+  createDummyWeeks,
+  createEmptyWeekArray
+} = require("../../utils/planUtils");
+
 // TODOS:
 // Error handling, scaling,  validation
 
@@ -58,11 +63,16 @@ router.get("/user/:username", ensureSignedIn, async (req, res, next) => {
           .json(createErrorObject(["No user with that username"]));
       }
       const { _id: userId } = user;
-      WOPlan.find({ user: userId, access: "public" })
+      WOPlan.find({ user: userId, access: { $in: ["public", "paywall"] } })
         .skip(Number(skip) || 0)
         .limit(40)
         .populate("user")
-        .then(woPlans => res.json(woPlans))
+        .then(woPlans => {
+          woPlans.forEach(
+            x => (x.weeks = createEmptyWeekArray(x.weeks.length))
+          );
+          res.json(woPlans);
+        })
         .catch(next);
     })
     .catch(next);
@@ -71,7 +81,6 @@ router.get("/user/:username", ensureSignedIn, async (req, res, next) => {
 // @route GET api/plan/:plan_id
 // @desc Get workout plan by id
 // @access Private
-// TODO: Extend to allow users who bought access/everyone if author wants
 router.get(
   "/:plan_id",
   ensureSignedIn,
@@ -86,7 +95,7 @@ router.get(
       var woPlan = await WOPlan.findById(planId).populate(
         "weeks.days.exercises.exercise user"
       );
-      var access = await PlanAccess.findOne({ woPlan: planId });
+      var planAccess = await PlanAccess.findOne({ woPlan: planId });
     } catch (err) {
       return next(err);
     }
@@ -97,17 +106,28 @@ router.get(
         .json(createErrorObject(["No workout plan with this ID"]));
     }
 
-    if (
-      woPlan.user._id.toString() !== userId &&
-      access.whitelist.map(x => x.user.toString()).indexOf(userId) === -1 &&
-      woPlan.access === "private"
-    ) {
-      return res
-        .status(403)
-        .json(createErrorObject(["You are not authorized to view this plan"]));
+    let hasAccess = true;
+
+    const { user, access } = woPlan;
+
+    woPlan.weeks = createDummyWeeks();
+    if (user._id.toString() !== userId && access !== "public") {
+      if (woPlan.access === "private") {
+        return res
+          .status(403)
+          .json(
+            createErrorObject(["You are not authorized to view this plan"])
+          );
+      }
+      if (
+        planAccess.whitelist.map(x => x.user.toString()).indexOf(userId) === -1
+      ) {
+        woPlan.weeks = createDummyWeeks();
+        hasAccess = false;
+      }
     }
 
-    res.json(woPlan);
+    res.json({ woPlan, hasAccess });
   }
 );
 

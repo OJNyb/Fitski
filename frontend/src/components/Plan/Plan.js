@@ -26,6 +26,7 @@ import SetLoading from "../SetLoading";
 import { MainTile, MainContainer, SecondTile } from "../shared/Layout";
 
 import "./plan.css";
+import { Link } from "react-router-dom";
 
 const MobilePlan = lazy(() => import("./Mobile/MobilePlan"));
 const WebPlan = lazy(() => import("./Web/WebPlan"));
@@ -33,7 +34,7 @@ const WebPlan = lazy(() => import("./Web/WebPlan"));
 const Plan = () => {
   const isMobile = useMobile();
   const {
-    state: { woPlan },
+    state: { woPlan, hasAccess },
     dispatch
   } = useContext(PlanContext);
   const { state: userState, dispatch: userDispatch } = useAuth();
@@ -55,6 +56,8 @@ const Plan = () => {
   const { accessedPlans, isPending: accessPending } = accessState;
   const { state: navState, dispatch: navDispatch } = useContext(NavContext);
 
+  console.log(hasAccess);
+
   useLayoutEffect(() => {
     function setActive() {
       if (userId === woPlan.user._id) {
@@ -72,7 +75,16 @@ const Plan = () => {
       }
     }
     setActive();
-  }, [planId, woPlan, userId, setIsSelf, activeWOPlan]);
+  }, [
+    planId,
+    woPlan,
+    userId,
+    setIsSelf,
+    activeWOPlan,
+    isSelf,
+    accessedPlans,
+    planId
+  ]);
 
   useTitle(name);
 
@@ -184,11 +196,17 @@ const Plan = () => {
         isSelf={isSelf}
         navState={navState}
         navDispatch={navDispatch}
+        hasAccess={hasAccess}
       />
     );
   } else {
     view = (
-      <WebPlan woPlan={woPlan} setShowModal={setShowModal} isSelf={isSelf} />
+      <WebPlan
+        woPlan={woPlan}
+        setShowModal={setShowModal}
+        isSelf={isSelf}
+        hasAccess={hasAccess}
+      />
     );
   }
 
@@ -205,15 +223,24 @@ const Plan = () => {
             navState={navState}
             navDispatch={navDispatch}
             setShowModal={setShowModal}
-            accessedPlans={accessedPlans}
+            hasAccess={hasAccess}
             onGetClick={handleGetClick}
           />
           <Suspense fallback={<SetLoading />}>{view}</Suspense>
         </MainTile>
         <SecondTile>
-          <ul>
-            <li>Week navigation ?</li>
-          </ul>
+          {!hasAccess && (
+            <div className="purchase-plan-container shadow-medium">
+              <p className="purchase-plan-name">{name}</p>
+              <p className="purchase-plan-price">{price}$</p>
+              <Link
+                to={`/checkout/${planId}`}
+                className="purchase-plan-button shadow-medium-clickable"
+              >
+                Buy Now
+              </Link>
+            </div>
+          )}
         </SecondTile>
       </MainContainer>
       {modal}
