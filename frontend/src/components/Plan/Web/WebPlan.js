@@ -5,10 +5,14 @@ import useSetLoading from "../../../hooks/useSetLoading";
 
 import PlanOverview from "../PlanOverview";
 
-const WebPlan = ({ woPlan, isSelf, setShowModal }) => {
+const WebPlan = ({ woPlan, isSelf, hasAccess, setShowModal }) => {
   useSetLoading(false);
-  const { weeks, _id: planId } = woPlan;
+  const { weeks, _id: planId, access } = woPlan;
   let weeksDisplay;
+
+  console.log(woPlan);
+
+  let view;
   if (weeks.length) {
     weeksDisplay = weeks.map((week, index) => {
       return (
@@ -21,8 +25,16 @@ const WebPlan = ({ woPlan, isSelf, setShowModal }) => {
         />
       );
     });
+
+    if (hasAccess) {
+      view = weeksDisplay;
+    } else {
+      view = (
+        <div className="plan-week-container-no-access">{weeksDisplay}</div>
+      );
+    }
   } else {
-    weeksDisplay = (
+    view = (
       <div className="plan-week-container flex-col-cen">
         <p>Workout Plan Empty</p>
         {isSelf && (
@@ -36,10 +48,11 @@ const WebPlan = ({ woPlan, isSelf, setShowModal }) => {
       </div>
     );
   }
+
   return (
     <div style={{ padding: "0 0 50px" }}>
       <PlanOverview woPlan={woPlan} />
-      {weeksDisplay}
+      {view}
     </div>
   );
 };

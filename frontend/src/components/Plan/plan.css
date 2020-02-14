@@ -77,3 +77,47 @@
   padding: 4px 9px;
   border-radius: 2px;
 }
+
+.purchase-plan-container {
+  background-color: rgb(252, 252, 252);
+  width: 200px;
+  margin-top: 80px;
+  padding: 15px;
+  border-radius: 3px;
+  font-family: "Raleway";
+  position: relative;
+}
+
+.purchase-plan-name {
+  color: #a60000;
+  margin: 0;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.purchase-plan-price {
+  color: #5a4e4e;
+  margin: 0;
+  font-size: 18px;
+}
+
+.purchase-plan-button {
+  display: flex;
+  justify-content: center;
+  box-sizing: border-box;
+  margin-top: 20px;
+  width: 100%;
+  padding: 8px;
+  color: #3a3131;
+  font-size: 20px;
+  border: 1px solid #bba1a1;
+  font-weight: 300;
+}
+
+.purchase-plan-button:hover {
+  background-color: rgb(255, 233, 233);
+}
+
+.plan-week-container-no-access {
+  filter: blur(5px);
+}

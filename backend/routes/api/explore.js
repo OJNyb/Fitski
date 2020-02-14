@@ -13,6 +13,8 @@ const { ensureSignedIn } = require("../../middlewares/auth");
 const SchemaValidator = require("../../middlewares/SchemaValidator");
 const validateRequest = SchemaValidator(true);
 
+const { createEmptyWeekArray } = require("../../utils/planUtils");
+
 new CronJob(
   "5 0 * * *",
   function() {
@@ -35,7 +37,7 @@ function escapeRegExp(string) {
 }
 
 // @route GET api/explore/search
-// @desc Search for user/workout plans
+// @desc Search for workout plans
 // @access Private
 router.get(
   "/search",
@@ -50,7 +52,7 @@ router.get(
 
     try {
       queryPlans = await WOPlan.find(
-        { access: "public", $text: { $search: search } },
+        { access: { $in: ["public", "paywall"] }, $text: { $search: search } },
         { score: { $meta: "textScore" } }
       )
         .populate("user")
@@ -58,6 +60,8 @@ router.get(
         .skip(Number(skip))
         .limit(40)
         .limit(40);
+
+      queryPlans.forEach(x => (x.weeks = createEmptyWeekArray(x.weeks.length)));
     } catch (e) {
       return next(e);
     }
@@ -99,7 +103,12 @@ router.get(
       .then(plans =>
         WOPlan.find({ _id: { $in: plans.map(x => x._id) } })
           .populate("user")
-          .then(woPlans => res.json({ results: woPlans }))
+          .then(woPlans => {
+            woPlans.forEach(
+              x => (x.weeks = createEmptyWeekArray(x.weeks.length))
+            );
+            res.json({ results: woPlans });
+          })
           .catch(next)
       )
       .catch(next);

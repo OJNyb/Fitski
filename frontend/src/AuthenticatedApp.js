@@ -50,17 +50,7 @@ function App() {
   if (isMobile) {
     width = "100%";
   } else {
-    if (winWidth < 1000) {
-      width = "100%";
-    } else {
-      width = "calc(100% - 251px)";
-    }
-  }
-
-  if (winWidth > 1000) {
-    width = "990px";
-  } else {
-    width = "100%";
+    width = "800px";
   }
 
   return (

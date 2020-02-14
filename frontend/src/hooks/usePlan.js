@@ -25,7 +25,7 @@ const usePlan = planId => {
         .get(`/api/plan/${planId}`)
         .then(res => {
           if (!isCancelled) {
-            dispatch({ type: SET_PLAN, payload: { woPlan: res.data } });
+            dispatch({ type: SET_PLAN, payload: { data: res.data } });
           }
         })
         .catch(err => {
