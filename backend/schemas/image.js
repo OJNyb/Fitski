@@ -1,9 +1,5 @@
 const Joi = require("./joi");
 
-// TODO: Add optional to categories and description, on edit ???
-
-// AD
-
 const updateAvatar = Joi.object().keys({
   avatar: Joi.string()
     .dataUri()

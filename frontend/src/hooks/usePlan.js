@@ -1,10 +1,8 @@
-import { useEffect, useReducer } from "react";
+import { useState, useEffect, useReducer } from "react";
 import axios from "axios";
 
 import planReducer from "../reducers/planReducer";
 import { SET_PLAN, IS_PENDING, IS_REJECTED } from "../types/planTypes";
-
-// TODO: If !week/day/woplan
 
 const initialState = {
   woPlan: null,
@@ -15,6 +13,11 @@ const initialState = {
 
 const usePlan = planId => {
   const [state, dispatch] = useReducer(planReducer, initialState);
+  const [refresh, setRefresh] = useState(0);
+
+  function refreshPlan() {
+    setRefresh(refresh + 1);
+  }
 
   useEffect(() => {
     let isCancelled = false;
@@ -43,11 +46,12 @@ const usePlan = planId => {
     return () => {
       isCancelled = true;
     };
-  }, [planId]);
+  }, [planId, refresh]);
 
   return {
     state,
-    dispatch
+    dispatch,
+    refreshPlan
   };
 };
 

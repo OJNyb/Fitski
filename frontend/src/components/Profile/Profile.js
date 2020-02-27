@@ -16,6 +16,7 @@ import { editUser } from "../../utils/userClient";
 import { useAuth } from "../../context/authContext";
 import { activatePlan, deactivatePlan } from "../../utils/userClient";
 import { NavContext } from "../../context/navContext";
+import useTitle from "../../hooks/useTitle";
 
 import EditProfileModal from "./EditProfileModal";
 import ErrorText from "../shared/ErrorText";
@@ -72,6 +73,8 @@ const Profile = () => {
       }
     }
   }, [userId, profile]);
+
+  useTitle(username);
 
   function handleActivateClick(e, planId) {
     e.stopPropagation();
@@ -181,14 +184,7 @@ const Profile = () => {
         profile={profile}
         woPlans={woPlans}
         navState={navState}
-        isPending={plansPending}
-        navDispatch={navDispatch}
         setShowModal={setShowModal}
-        accessedPlans={accessedPlans}
-        handleGetClick={handleGetClick}
-        handleActivateClick={handleActivateClick}
-        handleDeactivateClick={handleDeactivateClick}
-        onEditProfile={handleEditProfile}
       />
     );
   }

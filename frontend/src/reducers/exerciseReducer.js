@@ -71,10 +71,11 @@ function planReducer(state, action) {
 
     case ADD_EXERCISE: {
       const { exercises } = state;
-      const { name, muscleGroup, exerciseId } = payload;
+      const { name, muscleGroup, exerciseId, unit } = payload;
 
       let newExercise = {
         name,
+        unit,
         custom: true,
         _id: exerciseId,
         muscleGroup,

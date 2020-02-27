@@ -5,6 +5,7 @@ import useMobile from "../../hooks/useMobile";
 
 import Modal from "../shared/Modal/Modal";
 import ErrorMessage from "../shared/Modal/ErrorMessage";
+import { getDisplayUnits } from "../../utils/cardUtils";
 
 const CopyModal = ({ weekIndex, hideModal }) => {
   const {
@@ -39,6 +40,7 @@ const CopyModal = ({ weekIndex, hideModal }) => {
       onSubmit={handleSubmit}
       isRejected={cwRejected}
       isPending={cwPending}
+      weekIndex={weekIndex}
     />
   );
 };
@@ -48,7 +50,9 @@ const CopyWeekModal = ({
   onSubmit,
   hideModal,
   isPending,
-  isRejected
+  isRejected,
+  weekIndex,
+  copyWeekIndex
 }) => {
   const isMobile = useMobile();
 
@@ -109,8 +113,9 @@ const CopyWeekModal = ({
           onClick={() => {
             onSubmit(selected - 1);
           }}
-          disabled={isPending}
+          disabled={isPending || selected - 1 === weekIndex}
         >
+          {console.log(selected)}
           Copy
         </button>
       </div>
@@ -170,7 +175,7 @@ const Day = ({ day, index }) => {
 const Exercise = ({ exercise }) => {
   const {
     sets,
-    exercise: { name }
+    exercise: { name, unit }
   } = exercise;
   const reps = sets.map(x => x.reps);
 
@@ -188,10 +193,18 @@ const Exercise = ({ exercise }) => {
     }, "");
   }
 
+  const { lastRowUnit } = getDisplayUnits(unit);
+
   return (
     <div className="padding-5 flex-ai-center color-gray">
       <span className="font-w-500 space-after font-14">{name}</span> -{" "}
-      {sets.length} sets of {displayReps || 0} reps
+      {sets.length} sets
+      {lastRowUnit && (
+        <>
+          {" "}
+          of {displayReps || 0} {lastRowUnit}
+        </>
+      )}
     </div>
   );
 };

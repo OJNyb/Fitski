@@ -3,7 +3,6 @@ import Modal from "./Modal";
 import useMobile from "../../../hooks/useMobile";
 import CalendarView from "../Calendar/MobileCalendar";
 import { isSameDay } from "../../../utils/formatHistoryDate";
-
 import "react-dates/initialize";
 import { DayPicker } from "react-dates";
 import { displayDate } from "../../../utils/formatHistoryDate";
@@ -64,7 +63,6 @@ const ActivatePlanModal = ({ hideModal, onActivateSubmit }) => {
         {showCalendar && (
           <div className="bs-activate-plan-cal-container">
             <DayPicker
-              date={startDate}
               onDayClick={date => {
                 onDateChange(date);
                 setShowCalendar(false);

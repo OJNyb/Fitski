@@ -21,9 +21,6 @@ const {
   createEmptyWeekArray
 } = require("../../utils/planUtils");
 
-// TODOS:
-// Error handling, scaling,  validation
-
 // @route GET api/plan
 // @desc Get current users workout plans
 // @access Private
@@ -206,8 +203,6 @@ router.post(
 // @route DELETE api/plan/:plan_id
 // @desc Delete workout plan
 // @access Private
-
-// TODO: Ensure id is objectId
 router.delete(
   "/:plan_id",
   ensureSignedIn,
@@ -496,8 +491,6 @@ router.delete(
 // @route POST api/plan/exercise/:plan_id/:week_id/:day_id
 // @desc Add exercise to workout plan
 // @access Private
-
-// TODO: Better way to see if update failed?
 router.post(
   "/exercise/:plan_id/:week_id/:day_id",
   ensureSignedIn,

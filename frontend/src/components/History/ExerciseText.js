@@ -1,5 +1,5 @@
 import React from "react";
-
+import { getDisplayUnits } from "../../utils/cardUtils";
 import { ensureDecimal } from "../../utils/ensureDecimal";
 import { useUser } from "../../context/userContext";
 
@@ -27,25 +27,22 @@ const ExerciseText = ({ exercise }) => {
 const Row = ({ set, defaultUnit, unit }) => {
   const { reps, weight } = set;
 
-  let lastRowUnit;
-  if (unit === "s") {
-    lastRowUnit = "seconds";
-  } else {
-    lastRowUnit = "reps";
-  }
+  const { firstRowUnit, lastRowUnit } = getDisplayUnits(unit, defaultUnit);
 
   return (
     <div className="history-exercise-text-row">
       <div className="history-mobile-exercise-list-label-wrapper">
-        {unit === "r+w" && (
+        {firstRowUnit && (
           <>
-            <b className="color-gray mr-1 font-14">{ensureDecimal(weight)}</b>
-            <span className="black font-12 font-w-300">{defaultUnit}</span>
+            <span className="color-gray mr-1 font-14 font-w-500">
+              {ensureDecimal(weight)}
+            </span>
+            <span className="black font-12 font-w-300">{firstRowUnit}</span>
           </>
         )}
       </div>
       <div className="history-mobile-exercise-list-label-wrapper">
-        <b className="color-gray mr-1 font-14">{reps}</b>
+        <span className="color-gray mr-1 font-14 font-w-500">{reps}</span>
         <span className="black font-12 font-w-300">{lastRowUnit}</span>
       </div>
     </div>

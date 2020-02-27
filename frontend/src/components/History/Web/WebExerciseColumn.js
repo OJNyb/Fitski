@@ -1,5 +1,6 @@
 import React, { useRef, useState, useEffect, useCallback } from "react";
 import { ensureDecimal } from "../../../utils/ensureDecimal";
+import { getDisplayUnits } from "../../../utils/cardUtils";
 
 const WebExerciseColumn = ({
   set,
@@ -159,12 +160,7 @@ const ExerciseForm = ({
     weightInputEl.current.blur();
   }
 
-  let lastRowUnit;
-  if (unit === "s") {
-    lastRowUnit = "seconds";
-  } else {
-    lastRowUnit = "reps";
-  }
+  const { firstRowUnit, lastRowUnit } = getDisplayUnits(unit, defaultUnit);
 
   return (
     <form
@@ -172,7 +168,7 @@ const ExerciseForm = ({
       onSubmit={onSubmit}
     >
       <div className="history-web-row">
-        {unit === "r+w" && (
+        {firstRowUnit && (
           <label
             htmlFor={`weight-${setId}`}
             className="padding-3 font-12 color-gray font-w-300"
@@ -188,7 +184,7 @@ const ExerciseForm = ({
               onFocus={e => e.target.select()}
               className="black font-14 mr-1 web-card-input"
             />
-            {defaultUnit}
+            {firstRowUnit}
           </label>
         )}
       </div>

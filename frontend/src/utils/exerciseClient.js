@@ -26,10 +26,10 @@ import { isSuccessful, getErrorMessage } from "../utils/errorHandling";
 
 const { ObjectId } = Types;
 
-function addExercise(dispatch, name, muscleGroup) {
+function addExercise(dispatch, name, muscleGroup, unit) {
   return new Promise((resolve, reject) => {
     const exerciseId = new ObjectId().toHexString();
-    const payload = { name, muscleGroup, exerciseId };
+    const payload = { name, muscleGroup, unit, exerciseId };
 
     dispatch({
       type: ADD_EXERCISE,
@@ -40,6 +40,7 @@ function addExercise(dispatch, name, muscleGroup) {
       .post("/api/exercise/custom", {
         name,
         muscleGroupId: muscleGroup._id,
+        unit,
         exerciseId
       })
       .then(res => {
@@ -71,7 +72,7 @@ function addExercise(dispatch, name, muscleGroup) {
 
 function retryAddExercise(dispatch, exercise) {
   return new Promise((resolve, reject) => {
-    const { name, muscleGroup, _id: exerciseId } = exercise;
+    const { name, muscleGroup, _id: exerciseId, unit } = exercise;
     const payload = { exerciseId };
 
     dispatch({
@@ -83,7 +84,8 @@ function retryAddExercise(dispatch, exercise) {
       .post("/api/exercise/custom", {
         name,
         muscleGroupId: muscleGroup._id,
-        exerciseId
+        exerciseId,
+        unit
       })
       .then(res => {
         let isSucc = isSuccessful(res);
@@ -115,15 +117,19 @@ function retryAddExercise(dispatch, exercise) {
 function editExercise(dispatch, exerciseId, values) {
   return new Promise((resolve, reject) => {
     const payload = { values, exerciseId };
-    const { name, muscleGroup } = values;
+    const { name, muscleGroup, unit } = values;
 
-    let patch;
+    let patch = {};
 
     if (name) {
       patch.name = name;
     }
     if (muscleGroup) {
       patch.muscleGroupId = muscleGroup._id;
+    }
+
+    if (unit) {
+      patch.unit = unit;
     }
 
     dispatch({
@@ -164,7 +170,7 @@ function editExercise(dispatch, exerciseId, values) {
 
 function retryEditExercise(dispatch, exercise) {
   return new Promise((resolve, reject) => {
-    const { name, muscleGroup, _id: exerciseId } = exercise;
+    const { name, muscleGroup, _id: exerciseId, unit } = exercise;
     const payload = { exerciseId };
 
     dispatch({
@@ -175,7 +181,8 @@ function retryEditExercise(dispatch, exercise) {
     axios
       .patch(`/api/exercise/custom/${exerciseId}`, {
         name,
-        muscleGroupId: muscleGroup._id
+        muscleGroupId: muscleGroup._id,
+        unit
       })
       .then(res => {
         let isSucc = isSuccessful(res);

@@ -1,12 +1,41 @@
 .mobile-nav {
   position: fixed;
   display: flex;
-  padding: 0px 0px 0px 15px;
+  padding: 0px 0px 0px 10px;
   height: 50px;
   width: 100%;
   z-index: 999;
   top: 0;
-  box-shadow: 1px 2px 3px 1px rgba(0, 0, 0, 0.11);
+}
+
+.mobile-nav-back-btn {
+  height: 32px;
+  width: 32px;
+  display: flex;
+  padding: 5px;
+  font-size: 22px;
+  box-sizing: border-box;
+}
+
+.mobile-nav-back-btn i {
+  font-size: 22px;
+}
+
+.mobile-nav-text-span {
+  font-size: 16px;
+  font-family: "Raleway", sans-serif;
+  margin-left: 8px;
+  font-weight: 700;
+  color: white;
+}
+
+.mobile-nav-button-container {
+  padding: 0 10px;
+}
+
+.mobile-nav-button-container button {
+  padding: 5px;
+  margin: 0 5px;
 }
 
 .mobile-nav-menu-container {
@@ -29,46 +58,6 @@
   align-items: center;
   display: flex;
   color: #a60000;
-}
-
-.mobile-nav-main-btn {
-  left: 10px;
-  top: calc(25px - 17px);
-  position: absolute;
-}
-
-.mobile-nav-back-btn {
-  height: 22px;
-  width: 22px;
-  display: flex;
-  padding: 5px;
-  font-size: 22px;
-  left: 10px;
-  top: calc(25px - 16px);
-  position: absolute;
-}
-
-.mobile-nav-back-btn i {
-  font-size: 22px;
-}
-
-.mobile-nav-icon-container {
-  position: fixed;
-  top: 0;
-  right: 0;
-  z-index: 5000;
-  padding-top: calc(25px - 16px);
-  padding-right: 5px;
-}
-
-.mobile-nav-icon-container svg {
-  max-height: 22px;
-}
-
-.mobile-nav-icon-container button,
-.mobile-nav-icon-container a {
-  min-height: 32px;
-  margin-right: 7px;
 }
 
 .mobile-nav-header {

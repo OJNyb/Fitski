@@ -35,7 +35,8 @@ const WebView = ({
   handleEditSetRetry,
   handleDeleteExercise,
   handleReorderExercise,
-  handleAddExerciseRetry
+  handleAddExerciseRetry,
+  refreshHistory
 }) => {
   const [focused, setFocused] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -48,7 +49,7 @@ const WebView = ({
   }
 
   function handleCopyClick() {
-    setShowModal(true);
+    setShowModal("copy");
   }
 
   function hideModal() {
@@ -122,7 +123,10 @@ const WebView = ({
         </MainTile>
         <SecondTile>
           <div className="flex-col-cen">
-            <Exercises handleAddExercise={handleAddExercise} />
+            <Exercises
+              handleAddExercise={handleAddExercise}
+              refreshExercises={refreshHistory}
+            />
           </div>
         </SecondTile>
       </MainContainer>

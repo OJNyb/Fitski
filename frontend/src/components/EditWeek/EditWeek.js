@@ -28,7 +28,7 @@ const WebEditWeek = lazy(() => import("./Web/WebEditWeek"));
 
 const EditWeek = () => {
   const { push } = useHistory();
-  const { state, dispatch } = useContext(PlanContext);
+  const { state, dispatch, refreshPlan } = useContext(PlanContext);
   const [currentDayIndex, setCurrentDayIndex] = useState(0);
   const isMobile = useMobile();
 
@@ -152,6 +152,7 @@ const EditWeek = () => {
         handleDeleteExercise={handleDeleteExercise}
         handleDeleteWeekSubmit={handleDeleteWeekSubmit}
         handleAddExerciseRetry={handleAddExerciseRetry}
+        refreshPlan={refreshPlan}
       />
     );
   } else {
@@ -160,6 +161,7 @@ const EditWeek = () => {
         weeks={weeks}
         planId={planId}
         weekIndex={weekIndex}
+        refreshPlan={refreshPlan}
         currentWeek={currentWeek}
         handleAddSet={handleAddSet}
         handleEditSet={handleEditSet}

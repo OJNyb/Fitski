@@ -2,6 +2,7 @@ import {
   SHOW_NONE,
   SHOW,
   SHOW_BACK,
+  SET_NAV,
   SHOW_DEHAZE,
   CLEAN_STATE,
   SET_PLAN_BACKLINK
@@ -10,6 +11,12 @@ import {
 function navReducer(state, action) {
   const { type, payload } = action;
   switch (type) {
+    case SET_NAV: {
+      return {
+        ...state,
+        ...payload
+      };
+    }
     case SHOW_DEHAZE: {
       return {
         ...state,

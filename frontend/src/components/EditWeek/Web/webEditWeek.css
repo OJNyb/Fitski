@@ -21,6 +21,26 @@
   width: 26px;
 }
 
+.edit-week-web-week-dropdown-container {
+  background-color: #fff;
+  border-radius: 4px;
+  position: absolute;
+  top: 30px;
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+.edit-week-web-week-dropdown-item {
+  padding: 5px 10px;
+  min-width: 100p;
+
+  transition: background-color 0.2s ease;
+}
+
+.edit-week-web-week-dropdown-item:hover {
+  background-color: rgb(250, 233, 233);
+}
+
 /* OVERVIEW */
 
 /* DAY CONTENT */

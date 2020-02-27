@@ -1,7 +1,5 @@
 const Joi = require("./joi");
 
-// TODO: Add optional to categories and description, on edit ???
-
 const _id = Joi.string()
   .objectId()
   .required()
@@ -19,6 +17,8 @@ const color = Joi.string()
   .regex(/^#[A-Fa-f0-9]{6}$/)
   .label("Color");
 
+const unit = Joi.string().label("Unit");
+
 const getExercise = Joi.object().keys({
   _id: _id.label("Exercise ID")
 });
@@ -26,7 +26,8 @@ const getExercise = Joi.object().keys({
 const addExercise = Joi.object().keys({
   name: name.required(),
   muscleGroupId,
-  exerciseId
+  exerciseId,
+  unit: unit.required()
 });
 
 const editExercise = Joi.object()
@@ -35,7 +36,8 @@ const editExercise = Joi.object()
     muscleGroupId: Joi.string()
       .objectId()
       .label("Muscle Group ID"),
-    exercise_id: exerciseId
+    exercise_id: exerciseId,
+    unit
   })
   .or("name", "muscleGroupId");
 
@@ -58,7 +60,7 @@ const editMuscleGroup = Joi.object()
     color,
     musclegroup_id: muscleGroupId
   })
-  .or("name", "color");
+  .or("name", "unit", "color");
 
 const deleteMuscleGroups = Joi.object().keys({
   musclegroup_id: muscleGroupId

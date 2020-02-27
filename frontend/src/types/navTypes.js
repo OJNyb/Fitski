@@ -1,16 +1,7 @@
-const SHOW = "SHOW";
-const SHOW_BACK = "SHOW_BACK";
-const SHOW_NONE = "SHOW_NONE";
-const SHOW_DEHAZE = "SHOW_DEHAZE";
-const CLEAN_STATE = "CLEAN_STATE";
-
-const SET_PLAN_BACKLINK = "SET_PLAN_BACKLINK";
-
-export {
-  SHOW,
-  SHOW_NONE,
-  SHOW_BACK,
-  SHOW_DEHAZE,
-  CLEAN_STATE,
-  SET_PLAN_BACKLINK
-};
+export const SHOW = "SHOW";
+export const SET_NAV = "SET_NAV";
+export const SHOW_BACK = "SHOW_BACK";
+export const SHOW_NONE = "SHOW_NONE";
+export const SHOW_DEHAZE = "SHOW_DEHAZE";
+export const CLEAN_STATE = "CLEAN_STATE";
+export const SET_PLAN_BACKLINK = "SET_PLAN_BACKLINK";

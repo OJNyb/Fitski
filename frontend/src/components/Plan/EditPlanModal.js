@@ -25,8 +25,8 @@ const EditProfileModal = ({ plan, onSubmit, hideModal }) => {
   const user = useUser();
   const isMobile = useMobile();
 
-  // TODO
-  const { isMerchant } = user;
+  const { stripeId } = user;
+  const isMerchant = !!stripeId;
 
   function onClose() {
     delete plan.isRejected;

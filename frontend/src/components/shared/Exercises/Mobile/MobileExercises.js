@@ -142,8 +142,51 @@ const MobileExerciseView = ({
     }
   }
 
+  let subNav;
+  if (selectedExercises.length) {
+    subNav = (
+      <SelectedNavBar
+        showEdit={selectedExercises.length === 1}
+        onCheckClick={() => setSelectedExercises([])}
+        selectedExercises={selectedExercises}
+        setSelectedExercises={setSelectedExercises}
+        text={`${selectedExercises.length} ${
+          selectedExercises.length > 1 ? "exercises" : "exercise"
+        }`}
+        onEditClick={() =>
+          setShowModal({ type: "edit", exercises: selectedExercises })
+        }
+        onDeleteClick={() =>
+          setShowModal({ type: "delete", exercises: selectedExercises })
+        }
+      />
+    );
+  } else if (selectedMuscleGroup) {
+    subNav = (
+      <SelectedNavBar
+        showEdit={true}
+        text={selectedMuscleGroup.name}
+        selectedExercises={selectedExercises}
+        setSelectedExercises={setSelectedExercises}
+        onCheckClick={() => setSelectedMuscleGroup(null)}
+        onEditClick={() => setShowMuscleGroupModal({ type: "edit" })}
+        onDeleteClick={() => setShowMuscleGroupModal({ type: "delete" })}
+      />
+    );
+  } else {
+    subNav = (
+      <div className="mobile-exercises-head">
+        <i className="material-icons">search</i>
+        <div className="flex-col mobile-exercises-search-wrapper">
+          <input value={search} onChange={handleSearchChange} />
+          <div className="border-with-sides" />
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <>
+    <div className="width-100p">
       {muscleGroupModal}
       <MobileExercisesNav
         header={header}
@@ -152,45 +195,11 @@ const MobileExerciseView = ({
         handleAddCustomExercise={handleAddCustomExercise}
       />
 
-      {selectedExercises.length > 0 && (
-        <SelectedNavBar
-          showEdit={selectedExercises.length === 1}
-          onCheckClick={() => setSelectedExercises([])}
-          selectedExercises={selectedExercises}
-          setSelectedExercises={setSelectedExercises}
-          text={`${selectedExercises.length} ${
-            selectedExercises.length > 1 ? "exercises" : "exercise"
-          }`}
-          onEditClick={() =>
-            setShowModal({ type: "edit", exercises: selectedExercises })
-          }
-          onDeleteClick={() =>
-            setShowModal({ type: "delete", exercises: selectedExercises })
-          }
-        />
-      )}
-      {selectedMuscleGroup && (
-        <SelectedNavBar
-          showEdit={true}
-          text={selectedMuscleGroup.name}
-          selectedExercises={selectedExercises}
-          setSelectedExercises={setSelectedExercises}
-          onCheckClick={() => setSelectedMuscleGroup(null)}
-          onEditClick={() => setShowMuscleGroupModal({ type: "edit" })}
-          onDeleteClick={() => setShowMuscleGroupModal({ type: "delete" })}
-        />
-      )}
-      <div className="mobile-exercises-container">
-        <div className="mobile-exercises-head">
-          <i className="material-icons">search</i>
-          <div className="flex-col mobile-exercises-search-wrapper">
-            <input value={search} onChange={handleSearchChange} />
-            <div className="border-with-sides" />
-          </div>
-        </div>
+      <div className="mobile-exercises-container pt-50">
+        {subNav}
         <div className="mobile-exercises-body">{exerciseDisplay}</div>
       </div>
-    </>
+    </div>
   );
 };
 
@@ -247,7 +256,7 @@ const SelectedNavBar = ({
   onDeleteClick
 }) => {
   return (
-    <div className="width-100p flex-center-space-bw fixed exercises-mobile-selected-container">
+    <div className="width-100p flex-center-space-bw exercises-mobile-selected-container">
       <div className="flex-ai-center exercises-mobile-check-n-span-wrapper">
         <button className="padding-5" onClick={onCheckClick}>
           <i className="material-icons-outlined">check</i>

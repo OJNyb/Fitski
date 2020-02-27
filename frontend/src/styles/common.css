@@ -630,10 +630,6 @@
   height: 50px;
 }
 
-.height-50 {
-  height: 50px;
-}
-
 .text-center {
   text-align: center;
 }
@@ -656,7 +652,7 @@
   left: 0;
   background-color: #a60000;
   color: #fff;
-  height: 47px;
+  min-height: 47px;
   border-radius: 0;
 }
 
@@ -705,7 +701,9 @@
 }
 
 .web-modal-submit-btn {
-  padding: 10px 40%;
+  padding: 10px 15px;
+  min-width: 150px;
+  width: 100%;
   margin-top: 20px;
   margin: auto;
 }

@@ -10,7 +10,7 @@ import useSetLoading from "../hooks/useSetLoading";
 
 const PlanHOC = () => {
   const { plan_id: planId } = useParams();
-  const { state, dispatch } = usePlan(planId);
+  const { state, dispatch, refreshPlan } = usePlan(planId);
   const { woPlan, isPending, isRejected, error } = state;
 
   if (isPending) {
@@ -22,11 +22,11 @@ const PlanHOC = () => {
   }
 
   if (!woPlan) {
-    return <p>Oh noes</p>;
+    return <p>Couldn't fetch plan, please try again</p>;
   }
 
   return (
-    <PlanContext.Provider value={{ state, dispatch }}>
+    <PlanContext.Provider value={{ state, dispatch, refreshPlan }}>
       <Switch>
         <Route exact path="/plans/:plan_id" component={Plan} />
         <Route exact path="/plans/:plan_id/:week_id" component={EditWeek} />

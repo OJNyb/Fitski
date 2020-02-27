@@ -1,15 +1,16 @@
 import React from "react";
 
 import PlanText from "../PlanText";
-import "./planMobile.css";
 import useSetLoading from "../../../hooks/useSetLoading";
 import useNavBack from "../../../hooks/useNavBack";
 import Overview from "../PlanOverview";
 import MobileEmpty from "../../shared/MobileEmpty";
 import Plus20 from "../../shared/SVGs/Plus20";
 
-const MobilePlan = ({ woPlan, isSelf, navState, setShowModal }) => {
-  const { weeks, _id: planId, hasAccess } = woPlan;
+import "./planMobile.css";
+
+const MobilePlan = ({ woPlan, isSelf, navState, hasAccess, setShowModal }) => {
+  const { weeks, _id: planId } = woPlan;
   useSetLoading(false);
   let to = navState[planId];
   if (!to) {
@@ -17,12 +18,10 @@ const MobilePlan = ({ woPlan, isSelf, navState, setShowModal }) => {
   }
   useNavBack(to);
 
-  let weeksDisplay;
-  if (!hasAccess) {
-    return <p>You do not have access</p>;
-  }
+  let view;
+
   if (weeks.length) {
-    weeksDisplay = weeks.map((week, index) => {
+    let weeksDisplay = weeks.map((week, index) => {
       return (
         <PlanText
           week={week}
@@ -34,8 +33,16 @@ const MobilePlan = ({ woPlan, isSelf, navState, setShowModal }) => {
         />
       );
     });
+
+    if (hasAccess) {
+      view = weeksDisplay;
+    } else {
+      view = (
+        <div className="plan-week-container-no-access">{weeksDisplay}</div>
+      );
+    }
   } else {
-    weeksDisplay = (
+    view = (
       <MobileEmpty
         text={"Workout Plan Empty"}
         children={
@@ -53,10 +60,12 @@ const MobilePlan = ({ woPlan, isSelf, navState, setShowModal }) => {
     );
   }
   return (
-    <div style={{ padding: "50px 0 50px" }}>
-      {!!weeks.length && <Overview woPlan={woPlan} />}
-      {weeksDisplay}
-    </div>
+    <>
+      <div>
+        {!!weeks.length && <Overview woPlan={woPlan} />}
+        {view}
+      </div>
+    </>
   );
 };
 

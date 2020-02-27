@@ -4,6 +4,9 @@ import RadioLong from "./SettingsRadioLong";
 import PaymentView from "./PaymentView";
 import PasswordView from "./PasswordView";
 import EmailView from "./EmailView";
+import HelpView from "./HelpView";
+import AboutView from "./AboutView";
+import SettingItem from "./SettingsItem";
 
 const View = ({
   unit,
@@ -45,6 +48,10 @@ const View = ({
       return <EmailView hideView={hideView} />;
     } else if (selected === "Payment") {
       return <PaymentView hideView={hideView} />;
+    } else if (selected === "Help") {
+      return <HelpView hideView={hideView} />;
+    } else if (selected === "About Chadify") {
+      return <AboutView hideView={hideView} />;
     }
   } else {
     let unitDisplay = unit === "kg" ? "Kilogram" : "Pounds";
@@ -68,26 +75,14 @@ const View = ({
         />
 
         <SettingItem label={"Payment"} onClick={() => setSelected("Payment")} />
+        <SettingItem label={"Help"} onClick={() => setSelected("Help")} />
+        <SettingItem
+          label={"About Chadify"}
+          onClick={() => setSelected("About Chadify")}
+        />
       </>
     );
   }
-};
-
-const SettingItem = ({ label, desc, onClick }) => {
-  return (
-    <div
-      className="flex-center-space-bw pointer padding-7-12 theme-border-bottom"
-      onClick={onClick}
-    >
-      <div className="flex-col font-w-300 settings-item-text-wrapper">
-        <span className="settings-item-label black">{label}</span>
-        <span className="settings-item-desc color-light-gray">{desc}</span>
-      </div>
-      <div className="color-gray flex-center">
-        <i className="material-icons-round">keyboard_arrow_right</i>
-      </div>
-    </div>
-  );
 };
 
 export default View;

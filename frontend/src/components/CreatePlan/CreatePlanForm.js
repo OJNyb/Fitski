@@ -24,8 +24,8 @@ const CreatePlanForm = ({ isMobile, setRedir }) => {
         description: "",
         goal: "",
         difficulty: "",
-        access: "paywall",
-        price: 100
+        access: "private",
+        price: 10
       }}
       validate={({ name }) => {
         let errors = {};
@@ -55,7 +55,6 @@ const CreatePlanForm = ({ isMobile, setRedir }) => {
     >
       {({ values, isSubmitting }) => (
         <Form className="stretch flex-col width-100p border-box padding-10-0 create-plan-form">
-          {console.log(values)}
           <div className="create-plan-input-wrapper">
             <Field
               name="name"
@@ -85,8 +84,6 @@ const CreatePlanForm = ({ isMobile, setRedir }) => {
             <div className="create-plan-radio-container border-box padding-10-15">
               <div>
                 <span>Access</span>
-
-                {console.log(values)}
                 <Field
                   component={CustomRadio}
                   text="Private"

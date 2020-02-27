@@ -4,13 +4,21 @@ import useMobile from "../../../hooks/useMobile";
 import Label from "./AddModalLabel";
 import Modal from "../Modal/Modal";
 import ErrorMessage from "../Modal/ErrorMessage";
-import Plus20 from "../SVGs/Plus20";
+import Plus22 from "../SVGs/Plus22";
 import AddCategoryModal from "./AddCategoryModal";
 
 const loadWC = () => import("./Web/WebCategories");
 const loadMC = () => import("./Mobile/MobileCategories");
 const WebCategories = lazy(loadWC);
 const MobileCategories = lazy(loadMC);
+
+const types = [
+  { _id: 1, name: "Weight and Reps", value: "w+r" },
+  { _id: 2, name: "Weight and Time", value: "w+s" },
+  { _id: 3, name: "Seconds", value: "s" },
+  { _id: 4, name: "Reps", value: "r" },
+  { _id: 5, name: "Weight", value: "w" }
+];
 
 const AddEditModal = ({
   header,
@@ -25,19 +33,29 @@ const AddEditModal = ({
       _id: exerciseId,
       name: initName,
       muscleGroup: initMuscleGroup,
+      unit: iUnit,
       custom
     } = exercise;
+
+    var initUnit;
+    var initUnitIndex = types.map(x => x.value).indexOf(iUnit);
+    if (initUnitIndex === -1) {
+      initUnitIndex = 0;
+    }
+    initUnit = types[initUnitIndex];
   } else {
     initName = "";
     initMuscleGroup = "";
+    initUnit = types[0];
   }
 
   const [name, setName] = useState(initName);
-  const categoryContainer = useRef(null);
   const [muscleGroup, setMuscleGroup] = useState(initMuscleGroup);
   const [showCategories, setShowCategories] = useState(false);
+  const [showType, setShowType] = useState(false);
   const [error, setError] = useState(null);
   const isMobile = useMobile();
+  const [selectedType, setSelectedType] = useState(initUnit);
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
@@ -57,10 +75,46 @@ const AddEditModal = ({
     }
 
     if (buttonText === "Edit") {
-      handleSubmit(exerciseId, { name, muscleGroup });
+      handleSubmit(exerciseId, { name, muscleGroup, unit: selectedType.value });
     } else {
-      handleSubmit(name, muscleGroup);
+      handleSubmit(name, muscleGroup, selectedType.value);
     }
+  }
+
+  function handleCategoryClick(e) {
+    e.stopPropagation();
+    if (showCategories) {
+      hideCategory();
+    } else {
+      showCategory();
+    }
+  }
+
+  function handleTypeClick(e) {
+    e.stopPropagation();
+    if (showType) {
+      hideTypes();
+    } else {
+      showTypes();
+    }
+  }
+
+  function hideCategory() {
+    setShowCategories(false);
+  }
+
+  function showCategory() {
+    setShowCategories(true);
+    setShowType(false);
+  }
+
+  function hideTypes() {
+    setShowType(false);
+  }
+
+  function showTypes() {
+    setShowType(true);
+    setShowCategories(false);
   }
 
   function handleCategoryItemClick(e, x) {
@@ -69,44 +123,29 @@ const AddEditModal = ({
     setShowCategories(false);
   }
 
-  let categoryDropDown;
-  if (showCategories) {
-    if (isMobile) {
-      categoryDropDown = (
-        <MobileCategories
-          muscleGroups={muscleGroups}
-          onItemClick={handleCategoryItemClick}
-          categoryContainer={categoryContainer}
-        />
-      );
-    } else {
-      categoryDropDown = (
-        <WebCategories
-          selectedMG={muscleGroup}
-          muscleGroups={muscleGroups}
-          onClick={handleCategoryItemClick}
-          hideDropdown={() => setShowCategories(false)}
-        />
-      );
-    }
+  function handleTypeItemClick(e, x) {
+    e.stopPropagation();
+    setSelectedType(x);
+    hideTypes();
   }
 
+  let modal = null;
   if (showModal) {
-    return (
+    modal = (
       <AddCategoryModal
+        hideModal={() => setShowModal(false)}
         muscleGroups={muscleGroups}
         setMuscleGroup={setMuscleGroup}
-        hideModal={() => setShowModal(false)}
       />
     );
   }
-
   let children;
   if (buttonText === "Edit" && !custom) {
     children = <p className="black mt-0">Can't edit the default exercises</p>;
   } else {
     children = (
       <>
+        {modal}
         <div
           onClick={() => setShowCategories(false)}
           className={
@@ -126,22 +165,13 @@ const AddEditModal = ({
               <div className="border-with-sides" />
             </div>
           </label>
-
-          <Suspense fallback={null}>{categoryDropDown}</Suspense>
-          <div className="margin-0-0-20">
-            <Label text={"CATEGORY"} />
-            <div
-              className="width-90p fw-bc-theme custom-select-upwards relative"
-              onClick={e => {
-                e.stopPropagation();
-                setShowCategories(!showCategories);
-              }}
-              ref={categoryContainer}
-            >
-              <span className="padding-0-5 font-17 black">
-                {muscleGroup.name}
-              </span>
-              <div className="select-triangle" />
+          <FieldWithDropDown
+            label={"CATEGORY"}
+            items={muscleGroups}
+            selectedItem={muscleGroup}
+            hideDropdown={hideCategory}
+            showDropdown={showCategories}
+            button={
               <button
                 className="add-exercise-add-category-btn"
                 onClick={e => {
@@ -149,10 +179,22 @@ const AddEditModal = ({
                   e.stopPropagation();
                 }}
               >
-                <Plus20 fill={"#a60000"} />
+                <Plus22 fill={"#a60000"} />
               </button>
-            </div>
-          </div>
+            }
+            handleInputClick={handleCategoryClick}
+            handleItemClick={handleCategoryItemClick}
+          />
+
+          <FieldWithDropDown
+            label={"TYPE"}
+            items={types}
+            selectedItem={selectedType}
+            hideDropdown={hideTypes}
+            showDropdown={showType}
+            handleInputClick={handleTypeClick}
+            handleItemClick={handleTypeItemClick}
+          />
         </div>
         <button
           className={
@@ -167,6 +209,61 @@ const AddEditModal = ({
     );
   }
   return <Modal children={children} header={header} toggleModal={hideModal} />;
+};
+
+const FieldWithDropDown = ({
+  items,
+  label,
+  button,
+  selectedItem,
+  hideDropdown,
+  showDropdown,
+  handleItemClick,
+  handleInputClick
+}) => {
+  const inputEl = useRef(null);
+  let isMobile = useMobile();
+
+  let dropDown;
+  if (showDropdown) {
+    if (isMobile) {
+      dropDown = (
+        <MobileCategories
+          muscleGroups={items}
+          onItemClick={handleItemClick}
+          categoryContainer={inputEl}
+        />
+      );
+    } else {
+      dropDown = (
+        <WebCategories
+          selectedMG={selectedItem}
+          muscleGroups={items}
+          onClick={handleItemClick}
+          hideDropdown={hideDropdown}
+        />
+      );
+    }
+  }
+
+  return (
+    <>
+      <Suspense fallback={null}>{dropDown}</Suspense>
+
+      <div className="margin-0-0-20">
+        <Label text={label} />
+        <div
+          className="width-90p fw-bc-theme custom-select-upwards relative"
+          onClick={handleInputClick}
+          ref={inputEl}
+        >
+          <span className="padding-0-5 font-17 black">{selectedItem.name}</span>
+          <div className="select-triangle" />
+          {button}
+        </div>
+      </div>
+    </>
+  );
 };
 
 export default AddEditModal;

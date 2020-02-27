@@ -1,11 +1,11 @@
-import React, { useLayoutEffect } from "react";
+import React, { useState, useLayoutEffect } from "react";
 import useSetLoading from "../../../hooks/useSetLoading";
-import { SHOW_BACK, SHOW_DEHAZE } from "../../../types/navTypes";
+import useSetNav from "../../../hooks/useSetNav";
 
 import PlanCard from "../../shared/PlanCard/MobilePlanCard";
 import MobileNavMidContainer from "../../shared/NavMid/MobileNavMidContainer";
 import LoadingSpinner from "../../shared/SVGs/LoadingSpinner";
-import { MainTile } from "../../shared/Layout";
+import { MainTile, MainContainer } from "../../shared/Layout";
 
 import "./mobileProfile.css";
 
@@ -24,13 +24,26 @@ const Profile = ({
 }) => {
   useSetLoading(false);
   const { avatar, username, _id: profileId } = profile;
+  const [backLink, setBackLink] = useState(false);
+
+  useSetNav({
+    showDehaze: backLink ? false : true,
+    backLink: backLink ? backLink : null,
+    text: username,
+    buttons: isSelf ? (
+      <button
+        onClick={() => setShowModal({ modal: "edit" })}
+        className="padding-5 flex-ai-center border-box color-white"
+      >
+        <i className="material-icons-outlined">edit</i>
+      </button>
+    ) : null
+  });
 
   useLayoutEffect(() => {
     function setNav() {
       let to = navState[profileId];
-      if (to && navState.backLink !== to)
-        navDispatch({ type: SHOW_BACK, payload: { backLink: to } });
-      else if (!navState.showDehaze && !to) navDispatch({ type: SHOW_DEHAZE });
+      if (to && navState.backLink !== to) setBackLink(to);
     }
 
     setNav();
@@ -56,25 +69,8 @@ const Profile = ({
 
   return (
     <>
-      <MobileNavMidContainer
-        children={
-          <>
-            <h2 className="margin-0 font-w-500 mb-2 font-18 color-white">
-              {username}
-            </h2>
-            {isSelf && (
-              <button
-                onClick={() => setShowModal({ modal: "edit" })}
-                className="padding-5 flex-ai-center border-box color-white"
-              >
-                <i className="material-icons-outlined">edit</i>
-              </button>
-            )}
-          </>
-        }
-      />
-      <MainTile>
-        <div className="pt-50">
+      <MainContainer>
+        <MainTile>
           <div className="profile-info-container padding-10-15  theme-border-bottom">
             <img
               src={`/api/image/avatar/${avatar}_md.jpg`}
@@ -100,8 +96,8 @@ const Profile = ({
             )}
             {isPending && <LoadingSpinner />}
           </div>
-        </div>
-      </MainTile>
+        </MainTile>
+      </MainContainer>
     </>
   );
 };

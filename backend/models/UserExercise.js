@@ -7,6 +7,7 @@ const UserExerciseSchema = new Schema({
   user: { type: ObjectId, ref: "user" },
   name: String,
   muscleGroup: { type: ObjectId, ref: "muscleGroup" },
+  unit: { type: String, default: "w+r" },
   custom: {
     type: Boolean,
     default: true

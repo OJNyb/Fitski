@@ -1,4 +1,5 @@
 import React, { useRef, useState, useEffect, useCallback } from "react";
+import { getDisplayUnits } from "../../../utils/cardUtils";
 
 const WebExerciseColumn = ({
   set,
@@ -123,12 +124,7 @@ const WebExerciseColumn = ({
 const ExerciseForm = ({ unit, setId, onChange, inputReps, onInputBlur }) => {
   const inputEl = useRef(null);
 
-  let lastRowUnit;
-  if (unit === "s") {
-    lastRowUnit = "seconds";
-  } else {
-    lastRowUnit = "reps";
-  }
+  const { lastRowUnit } = getDisplayUnits(unit);
 
   return (
     <div className="edit-week-web-reps-wrapper flex-ai-center">

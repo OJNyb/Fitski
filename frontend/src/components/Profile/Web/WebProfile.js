@@ -1,30 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import useSetLoading from "../../../hooks/useSetLoading";
-//import { Redirect } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 
 import WebWorkoutPlans from "../../shared/PlanCard/WebWorkoutPlans";
 
 import "./webProfile.css";
-import { MainTile, MainTileNav, MainTileHeader } from "../../shared/Layout";
+import { MainTile, MainTileNav } from "../../shared/Layout";
 
-const Profile = ({
-  isSelf,
-  woPlans,
-  profile,
-  editView,
-  setShowModal
-  // navState
-}) => {
+const Profile = ({ isSelf, woPlans, profile, setShowModal, navState }) => {
   useSetLoading(false);
-  const { bio, avatar, username } = profile;
-
-  // TODO
-  // const [redirect, setRedirect] = useState(false);
-  // if (redirect) {
-  //   return <Redirect to={to} />;
-  // }
-
-  // let to = navState[profileId];
+  const { bio, avatar, username, _id: profileId } = profile;
+  const [redirect, setRedirect] = useState(false);
+  let to = navState[profileId];
+  if (redirect) {
+    return <Redirect to={to} />;
+  }
 
   let bioDisplay = bio;
   if (!bio || bio.length === 0) {
@@ -35,31 +25,34 @@ const Profile = ({
     <>
       <MainTile>
         <MainTileNav>
-          <MainTileHeader
-            text={username}
-            customIcon={
-              isSelf ? (
-                editView ? (
-                  false
-                ) : (
-                  <button
-                    className="edit-profile-btn shadow-medium-clickable"
-                    onClick={
-                      isSelf
-                        ? editView
-                          ? false
-                          : () => setShowModal({ modal: "edit" })
-                        : false
-                    }
-                  >
-                    Edit Profile
-                  </button>
-                )
-              ) : (
-                false
-              )
-            }
-          />
+          <div className="main-tile-header-upper">
+            <div className="flex-ai-center">
+              {to && (
+                <button
+                  onClick={() => setRedirect(true)}
+                  className="main-tile-arrow-back theme-btn-no-border"
+                >
+                  <i className="material-icons font-20">arrow_back</i>
+                </button>
+              )}
+              <span
+                style={{
+                  color: "#1a1414"
+                }}
+              >
+                {username}
+              </span>
+            </div>
+
+            {isSelf && (
+              <button
+                className="edit-profile-btn shadow-medium-clickable"
+                onClick={() => setShowModal({ modal: "edit" })}
+              >
+                Edit Profile
+              </button>
+            )}
+          </div>
         </MainTileNav>
         <div>
           <div className="profile-web-info-container padding-10">

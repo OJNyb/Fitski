@@ -1,0 +1,13 @@
+.terms-container {
+  width: 80%;
+  margin: auto;
+}
+
+.terms-container small {
+  display: block;
+  color: gray;
+}
+
+.terms-container h6 {
+  font-size: 14px;
+}

@@ -1,12 +1,14 @@
 .SingleDatePicker_picker {
-  z-index: 3;
+  z-index: 999999 !important;
 }
 
 .DateInput {
   background-color: transparent !important;
+  box-sizing: border-box;
 }
 .SingleDatePicker input {
   background-color: transparent !important;
+  padding: 0 0 2px 0;
 }
 
 .DateInput_input {

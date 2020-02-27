@@ -88,7 +88,12 @@
 .add-exercise-add-category-btn {
   position: absolute;
   top: 0;
-  right: -40px;
+  right: -17%;
+}
+
+.add-exercise-add-category-btn svg {
+  height: 20px;
+  width: 20px;
 }
 
 .add-category-color-assigned-p {

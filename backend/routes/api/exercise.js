@@ -93,20 +93,20 @@ router.post(
   async (req, res, next) => {
     const { body, session } = req;
     const { userId } = session;
-    const { muscleGroupId, name, exerciseId } = body;
+    const { muscleGroupId, name, exerciseId, unit } = body;
 
     const newExercise = new UserExercise({
       _id: exerciseId,
       name,
+      unit,
       muscleGroup: muscleGroupId,
       user: userId
     });
 
     newExercise
       .save()
-      .then(reski => {
+      .then(() => {
         res.json({ message: "success" });
-        //   res.status(404).json(createErrorObject(["Couldn't apply update"]));
       })
       .catch(next);
   }
@@ -122,37 +122,23 @@ router.patch(
   validateExercise,
   async (req, res, next) => {
     const { body } = req;
-    const { name, category, exercise } = body;
+    const { name, category, exercise, unit } = body;
 
-    let field;
-    let patch;
-    let field2;
-    let patch2;
+    let patch = {};
 
-    if (name && category) {
-      patch = name;
-      field = "name";
-      patch2 = category;
-      field2 = "muscleGroup";
-    } else if (name) {
-      patch = name;
-      field = "name";
-    } else if (category) {
-      patch = category;
-      field = "muscleGroup";
+    if (name) {
+      patch.name = name;
     }
-
-    let newField = {
-      [`${field}`]: patch
-    };
-
-    if (patch2) {
-      newField[`${field2}`] = patch2;
+    if (category) {
+      patch.muscleGroup = category;
+    }
+    if (unit) {
+      patch.unit = unit;
     }
 
     exercise
       .updateOne({
-        $set: { ...newField }
+        $set: { ...patch }
       })
       .then(reski => {
         if (reski.nModified) {
@@ -260,35 +246,18 @@ router.patch(
     const { body } = req;
     const { name, color, muscleGroup } = body;
 
-    let field;
-    let patch;
-    let field2;
-    let patch2;
+    let patch = {};
 
-    if (name && color) {
-      patch = name;
-      field = "name";
-      patch2 = color;
-      field2 = "color";
-    } else if (name) {
-      patch = name;
-      field = "name";
-    } else if (color) {
-      patch = color;
-      field = "color";
+    if (name) {
+      patch.name = name;
     }
-
-    let newField = {
-      [`${field}`]: patch
-    };
-
-    if (patch2) {
-      newField[`${field2}`] = patch2;
+    if (color) {
+      patch.color = color;
     }
 
     muscleGroup
       .updateOne({
-        $set: { ...newField }
+        $set: { ...patch }
       })
       .then(reski => {
         if (reski.nModified) {
@@ -321,7 +290,7 @@ router.delete(
           $push: { muscleGroups: { muscleGroup: defaultMuscleGroupToDelete } }
         }
       )
-        .then(reski => {
+        .then(() => {
           return res.json({ message: "success" });
         })
         .catch(next);

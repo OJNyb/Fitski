@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { ensureDecimal } from "../../../utils/ensureDecimal";
 import useSetLoading from "../../../hooks/useSetLoading";
 import { useUser } from "../../../context/userContext";
+import { getDisplayUnits } from "../../../utils/cardUtils";
 
 import Plus20 from "../../shared/SVGs/Plus20";
 import Minus20 from "../../shared/SVGs/Minus20";
@@ -123,18 +124,17 @@ const TrackView = ({
     }
   }
 
-  let lastRowUnit;
-  if (unit === "s") {
-    lastRowUnit = "SECONDS";
-  } else {
-    lastRowUnit = "REPS";
-  }
+  const { firstRowUnit, lastRowUnit } = getDisplayUnits(
+    unit,
+    defaultUnit,
+    true
+  );
 
   return (
     <>
-      {unit === "r+w" && (
+      {firstRowUnit && (
         <TrackInput
-          label={`WEIGHT (${defaultUnit})`}
+          label={firstRowUnit}
           onChange={onWeightChange}
           onDecrement={() => {
             if (weight - 2.5 >= 0) {
@@ -250,12 +250,7 @@ const TrackListItem = ({
     }
   }
 
-  let lastRowUnit;
-  if (unit === "s") {
-    lastRowUnit = "seconds";
-  } else {
-    lastRowUnit = "reps";
-  }
+  const { firstRowUnit, lastRowUnit } = getDisplayUnits(unit, defaultUnit);
 
   return (
     <>
@@ -278,11 +273,11 @@ const TrackListItem = ({
         </div>
         <div className="history-mobile-exercise-list-kg-reps">
           <div className="history-mobile-exercise-list-label-wrapper">
-            {unit === "r+w" && (
+            {firstRowUnit && (
               <span>
                 <b className="mr-1">{ensureDecimal(weight)}</b>
                 <span className="font-12 color-gray font-w-400 color-light-gray">
-                  {defaultUnit}
+                  {firstRowUnit}
                 </span>
               </span>
             )}

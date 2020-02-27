@@ -41,7 +41,8 @@ const MobileView = ({
   handleEditSetRetry,
   handleDeleteExercises,
   handleReorderExercise,
-  handleAddExerciseRetry
+  handleAddExerciseRetry,
+  refreshHistory
 }) => {
   const [showHistory, setShowHistory] = useState(false);
   const [showExercise, setShowExercise] = useState(false);
@@ -108,6 +109,7 @@ const MobileView = ({
     return (
       <Suspense fallback={<SetLoading />}>
         <Exercises
+          refreshExercises={refreshHistory}
           handleAddExercise={handleAddExerciseski}
           closeExercises={() => setShowExercises(false)}
         />

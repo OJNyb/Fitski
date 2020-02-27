@@ -6,9 +6,8 @@ const MobileNavMidContainer = ({ children }) => {
     state: { showDehaze }
   } = useContext(NavContext);
   const style = {
-    width: showDehaze ? "calc(100vw - 64px" : "calc(100vw - 52px)",
-    left: showDehaze ? "44px" : "42px",
-    margin: showDehaze ? "0 10px" : "0 10px 0 0"
+    width: showDehaze ? "calc(100vw - 55px" : "calc(100vw - 45px)",
+    left: showDehaze ? "55px" : "45px"
   };
   return (
     <div

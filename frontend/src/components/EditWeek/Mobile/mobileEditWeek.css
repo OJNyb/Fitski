@@ -96,7 +96,6 @@
   height: 20px;
 }
 
-/* TODO */
 .history-mobile-days-wrapper {
   position: fixed;
   left: -100vw;
@@ -136,10 +135,6 @@
   height: 50px;
 }
 
-.bc-8c1 {
-  background-color: #8c1c1c;
-}
-
 .edit-week-sub-nav-container {
   transition: background-color 0.3s ease;
   position: fixed;
@@ -149,14 +144,6 @@
   z-index: 998;
 }
 
-.bc-8c1 {
+.bc-830 {
   background-color: #830000;
-}
-
-.edit-week-mobile-add-btn-container {
-  position: fixed;
-  z-index: 1999;
-  top: calc(25px - 12.5px);
-  right: 54px;
-  height: 25px;
 }

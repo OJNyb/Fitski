@@ -1,4 +1,4 @@
-import { useEffect, useReducer } from "react";
+import { useState, useEffect, useReducer } from "react";
 import axios from "axios";
 
 import historyReducer from "../reducers/historyReducer";
@@ -15,6 +15,11 @@ const initialState = {
 
 const useHistory = () => {
   const [state, dispatch] = useReducer(historyReducer, initialState);
+  const [refresh, setRefresh] = useState(0);
+
+  function refreshHistory() {
+    setRefresh(refresh + 1);
+  }
 
   useEffect(() => {
     let isCancelled = false;
@@ -43,11 +48,12 @@ const useHistory = () => {
     return () => {
       isCancelled = true;
     };
-  }, []);
+  }, [refresh]);
 
   return {
     state,
-    dispatch
+    dispatch,
+    refreshHistory
   };
 };
 

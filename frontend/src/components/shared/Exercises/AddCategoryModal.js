@@ -106,10 +106,9 @@ const AddCategoryModal = ({
     } else {
       addMuscleGroup(dispatch, name, color)
         .then(muscleGroupId => {
-          hideModal();
           let mgIndex = muscleGroups.map(x => x._id).indexOf(muscleGroupId);
-          console.log(mgIndex);
           setMuscleGroup(muscleGroups[mgIndex]);
+          hideModal();
         })
         .catch(err => {
           setError(err);

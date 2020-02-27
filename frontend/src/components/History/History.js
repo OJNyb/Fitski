@@ -36,8 +36,7 @@ const MobileView = lazy(() => import("./Mobile/MobileHistory"));
 const WebView = lazy(() => import("./Web/WebHistory"));
 
 const History = () => {
-  const { state, dispatch } = useHistory();
-
+  const { state, dispatch, refreshHistory } = useHistory();
   const [date, setDate] = useState(new Date());
   const [formattedDate, setFormattedDate] = useState(
     formatHistoryDate(new Date())
@@ -220,6 +219,7 @@ const History = () => {
         handleDeleteExercises={handleDeleteExercises}
         handleReorderExercise={handleReorderExercise}
         handleAddExerciseRetry={handleAddExerciseRetry}
+        refreshHistory={refreshHistory}
       />
     );
   } else {
@@ -242,6 +242,7 @@ const History = () => {
         handleDeleteExercise={handleDeleteExercise}
         handleReorderExercise={handleReorderExercise}
         handleAddExerciseRetry={handleAddExerciseRetry}
+        refreshHistory={refreshHistory}
       />
     );
   }

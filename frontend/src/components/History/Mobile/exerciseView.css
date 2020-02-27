@@ -1,5 +1,6 @@
 .history-mobile-exercise-header {
   border-bottom: 1px solid #e2d0d0;
+  background-color: #fff;
 }
 
 .history-mobile-exercise-header-item {
@@ -10,13 +11,13 @@
   cursor: pointer;
   background-color: #fff;
   color: #a56e6e;
-  margin-bottom: 3px;
+  margin-bottom: 2px;
 }
 
 .history-mobile-exercise-header-active {
   color: #a60000;
   border-bottom: 2px solid #a60000;
-  margin-bottom: 1px !important;
+  margin-bottom: 0px !important;
 }
 
 .history-mobile-exercise-body {
