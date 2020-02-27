@@ -29,7 +29,11 @@ const NavActionMenu = ({ children, hideActionMenu, moreBtn }) => {
   }
 
   let items = children.map(x => (
-    <NavMidActionMenuItem element={x} key={x.text} />
+    <NavMidActionMenuItem
+      element={x}
+      key={x.text}
+      hideActionMenu={hideActionMenu}
+    />
   ));
 
   return (
@@ -43,7 +47,7 @@ const NavActionMenu = ({ children, hideActionMenu, moreBtn }) => {
   );
 };
 
-const NavMidActionMenuItem = ({ element }) => {
+const NavMidActionMenuItem = ({ element, hideActionMenu }) => {
   const { icon, text, action, outlined, customClass, link, to } = element;
 
   const divClass =
@@ -67,7 +71,13 @@ const NavMidActionMenuItem = ({ element }) => {
     );
   }
   return (
-    <div className={divClass} onClick={action}>
+    <div
+      className={divClass}
+      onClick={() => {
+        action();
+        hideActionMenu();
+      }}
+    >
       {iconText}
     </div>
   );

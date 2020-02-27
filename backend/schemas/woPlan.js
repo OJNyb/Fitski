@@ -1,9 +1,5 @@
 const Joi = require("./joi");
 
-// TODO: Add optional to categories and description, on edit ???
-
-// AD
-
 const _id = Joi.string()
   .objectId()
   .required()

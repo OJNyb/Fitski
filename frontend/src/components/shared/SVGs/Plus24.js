@@ -9,8 +9,8 @@ const Plus24 = ({ fill }) => {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <rect x="11" width="2" height="24" fill={fill} />
-      <rect y="11" width="24" height="2" fill={fill} />
+      <rect x="11.05" width="2.1" height="24" fill={fill} />
+      <rect y="10.95" width="24" height="2.1" fill={fill} />
     </svg>
   );
 };

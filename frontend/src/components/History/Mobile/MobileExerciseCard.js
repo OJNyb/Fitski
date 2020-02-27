@@ -1,6 +1,7 @@
 import React, { useState, useLayoutEffect } from "react";
 import { ensureDecimal } from "../../../utils/ensureDecimal";
 import useLongPressAndClick from "../../../hooks/useLongPressAndClick";
+import { getDisplayUnits } from "../../../utils/cardUtils";
 
 import { Draggable } from "react-beautiful-dnd";
 import DragIcon from "../../shared/SVGs/DragIcon";
@@ -124,24 +125,19 @@ const MobileExerciseCard = ({
 const SetColumn = ({ set, defaultUnit, unit }) => {
   const { reps, weight } = set;
 
-  let lastRowUnit;
-  if (unit === "s") {
-    lastRowUnit = "seconds";
-  } else {
-    lastRowUnit = "reps";
-  }
+  const { firstRowUnit, lastRowUnit } = getDisplayUnits(unit, defaultUnit);
 
   return (
     <div className="add-card-column flex-ai-center padding-4-20">
       <div className="history-row">
         <span>
-          {unit === "r+w" && (
+          {firstRowUnit && (
             <>
               <span className="black mr-1 noselect">
                 {ensureDecimal(weight) || 0.0}
               </span>
               <span className="color-gray font-12 font-w-300 noselect">
-                {defaultUnit}
+                {firstRowUnit}
               </span>
             </>
           )}

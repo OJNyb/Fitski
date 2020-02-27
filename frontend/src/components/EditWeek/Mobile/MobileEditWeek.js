@@ -7,9 +7,8 @@ import { Droppable, DragDropContext } from "react-beautiful-dnd";
 import ExerciseCard from "./ExerciseCard";
 import Exercises from "../../shared/Exercises/Exercises";
 import LoadingSpinner from "../../shared/SVGs/LoadingSpinner";
-import EditWeekNav from "../EditWeekNav";
+import EditWeekNav from "./MobileEditWeekNav";
 import SubNav from "./MobileSubNav";
-import Plus20 from "../../shared/SVGs/Plus20";
 
 import "./mobileEditWeek.css";
 
@@ -29,7 +28,8 @@ const MobileEditWeek = ({
   handleAddExerciseRetry,
   handleAddSetRetry,
   handleEditSetRetry,
-  handleDeleteWeekSubmit
+  handleDeleteWeekSubmit,
+  refreshPlan
 }) => {
   const [showExercises, setShowExercises] = useState(false);
   const [activeExercise, setActiveExercise] = useState(null);
@@ -78,6 +78,7 @@ const MobileEditWeek = ({
     return (
       <>
         <Exercises
+          refreshExercises={refreshPlan}
           handleAddExercise={handleAddExercise}
           closeExercises={() => setShowExercises(false)}
         />
@@ -102,6 +103,7 @@ const MobileEditWeek = ({
           weekIndex={weekIndex}
           isMobile={true}
           handleDeleteWeekSubmit={handleDeleteWeekSubmit}
+          setShowExercises={setShowExercises}
         />
         <SubNav
           weeks={weeks}
@@ -110,17 +112,9 @@ const MobileEditWeek = ({
           setCurrentDayIndex={setCurrentDayIndex}
         />
 
-        <div className="edit-week-mobile-add-btn-container">
-          <button
-            className="theme-btn-no-border"
-            onClick={() => setShowExercises(true)}
-          >
-            <Plus20 fill={"#fff"} />
-          </button>
-        </div>
         <div className="pb-50 pt-50">
           <div className="history-mobile-days-container">
-            <div className="history-mobile-days-wrapper">
+            <div className="history-mobile-days-wrapper pt-50">
               <div
                 {...touchActions}
                 className={

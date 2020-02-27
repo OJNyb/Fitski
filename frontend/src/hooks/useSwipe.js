@@ -31,9 +31,9 @@ const useSwipe = (onLeft, onRight) => {
 
   function onTouchMove(e) {
     let x = initialX - e.touches[0].screenX;
-    if (x > 30) setX(x - 30);
-    else if (x < -30) {
-      setX(x + 30);
+    if (x > 50) setX(x - 50);
+    else if (x < -50) {
+      setX(x + 50);
     }
   }
 

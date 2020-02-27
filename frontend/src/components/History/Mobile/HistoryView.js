@@ -6,10 +6,12 @@ import {
   formatHistoryDate
 } from "../../../utils/formatHistoryDate";
 import { Row } from "../ExerciseText";
+import { useUser } from "../../../context/userContext";
 
 const HistoryView = ({ exercise, historyDays }) => {
   const { _id: exerciseId, unit } = exercise;
   const todayFormatted = formatHistoryDate(new Date());
+  const { defaultUnit } = useUser();
 
   let exerciseHistory = findAllOccurencesOfExercise(historyDays, exerciseId);
 
@@ -28,14 +30,16 @@ const HistoryView = ({ exercise, historyDays }) => {
 
   let dayView = exerciseHistory
     .reverse()
-    .map((x, y) => <Day day={x} key={y} unit={unit} />);
+    .map((x, y) => (
+      <Day day={x} key={y} unit={unit} defaultUnit={defaultUnit} />
+    ));
   return <div className="history-mobile-exercise-history-body">{dayView}</div>;
 };
 
-const Day = ({ day, unit }) => {
+const Day = ({ day, unit, defaultUnit }) => {
   const { date, sets } = day;
   let setsView = sets.map(x => {
-    return <Row set={x} key={x._id} unit={unit} />;
+    return <Row set={x} key={x._id} unit={unit} defaultUnit={defaultUnit} />;
   });
   return (
     <div className="margin-top-10">

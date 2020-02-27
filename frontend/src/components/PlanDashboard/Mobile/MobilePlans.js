@@ -3,9 +3,9 @@ import { Link } from "react-router-dom";
 import useSetLoading from "../../../hooks/useSetLoading";
 
 import Plus20 from "../../shared/SVGs/Plus20";
+import Plus22 from "../../shared/SVGs/Plus22";
 import Search from "../../shared/SVGs/SearchThick";
-import useNavDehaze from "../../../hooks/useNavDehaze";
-import MobileNavMidContainer from "../../shared/NavMid/MobileNavMidContainer";
+import useSetNav from "../../../hooks/useSetNav";
 import PlanCard from "../../shared/PlanCard/MobilePlanCard";
 import MobileEmpty from "../../shared/MobileEmpty";
 
@@ -16,7 +16,16 @@ const PlansMobile = ({
   handleDeactivateClick
 }) => {
   useSetLoading(false);
-  useNavDehaze();
+  useSetNav({
+    showDehaze: true,
+    text: "Plans",
+    buttonId: "plan1",
+    buttons: (
+      <Link to="/create-plan" className="padding-5 flex-ai-center border-box">
+        <Plus22 fill={"#fff"} />
+      </Link>
+    )
+  });
 
   let view;
   if (woPlans.length) {
@@ -35,28 +44,7 @@ const PlansMobile = ({
     view = <NoPlans />;
   }
 
-  return (
-    <>
-      <MobileNavMidContainer
-        children={
-          <>
-            <h2 className="nav-h2 color-white">Plans</h2>
-            <Link
-              to="/create-plan"
-              className="padding-5 flex-ai-center border-box"
-            >
-              {/* TODO */}
-              <Plus20 fill={"#fff"} />
-            </Link>
-          </>
-        }
-      />
-
-      <div className="mobile-nav-icon-container"></div>
-
-      {view}
-    </>
-  );
+  return <>{view}</>;
 };
 
 const NoPlans = () => {

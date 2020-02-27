@@ -9,12 +9,13 @@ import DeleteExerciseModal from "./DeleteExerciseModal";
 import NoteIcon from "./NoteIcon";
 import CalendarIcon from "./CalendarIcon";
 import NoteModal from "../NoteModal";
+import useSetNav from "../../../hooks/useSetNav";
 
 import LoadingSpinner from "../../shared/SVGs/LoadingSpinner";
 
 import Day from "./MobileHistoryDay";
 
-import Plus24 from "../../shared/SVGs/Plus24";
+import Plus22 from "../../shared/SVGs/Plus22";
 import NavigateDays from "./NavigateDays";
 import SelectedNavBar from "./SelectedNavBar";
 
@@ -53,6 +54,32 @@ const MobileDayView = ({
     setSelectedExercises([]);
   }
 
+  useSetNav({
+    text: "Calendar",
+    showDehaze: true,
+    buttonId: "history1",
+    buttons: (
+      <>
+        <button className="padding-5" onClick={() => setShowNoteModal(true)}>
+          <NoteIcon />
+        </button>
+        <button
+          className="white-material-btn padding-5"
+          onClick={onCalendarClick}
+        >
+          <CalendarIcon />
+        </button>
+
+        <button
+          className="white-material-btn padding-5"
+          onClick={onExercisesClick}
+        >
+          <Plus22 fill={"#fff"} />
+        </button>
+      </>
+    )
+  });
+
   const { _d } = date;
 
   let bottomNavContent;
@@ -67,7 +94,7 @@ const MobileDayView = ({
     );
   } else {
     bottomNavContent = (
-      <div className="bc-theme-ligther width-100p flex-center-space-bw color-white padding-0 border-box height-50 fixed">
+      <div className="bc-theme-ligther width-100p flex-center-space-bw color-white padding-0 border-box height-50">
         <NavigateDays
           centerText={displayDate(_d)}
           leftArrowAction={() => onDateChange(decrementDate(_d))}
@@ -111,27 +138,9 @@ const MobileDayView = ({
     );
   }
   return (
-    <>
+    <div className="pt-50">
       {modal}
-      <div className="mobile-nav-icon-container flex-ai-center border-box fixed">
-        <button className="padding-5" onClick={() => setShowNoteModal(true)}>
-          <NoteIcon />
-        </button>
-        <button
-          className="white-material-btn padding-5"
-          onClick={onCalendarClick}
-        >
-          <CalendarIcon />
-          {/* <i className="material-icons material-icons-22">calendar_today</i> */}
-        </button>
 
-        <button
-          className="white-material-btn padding-5"
-          onClick={onExercisesClick}
-        >
-          <Plus24 fill={"#fff"} />
-        </button>
-      </div>
       {bottomNavContent}
       <div className="history-mobile-body-container margin-a">
         <div className="history-mobile-days-container">
@@ -151,7 +160,6 @@ const MobileDayView = ({
               </div>
 
               <Day
-                // key={currentDay._id}
                 currentDay={currentDay}
                 onDragEnd={handleDragEnd}
                 setShowExercise={setShowExercise}
@@ -169,7 +177,7 @@ const MobileDayView = ({
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

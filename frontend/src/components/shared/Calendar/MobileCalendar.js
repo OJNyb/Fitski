@@ -3,6 +3,7 @@ import { isSameDay } from "../../../utils/formatHistoryDate";
 import { DayPicker } from "react-dates";
 import useSetLoading from "../../../hooks/useSetLoading";
 import "react-dates/initialize";
+import useSetNav from "../../../hooks/useSetNav";
 
 import "./MobileCalendar.css";
 import "react-dates/lib/css/_datepicker.css";
@@ -17,17 +18,15 @@ const CalendarView = ({
   const { _d } = date;
 
   useSetLoading(false);
+  useSetNav({
+    showDehaze: false,
+    onBackClick: () => setShowCalendar(false),
+    backClickId: "calendarView1",
+    text: "Calendar"
+  });
   return (
-    <div className="fixed z-max width-100p top-0">
-      <div className="height-50 width-100p padding-0-5 flex-ai-center bc-a6">
-        <button
-          className="color-white padding-5"
-          onClick={() => setShowCalendar(false)}
-        >
-          <i className="material-icons">arrow_back</i>
-        </button>
-      </div>
-      <div className="mobile-calendar-container">
+    <div className="fixed z-low-mid width-100p top-0">
+      <div className="mobile-calendar-container pt-50">
         <DayPicker
           onDayClick={onDayClick}
           numberOfMonths={3}

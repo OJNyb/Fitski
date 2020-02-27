@@ -2,14 +2,16 @@ const express = require("express");
 const router = express.Router();
 const stripe = require("stripe")(process.env.STRIPE_API_KEY);
 const sendMail = require("../../helpers/sendMail");
-const bodyParser = require("body-parser");
 
-const endpointSecret = process.env.STRIPE_ENDPOINT_SECRET;
+// TODO
+//const endpointSecret = process.env.STRIPE_ENDPOINT_SECRET;
+const endpointSecret = "whsec_O6oK2AZttVmBpSVGUPPg1NoHf58e5KHX";
 
 // Models
 const User = require("../../models/User");
 const WOPlan = require("../../models/WOPlan");
 const PlanAccess = require("../../models/PlanAccess");
+const UserAccess = require("../../models/UserAccess");
 
 // Validation
 const { ensureSignedIn } = require("../../middlewares/auth");
@@ -108,7 +110,7 @@ router.post(
               }
             ],
             payment_intent_data: {
-              application_fee_amount: amount / 10 + 59,
+              application_fee_amount: amount / 10 + 25,
               transfer_data: {
                 destination: stripeId
               }
@@ -123,6 +125,8 @@ router.post(
           })
           .then(checkoutSession => {
             const { id } = checkoutSession;
+
+            console.log(checkoutSession);
             return res.json({ message: "success", sessionId: id });
           })
           .catch(next);
@@ -133,98 +137,83 @@ router.post(
 // @route POST api/stripe/webhook
 // @desc Stripe webhook
 // @access Private
-router.post(
-  "/webhook",
-  bodyParser.raw({ type: "application/json" }),
-  async (req, res, next) => {
-    const { body, headers } = req;
-    const sig = headers["stripe-signature"];
-    let event = null;
+router.post("/webhook", async (req, res, next) => {
+  const { rawBody, headers } = req;
+  const sig = headers["stripe-signature"];
+  let event = null;
 
-    console.log("Recieved hook");
-
-    try {
-      event = stripe.webhooks.constructEvent(body, sig, endpointSecret);
-    } catch (err) {
-      res.status(400).send(`Webhook Error: ${err.message}`);
-      return;
-    }
-
-    switch (event.type) {
-      case "checkout.session.completed": {
-        const { metadata } = event.data.object;
-
-        const { planId, userId } = metadata;
-
-        console.log("checkout");
-        console.log(metadata);
-
-        try {
-          let pa = await PlanAccess.findOne({ woPlan: planId });
-          let ua = await UserAccess.findOne({ user: userId });
-
-          pa.whitelist.push({ user: userId });
-          pa.save();
-
-          ua.plans.push({ woPlan: planId });
-          ua.save();
-        } catch (err) {
-          next(err);
-        }
-        break;
-      }
-
-      case "payment_method.attached":
-        console.log(event);
-        console.log("PaymentMethod was attached to a Customer!");
-        break;
-      case "payout.failed": {
-        const { account } = event;
-
-        const user = await User.findOne({ stripeId: account });
-        if (!user) next();
-        sendMail(
-          user.email,
-          "Chadify - Payout failed",
-          "Please review your Stripe account and make sure you eligible to recieve money. Send us an email when you have done so at payment@chadify.me"
-        );
-
-        break;
-      }
-
-      case "account.application.deauthorized":
-        {
-          const { account } = event;
-          const user = await User.findOne({ stripeId: account });
-          if (user) {
-            delete user.stripeId;
-
-            user
-              .save()
-              .then(() => {
-                sendMail(
-                  user.email,
-                  "Chadify deauthorized",
-                  "This is a confirmation that you have deauthorized Chadify.me to accept payments on your behalf."
-                ).catch(next);
-              })
-              .catch(next);
-          }
-        }
-
-        // Send an email and tell them their account has been deauthorized
-
-        break;
-
-      default:
-        // Unexpected event type
-        return res.status(400).end();
-    }
-
-    console.log("success");
-    // Return a 200 res to acknowledge receipt of the event
-    res.json({ received: true });
+  try {
+    event = stripe.webhooks.constructEvent(rawBody, sig, endpointSecret);
+  } catch (err) {
+    res.status(400).send(`Webhook Error: ${err.message}`);
+    return;
   }
-);
+
+  switch (event.type) {
+    case "checkout.session.completed": {
+      const { metadata } = event.data.object;
+
+      const { planId, userId } = metadata;
+
+      try {
+        let pa = await PlanAccess.findOne({ woPlan: planId });
+        let ua = await UserAccess.findOne({ user: userId });
+
+        pa.whitelist.push({ user: userId });
+        pa.save();
+
+        ua.plans.push({ woPlan: planId });
+        ua.save();
+      } catch (err) {
+        return next(err);
+      }
+      break;
+    }
+
+    case "payout.failed": {
+      const { account } = event;
+
+      const user = await User.findOne({ stripeId: account });
+      if (!user) return next();
+      sendMail(
+        user.email,
+        "Chadify - Payout failed",
+        "Please review your Stripe account and make sure you eligible to recieve money. Send us an email when you have done so at payment@chadify.me"
+      );
+
+      break;
+    }
+
+    case "account.application.deauthorized":
+      {
+        const { account } = event;
+        const user = await User.findOne({ stripeId: account });
+        if (user) {
+          delete user.stripeId;
+
+          user
+            .save()
+            .then(() => {
+              sendMail(
+                user.email,
+                "Chadify deauthorized",
+                "This is a confirmation that you have deauthorized Chadify.me to accept payments on your behalf."
+              ).catch(next);
+            })
+            .catch(next);
+        }
+      }
+
+      break;
+
+    default:
+      // Unexpected event type
+      return res.status(400).end();
+  }
+
+  console.log("success");
+  // Return a 200 res to acknowledge receipt of the event
+  res.json({ received: true });
+});
 
 module.exports = router;

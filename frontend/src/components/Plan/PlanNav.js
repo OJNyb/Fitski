@@ -16,12 +16,11 @@ const PlanNav = ({
   hasAccess
 }) => {
   const [redirect, setRedirect] = useState(false);
-
-  let actionMenuChildren = [];
+  const [actionMenuChildren, setActionMenuChildren] = useState([]);
 
   useLayoutEffect(() => {
     if (isSelf) {
-      actionMenuChildren.push(
+      setActionMenuChildren([
         {
           icon: "playlist_add",
           text: "Add weeks",
@@ -39,19 +38,20 @@ const PlanNav = ({
           action: () => setShowModal("delete"),
           customClass: " delete-color"
         }
-      );
+      ]);
     } else {
-      //  actionMenuChildren
       if (!isSelf && hasAccess) {
-        actionMenuChildren.push({
-          icon: "delete_outline",
-          text: "Remove plan",
-          action: () => setShowModal("remove"),
-          customClass: " delete-color"
-        });
+        setActionMenuChildren([
+          {
+            icon: "delete_outline",
+            text: "Remove plan",
+            action: () => setShowModal("remove"),
+            customClass: " delete-color"
+          }
+        ]);
       }
     }
-  }, [isSelf, setShowModal, actionMenuChildren, hasAccess, planId]);
+  }, [isSelf, setShowModal, hasAccess, planId]);
 
   if (redirect) {
     let to = navState[planId];

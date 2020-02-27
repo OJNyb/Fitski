@@ -1,5 +1,6 @@
 import React, { useRef, useState, useEffect, useCallback } from "react";
 import { withRouter } from "react-router-dom";
+import { getDisplayUnits } from "../../../utils/cardUtils";
 
 import { Draggable } from "react-beautiful-dnd";
 import DragIconBig from "../../shared/SVGs/DragIconBig";
@@ -186,12 +187,7 @@ const SetColumn = ({
     }
   }
 
-  let lastRowUnit;
-  if (unit === "s") {
-    lastRowUnit = "seconds";
-  } else {
-    lastRowUnit = "reps";
-  }
+  const { lastRowUnit } = getDisplayUnits(unit);
 
   return (
     <div
@@ -217,10 +213,14 @@ const SetColumn = ({
         {index + 1}
       </span>
       <div className="edit-week-mobile-reps-wrapper flex-ai-center">
-        <span className="font-15 black mr-1 noselect">{reps || 0}</span>
-        <span className="font-12 color-gray font-w-300 noselect">
-          {lastRowUnit}
-        </span>
+        {lastRowUnit && (
+          <>
+            <span className="font-15 black mr-1 noselect">{reps || 0}</span>
+            <span className="font-12 color-gray font-w-300 noselect">
+              {lastRowUnit}
+            </span>
+          </>
+        )}
       </div>
     </div>
   );

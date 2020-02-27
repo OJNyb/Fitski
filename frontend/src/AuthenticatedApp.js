@@ -5,15 +5,12 @@ import { NavContext } from "./context/navContext";
 import useNav from "./hooks/useNav";
 import useExercises from "./hooks/useExercises";
 import useMobile from "./hooks/useMobile";
-import useWindowWidth from "./hooks/useWindowWidth";
 
 import SetLoading from "./components/SetLoading";
 import Navigation from "./components/Navigation/Navigation";
 
 import "./App.css";
 import "./styles/common.css";
-
-// TODO
 import "./components/shared/NavMid/navMid.css";
 
 const StripeConfirmation = lazy(() =>
@@ -40,7 +37,6 @@ const PrivacyPolicy = lazy(() => import("./components/Terms/PrivacyPolicy"));
 function App() {
   const { state: exerciseState, dispatch: exerciseDispatch } = useExercises();
   const isMobile = useMobile();
-  const winWidth = useWindowWidth();
 
   const { state, dispatch } = useNav();
 
@@ -90,7 +86,7 @@ function App() {
                 <Redirect to="/plans" />
               </Route>
               <Route exact path="/terms" component={TermsAndConditions} />
-              <Route exact path="/privacy-policy" component={PrivacyPolicy} />
+              <Route exact path="/privacy" component={PrivacyPolicy} />
 
               <Route exact path="/logout" component={Logout} />
               <Route path="*" component={NoMatch} />

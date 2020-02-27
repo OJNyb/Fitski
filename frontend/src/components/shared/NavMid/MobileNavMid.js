@@ -1,8 +1,9 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useLayoutEffect, useState, useContext } from "react";
 import { NavContext } from "../../../context/navContext";
 import MobileModal from "../Modal/MobileModal";
 import { Link } from "react-router-dom";
 import MobileNavMidContainer from "./MobileNavMidContainer";
+import useSetNav from "../../../hooks/useSetNav";
 
 import "./mobileNav.css";
 
@@ -21,7 +22,7 @@ const MobileNavMid = ({
     state: { showDehaze }
   } = useContext(NavContext);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     function addRightBtnToActionMenu() {
       if (rightBtnIcon) {
         setMenuChildren([
@@ -93,18 +94,6 @@ const MobileNavMid = ({
           className="nav-mid-header-more-btn"
           onClick={handleMoreActionClick}
         >
-          {/* <svg
-            width="19"
-            height="21"
-            viewBox="0 0 19 21"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <rect x="7" y="1" width="5" height="5" fill="white" />
-            <rect x="7" y="8" width="5" height="5" fill="white" />
-            <rect x="7" y="15" width="5" height="5" fill="white" />
-          </svg> */}
-
           <svg
             width="20"
             height="20"
@@ -121,17 +110,14 @@ const MobileNavMid = ({
     );
   }
 
-  const navChildren = (
-    <>
-      {backTextDisplay}
-      {moreBtn}
-    </>
-  );
+  useSetNav({
+    text: backText,
+    buttons: moreBtn,
+    showDehaze
+  });
 
   return (
     <>
-      <MobileNavMidContainer children={navChildren} />
-
       {showActionModal && (
         <MobileModal
           children={children}

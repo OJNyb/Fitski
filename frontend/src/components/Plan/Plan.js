@@ -73,16 +73,7 @@ const Plan = () => {
       }
     }
     setActive();
-  }, [
-    planId,
-    woPlan,
-    userId,
-    setIsSelf,
-    activeWOPlan,
-    isSelf,
-    accessedPlans,
-    planId
-  ]);
+  }, [planId, woPlan, userId, setIsSelf, activeWOPlan, isSelf, accessedPlans]);
 
   useTitle(name);
 

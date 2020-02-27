@@ -21,8 +21,8 @@
 }
 
 .mobile-calendar-day {
-  width: 15px;
-  height: 15px;
+  width: 30px;
+  height: 30px;
   padding: 8px;
   margin: auto;
   border-radius: 50%;
@@ -32,4 +32,8 @@
 .mobile-calendar-day-active {
   background-color: #a60000;
   color: white;
+}
+
+.z-low-mid {
+  z-index: 99;
 }

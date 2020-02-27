@@ -33,7 +33,7 @@ const MobileExplore = ({
   let view;
 
   if (noMatch) {
-    view = <p className="text-center black">No results</p>;
+    view = <p className="text-center color-gray">No results</p>;
   } else if (category === "plans") {
     if (results.length) {
       let cards = results.map(plan => (
@@ -60,7 +60,7 @@ const MobileExplore = ({
       ));
       view = cards;
     } else if (search === "") {
-      view = <p className="text-center black">Search for someone</p>;
+      view = <p className="text-center color-gray">Search for someone</p>;
     }
   }
 
@@ -95,7 +95,7 @@ const MobileExplore = ({
           )
         }
       />
-      <div className="pt-50">
+      <div className="pt-50 width-100p">
         <ExploreCategoryNav
           category={category}
           onPlanClick={handlePlanClick}

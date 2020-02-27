@@ -1,7 +1,16 @@
-import React, { lazy, useState, useEffect, useContext, Suspense } from "react";
+import React, {
+  lazy,
+  useState,
+  useEffect,
+  useContext,
+  useCallback,
+  Suspense
+} from "react";
 import useMobile from "../../../hooks/useMobile";
 import useSetLoading from "../../../hooks/useSetLoading";
 import { ExerciseContext } from "../../../context/exerciseContext";
+import { useSecondTile } from "../../../context/secondTileContext";
+
 import {
   addExercise,
   retryAddExercise,
@@ -22,7 +31,7 @@ const loadDeleteExercisesModal = () => import("./DeleteExercisesModal");
 const AddExerciseModal = lazy(loadAddExerciseModal);
 const DeleteExercisesModal = lazy(loadDeleteExercisesModal);
 
-const Exercises = ({ handleAddExercise, closeExercises }) => {
+const Exercises = ({ handleAddExercise, closeExercises, refreshExercises }) => {
   const { state, dispatch } = useContext(ExerciseContext);
   const [search, setSearch] = useState("");
   const [muscleGroup, setMuscleGroup] = useState([]);
@@ -30,7 +39,12 @@ const Exercises = ({ handleAddExercise, closeExercises }) => {
   const [edit, setEdit] = useState(0);
   const [showModal, setShowModal] = useState(false);
   const [reqError, setReqError] = useState(null);
+  const [displayModal, setDisplayModal] = useState(null);
 
+  const {
+    showModal: showModalTile,
+    setShowModal: setShowModalTile
+  } = useSecondTile();
   const isMobile = useMobile();
 
   const { exercises, muscleGroups, isPending, isRejected } = state;
@@ -74,45 +88,64 @@ const Exercises = ({ handleAddExercise, closeExercises }) => {
     filterExercises();
   }, [search, muscleGroup, isMobile, length, exercises, edit]);
 
-  function handleAddCustomExercise(name, category) {
-    const { type } = showModal;
-    addExercise(dispatch, name, category)
-      .then(() => setEdit(edit + 1))
-      .catch(error => {
-        setReqError({
-          type,
-          exercises: [{ name, muscleGroup: category }],
-          error
+  const hideModal = useCallback(() => {
+    setShowModal(false);
+    if (isMobile) {
+      setDisplayModal(null);
+    } else {
+      setShowModalTile(null);
+    }
+  }, [isMobile, setShowModal, setDisplayModal, setShowModalTile]);
+
+  const handleAddCustomExercise = useCallback(
+    (name, category, unit) => {
+      const { type } = showModal;
+      addExercise(dispatch, name, category, unit)
+        .then(() => setEdit(edit + 1))
+        .catch(error => {
+          setReqError({
+            type,
+            exercises: [{ name, muscleGroup: category, unit }],
+            error
+          });
         });
-      });
-    setShowModal(false);
-  }
+      hideModal();
+    },
+    [dispatch, edit, hideModal, showModal]
+  );
 
-  function handleEditExercise(exerciseId, values) {
-    const { type, exercises } = showModal;
-    const { name, category } = values;
-    editExercise(dispatch, exerciseId, values)
-      .then(() => {
-        setEdit(edit + 1);
-      })
-      .catch(error => {
-        setReqError({
-          type,
-          exercises: [{ ...exercises[0], name, muscleGroup: category }],
-          error
+  const handleEditExercise = useCallback(
+    (exerciseId, values) => {
+      const { type, exercises } = showModal;
+      const { name, category, unit } = values;
+      editExercise(dispatch, exerciseId, values)
+        .then(() => {
+          setEdit(edit + 1);
+          refreshExercises();
+        })
+        .catch(error => {
+          setReqError({
+            type,
+            exercises: [{ ...exercises[0], name, muscleGroup: category, unit }],
+            error
+          });
         });
+
+      hideModal();
+    },
+    [dispatch, edit, hideModal, refreshExercises, showModal]
+  );
+
+  const handleDeleteExercises = useCallback(
+    exerciseIds => {
+      const { type, exercises } = showModal;
+      deleteExercise(dispatch, exerciseIds).catch(error => {
+        setReqError({ type, exercises, error });
       });
-
-    setShowModal(false);
-  }
-
-  function handleDeleteExercises(exerciseIds) {
-    const { type, exercises } = showModal;
-    deleteExercise(dispatch, exerciseIds).catch(error => {
-      setReqError({ type, exercises, error });
-    });
-    setShowModal(false);
-  }
+      hideModal();
+    },
+    [dispatch, showModal, hideModal]
+  );
 
   function handleAddExerciseRetry(exercise) {
     retryAddExercise(dispatch, exercise);
@@ -134,48 +167,68 @@ const Exercises = ({ handleAddExercise, closeExercises }) => {
 
   useSetLoading(isPending);
 
+  useEffect(() => {
+    let modal;
+    if (showModal) {
+      const { type, exercises } = showModal;
+      if (type === "edit") {
+        modal = (
+          <AddExerciseModal
+            buttonText={"Edit"}
+            exercise={exercises[0]}
+            header={"Edit Exercise"}
+            muscleGroups={muscleGroups}
+            handleSubmit={handleEditExercise}
+            hideModal={hideModal}
+          />
+        );
+      } else if (type === "add") {
+        let exc;
+        if (exercises) {
+          exc = exercises[0];
+        }
+        modal = (
+          <AddExerciseModal
+            exercise={exc}
+            buttonText={"Add"}
+            header={"Add Exercise"}
+            muscleGroups={muscleGroups}
+            hideModal={hideModal}
+            handleSubmit={handleAddCustomExercise}
+          />
+        );
+      } else if (type === "delete") {
+        modal = (
+          <DeleteExercisesModal
+            exercises={exercises}
+            onSubmit={handleDeleteExercises}
+            hideModal={hideModal}
+          />
+        );
+      }
+    }
+
+    if (modal) {
+      if (isMobile) {
+        setDisplayModal(modal);
+      } else if (showModalTile !== modal) {
+        setShowModalTile(modal);
+      }
+    }
+  }, [
+    showModal,
+    handleAddCustomExercise,
+    handleDeleteExercises,
+    handleEditExercise,
+    hideModal,
+    isMobile,
+    muscleGroups,
+    setShowModalTile,
+    showModalTile
+  ]);
+
   if (isRejected) {
     return <p>Error...</p>;
-  }
-
-  let modal;
-  if (showModal) {
-    const { type, exercises } = showModal;
-    if (type === "edit") {
-      modal = (
-        <AddExerciseModal
-          buttonText={"Edit"}
-          exercise={exercises[0]}
-          header={"Edit Exercise"}
-          muscleGroups={muscleGroups}
-          handleSubmit={handleEditExercise}
-          hideModal={() => setShowModal(false)}
-        />
-      );
-    } else if (type === "add") {
-      let exc;
-      if (exercises) {
-        exc = exercises[0];
-      }
-      modal = (
-        <AddExerciseModal
-          exercise={exc}
-          buttonText={"Add"}
-          header={"Add Exercise"}
-          muscleGroups={muscleGroups}
-          hideModal={() => setShowModal(false)}
-          handleSubmit={handleAddCustomExercise}
-        />
-      );
-    } else {
-      modal = (
-        <DeleteExercisesModal
-          exercises={exercises}
-          onSubmit={handleDeleteExercises}
-          hideModal={() => setShowModal(false)}
-        />
-      );
-    }
   }
 
   let view = isMobile ? (
@@ -219,7 +272,7 @@ const Exercises = ({ handleAddExercise, closeExercises }) => {
   return (
     <>
       <Suspense fallback={<SetLoading />}>{view}</Suspense>
-      <Suspense fallback={null}>{modal}</Suspense>
+      <Suspense fallback={null}>{displayModal}</Suspense>
       {reqError && (
         <ErrorPrompt
           data={reqError}

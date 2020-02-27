@@ -24,6 +24,7 @@
 .explore-category-nav-container {
   border-bottom: 1px solid rgb(223, 208, 208);
   position: fixed;
+  background-color: #f8efef;
 }
 
 .explore-category-nav-container button {

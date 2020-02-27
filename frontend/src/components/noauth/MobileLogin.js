@@ -46,7 +46,6 @@ const Login = () => {
         }}
         onSubmit={(values, { setSubmitting }) => {
           login(values).catch(() => {
-            // TODO: If err.status !== 404 ???
             setLoginErr(true);
             setSubmitting(false);
           });

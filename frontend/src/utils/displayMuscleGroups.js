@@ -9,7 +9,7 @@ function formatMuscleGroups(exercises) {
 
   return muscleGroup
     .reduce((accu, curr) => {
-      if (accu.indexOf(curr) === -1) {
+      if (accu.map(x => x._id).indexOf(curr._id) === -1) {
         accu.push(curr);
       }
       return accu;

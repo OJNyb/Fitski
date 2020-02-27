@@ -240,8 +240,6 @@ router.post(
 // @route POST api/history
 // @desc  Add exercise/note to new day
 // @access Private
-
-// TODO: Validation, see if date is already there
 router.post("/", ensureSignedIn, validateRequest, async (req, res, next) => {
   const { body, session } = req;
   const { userId } = session;
@@ -323,8 +321,6 @@ router.post("/", ensureSignedIn, validateRequest, async (req, res, next) => {
 // @route POST api/history
 // @desc  Edit day
 // @access Private
-
-// TODO: Validation, see if date is already there
 router.patch("/", ensureSignedIn, validateRequest, async (req, res, next) => {
   const { body, session } = req;
   const { userId } = session;
@@ -420,7 +416,6 @@ router.delete(
 // @route POST api/history/exercise/:day_id
 // @desc Add exercise
 // @access Private
-// TODO: Better way to see if update failed?
 router.post(
   "/exercise/:day_id",
   ensureSignedIn,
@@ -537,8 +532,6 @@ router.delete(
 // @route POST api/history/exercise/:day_id/:exercise_id
 // @desc Add set
 // @access Private
-
-// TODO: Better way to see if update failed?
 router.post(
   "/exercise/:day_id/:exercise_id",
   ensureSignedIn,
@@ -578,8 +571,6 @@ router.post(
 // @route POST api/history/exercise/:day_id/:exercise_id/:set_id
 // @desc Edit set
 // @access Private
-
-// TODO: Validation, replace dates if already in
 router.post(
   "/exercise/:day_id/:exercise_id/:set_id",
   ensureSignedIn,

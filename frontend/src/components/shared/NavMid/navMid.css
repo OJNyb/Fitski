@@ -13,6 +13,8 @@
 .nav-mid-mobile-header-container {
   top: 0;
   height: 50px;
+  background-color: #a60000;
+  padding-right: 10px;
 }
 
 .nav-mid-header-item {

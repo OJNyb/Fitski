@@ -5,7 +5,7 @@ const { ObjectId } = Schema.Types;
 const ExerciseSchema = new Schema({
   name: { type: String },
   muscleGroup: { type: ObjectId, ref: "muscleGroup" },
-  unit: { type: String, default: "r+w" }
+  unit: { type: String, default: "w+r" }
 });
 
 module.exports = Exercise = model("exercise", ExerciseSchema);

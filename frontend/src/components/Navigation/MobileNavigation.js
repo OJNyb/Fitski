@@ -7,15 +7,16 @@ import { Link } from "react-router-dom";
 import "./mobileNavigation.css";
 
 const MobileNavigation = () => {
-  const {
-    state: { backLink, showNone, showDehaze }
-  } = useContext(NavContext);
+  const { state } = useContext(NavContext);
+  const { backLink, onBackClick, showDehaze, text, buttons } = state;
   const [showNavbar, setShowNavbar] = useState(false);
 
+  let style = {
+    marginTop: showDehaze ? "0" : "1px"
+  };
+
   let button;
-  if (showNone) {
-    return null;
-  } else if (showDehaze) {
+  if (showDehaze) {
     button = (
       <button
         onClick={() => setShowNavbar(!showNavbar)}
@@ -27,22 +28,41 @@ const MobileNavigation = () => {
       </button>
     );
   } else {
-    button = (
-      <Link to={backLink} className="mobile-nav-back-btn">
-        <i className="material-icons-round" style={{ color: "#fff" }}>
-          arrow_back
-        </i>
-      </Link>
-    );
+    if (backLink) {
+      button = (
+        <Link to={backLink} className="mobile-nav-back-btn">
+          <i className="material-icons-round" style={{ color: "#fff" }}>
+            arrow_back
+          </i>
+        </Link>
+      );
+    } else if (onBackClick) {
+      button = (
+        <button onClick={onBackClick} className="mobile-nav-back-btn">
+          <i className="material-icons-round" style={{ color: "#fff" }}>
+            arrow_back
+          </i>
+        </button>
+      );
+    }
   }
 
   return (
     <>
       <div
-        className="mobile-nav border-box"
+        className="mobile-nav flex-center-space-bw"
         style={{ backgroundColor: "#a60000" }}
       >
-        {button}
+        <div className="flex-ai-center">
+          {button}
+          <span style={style} className="mobile-nav-text-span">
+            {text}
+          </span>
+        </div>
+
+        <div className="flex-ai-center mobile-nav-button-container">
+          {buttons}
+        </div>
       </div>
 
       <div

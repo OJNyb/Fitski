@@ -7,10 +7,8 @@ import PlanOverview from "../PlanOverview";
 
 const WebPlan = ({ woPlan, isSelf, hasAccess, setShowModal }) => {
   useSetLoading(false);
-  const { weeks, _id: planId, access } = woPlan;
+  const { weeks, _id: planId } = woPlan;
   let weeksDisplay;
-
-  console.log(woPlan);
 
   let view;
   if (weeks.length) {

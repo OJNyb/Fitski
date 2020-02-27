@@ -4,7 +4,8 @@ import React, {
   useState,
   useEffect,
   Suspense,
-  useContext
+  useContext,
+  useCallback
 } from "react";
 import useMobile from "../../hooks/useMobile";
 import { useAuth } from "../../context/authContext";
@@ -43,6 +44,31 @@ const Explore = () => {
 
   useTitle("Chadify - Explore");
   useCleanNavState();
+
+  const handleSearchChange = useCallback(
+    (e, p) => {
+      let value;
+      if (p) {
+        value = p;
+      } else {
+        const { target } = e;
+        value = target.value;
+      }
+      setSkip(0);
+      setReachedEnd(false);
+      setResults([]);
+      setNoMatch(false);
+      keepOldPlans.current = false;
+      setSearch(value);
+    },
+    [setSkip]
+  );
+
+  useEffect(() => {
+    if (navState.search) {
+      handleSearchChange(null, navState.search);
+    }
+  }, [navState.search, handleSearchChange]);
 
   useEffect(() => {
     async function fetchData() {
@@ -125,17 +151,6 @@ const Explore = () => {
     setNoMatch(false);
     setSkip(0);
     setResults([]);
-  }
-
-  function handleSearchChange(e) {
-    const { target } = e;
-    const { value } = target;
-    setSkip(0);
-    setReachedEnd(false);
-    setResults([]);
-    setNoMatch(false);
-    keepOldPlans.current = false;
-    setSearch(value);
   }
 
   function handleActivateClick(e, planId) {

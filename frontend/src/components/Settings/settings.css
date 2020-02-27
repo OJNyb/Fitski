@@ -46,8 +46,13 @@
   position: absolute;
 }
 
-.padding-7-12 {
+.settings-item-container {
   padding: 7px 12px;
+  transition: background-color 0.15s ease;
+}
+
+.settings-item-container:hover {
+  background-color: rgb(241, 227, 227);
 }
 
 .settings-item-text-wrapper {

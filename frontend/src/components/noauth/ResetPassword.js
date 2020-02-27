@@ -50,7 +50,6 @@ const ResetPassword = () => {
               setEmailSent(true);
             })
             .catch(err => {
-              // TODO: If err.status !== 404 ???
               const { message } = getErrorMessage(err)[0];
               setBackendError(message);
               setSubmitting(false);

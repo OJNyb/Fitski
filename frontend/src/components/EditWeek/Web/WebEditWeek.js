@@ -3,6 +3,7 @@ import React, { useRef, useState } from "react";
 import WebExerciseCard from "./WebExerciseCard";
 import Exercises from "../../shared/Exercises/Exercises";
 import useSetLoading from "../../../hooks/useSetLoading";
+import WeekDropdown from "./WeekDropdown";
 import { Link } from "react-router-dom";
 import { Droppable, DragDropContext } from "react-beautiful-dnd";
 import {
@@ -21,6 +22,8 @@ import NavMidActionMenu from "../../shared/NavMid/NavMidActionMenu";
 import "./webEditWeek.css";
 
 const WebEditWeek = ({
+  weeks,
+  planId,
   onDragEnd,
   currentWeek,
   handleEditSet,
@@ -32,10 +35,10 @@ const WebEditWeek = ({
   handleDeleteExercise,
   handleAddExerciseRetry,
   handleDeleteWeekSubmit,
-  planId,
   weekIndex,
   handleAddSetRetry,
-  handleEditSetRetry
+  handleEditSetRetry,
+  refreshPlan
 }) => {
   const [showActionMenu, setShowActionMenu] = useState(false);
   const moreBtn = useRef(null);
@@ -44,6 +47,7 @@ const WebEditWeek = ({
   const { _id: dayId } = currentDay;
   const { exercises } = currentDay;
   const [showModal, setShowModal] = useState(false);
+  const [showWeekDd, setShowWeekDd] = useState(false);
   useSetLoading(false);
 
   let dayBtns = days.map((day, index) => (
@@ -136,9 +140,19 @@ const WebEditWeek = ({
           />
 
           <div className="edit-week-web-nav flex-col-cen">
-            <button className="text-center margin-0 theme-btn-no-border edit-week-nav-week-btn">
-              1
+            <button
+              className="text-center margin-0 theme-btn-no-border edit-week-nav-week-btn"
+              onClick={() => setShowWeekDd(!showWeekDd)}
+            >
+              {weekIndex + 1}
             </button>
+            {showWeekDd && (
+              <WeekDropdown
+                weeks={weeks}
+                planId={planId}
+                hideDropdown={() => setShowWeekDd(false)}
+              />
+            )}
             <div className="edit-week-add-days-container">{dayBtns}</div>
           </div>
           {showActionMenu && (
@@ -175,7 +189,6 @@ const WebEditWeek = ({
               <div
                 ref={provided.innerRef}
                 {...provided.droppableProps}
-                // TODO
                 className={
                   "web-exercise-droppable-container" +
                   (snapshot.isDraggingOver
@@ -192,7 +205,10 @@ const WebEditWeek = ({
       </MainTile>
       <SecondTile>
         <div className="flex-col-cen">
-          <Exercises handleAddExercise={handleAddExercise} />
+          <Exercises
+            handleAddExercise={handleAddExercise}
+            refreshExercises={refreshPlan}
+          />
         </div>
       </SecondTile>
     </MainContainer>

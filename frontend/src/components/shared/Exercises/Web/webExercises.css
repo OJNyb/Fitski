@@ -114,6 +114,8 @@
   box-sizing: border-box;
   padding: 5px 10px;
   width: 200px;
+  max-height: 220px;
+  overflow-y: scroll;
 }
 
 .exercises-muscle-group-item {

@@ -2,6 +2,7 @@
   border-right: 1px solid rgb(233, 220, 220);
   width: 100%;
   min-height: 100vh;
+  z-index: 998;
 }
 
 .second-tile {
@@ -14,7 +15,7 @@
 }
 
 .second-tile-wrapper {
-  position: fixed;
+  position: static;
 }
 
 .main-container {
@@ -30,6 +31,7 @@
   position: sticky;
   top: 0;
   background-color: #f8efef;
+  z-index: 998;
 }
 
 .main-tile-header-upper {

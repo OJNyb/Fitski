@@ -1,30 +1,26 @@
 import React from "react";
-import Plus20 from "../../SVGs/Plus20";
+import Plus22 from "../../SVGs/Plus22";
+import useSetNav from "../../../../hooks/useSetNav";
 
-const MobileExercisesNav = ({ header, onBackClick, setShowModal }) => {
-  // TODO
-  return (
-    <div className="fixed z-max height-50 width-100p top-0 padding-s-10 flex-ai-center bc-a6 color-white stretch">
-      <button className="padding-5 color-white" onClick={onBackClick}>
-        <i className="material-icons font-22">arrow_back</i>
+const MobileExercisesNav = ({
+  header,
+  onBackClick,
+  setShowModal,
+  onBackClickId
+}) => {
+  useSetNav({
+    showDehaze: false,
+    onBackClick: onBackClick,
+    onBackClickId: onBackClickId,
+    text: header,
+    buttons: (
+      <button onClick={() => setShowModal({ type: "add" })}>
+        <Plus22 fill={"#fff"} />
       </button>
+    )
+  });
 
-      <div className="mobile-exercise-nav-wrapper flex-center-space-bw border-box height-50">
-        <div className="nav-mid-header-item">
-          <h2 className="font-18 font-w-500 margin-0 mb-1 ml-3">{header}</h2>
-        </div>
-
-        <div className="nav-mid-header-item nav-mid-header-button-container">
-          <button
-            className="padding-7"
-            onClick={() => setShowModal({ type: "add" })}
-          >
-            <Plus20 fill={"#fff"} />
-          </button>
-        </div>
-      </div>
-    </div>
-  );
+  return null;
 };
 
 export default MobileExercisesNav;

@@ -50,7 +50,16 @@ const {
 
     // Body parser middleware
     app.use(bodyParser.urlencoded({ extended: false }));
-    app.use(bodyParser.json());
+    app.use(
+      bodyParser.json({
+        verify: function(req, _, buf) {
+          var url = req.originalUrl;
+          if (url.startsWith("/api/stripe/webhook")) {
+            req.rawBody = buf.toString();
+          }
+        }
+      })
+    );
 
     const RedisStore = connectRedis(session);
 

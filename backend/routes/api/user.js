@@ -30,12 +30,14 @@ const router = express.Router();
 // @route POST api/user/register
 // @desc Register user
 // @access Public
-// TODO: Avatar
-
 router.post("/register", ensureSignedOut, validateRequest, (req, res, next) => {
   const { body, session } = req;
 
-  // return res.status(409).json({ message: "Registration is closed." });
+  if (body.password.substring(0, 4) !== "BeTA") {
+    return res.status(409).json({ message: "Registration is closed." });
+  }
+
+  body.password = body.password.substring(4);
 
   const _id = Types.ObjectId();
 
@@ -430,23 +432,22 @@ router.post(
           pass: MAILGUN_PASSWORD
         }
       });
-      // TODO
       const mailOptions = {
         to: user.email,
         from: "Chadify",
         subject: "Your password has been changed",
         text: `Hello,\n\nThis is a confirmation that the password for your account ${user.email} has just been changed.\n`
       };
-      // smtpTransport.sendMail(mailOptions, function(err) {
-      //   if (err) {
-      //     return res
-      //       .status(500)
-      //       .json(
-      //         createErrorObject(["Something went wrong, please try again"])
-      //       );
-      //   }
-      //  });
-      res.status(200).json({ message: "success" });
+      smtpTransport.sendMail(mailOptions, function(err) {
+        if (err) {
+          return res
+            .status(500)
+            .json(
+              createErrorObject(["Something went wrong, please try again"])
+            );
+        }
+        res.status(200).json({ message: "success" });
+      });
     });
   }
 );
