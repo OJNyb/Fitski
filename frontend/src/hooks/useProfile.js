@@ -5,8 +5,6 @@ import { useUser } from "../context/userContext";
 import profileReducer from "../reducers/profileReducer";
 import { SET_PROFILE, IS_PENDING, IS_REJECTED } from "../types/profileTypes";
 
-// TODO: If !week/day/woplan
-
 const initialState = {
   profile: null,
   isPending: true,

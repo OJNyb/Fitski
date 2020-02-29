@@ -41,14 +41,6 @@ const Explore = ({
       <MainContainer>
         <MainTile>
           <MainTileNav>
-            {/* <ExploreNav
-              search={search}
-              isMobile={false}
-              category={category}
-              onPlanClick={handlePlanClick}
-              onPeopleClick={handlePeopleClick}
-              onSearchChange={onSearchChange}
-            /> */}
             <div className="explore-web-nav-container flex-center">
               <div className="explore-web-search-container flex-center-space-bw">
                 <input value={search} onChange={onSearchChange} />

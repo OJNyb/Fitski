@@ -3,7 +3,6 @@ import useSetLoading from "../../../hooks/useSetLoading";
 import useSetNav from "../../../hooks/useSetNav";
 
 import PlanCard from "../../shared/PlanCard/MobilePlanCard";
-import MobileNavMidContainer from "../../shared/NavMid/MobileNavMidContainer";
 import LoadingSpinner from "../../shared/SVGs/LoadingSpinner";
 import { MainTile, MainContainer } from "../../shared/Layout";
 
@@ -86,12 +85,12 @@ const Profile = ({
           </div>
           <div>
             <p className="color-light-gray font-14 text-center margin-0 padding-10-0">
-              Workout Plans
+              Public Workout Plans
             </p>
             <div>{cards}</div>
             {!cards.length && (
               <p className="color-gray text-center margin-0">
-                This user doesn't have any workout plans
+                This user doesn't have any public workout plans
               </p>
             )}
             {isPending && <LoadingSpinner />}

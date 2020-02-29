@@ -36,7 +36,6 @@ import {
   REORDER_EXERCISE,
   REORDER_EXERCISE_FAILED,
   REORDER_EXERCISE_SUCCESS,
-  // TODO:
   REQUEST_FAILED
 } from "../types/historyTypes";
 import { isSuccessful } from "./errorHandling";

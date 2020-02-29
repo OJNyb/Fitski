@@ -68,7 +68,7 @@ const Profile = ({ isSelf, woPlans, profile, setShowModal, navState }) => {
           </div>
           <div>
             <p className="color-light-gray font-14 text-center margin-0">
-              Workout Plans
+              Public Workout Plans
             </p>
             <WebWorkoutPlans woPlans={woPlans} profile={profile} />
           </div>

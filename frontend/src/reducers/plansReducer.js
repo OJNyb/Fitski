@@ -5,8 +5,6 @@ import {
   IS_REJECTED
 } from "../types/plansTypes";
 
-// TODO: If !week/day/woplan
-
 function planReducer(state, action) {
   const { type, payload } = action;
   switch (type) {

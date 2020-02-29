@@ -25,8 +25,6 @@ import {
   DELETE_MUSCLEGROUP_SUCCESS
 } from "../types/exerciseTypes";
 
-// TODO: If !week/day/woplan
-
 function planReducer(state, action) {
   const { type, payload } = action;
   switch (type) {

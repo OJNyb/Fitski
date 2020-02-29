@@ -1,0 +1,25 @@
+.second-tile-card-container {
+  background-color: white;
+  margin-right: 10px;
+  border-radius: 10px;
+  overflow: hidden;
+  max-width: 280px;
+  min-width: 100px;
+  width: 20%;
+}
+
+.second-tile-card-header {
+  padding: 10px;
+  font-weight: 900;
+  font-family: "Raleway";
+  font-size: 14px;
+  border-bottom: 1px solid rgb(233, 220, 220);
+}
+
+.second-tile-card-container .plans-mobile-card {
+  border-bottom: 1px solid rgb(233, 220, 220);
+}
+
+.second-tile-card-container .plans-mobile-card:last-child {
+  border-bottom: 0;
+}

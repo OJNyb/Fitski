@@ -35,7 +35,7 @@ const Exercises = ({ handleAddExercise, closeExercises, refreshExercises }) => {
   const { state, dispatch } = useContext(ExerciseContext);
   const [search, setSearch] = useState("");
   const [muscleGroup, setMuscleGroup] = useState([]);
-  const [exercisesToShow, setExercisesToShow] = useState(null);
+  const [exercisesToShow, setExercisesToShow] = useState([]);
   const [edit, setEdit] = useState(0);
   const [showModal, setShowModal] = useState(false);
   const [reqError, setReqError] = useState(null);

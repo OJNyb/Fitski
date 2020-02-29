@@ -3,9 +3,7 @@ const router = express.Router();
 const stripe = require("stripe")(process.env.STRIPE_API_KEY);
 const sendMail = require("../../helpers/sendMail");
 
-// TODO
-//const endpointSecret = process.env.STRIPE_ENDPOINT_SECRET;
-const endpointSecret = "whsec_O6oK2AZttVmBpSVGUPPg1NoHf58e5KHX";
+const endpointSecret = process.env.STRIPE_ENDPOINT_SECRET;
 
 // Models
 const User = require("../../models/User");

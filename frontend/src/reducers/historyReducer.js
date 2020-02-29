@@ -43,8 +43,6 @@ import { formatHistoryDate } from "../utils/formatHistoryDate";
 import { ensureDecimal } from "../utils/ensureDecimal";
 import Axios from "axios";
 
-// TODO: If !DAY/day/woplan
-
 function historyReducer(state, action) {
   const { type, payload } = action;
   switch (type) {

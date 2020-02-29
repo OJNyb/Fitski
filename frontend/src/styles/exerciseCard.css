@@ -1,4 +1,4 @@
-.history-add-card {
+.exercise-card {
   background-color: rgb(255, 255, 255);
   border-radius: 4px;
   font-family: "Oswald", sans-serif;
@@ -24,6 +24,10 @@
   border-bottom: 1px solid #a60000;
   min-height: 34px;
   transition: background-color 0.3s ease;
+}
+
+.history-exercise-name > span {
+  width: calc(100% - 110px);
 }
 
 .add-card-btn-container {
@@ -71,6 +75,23 @@
   opacity: 0.75;
 }
 
+.add-card-column button {
+  padding: 0px;
+}
+.add-card-remove-btn {
+  width: 30px;
+  height: 30px;
+}
+
+.add-card-remove-btn i {
+  font-size: 19px;
+  padding-top: 3px;
+}
+
+.add-card-column:hover i {
+  color: #a60000;
+}
+
 /* WEB */
 .web-exercise-droppable-container {
   min-height: 80vh;
@@ -89,6 +110,25 @@
   transition: background-color 0.3s ease;
 }
 
+.add-card-set-remove-btn i {
+  color: transparent;
+  transition: color 0.2s;
+}
+
+.web-card-input {
+  width: 40px;
+  height: 15px;
+  text-align: end;
+  border-radius: 0;
+  border-bottom: 1px solid transparent;
+  font-weight: 300;
+}
+
+.web-card-input:focus {
+  border-bottom: 1px solid #a60000;
+  background-color: #fef5f5;
+}
+
 /* MOBILE */
 
 .mobile-droppable-container {
@@ -98,4 +138,10 @@
   padding: 0 10px 30px;
   box-sizing: border-box;
   overflow-y: auto;
+}
+
+.mobile-exercise-card-box {
+  max-width: 500px;
+  margin: 0 auto;
+  width: 100%;
 }

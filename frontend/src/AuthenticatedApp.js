@@ -55,7 +55,8 @@ function App() {
       <main
         style={{
           width,
-          minHeight
+          minHeight,
+          borderLeft: isMobile ? "0" : "1px solid rgb(233, 220, 220)"
         }}
       >
         <ExerciseContext.Provider

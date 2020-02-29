@@ -78,8 +78,10 @@ const SelectedDay = ({ selectedDay }) => {
     );
   } else {
     children = (
-      <div className="flex-center font-14 color-gray">
-        You haven't created a workout log for this day
+      <div className="flex-center">
+        <p className="text-center-font-14 color-gray">
+          You haven't created a workout log for this day
+        </p>
       </div>
     );
   }

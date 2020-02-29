@@ -1,8 +1,6 @@
 .exercises-container {
   width: 260px;
   position: relative;
-
-  margin-top: 10px;
 }
 
 .exercises-container h2 {
@@ -113,13 +111,13 @@
 .exercise-muscle-group-filter-wrapper {
   box-sizing: border-box;
   padding: 5px 10px;
-  width: 200px;
-  max-height: 220px;
-  overflow-y: scroll;
+  max-height: 305px;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .exercises-muscle-group-item {
-  width: 100%;
+  width: 160px;
   border: 1px solid silver;
   border-radius: 4px;
   margin: 5px 0;
@@ -143,7 +141,7 @@
 }
 
 .exercises-body {
-  overflow-y: scroll;
+  overflow-y: auto;
   max-height: 60vh;
 }
 

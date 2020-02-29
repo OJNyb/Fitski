@@ -106,3 +106,17 @@
   align-items: center;
   height: calc(100vh - 100px);
 }
+
+.history-row {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.history-row:first-child {
+  flex: 0.6 60%;
+}
+
+.history-row:last-child {
+  flex: 0.4 40%;
+}

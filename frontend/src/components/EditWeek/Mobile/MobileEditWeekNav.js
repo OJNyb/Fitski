@@ -95,7 +95,7 @@ const EditWeekNav = ({
       </>
     )
   });
-  return null;
+  return modal;
 };
 
 export default EditWeekNav;

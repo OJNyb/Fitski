@@ -70,8 +70,23 @@ const MobilePlanCard = ({
 
   if (!description || description.length === 0) {
     descDisplay = "This plan doesn't have a description";
-  } else if (description.length > 150) {
-    descDisplay = description.slice(0, 150) + "...";
+  } else {
+    let x = descDisplay.split("\n");
+    let length = 0;
+    let tempText = "";
+    for (let y of x) {
+      if (length >= 150) {
+        tempText = tempText + "...";
+        break;
+      } else if (y.length + length >= 150) {
+        tempText = tempText + y.slice(0, 150 - length) + "...";
+        break;
+      } else {
+        tempText = tempText + y + "\n";
+        length = y.length + length + 30;
+      }
+    }
+    descDisplay = tempText;
   }
 
   let cardBtn;
@@ -111,7 +126,7 @@ const MobilePlanCard = ({
   return (
     <div
       onClick={() => setRedirect(true)}
-      className="padding-10 flex-stretch border-box width-100p plans-mobile-card black"
+      className="padding-10 flex-stretch border-box width-100p plans-mobile-card black pointer"
     >
       <div className="flex-stretch plans-mobile-plan-author margin-0-5">
         <div style={{ backgroundImage: `url(${avatarUrl})` }}>
@@ -126,7 +141,7 @@ const MobilePlanCard = ({
               <Link
                 to={`/profile/${username}`}
                 onClick={onLinkClick}
-                className="tc padding-5 mobile-plan-card-link"
+                className="tc mobile-plan-card-link"
               >
                 @{username}
               </Link>
@@ -137,7 +152,9 @@ const MobilePlanCard = ({
           </div>
           {cardBtn}
         </div>
-        <div className="pt-5 font-w-300">{descDisplay}</div>
+        <div className="pt-5 font-w-300 ws-pw line-height-125">
+          {descDisplay}
+        </div>
       </div>
     </div>
   );

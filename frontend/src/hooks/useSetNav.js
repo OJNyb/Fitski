@@ -23,7 +23,7 @@ function useSetNav(payload) {
     if (run) {
       setNav();
     }
-  }, [payload, dispatch]);
+  }, [state, payload, dispatch]);
 }
 
 export default useSetNav;
