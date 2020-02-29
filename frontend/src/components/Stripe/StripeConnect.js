@@ -10,6 +10,8 @@ const StripeConnect = () => {
   const [isLinkClicked, setIsLinkClicked] = useState(false);
 
   const { updateUser } = useAuth();
+
+  return <b className="color-gray">Payment is coming soon</b>;
   return (
     <div className="flex-col-cen pb-50">
       <div className="stripe-information">

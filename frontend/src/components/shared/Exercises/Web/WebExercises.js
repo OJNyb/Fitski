@@ -36,16 +36,20 @@ const Exercises = ({
     let newMuscleGroup = muscleGroup.concat();
     if (index === -1) {
       newMuscleGroup.push(muscle);
+      setMuscleGroup([muscle]);
+      setShowFilter(false);
     } else {
       newMuscleGroup.splice(index, 1);
+      setMuscleGroup([]);
     }
-
-    setMuscleGroup(newMuscleGroup);
   }
 
   let exercisesDisplay;
-  if (isPending) exercisesDisplay = <p>Loading...</p>;
-  if (exercisesToShow) {
+  if (isPending) {
+    exercisesDisplay = (
+      <p className="color-gray text-center font-14">Loading...</p>
+    );
+  } else if (exercisesToShow.length) {
     exercisesDisplay = exercisesToShow.map(x => (
       <ExerciseItem
         key={x._id}
@@ -57,6 +61,41 @@ const Exercises = ({
         handleEditDeleteClick={handleEditDeleteClick}
       />
     ));
+  } else if (search.length && muscleGroup.length) {
+    let muscleGroupText = "";
+    let ids = muscleGroups.map(x => x._id);
+    for (let id of muscleGroup) {
+      let index = ids.indexOf(id);
+      if (index > -1) {
+        muscleGroupText = muscleGroups[index].name;
+      }
+    }
+
+    exercisesDisplay = (
+      <p className="color-gray text-center font-14">
+        No exercises matched {search} in {muscleGroupText}
+      </p>
+    );
+  } else if (muscleGroup.length) {
+    let muscleGroupText = "";
+    let ids = muscleGroups.map(x => x._id);
+    for (let id of muscleGroup) {
+      let index = ids.indexOf(id);
+      if (index > -1) {
+        muscleGroupText = muscleGroups[index].name;
+      }
+    }
+    exercisesDisplay = (
+      <p className="color-gray text-center font-14">
+        No exercises in {muscleGroupText}
+      </p>
+    );
+  } else if (search.length) {
+    exercisesDisplay = (
+      <p className="color-gray text-center font-14">
+        No exercises matched {search}
+      </p>
+    );
   }
 
   return (
@@ -100,7 +139,6 @@ const Exercises = ({
             />
           </div>
           <div className="exercises-body custom-scrollbar">
-            <div></div>
             <div>{exercisesDisplay}</div>
           </div>
         </div>
@@ -128,7 +166,7 @@ const ExerciseItem = ({ onClick, exercise, handleEditDeleteClick }) => {
     <>
       <div
         className={
-          "exercises-item border-box flex-center-space-bw exercise-card" +
+          "exercises-item border-box flex-center-space-bw" +
           (isPending ? " exercise-card-pending " : "") +
           (isRejected ? " exercise-card-rejected" : "")
         }

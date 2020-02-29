@@ -85,13 +85,13 @@ const ExerciseCard = ({
     >
       {(provided, snapshot) => (
         <div
-          className="pt-10"
+          className="pt-10 mobile-exercise-card-box"
           ref={provided.innerRef}
           {...provided.draggableProps}
         >
           <div
             className={
-              "history-add-card" +
+              "exercise-card" +
               (isActive ? " edit-week-mobile-add-card-active" : "") +
               (isPending ? " exercise-card-pending" : "") +
               (isRejected ? " exercise-card-rejected" : "") +

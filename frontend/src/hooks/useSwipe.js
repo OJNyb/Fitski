@@ -12,10 +12,10 @@ const useSwipe = (onLeft, onRight) => {
   function onTouchEnd(e) {
     const { innerWidth } = e.view;
 
-    if (x / innerWidth > 0.6) {
+    if (x / innerWidth > 0.5) {
       setX(innerWidth);
       onRight();
-    } else if (x / innerWidth < -0.6) {
+    } else if (x / innerWidth < -0.5) {
       setX(-innerWidth);
       onLeft();
     } else {

@@ -20,8 +20,8 @@
 
 .modal-mobile-cancel-large {
   background-color: rgb(228, 226, 226);
-  width: 90%;
-  padding: 10px;
   border-radius: 999px;
-  margin: 9px auto;
+  width: 100%;
+  margin: 5px 0 10px;
+  min-height: 40px;
 }

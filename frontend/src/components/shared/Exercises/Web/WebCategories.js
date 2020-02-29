@@ -25,7 +25,7 @@ const Categories = ({ selectedMG, muscleGroups, hideDropdown, onClick }) => {
   });
   return (
     <div className="exercise-muscle-checkbox-container exercise-muscle-checkbox-container-show">
-      <div className="exercise-muscle-group-filter-wrapper flex-col">
+      <div className="exercise-muscle-group-filter-wrapper flex-col custom-scrollbar">
         {muscleGroupFilter}
       </div>
     </div>

@@ -33,7 +33,7 @@
   padding: 0 10px;
 }
 
-.mobile-nav-button-container button {
+.mobile-nav-button-container > button {
   padding: 5px;
   margin: 0 5px;
 }

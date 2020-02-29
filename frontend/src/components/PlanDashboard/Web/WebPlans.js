@@ -1,10 +1,12 @@
 import React from "react";
 import useSetLoading from "../../../hooks/useSetLoading";
-
-import AddPlanIcon from "./AddPlanIcon";
 import { Link } from "react-router-dom";
 
+import AddPlanIcon from "./AddPlanIcon";
 import WorkoutPlans from "../../shared/PlanCard/WebWorkoutPlans";
+import PlanCard from "../../shared/PlanCard/MobilePlanCard";
+
+import "./plansWeb.css";
 
 import {
   MainTile,
@@ -37,14 +39,21 @@ const Plans = ({ woPlans, dispatch, isPending }) => {
         <WorkoutPlans woPlans={woPlans} isPending={isPending} />
       </MainTile>
       <SecondTile>
-        <div>
+        {/* <div>
           <ul>
             <li>Suggested Plans</li>
             <li>Suggested Users</li>
             <li>Templates</li>
             <li>Become a merchant</li>
           </ul>
-        </div>
+        </div> */}
+        {/* <div className="second-tile-card-container shadow-small">
+          <div className="second-tile-card-header black">Trending Plans</div>
+          <div className="second-tile-card-body">
+            {!!woPlans.length &&
+              woPlans.map(x => <PlanCard key={x._id} plan={x} />)}
+          </div>
+        </div> */}
       </SecondTile>
     </MainContainer>
   );

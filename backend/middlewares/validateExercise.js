@@ -5,7 +5,6 @@ const Exercise = require("../models/Exercise");
 const createErrorObject = require("../utils/createErrorObject");
 
 let StandardExerciseIds;
-
 (() => {
   Exercise.find({})
     .then(exercises => {
@@ -32,6 +31,8 @@ async function validateExercise(req, res, next) {
   const { body, params, session } = req;
   const { userId } = session;
   const { exercise_id: exerciseId } = params;
+
+  console.log(StandardExerciseIds);
 
   const exercise = await UserExercise.findById(exerciseId);
 

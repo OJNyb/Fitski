@@ -2,7 +2,7 @@
   width: 100%;
   min-height: 20%;
   max-height: 80%;
-  overflow-y: scroll;
+  overflow-y: auto;
   position: fixed;
   bottom: -2px;
   border-top-left-radius: 25px;

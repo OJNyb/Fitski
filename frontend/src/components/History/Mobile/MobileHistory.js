@@ -164,7 +164,7 @@ const MobileView = ({
 
   return (
     <>
-      <div>
+      <div className="width-100p">
         <div className="history-mobile-container pb-50">{view}</div>
       </div>
     </>

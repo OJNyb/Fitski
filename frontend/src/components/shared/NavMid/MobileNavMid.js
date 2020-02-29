@@ -2,7 +2,6 @@ import React, { useLayoutEffect, useState, useContext } from "react";
 import { NavContext } from "../../../context/navContext";
 import MobileModal from "../Modal/MobileModal";
 import { Link } from "react-router-dom";
-import MobileNavMidContainer from "./MobileNavMidContainer";
 import useSetNav from "../../../hooks/useSetNav";
 
 import "./mobileNav.css";
@@ -66,22 +65,6 @@ const MobileNavMid = ({
         >
           Cancel
         </button>
-      </div>
-    );
-  }
-
-  let backTextDisplay = null;
-  if (backText) {
-    backTextDisplay = (
-      <div className="nav-mid-header-item">
-        <h2
-          className={
-            "nav-h2 font-18 color-white mobile-nav-h2 " +
-            (showDehaze ? "mt-0" : "mt-1")
-          }
-        >
-          {backText}
-        </h2>
       </div>
     );
   }

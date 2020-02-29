@@ -46,7 +46,7 @@ const MuscleGroupDropdown = ({
         (showFilter ? " exercise-muscle-checkbox-container-show" : "")
       }
     >
-      <div className="exercise-muscle-group-filter-wrapper flex-col">
+      <div className="exercise-muscle-group-filter-wrapper flex-col custom-scrollbar">
         {muscleGroupFilter}
       </div>
     </div>

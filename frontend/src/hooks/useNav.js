@@ -2,8 +2,6 @@ import { useReducer } from "react";
 
 import navReducer from "../reducers/navReducer";
 
-// TODO: If !week/day/woplan
-
 const initialState = {
   showNone: false,
   backLink: null,

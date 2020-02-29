@@ -36,3 +36,19 @@
 .history-web-row:last-child {
   flex: 0.55 55%;
 }
+
+.history-empty-log-container {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+.history-big-screen-copy-btn {
+  padding: 4px 9px;
+  border-radius: 2px;
+}
+
+.history-big-screen-add-p {
+  font-size: 13.3px;
+}

@@ -7,7 +7,6 @@ import { Draggable } from "react-beautiful-dnd";
 import DragIcon from "../../shared/SVGs/DragIcon";
 
 import "../../../styles/exerciseCard.css";
-import "../editDay.css";
 
 const MobileExerciseCard = ({
   index,
@@ -73,13 +72,13 @@ const MobileExerciseCard = ({
     >
       {(provided, snapshot) => (
         <div
-          className="pt-10"
+          className="pt-10 mobile-exercise-card-box"
           ref={provided.innerRef}
           {...provided.draggableProps}
         >
           <div
             className={
-              "history-add-card pointer" +
+              "exercise-card pointer" +
               (isActive ? " history-add-card-active" : "") +
               (isPending || dayPending ? " exercise-card-pending" : "") +
               (isRejected || dayRejected ? " exercise-card-rejected" : "") +

@@ -4,7 +4,6 @@ import WebExerciseColumn from "./WebExerciseColumn";
 import { Draggable } from "react-beautiful-dnd";
 import DragIcon from "../../shared/SVGs/DragIcon";
 
-import "../../History/editDay.css";
 import "../../../styles/exerciseCard.css";
 
 const WebExerciseCard = ({
@@ -71,7 +70,7 @@ const WebExerciseCard = ({
         >
           <div
             className={
-              "history-add-card" +
+              "exercise-card" +
               (isPending ? " exercise-card-pending" : "") +
               (isRejected ? " exercise-card-rejected" : "") +
               (snapshot.isDragging ? " exercise-card-dragging" : "")

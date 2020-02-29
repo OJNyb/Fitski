@@ -41,7 +41,6 @@ function useLongPress(
     cancelled,
     onTouchski
   ]);
-  // TODO
 
   const start = useCallback(() => {
     setStartLongPress(true);

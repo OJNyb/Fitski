@@ -7,15 +7,14 @@
 
 .second-tile {
   width: 375px;
-  padding-bottom: 60px;
+  padding: 10px 10px 60px;
   margin-right: 10px;
-  padding-left: 10px;
   position: relative;
   top: 0;
 }
 
 .second-tile-wrapper {
-  position: static;
+  position: fixed;
 }
 
 .main-container {
