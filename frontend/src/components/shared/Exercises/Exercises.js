@@ -93,7 +93,7 @@ const Exercises = ({ handleAddExercise, closeExercises, refreshExercises }) => {
     if (isMobile) {
       setDisplayModal(null);
     } else {
-      setShowModalTile(null);
+      setShowModalTile({ el: null });
     }
   }, [isMobile, setShowModal, setDisplayModal, setShowModalTile]);
 
@@ -211,8 +211,8 @@ const Exercises = ({ handleAddExercise, closeExercises, refreshExercises }) => {
     if (modal) {
       if (isMobile) {
         setDisplayModal(modal);
-      } else if (showModalTile !== modal) {
-        setShowModalTile(modal);
+      } else if (showModalTile.id !== "exercise1") {
+        setShowModalTile({ id: "exercise1", el: modal });
       }
     }
   }, [

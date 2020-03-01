@@ -1040,5 +1040,29 @@
     "name": "Machine Bench Press",
     "muscleGroup": "5e1efe709ed6895950a94b88",
     "equipment": "Machine"
+  },
+
+  {
+    "name": "Dumbbell Walking Lunge",
+    "muscleGroup": "5e1eff431c9d440000a301fa",
+    "equipment": "Dumbbell"
+  },
+
+  {
+    "name": "Leg Extension",
+    "muscleGroup": "5e1eff431c9d440000a301fa",
+    "equipment": "Machine"
+  },
+
+  {
+    "name": "Hyperextension",
+    "muscleGroup": "5e1eff431c9d440000a301fa",
+    "equipment": "Machine"
+  },
+
+  {
+    "name": "Leg Press",
+    "muscleGroup": "5e1eff431c9d440000a301fa",
+    "equipment": "Machine"
   }
 ]

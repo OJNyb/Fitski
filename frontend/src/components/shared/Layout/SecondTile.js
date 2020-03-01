@@ -4,10 +4,11 @@ import { SecondTileContext } from "../../../context/secondTileContext";
 
 const SecondTile = ({ children }) => {
   const isMobile = useMobile();
-  const [showModal, setShowModal] = useState(null);
+  const [showModal, setShowModal] = useState({ el: null });
+
   return (
     <>
-      {showModal}
+      {showModal.el}
       <div
         className="second-tile flex-col-cen"
         style={{

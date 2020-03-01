@@ -87,17 +87,19 @@ const PasswordView = ({ hideView }) => {
             autoComplete="off"
           />
 
-          <button
-            className={
-              isMobile
-                ? "mobile-modal-submit-btn"
-                : "web-modal-submit-btn theme-btn-filled"
-            }
-            type="submit"
-            disabled={isSubmitting}
-          >
-            Set Password
-          </button>
+          <div className="padding-10-15">
+            <button
+              className={
+                isMobile
+                  ? "mobile-modal-submit-btn"
+                  : "web-modal-submit-btn theme-btn-filled"
+              }
+              type="submit"
+              disabled={isSubmitting}
+            >
+              Set Password
+            </button>
+          </div>
         </Form>
       )}
     </Formik>
