@@ -4,6 +4,7 @@ const Categories = ({ selectedMG, muscleGroups, hideDropdown, onClick }) => {
   const outsideClickHandler = useCallback(() => {
     hideDropdown();
   }, [hideDropdown]);
+
   useEffect(() => {
     function setClickHandler() {
       window.addEventListener("click", outsideClickHandler);

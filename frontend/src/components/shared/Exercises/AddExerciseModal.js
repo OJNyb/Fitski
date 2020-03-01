@@ -1,4 +1,11 @@
-import React, { lazy, useRef, useEffect, useState, Suspense } from "react";
+import React, {
+  lazy,
+  useRef,
+  useEffect,
+  useState,
+  useLayoutEffect,
+  Suspense
+} from "react";
 import useMobile from "../../../hooks/useMobile";
 
 import Label from "./AddModalLabel";
@@ -28,35 +35,32 @@ const AddEditModal = ({
   muscleGroups,
   handleSubmit
 }) => {
-  if (exercise) {
-    var {
-      _id: exerciseId,
-      name: initName,
-      muscleGroup: initMuscleGroup,
-      unit: iUnit,
-      custom
-    } = exercise;
-
-    var initUnit;
-    var initUnitIndex = types.map(x => x.value).indexOf(iUnit);
-    if (initUnitIndex === -1) {
-      initUnitIndex = 0;
-    }
-    initUnit = types[initUnitIndex];
-  } else {
-    initName = "";
-    initMuscleGroup = "";
-    initUnit = types[0];
-  }
-
-  const [name, setName] = useState(initName);
-  const [muscleGroup, setMuscleGroup] = useState(initMuscleGroup);
+  const [name, setName] = useState("");
+  const [muscleGroup, setMuscleGroup] = useState("");
   const [showCategories, setShowCategories] = useState(false);
   const [showType, setShowType] = useState(false);
   const [error, setError] = useState(null);
   const isMobile = useMobile();
-  const [selectedType, setSelectedType] = useState(initUnit);
+  const [selectedType, setSelectedType] = useState("");
   const [showModal, setShowModal] = useState(false);
+
+  useLayoutEffect(() => {
+    if (exercise) {
+      const {
+        name: initName,
+        muscleGroup: initMuscleGroup,
+        unit: iUnit
+      } = exercise;
+
+      var initUnitIndex = types.map(x => x.value).indexOf(iUnit);
+      if (initUnitIndex === -1) {
+        initUnitIndex = 0;
+      }
+      setSelectedType(types[initUnitIndex]);
+      setName(initName);
+      setMuscleGroup(initMuscleGroup);
+    }
+  }, []);
 
   useEffect(() => {
     if (isMobile) {
@@ -75,7 +79,11 @@ const AddEditModal = ({
     }
 
     if (buttonText === "Edit") {
-      handleSubmit(exerciseId, { name, muscleGroup, unit: selectedType.value });
+      handleSubmit(exercise._id, {
+        name,
+        muscleGroup,
+        unit: selectedType.value
+      });
     } else {
       handleSubmit(name, muscleGroup, selectedType.value);
     }
@@ -140,7 +148,7 @@ const AddEditModal = ({
     );
   }
   let children;
-  if (buttonText === "Edit" && !custom) {
+  if (buttonText === "Edit" && !exercise.custom) {
     children = <p className="black mt-0">Can't edit the default exercises</p>;
   } else {
     children = (

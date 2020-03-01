@@ -42,6 +42,9 @@ const UnauthenticatedApp = () => {
         <Route exact path="/logout">
           <Redirect to="/login" />
         </Route>
+        <Route exact path="/settings">
+          <Redirect to="/login" />
+        </Route>
         <Route exact path="/terms" component={TermsAndConditions} />
         <Route exact path="/privacy-policy" component={PrivacyPolicy} />
         <Route path="*" component={NoMatch} />

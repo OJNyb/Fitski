@@ -70,17 +70,19 @@ const EmailView = ({ hideView }) => {
             autoComplete="off"
           />
 
-          <button
-            className={
-              isMobile
-                ? "mobile-modal-submit-btn"
-                : "web-modal-submit-btn theme-btn-filled"
-            }
-            type="submit"
-            disabled={isSubmitting}
-          >
-            Set Email
-          </button>
+          <div className="padding-10-15">
+            <button
+              className={
+                isMobile
+                  ? "mobile-modal-submit-btn"
+                  : "web-modal-submit-btn theme-btn-filled"
+              }
+              type="submit"
+              disabled={isSubmitting}
+            >
+              Set Email
+            </button>
+          </div>
         </Form>
       )}
     </Formik>

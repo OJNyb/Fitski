@@ -246,8 +246,8 @@
 }
 
 .custom-checkbox-container .custom-checkmark-radio:after {
-  left: 6.75px;
-  top: 6.75px;
+  left: 6.5px;
+  top: 6.5px;
   width: 7px;
   height: 7px;
   border-radius: 50%;

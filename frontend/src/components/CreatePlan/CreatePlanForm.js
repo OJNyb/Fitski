@@ -148,17 +148,19 @@ const CreatePlanForm = ({ isMobile, setRedir }) => {
             )}
           </div>
 
-          <button
-            className={
-              isMobile
-                ? "mobile-modal-submit-btn"
-                : "web-modal-submit-btn theme-btn-filled"
-            }
-            type="submit"
-            disabled={isSubmitting}
-          >
-            Create
-          </button>
+          <div className={isMobile ? "" : "padding-10-15"}>
+            <button
+              className={
+                isMobile
+                  ? "mobile-modal-submit-btn"
+                  : "web-modal-submit-btn theme-btn-filled"
+              }
+              type="submit"
+              disabled={isSubmitting}
+            >
+              Create
+            </button>
+          </div>
         </Form>
       )}
     </Formik>
