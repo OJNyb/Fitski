@@ -179,7 +179,6 @@ router.post(
   "/deactivate/:plan_id",
   ensureSignedIn,
   validateRequest,
-  validateWOPlan,
   async (req, res, next) => {
     const { params, session } = req;
     const { userId } = session;
@@ -201,11 +200,7 @@ router.post(
         .map(x => x.map(x => x.weight))
         .reduce((acc, curr) => acc.concat(curr), [])
         .reduce((acc, curr) => (acc += curr), 0);
-      // .reduce(
-      //   (accu, curr) =>
-      //     (accu += curr.reduce((accu, curr) => (accu += curr), 0)),
-      //   0
-      // );
+
       if (x > 0) {
         dateFilter = {
           $gt: formattedDate

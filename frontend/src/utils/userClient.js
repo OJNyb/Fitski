@@ -3,10 +3,10 @@ import {
   EDIT_USER,
   EDIT_USER_FAILED,
   EDIT_USER_SUCCESS,
-  ACTIVATE_PLAN,
-  DEACTIVATE_PLAN
+  ACTIVATE_PLAN_SUCCESS,
+  DEACTIVATE_PLAN_SUCCESS
 } from "../types/userTypes";
-import { isSuccessful } from "../utils/errorHandling";
+import { isSuccessful, getErrorMessage } from "../utils/errorHandling";
 import { EDIT_PROFILE } from "../types/profileTypes";
 
 function editUser(dispatch, profileDispatch, values) {
@@ -105,44 +105,46 @@ function editUser(dispatch, profileDispatch, values) {
 }
 
 function activatePlan(dispatch, planId, startDate) {
-  dispatch({
-    type: ACTIVATE_PLAN,
-    payload: { planId }
+  return new Promise((resolve, reject) => {
+    axios
+      .post(`/api/history/activate/${planId}`, { startDate })
+      .then(res => {
+        let isSucc = isSuccessful(res);
+        if (!isSucc) {
+          reject("Couldn't activate plan, please try again");
+        } else {
+          dispatch({
+            type: ACTIVATE_PLAN_SUCCESS,
+            payload: { planId }
+          });
+          resolve();
+        }
+      })
+      .catch(err => {
+        reject(err);
+      });
   });
-
-  axios
-    .post(`/api/history/activate/${planId}`, { startDate })
-    .then(res => {
-      let isSucc = isSuccessful(res);
-      if (!isSucc) {
-        axios.post("/feedback/plan/error", { res });
-        window.location.reload(true);
-      }
-    })
-    .catch(err => {
-      // axios.post("/feedback/plan/error", { err });
-      // window.location.reload(true);
-    });
 }
 
 function deactivatePlan(dispatch, planId) {
-  dispatch({
-    type: DEACTIVATE_PLAN
+  return new Promise((resolve, reject) => {
+    axios
+      .post(`/api/history/deactivate/${planId}`)
+      .then(res => {
+        let isSucc = isSuccessful(res);
+        if (!isSucc) {
+          reject("Couldn't deactivate plan, please try again");
+        } else {
+          dispatch({
+            type: DEACTIVATE_PLAN_SUCCESS
+          });
+          resolve();
+        }
+      })
+      .catch(err => {
+        reject(getErrorMessage(err)[0].message);
+      });
   });
-
-  axios
-    .post(`/api/history/deactivate/${planId}`)
-    .then(res => {
-      let isSucc = isSuccessful(res);
-      if (!isSucc) {
-        axios.post("/feedback/plan/error", { res });
-        window.location.reload(true);
-      }
-    })
-    .catch(err => {
-      axios.post("/feedback/plan/error", { err });
-      window.location.reload(true);
-    });
 }
 
 export { editUser, activatePlan, deactivatePlan };

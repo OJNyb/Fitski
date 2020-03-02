@@ -34,7 +34,7 @@ router.post("/register", ensureSignedOut, validateRequest, (req, res, next) => {
   const { body, session } = req;
 
   if (body.password.substring(0, 4) !== "BeTA") {
-    return res.status(409).json({ message: "Registration is closed." });
+    return res.status(409).json(createErrorObject(["Registration is closed."]));
   }
 
   body.password = body.password.substring(4);

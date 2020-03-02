@@ -49,6 +49,7 @@ const Register = () => {
         onSubmit={(values, { setSubmitting }) => {
           setServerErr(false);
           register(values).catch(err => {
+            console.log(err);
             setServerErr(err);
           });
           setSubmitting(false);
@@ -62,7 +63,7 @@ const Register = () => {
               }
             >
               <div className="sign-x-message">
-                {Object.keys(serverErr).length > 0 &&
+                {Object.keys(serverErr).length > 0 ? (
                   (serverErr.isJoi ||
                     serverErr.isCustom ||
                     serverErr.isMongo) && (
@@ -71,7 +72,10 @@ const Register = () => {
                         <p key={index}>{error.message}</p>
                       ))}
                     </>
-                  )}
+                  )
+                ) : (
+                  <p>Something went wrong, please try again</p>
+                )}
                 <button
                   className="sign-x-error-close"
                   onClick={() => setServerErr(false)}

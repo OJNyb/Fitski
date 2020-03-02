@@ -60,7 +60,7 @@ const AddEditModal = ({
       setName(initName);
       setMuscleGroup(initMuscleGroup);
     }
-  }, []);
+  }, [exercise]);
 
   useEffect(() => {
     if (isMobile) {

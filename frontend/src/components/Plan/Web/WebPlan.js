@@ -7,7 +7,7 @@ import PlanOverview from "../PlanOverview";
 
 const WebPlan = ({ woPlan, isSelf, hasAccess, setShowModal }) => {
   useSetLoading(false);
-  const { weeks, _id: planId } = woPlan;
+  const { weeks, _id: planId, access } = woPlan;
   let weeksDisplay;
 
   let view;
@@ -24,7 +24,7 @@ const WebPlan = ({ woPlan, isSelf, hasAccess, setShowModal }) => {
       );
     });
 
-    if (hasAccess) {
+    if (hasAccess || access === "public") {
       view = weeksDisplay;
     } else {
       view = (

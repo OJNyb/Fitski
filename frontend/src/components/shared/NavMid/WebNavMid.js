@@ -46,16 +46,12 @@ const WebNavMid = props => {
       {midContent && <div className="nav-mid-header-item">{midContent}</div>}
 
       <div className="nav-mid-header-item nav-mid-header-button-container">
-        {actionMenuChildren && (
+        {actionMenuChildren && !!actionMenuChildren.length && (
           <button
             className="nav-mid-header-more-btn theme-btn-no-border shadow-medium-clickable"
             onClick={handleMoreActionClick}
             ref={moreBtn}
           >
-            {/* <i className="material-icons nav-mid-header-more-icon">
-              more_horiz
-            </i>
-             */}
             <MoreIcon d={26} />
           </button>
         )}

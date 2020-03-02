@@ -6,11 +6,13 @@ import useNavBack from "../../../hooks/useNavBack";
 import Overview from "../PlanOverview";
 import MobileEmpty from "../../shared/MobileEmpty";
 import Plus20 from "../../shared/SVGs/Plus20";
+import { Link } from "react-router-dom";
 
 import "./planMobile.css";
 
 const MobilePlan = ({ woPlan, isSelf, navState, hasAccess, setShowModal }) => {
-  const { weeks, _id: planId } = woPlan;
+  const { weeks, _id: planId, access, name, price } = woPlan;
+
   useSetLoading(false);
   let to = navState[planId];
   if (!to) {
@@ -34,11 +36,27 @@ const MobilePlan = ({ woPlan, isSelf, navState, hasAccess, setShowModal }) => {
       );
     });
 
-    if (hasAccess) {
+    if (hasAccess || access === "public") {
       view = weeksDisplay;
     } else {
       view = (
-        <div className="plan-week-container-no-access">{weeksDisplay}</div>
+        <>
+          {!hasAccess && access === "paywall" && (
+            <div className="purchase-plan-mobile-container">
+              <div className="purchase-plan-container shadow-medium">
+                <p className="purchase-plan-name">{name}</p>
+                <p className="purchase-plan-price">{price}$</p>
+                <Link
+                  to={`/checkout/${planId}`}
+                  className="purchase-plan-button shadow-medium-clickable"
+                >
+                  Buy Now
+                </Link>
+              </div>
+            </div>
+          )}
+          <div className="plan-week-container-no-access">{weeksDisplay}</div>
+        </>
       );
     }
   } else {

@@ -3,8 +3,8 @@ import {
   IS_PENDING,
   IS_REJECTED,
   EDIT_USER,
-  ACTIVATE_PLAN,
-  DEACTIVATE_PLAN,
+  ACTIVATE_PLAN_SUCCESS,
+  DEACTIVATE_PLAN_SUCCESS,
   EDIT_USER_SUCCESS,
   EDIT_USER_FAILED
 } from "../types/userTypes";
@@ -104,7 +104,7 @@ function userReducer(state, action) {
       };
     }
 
-    case ACTIVATE_PLAN: {
+    case ACTIVATE_PLAN_SUCCESS: {
       const { planId } = payload;
       const { user } = state;
 
@@ -125,7 +125,7 @@ function userReducer(state, action) {
       };
     }
 
-    case DEACTIVATE_PLAN: {
+    case DEACTIVATE_PLAN_SUCCESS: {
       const { user } = state;
 
       let yestarday = new Date();

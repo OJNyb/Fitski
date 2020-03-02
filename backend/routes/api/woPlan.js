@@ -22,6 +22,8 @@ const {
   createEmptyWeekArray
 } = require("../../utils/planUtils");
 
+const { formatHistoryDate } = require("../../utils/formatHistoryDate");
+
 // @route GET api/plan
 // @desc Get current users workout plans
 // @access Private
@@ -108,23 +110,28 @@ router.get(
 
     const { user, access } = woPlan;
 
-    if (user._id.toString() !== userId && access !== "public") {
-      if (woPlan.access === "private") {
+    let doc = { ...woPlan._doc };
+
+    if (user._id.toString() !== userId) {
+      if (
+        planAccess.whitelist.map(x => x.user.toString()).indexOf(userId) === -1
+      ) {
+        if (access === "paywall") {
+          doc.weeks = createDummyWeeks();
+        }
+        hasAccess = false;
+      }
+
+      if (woPlan.access === "private" && !hasAccess) {
         return res
           .status(403)
           .json(
             createErrorObject(["You are not authorized to view this plan"])
           );
       }
-      if (
-        planAccess.whitelist.map(x => x.user.toString()).indexOf(userId) === -1
-      ) {
-        woPlan.weeks = createDummyWeeks();
-        hasAccess = false;
-      }
     }
 
-    res.json({ woPlan, hasAccess });
+    res.json({ woPlan: doc, hasAccess });
   }
 );
 
