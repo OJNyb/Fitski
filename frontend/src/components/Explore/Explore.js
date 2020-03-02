@@ -36,7 +36,6 @@ const Explore = () => {
   const keepOldPlans = useRef(true);
   const isCancelled = useRef(false);
   const [results, setResults] = useState([]);
-  const [noMatch, setNoMatch] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [reachedEnd, setReachedEnd] = useState(false);
   const [search, setSearch] = useState(navState.search || "");
@@ -57,7 +56,6 @@ const Explore = () => {
       setSkip(0);
       setReachedEnd(false);
       setResults([]);
-      setNoMatch(false);
       keepOldPlans.current = false;
       setSearch(value);
     },
@@ -91,11 +89,7 @@ const Explore = () => {
 
         if (!isCancelled.current || !isReqCancelled) {
           if (newResults.length === 0) {
-            if (results.length) {
-              setReachedEnd(true);
-            } else {
-              setNoMatch(true);
-            }
+            setReachedEnd(true);
           } else {
             if (keepOldPlans.current) {
               setResults(p => [...p, ...newResults]);
@@ -113,20 +107,22 @@ const Explore = () => {
           isCancelled: isReqCancelled,
           results
         } = await trendingReq(`/api/explore/trending?skip=${skip}`);
+
+        console.log(skip);
         if (error) {
           return console.log(error);
         }
         if (!isCancelled.current || !isReqCancelled) {
-          if (results.length === 0) {
+          if (results.length < 40) {
             setReachedEnd(true);
-          } else {
-            if (keepOldPlans.current) {
-              setResults(p => [...p, ...results]);
-            } else {
-              setResults(results);
-            }
-            keepOldPlans.current = true;
           }
+
+          if (keepOldPlans.current) {
+            setResults(p => [...p, ...results]);
+          } else {
+            setResults(results);
+          }
+          keepOldPlans.current = true;
         } else if (isReqCancelled && !isCancelled.current) {
           setResults([]);
         }
@@ -137,18 +133,18 @@ const Explore = () => {
     return () => {
       isCancelled.current = true;
     };
-  }, [skip, search, category, results.length]);
+  }, [skip, search, category]);
 
   function handlePeopleClick() {
     setCategory("people");
-    setNoMatch(false);
+    setReachedEnd(false);
     setSkip(0);
     setResults([]);
   }
 
   function handlePlanClick() {
     setCategory("plans");
-    setNoMatch(false);
+    setReachedEnd(false);
     setSkip(0);
     setResults([]);
   }
@@ -203,7 +199,6 @@ const Explore = () => {
     view = (
       <MobileExplore
         search={search}
-        noMatch={noMatch}
         results={results}
         category={category}
         reachedEnd={reachedEnd}
@@ -218,7 +213,6 @@ const Explore = () => {
     view = (
       <WebExplore
         search={search}
-        noMatch={noMatch}
         results={results}
         category={category}
         reachedEnd={reachedEnd}

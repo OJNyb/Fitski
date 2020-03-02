@@ -16,7 +16,6 @@ import "./mobileExplore.css";
 
 const MobileExplore = ({
   search,
-  noMatch,
   results,
   category,
   reachedEnd,
@@ -32,7 +31,7 @@ const MobileExplore = ({
 
   let view;
 
-  if (noMatch) {
+  if (!results.length) {
     view = <p className="text-center color-gray">No results</p>;
   } else if (category === "plans") {
     if (results.length) {
@@ -103,7 +102,9 @@ const MobileExplore = ({
         />
         <div className="explore-mobile-cards-container">{view}</div>
         {reachedEnd && !!results.length && (
-          <p className="text-center color-light-gray">You've reached the end</p>
+          <p className="text-center color-light-gray font-w-300">
+            You've reached the end
+          </p>
         )}
       </div>
     </>
