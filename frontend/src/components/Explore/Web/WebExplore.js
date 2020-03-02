@@ -69,7 +69,7 @@ const Explore = ({
           <div className="pb-50">
             {cards}
             {reachedEnd && !!results.length && (
-              <p className="color-light-gray text-center">
+              <p className="color-light-gray text-center font-w-300">
                 You've reached the end...
               </p>
             )}
