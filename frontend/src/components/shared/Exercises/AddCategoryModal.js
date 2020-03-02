@@ -160,7 +160,7 @@ const AddCategoryModal = ({
         </div>
         <div className="flex-center modal-mobile-delete-btn-container">
           <button
-            className="theme-btn-filled mobile-modal-delete-btn padding-5 margin-0-10"
+            className="theme-btn-filled modal-delete-btn padding-5 margin-0-10"
             onClick={onSubmit}
             disabled={isPending}
           >

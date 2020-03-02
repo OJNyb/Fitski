@@ -20,13 +20,13 @@ const DeleteExerciseModal = ({ onSubmit, exercises, hideModal }) => {
         }
       >
         <button
-          className="theme-btn-filled mobile-modal-delete-btn padding-5 margin-0-10"
+          className="theme-btn-filled modal-delete-btn padding-5 margin-0-10"
           onClick={() => onSubmit(exercises.map(x => x._id))}
         >
           Delete
         </button>
         <button
-          className="cancel-btn mobile-modal-delete-btn margin-0-10"
+          className="cancel-btn modal-delete-btn margin-0-10"
           onClick={hideModal}
         >
           Cancel

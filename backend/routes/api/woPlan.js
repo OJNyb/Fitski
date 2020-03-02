@@ -7,6 +7,7 @@ const WOPlan = require("../../models/WOPlan");
 const User = require("../../models/User");
 const PlanAccess = require("../../models/PlanAccess");
 const UserAccess = require("../../models/UserAccess");
+const PlanTrend = require("../../models/PlanTrend");
 
 // Validation
 const { ensureSignedIn } = require("../../middlewares/auth");
@@ -132,36 +133,44 @@ router.get(
 // @access Private
 router.post("/", ensureSignedIn, validateRequest, async (req, res, next) => {
   const { body, session } = req;
-
+  const { userId } = session;
   const { planId } = body;
 
   const _id = planId ? planId : Types.ObjectId();
 
   const newWOPlan = new WOPlan({
     _id,
-    user: session.userId,
+    user: userId,
     ...body
   });
 
   const newPlanAccess = new PlanAccess({
     woPlan: _id
   });
+
+  let newPlanTrend;
+  if (body.access !== "private") {
+    newPlanTrend = new PlanTrend({
+      woPlan: _id,
+      date: formatHistoryDate(new Date()),
+      user: userId
+    });
+  }
+
   try {
-    var x = await newWOPlan.save();
-    var y = await newPlanAccess.save();
+    await newWOPlan.save();
+    await newPlanAccess.save();
+    if (newPlanTrend) newPlanTrend.save();
   } catch (err) {
     return next(err);
   }
 
-  if (x && y) {
-    res.json({ message: "success" });
-  }
+  res.json({ message: "success" });
 });
 
 // @route POST api/plan/:plan_id
 // @desc Edit workout plan
 // @access Private
-// Validation. How to check optional fields in joi?
 router.post(
   "/:plan_id",
   ensureSignedIn,

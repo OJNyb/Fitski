@@ -37,15 +37,17 @@ const CopyDayModal = ({ pNote, onSubmit, hideModal }) => {
         }}
       />
       {pNote !== note && (
-        <button
-          className={
-            "theme-btn-filled " +
-            (isMobile ? "mobile-modal-submit-btn" : "web-modal-submit-btn")
-          }
-          onClick={onCopySubmit}
-        >
-          {btnText}
-        </button>
+        <div className={isMobile ? "" : "padding-10-15"}>
+          <button
+            className={
+              "theme-btn-filled " +
+              (isMobile ? "mobile-modal-submit-btn" : "web-modal-submit-btn")
+            }
+            onClick={onCopySubmit}
+          >
+            {btnText}
+          </button>
+        </div>
       )}
     </div>
   );

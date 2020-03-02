@@ -100,7 +100,7 @@ router.get(
       { $skip: Number(skip) || 0 },
       { $limit: 40 }
     ])
-      .then(plans =>
+      .then(plans => {
         WOPlan.find({ _id: { $in: plans.map(x => x._id) } })
           .populate("user")
           .then(woPlans => {
@@ -109,8 +109,8 @@ router.get(
             );
             res.json({ results: woPlans });
           })
-          .catch(next)
-      )
+          .catch(next);
+      })
       .catch(next);
   }
 );

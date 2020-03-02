@@ -17,7 +17,7 @@
   align-items: center;
 }
 
-.mobile-modal-delete-btn,
+.modal-delete-btn,
 .cancel-btn {
   height: 40px;
   width: 40vw;
