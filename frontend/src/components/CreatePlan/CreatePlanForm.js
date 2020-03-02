@@ -1,18 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
 import { Types } from "mongoose";
 import axios from "axios";
 
+import ErrorMessage from "../shared/Modal/ErrorMessage";
 import MobileInput from "../shared/Form/MobileInput";
 import CustomRadio from "../shared/Form/CustomRadio";
 import PriceInput from "../shared/Form/PriceInput";
 import { Form, Field, Formik } from "formik";
 import { useUser } from "../../context/userContext";
 import StripeConnect from "../Stripe/StripeConnect";
+import LoadingSpinner from "../shared/SVGs/LoadingSpinner";
+import { getErrorMessage } from "../../utils/errorHandling";
 
 const { ObjectId } = Types;
 
 const CreatePlanForm = ({ isMobile, setRedir }) => {
   const user = useUser();
+  const [err, setErr] = useState(null);
 
   const { stripeId } = user;
   const isMerchant = !!stripeId;
@@ -49,12 +53,15 @@ const CreatePlanForm = ({ isMobile, setRedir }) => {
               setRedir(planId);
             }
           })
-          .catch(err => console.error(err.response));
-        setSubmitting(false);
+          .catch(err => {
+            setErr(getErrorMessage(err)[0].message);
+            setSubmitting(false);
+          });
       }}
     >
       {({ values, isSubmitting }) => (
         <Form className="stretch flex-col width-100p border-box padding-10-0 create-plan-form">
+          {err && <ErrorMessage message={err} />}
           <div className="create-plan-input-wrapper">
             <Field
               name="name"
@@ -158,7 +165,7 @@ const CreatePlanForm = ({ isMobile, setRedir }) => {
               type="submit"
               disabled={isSubmitting}
             >
-              Create
+              {isSubmitting ? <LoadingSpinner /> : "Create"}
             </button>
           </div>
         </Form>

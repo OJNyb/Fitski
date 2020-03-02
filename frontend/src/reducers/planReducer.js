@@ -2,6 +2,7 @@ import {
   IS_PENDING,
   IS_REJECTED,
   SET_PLAN,
+  SET_HAS_ACCESS,
   EDIT_PLAN,
   EDIT_PLAN_FAILED,
   EDIT_PLAN_SUCCESS,
@@ -82,6 +83,13 @@ function planReducer(state, action) {
         woPlan,
         hasAccess,
         isPending: false
+      };
+    }
+
+    case SET_HAS_ACCESS: {
+      return {
+        ...state,
+        hasAccess: true
       };
     }
 

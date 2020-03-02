@@ -9,3 +9,12 @@
 .plan-mobile-sets-reps-wrapper {
   display: flex;
 }
+
+.purchase-plan-mobile-container {
+  position: fixed;
+  margin: auto;
+  z-index: 99;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}

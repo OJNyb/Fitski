@@ -768,3 +768,32 @@
 .line-height-125 {
   line-height: 1.25;
 }
+
+.main-error-popup-container {
+  position: fixed;
+  top: 10%;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  z-index: 9999;
+}
+
+.main-error-popup-box {
+  padding: 6px 30px 6px 10px;
+  min-width: 20%;
+  background-color: rgb(255, 221, 221);
+  border: 1px solid rgb(241, 157, 157);
+  border-radius: 10px;
+  position: relative;
+}
+
+.main-error-popup-close-btn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 20px;
+  line-height: 1;
+  width: 25px;
+  height: 25px;
+  font-family: Arial, Helvetica, sans-serif;
+}

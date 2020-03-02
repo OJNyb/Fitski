@@ -48,7 +48,7 @@ function createExercises() {
     exercises.push({
       _id: ObjectId(),
       exercise: {
-        unit: "r+w",
+        unit: "w+r",
         _id: ObjectId(),
         name: names[Math.round(Math.random() * (names.length - 1))]
       },

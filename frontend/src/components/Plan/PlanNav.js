@@ -5,10 +5,9 @@ import { SET_PLAN_BACKLINK } from "../../types/navTypes";
 import NavMid from "../shared/NavMid/NavMid";
 
 const PlanNav = ({
+  plan,
   isSelf,
-  planId,
   isActive,
-  planName,
   navState,
   navDispatch,
   onGetClick,
@@ -17,6 +16,8 @@ const PlanNav = ({
 }) => {
   const [redirect, setRedirect] = useState(false);
   const [actionMenuChildren, setActionMenuChildren] = useState([]);
+
+  const { name: planName, access, _id: planId } = plan;
 
   useLayoutEffect(() => {
     if (isSelf) {
@@ -70,7 +71,11 @@ const PlanNav = ({
   let rightBtnIcon;
   let rightBtnFilled;
 
-  if (!hasAccess) {
+  if (!hasAccess && access !== "public") {
+    return <NavMid backText={planName} backAction={() => setRedirect(true)} />;
+  }
+
+  if (!hasAccess && access === "public") {
     rightBtnText = "Get";
     rightBtnIcon = "assignment_returned";
     rightBtnFilled = false;
@@ -85,10 +90,6 @@ const PlanNav = ({
     rightBtnIcon = "play_arrow";
     rightBtnAction = () => setShowModal("activate");
     rightBtnFilled = false;
-  }
-
-  if (!hasAccess) {
-    return <NavMid backText={planName} backAction={() => setRedirect(true)} />;
   }
 
   return (

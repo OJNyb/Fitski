@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 import AddPlanIcon from "./AddPlanIcon";
 import WorkoutPlans from "../../shared/PlanCard/WebWorkoutPlans";
-import PlanCard from "../../shared/PlanCard/MobilePlanCard";
+// import PlanCard from "../../shared/PlanCard/MobilePlanCard";
 
 import "./plansWeb.css";
 
@@ -16,7 +16,7 @@ import {
   MainTileNav
 } from "../../shared/Layout";
 
-const Plans = ({ woPlans, dispatch, isPending }) => {
+const Plans = ({ woPlans, isPending }) => {
   useSetLoading(false);
 
   return (
@@ -35,7 +35,6 @@ const Plans = ({ woPlans, dispatch, isPending }) => {
             }
           />
         </MainTileNav>
-        {/* <PlansNav isMobile={false} dispatch={dispatch} /> */}
         <WorkoutPlans woPlans={woPlans} isPending={isPending} />
       </MainTile>
       <SecondTile>

@@ -14,6 +14,7 @@ import { NavContext } from "../../context/navContext";
 import { addPlan } from "../../utils/userAccessClient";
 import { PlanContext } from "../../context/planContext";
 import { activatePlan, deactivatePlan } from "../../utils/userClient";
+import { SET_HAS_ACCESS } from "../../types/planTypes";
 
 import PlanNav from "./PlanNav";
 import EditPlanModal from "./EditPlanModal";
@@ -27,6 +28,7 @@ import { MainTile, MainContainer, SecondTile } from "../shared/Layout";
 
 import "./plan.css";
 import { Link } from "react-router-dom";
+import { useError } from "../../context/errorContext";
 
 const MobilePlan = lazy(() => import("./Mobile/MobilePlan"));
 const WebPlan = lazy(() => import("./Web/WebPlan"));
@@ -37,6 +39,7 @@ const Plan = () => {
     state: { woPlan, hasAccess },
     dispatch
   } = useContext(PlanContext);
+  const { setError } = useError();
   const { state: userState, dispatch: userDispatch } = useAuth();
   const [isActive, setIsActive] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -88,12 +91,20 @@ const Plan = () => {
 
   function handleDeactivateSubmit(e) {
     e.preventDefault();
-    deactivatePlan(userDispatch, planId);
+    deactivatePlan(userDispatch, planId).catch(err => setError(err));
     setShowModal(false);
   }
 
   function handleGetClick() {
-    addPlan(accessDispatch, planId);
+    addPlan(accessDispatch, planId)
+      .then(() => {
+        dispatch({
+          type: SET_HAS_ACCESS
+        });
+      })
+      .catch(err => {
+        setError(err);
+      });
   }
 
   function handleEditSubmit(values) {
@@ -204,6 +215,7 @@ const Plan = () => {
       <MainContainer>
         <MainTile maxWidth={710}>
           <PlanNav
+            plan={woPlan}
             planId={planId}
             isSelf={isSelf}
             planName={name}
@@ -218,7 +230,7 @@ const Plan = () => {
           <Suspense fallback={<SetLoading />}>{view}</Suspense>
         </MainTile>
         <SecondTile>
-          {!hasAccess && (
+          {!hasAccess && access === "paywall" && (
             <div className="purchase-plan-container shadow-medium">
               <p className="purchase-plan-name">{name}</p>
               <p className="purchase-plan-price">{price}$</p>

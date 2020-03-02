@@ -2,8 +2,8 @@ import {
   SET_ACCESS,
   IS_PENDING,
   IS_REJECTED,
-  ADD_PLAN,
-  REMOVE_PLAN
+  ADD_PLAN_SUCCESS,
+  REMOVE_PLAN_SUCCESS
 } from "../types/userAccessTypes";
 
 function userAccessReducer(state, action) {
@@ -36,10 +36,14 @@ function userAccessReducer(state, action) {
         error: null
       };
     }
-    case ADD_PLAN: {
+
+    case ADD_PLAN_SUCCESS: {
       const { planId } = payload;
       const { accessedPlans } = state;
 
+      console.log("ga22");
+
+      console.log(accessedPlans);
       accessedPlans.push(planId);
 
       return {
@@ -47,7 +51,8 @@ function userAccessReducer(state, action) {
         accessedPlans
       };
     }
-    case REMOVE_PLAN: {
+
+    case REMOVE_PLAN_SUCCESS: {
       const { planId } = payload;
       const { accessedPlans } = state;
       const index = accessedPlans.indexOf(planId);

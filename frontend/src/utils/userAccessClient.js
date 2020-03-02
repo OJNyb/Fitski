@@ -1,57 +1,54 @@
 import axios from "axios";
 import { isSuccessful } from "../utils/errorHandling";
 import {
-  ADD_PLAN,
-  REMOVE_PLAN,
-  REQUEST_FAILED
+  ADD_PLAN_SUCCESS,
+  REMOVE_PLAN_SUCCESS
 } from "../types/userAccessTypes";
 
-function addPlan(dispatch, planId) {
-  dispatch({
-    type: ADD_PLAN,
-    payload: { planId }
-  });
+import { getErrorMessage } from "../utils/errorHandling";
 
-  axios
-    .post(`/api/user/access/${planId}`)
-    .then(res => {
-      let isSucc = isSuccessful(res);
-      if (!isSucc) {
-        dispatch({
-          type: REQUEST_FAILED
-        });
-      }
-    })
-    .catch(err => {
-      dispatch({
-        type: REQUEST_FAILED,
-        payload: { err }
+function addPlan(dispatch, planId) {
+  return new Promise((resolve, reject) => {
+    axios
+      .post(`/api/user/access/${planId}`)
+      .then(res => {
+        let isSucc = isSuccessful(res);
+        if (!isSucc) {
+          reject("An error occured, please try again");
+        } else {
+          resolve();
+          dispatch({
+            type: ADD_PLAN_SUCCESS,
+            payload: { planId }
+          });
+        }
+      })
+      .catch(err => {
+        reject(getErrorMessage(err)[0].message);
       });
-    });
+  });
 }
 
 function removePlan(dispatch, planId) {
-  dispatch({
-    type: REMOVE_PLAN,
-    payload: { planId }
-  });
-
-  axios
-    .delete(`/api/user/access/${planId}`)
-    .then(res => {
-      let isSucc = isSuccessful(res);
-      if (!isSucc) {
-        dispatch({
-          type: REQUEST_FAILED
-        });
-      }
-    })
-    .catch(err => {
-      dispatch({
-        type: REQUEST_FAILED,
-        payload: { err }
+  return new Promise((resolve, reject) => {
+    axios
+      .delete(`/api/user/access/${planId}`)
+      .then(res => {
+        let isSucc = isSuccessful(res);
+        if (!isSucc) {
+          reject("An error occured, please try again");
+        } else {
+          dispatch({
+            type: REMOVE_PLAN_SUCCESS,
+            payload: { planId }
+          });
+          resolve();
+        }
+      })
+      .catch(err => {
+        reject(getErrorMessage(err)[0].message);
       });
-    });
+  });
 }
 
 export { addPlan, removePlan };

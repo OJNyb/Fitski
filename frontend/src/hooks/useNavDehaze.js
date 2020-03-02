@@ -5,7 +5,6 @@ import { SHOW_DEHAZE } from "../types/navTypes";
 
 function useNavDehaze() {
   const { dispatch } = useContext(NavContext);
-  const x = useContext(NavContext);
   useLayoutEffect(() => {
     function setNav() {
       dispatch({ type: SHOW_DEHAZE });
