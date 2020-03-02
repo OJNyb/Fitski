@@ -492,7 +492,8 @@ router.post(
 
         let newPlanTrend = new PlanTrend({
           woPlan: planId,
-          date: formatHistoryDate(new Date())
+          date: formatHistoryDate(new Date()),
+          user: userId
         });
 
         try {
