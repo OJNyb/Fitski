@@ -1,7 +1,9 @@
 import React from "react";
+import { useError } from "../../../context/errorContext";
 
 const ErrorPrompt = ({ data, onClick, onClose }) => {
   const { type, exercises } = data;
+  const { setError } = useError();
 
   let text;
   if (type === "add") {
@@ -13,19 +15,21 @@ const ErrorPrompt = ({ data, onClick, onClose }) => {
       exercises.length === 1 ? "" : "s"
     }`;
   }
-  return (
-    <div className="error-prompt-container flex-center-space-bw">
-      <div className="flex-ai-center">
+
+  setError({
+    el: (
+      <>
         <span>{text}.</span>
         <button className="tc" onClick={onClick}>
           Try again
         </button>
-      </div>
-      <button onClick={onClose} className="error-prompt-close-btn">
-        <i className="material-icons">close</i>
-      </button>
-    </div>
-  );
+      </>
+    ),
+    id: text,
+    onClose
+  });
+
+  return null;
 };
 
 export default ErrorPrompt;

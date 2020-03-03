@@ -91,7 +91,9 @@ const Plan = () => {
 
   function handleDeactivateSubmit(e) {
     e.preventDefault();
-    deactivatePlan(userDispatch, planId).catch(err => setError(err));
+    deactivatePlan(userDispatch, planId).catch(err =>
+      setError({ el: err, id: "deactivate" })
+    );
     setShowModal(false);
   }
 
@@ -103,7 +105,7 @@ const Plan = () => {
         });
       })
       .catch(err => {
-        setError(err);
+        setError({ el: err, id: "get" });
       });
   }
 

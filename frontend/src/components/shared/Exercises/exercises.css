@@ -52,39 +52,6 @@
   margin-bottom: 30px;
 }
 
-/* ERROR PROMPT */
-.error-prompt-container {
-  position: fixed;
-  top: 10%;
-  left: calc(50% - 150px);
-  width: 300px;
-  padding: 5px 10px;
-  background-color: rgb(245, 223, 223);
-  border-radius: 6px;
-  color: rgb(156, 11, 11);
-  border: 1px solid #e7b6b6;
-}
-
-.error-prompt-container span {
-  font-weight: 300;
-  font-size: 15px;
-}
-
-.error-prompt-close-btn {
-  color: rgb(165, 86, 86);
-  border-radius: 50%;
-  padding: 3px;
-  transition: background-color 0.2s;
-}
-
-.error-prompt-close-btn:hover {
-  background-color: rgb(230, 202, 202);
-}
-
-.error-prompt-close-btn i {
-  font-size: 18px;
-}
-
 .add-exercise-add-category-btn {
   position: absolute;
   top: 0;

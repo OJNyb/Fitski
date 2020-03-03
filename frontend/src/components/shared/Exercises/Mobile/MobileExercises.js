@@ -31,8 +31,7 @@ const MobileExerciseView = ({
   let exerciseDisplay;
   if (!exercisesToShow) exerciseDisplay = <p>No exercise with that name</p>;
 
-  const shouldShowExercises =
-    (search.length || muscleGroup.length) && exercisesToShow.length;
+  const shouldShowExercises = search.length > 0 || muscleGroup.length > 0;
 
   function handleBackClick() {
     if (shouldShowExercises) {

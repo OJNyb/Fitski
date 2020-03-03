@@ -106,6 +106,7 @@ const Exercises = ({ handleAddExercise, closeExercises, refreshExercises }) => {
           setReqError({
             type,
             exercises: [{ name, muscleGroup: category, unit }],
+            onClick: () => handleAddCustomExercise(name, category, unit),
             error
           });
         });
@@ -126,8 +127,9 @@ const Exercises = ({ handleAddExercise, closeExercises, refreshExercises }) => {
         .catch(error => {
           setReqError({
             type,
-            exercises: [{ ...exercises[0], name, muscleGroup: category, unit }],
-            error
+            onClick: () => handleEditExercise(exerciseId, values),
+            error,
+            exercises: [{ ...exercises[0], name, muscleGroup: category, unit }]
           });
         });
 
@@ -140,7 +142,12 @@ const Exercises = ({ handleAddExercise, closeExercises, refreshExercises }) => {
     exerciseIds => {
       const { type, exercises } = showModal;
       deleteExercise(dispatch, exerciseIds).catch(error => {
-        setReqError({ type, exercises, error });
+        setReqError({
+          type,
+          exercises,
+          error,
+          onClick: () => handleDeleteExercises(exerciseIds)
+        });
       });
       hideModal();
     },
@@ -277,10 +284,7 @@ const Exercises = ({ handleAddExercise, closeExercises, refreshExercises }) => {
         <ErrorPrompt
           data={reqError}
           onClose={() => setReqError(null)}
-          onClick={() => {
-            setShowModal(reqError);
-            setReqError(null);
-          }}
+          onClick={reqError.onClick}
         />
       )}
     </>
