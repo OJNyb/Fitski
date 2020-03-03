@@ -805,3 +805,7 @@
   height: 25px;
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.ws-pw {
+  white-space: pre-wrap;
+}

@@ -63,3 +63,7 @@
 .border-left-2-theme {
   border-left: 2px solid #a60000;
 }
+
+.nowrap {
+  white-space: nowrap;
+}

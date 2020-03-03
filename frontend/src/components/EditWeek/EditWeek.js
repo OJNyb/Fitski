@@ -84,8 +84,10 @@ const EditWeek = () => {
       let x = findLastOccurenceOfExercisePlan(weeks, exerciseId);
       reps = x.reps || 0;
       rpe = x.rpe || 0;
+      console.log(x);
     }
 
+    console.log(reps, rpe);
     addSet(dispatch, { rpe, reps }, planId, weekId, dayId, exerId);
   }
 
