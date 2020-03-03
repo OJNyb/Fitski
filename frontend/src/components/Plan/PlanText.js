@@ -2,9 +2,12 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 import "./planText.css";
+import { getDisplayUnits } from "../../utils/cardUtils";
+import { useUser } from "../../context/userContext";
 
 const PlanText = ({ week, index, isSelf, planId }) => {
   const { days, _id: weekId } = week;
+  const { defaultUnit } = useUser();
 
   let exercises = days
     .map(x => x.exercises)
@@ -14,7 +17,7 @@ const PlanText = ({ week, index, isSelf, planId }) => {
 
   if (exercises) {
     daysDisplay = days.map((day, index) => (
-      <Day day={day} index={index} key={day._id} />
+      <Day day={day} index={index} key={day._id} defaultUnit={defaultUnit} />
     ));
   } else {
     daysDisplay = <p className="margin-0">Rest Week</p>;
@@ -43,12 +46,16 @@ const PlanText = ({ week, index, isSelf, planId }) => {
   );
 };
 
-const Day = ({ day, index }) => {
+const Day = ({ day, index, defaultUnit }) => {
   const { exercises } = day;
 
   if (!exercises.length) return null;
   const exerciseDisplay = exercises.map(exercise => (
-    <Exercise exercise={exercise} key={exercise._id} />
+    <Exercise
+      exercise={exercise}
+      key={exercise._id}
+      defaultUnit={defaultUnit}
+    />
   ));
   return (
     <div className={"plan-day-container flex-col-cen"}>
@@ -60,11 +67,11 @@ const Day = ({ day, index }) => {
   );
 };
 
-const Exercise = ({ exercise }) => {
+const Exercise = ({ exercise, defaultUnit }) => {
   if (!exercise.exercise) return null;
 
   let {
-    exercise: { name },
+    exercise: { name, unit },
     sets
   } = exercise;
 
@@ -89,54 +96,57 @@ const Exercise = ({ exercise }) => {
     }, "");
   }
 
-  if (true) {
-    return (
-      <ExerciseMobile
-        name={name}
-        length={length}
-        setText={setText}
-        displayReps={displayReps}
-      />
-    );
-  } else {
-    return (
-      <ExerciseWeb
-        name={name}
-        length={length}
-        setText={setText}
-        displayReps={displayReps}
-      />
-    );
+  const { lastRowUnit, rpeRow } = getDisplayUnits(unit, defaultUnit);
+  let rpeText = "";
+
+  if (rpeRow) {
+    let rpe = sets.map(x => x.rpe);
+
+    if (Math.max(...rpe) === Math.min(...rpe)) {
+      rpeText = "@RPE " + rpe[0];
+    } else {
+      rpeText = rpe.reduce((accu, curr, i) => {
+        accu += `${curr}`;
+        if (i !== rpe.length - 1) {
+          accu += ", ";
+        }
+        return accu;
+      }, "\n@RPE ");
+    }
   }
+
+  return (
+    <ExerciseRow
+      name={name}
+      unit={unit}
+      length={length}
+      setText={setText}
+      displayReps={displayReps}
+      defaultUnit={defaultUnit}
+      lastRowUnit={lastRowUnit}
+      rpeText={rpeText}
+    />
+  );
 };
 
-const ExerciseMobile = ({ name, length, setText, displayReps }) => {
+const ExerciseRow = ({
+  name,
+  length,
+  setText,
+  displayReps,
+  lastRowUnit,
+  rpeText
+}) => {
   return (
     <div className="plan-exercise-container plan-mobile-exercise-container color-gray flex-center font-fam-oswald">
-      <div className="font-15 font-w-400 mr-1">
+      <div className="font-15 font-w-400 mr-1 nowrap">
         {name}
         {" - "}
       </div>
 
-      <span className="font-15 font-w-300">
-        {length || 0} {setText} of {displayReps || 0} reps
+      <span className="font-15 font-w-300 ws-pw">
+        {length || 0} {setText} of {displayReps || 0} {lastRowUnit} {rpeText}
       </span>
-    </div>
-  );
-};
-
-const ExerciseWeb = ({ name, length, setText, displayReps }) => {
-  return (
-    <div className="plan-exercise-container plan-web-exercise-container flex-center-space-bw color-gray">
-      <div className="inline-block">
-        <div className="font-15">
-          <span className="font-w-500">{name} - </span>
-
-          <span className="font-15">
-            {length || 0} {setText} of {displayReps || 0} reps
-          </span>
-        </div>
-      </div>
     </div>
   );
 };
