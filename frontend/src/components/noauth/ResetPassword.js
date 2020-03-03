@@ -46,7 +46,6 @@ const ResetPassword = () => {
           axios
             .post(`/api/user/reset/${token}`, values)
             .then(res => {
-              console.log(res);
               setEmailSent(true);
             })
             .catch(err => {

@@ -41,9 +41,6 @@ function userAccessReducer(state, action) {
       const { planId } = payload;
       const { accessedPlans } = state;
 
-      console.log("ga22");
-
-      console.log(accessedPlans);
       accessedPlans.push(planId);
 
       return {

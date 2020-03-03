@@ -108,7 +108,6 @@ const Explore = () => {
           results
         } = await trendingReq(`/api/explore/trending?skip=${skip}`);
 
-        console.log(skip);
         if (error) {
           return console.log(error);
         }
