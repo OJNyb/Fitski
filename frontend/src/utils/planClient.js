@@ -431,7 +431,7 @@ function retryAddSet(dispatch, planId, weekId, dayId, exerId, set) {
 }
 
 function editSet(dispatch, values, planId, weekId, dayId, exerId, setId) {
-  const payload = { weekId, dayId, exerId, setId, ...values };
+  const payload = { weekId, dayId, exerId, setId, values };
   dispatch({
     type: EDIT_SET,
     payload
