@@ -117,6 +117,6 @@
   flex: 0.6 60%;
 }
 
-.history-row:last-child {
+.history-row {
   flex: 0.4 40%;
 }

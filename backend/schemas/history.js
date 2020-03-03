@@ -21,6 +21,12 @@ const reps = Joi.number()
   .integer()
   .label("Reps");
 
+const rpe = Joi.number()
+  .min(0)
+  .max(10)
+  .integer()
+  .label("RPE");
+
 const weight = Joi.number()
   .min(0)
   .max(9999999)
@@ -82,6 +88,7 @@ const deleteDay = Joi.object().keys({
 const addExercise = Joi.object().keys({
   unit,
   reps,
+  rpe,
   weight,
   day_id: dayId,
   exerId: exerciseId,
@@ -122,6 +129,7 @@ const addSet = Joi.object().keys({
   exercise_id: exerciseId,
   setId,
   reps,
+  rpe,
   weight
 });
 
@@ -130,11 +138,12 @@ const editSet = Joi.object()
     reps,
     weight,
     note,
+    rpe,
     day_id: dayId,
     exercise_id: exerciseId,
     set_id: setId
   })
-  .or("reps", "weight");
+  .or("reps", "weight", "rpe");
 
 const deleteSet = Joi.object().keys({
   day_id: dayId,

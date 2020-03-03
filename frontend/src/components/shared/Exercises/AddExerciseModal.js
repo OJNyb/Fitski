@@ -24,7 +24,8 @@ const types = [
   { _id: 2, name: "Weight and Time", value: "w+s" },
   { _id: 3, name: "Seconds", value: "s" },
   { _id: 4, name: "Reps", value: "r" },
-  { _id: 5, name: "Weight", value: "w" }
+  { _id: 5, name: "Weight", value: "w" },
+  { _id: 6, name: "Weight, Reps and RPE", value: "w+r+rpe" }
 ];
 
 const AddEditModal = ({

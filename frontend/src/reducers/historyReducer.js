@@ -80,7 +80,8 @@ function historyReducer(state, action) {
         setId,
         reps,
         weight,
-        note
+        note,
+        rpe
       } = payload;
       const { history } = state;
       const { days } = history;
@@ -107,6 +108,7 @@ function historyReducer(state, action) {
         newDay.note = note;
       } else {
         let values = {
+          rpe: rpe ? rpe : 0,
           reps: reps ? reps : 0,
           weight: weight ? ensureDecimal(weight) : 0.0
         };
@@ -278,13 +280,14 @@ function historyReducer(state, action) {
     }
 
     case ADD_EXERCISE: {
-      const { exerId, dayId, setId, exercise, reps, weight } = payload;
+      const { exerId, dayId, setId, exercise, reps, weight, rpe } = payload;
       const { history } = state;
       const { days } = history;
 
       let values = {
         reps: reps ? reps : 0,
-        weight: weight ? ensureDecimal(weight) : 0.0
+        weight: weight ? ensureDecimal(weight) : 0.0,
+        rpe: rpe ? rpe : 0
       };
 
       const newExercise = {
@@ -596,7 +599,7 @@ function historyReducer(state, action) {
     }
 
     case ADD_SET: {
-      const { exerId, dayId, setId, reps, weight } = payload;
+      const { exerId, dayId, setId, reps, weight, rpe } = payload;
       const { history } = state;
       if (!history) {
         return {
@@ -612,7 +615,8 @@ function historyReducer(state, action) {
 
       let values = {
         reps: reps ? reps : 0,
-        weight: weight ? ensureDecimal(weight) : 0.0
+        weight: weight ? ensureDecimal(weight) : 0.0,
+        rpe: rpe ? rpe : 0
       };
 
       const newSet = {
@@ -857,7 +861,7 @@ function historyReducer(state, action) {
     }
 
     case EDIT_SET_SUCCESS: {
-      const { values, dayId, exerId, setId } = payload;
+      const { dayId, exerId, setId } = payload;
       const { history } = state;
       if (!history) {
         return {
@@ -865,16 +869,11 @@ function historyReducer(state, action) {
         };
       }
       const { days } = history;
-      const { weight } = values;
 
       if (!days) {
         return {
           ...state
         };
-      }
-
-      if (weight) {
-        values.weight = ensureDecimal(weight);
       }
 
       let day = days.find(x => x._id === dayId);
@@ -897,7 +896,6 @@ function historyReducer(state, action) {
 
       sets[setIndex] = {
         ...sets[setIndex],
-        ...values,
         isPending: false
       };
 
@@ -908,7 +906,7 @@ function historyReducer(state, action) {
     }
 
     case EDIT_SET_FAILED: {
-      const { values, dayId, exerId, setId } = payload;
+      const { dayId, exerId, setId } = payload;
       const { history } = state;
       if (!history) {
         return {
@@ -916,16 +914,11 @@ function historyReducer(state, action) {
         };
       }
       const { days } = history;
-      const { weight } = values;
 
       if (!days) {
         return {
           ...state
         };
-      }
-
-      if (weight) {
-        values.weight = ensureDecimal(weight);
       }
 
       let day = days.find(x => x._id === dayId);
@@ -948,7 +941,6 @@ function historyReducer(state, action) {
 
       sets[setIndex] = {
         ...sets[setIndex],
-        ...values,
         isPending: false,
         isRejected: true,
         request: "edit"

@@ -42,6 +42,12 @@ const reps = Joi.number()
   .max(9999)
   .label("Reps");
 
+const rpe = Joi.number()
+  .integer()
+  .min(0)
+  .max(10)
+  .label("RPE");
+
 const access = Joi.string()
   .regex(/public|private|paywall/)
   .label("Access");
@@ -55,6 +61,10 @@ const price = Joi.number()
   .max(1000)
   .precision(2)
   .label("Price");
+
+const custom = Joi.boolean()
+  .required()
+  .label("custom");
 
 const createWorkoutPlan = Joi.object().keys({
   name: name.required(),
@@ -81,10 +91,6 @@ const editWorkoutPlan = Joi.object()
 const deleteWorkoutPlan = Joi.object().keys({
   plan_id: planId
 });
-
-const custom = Joi.boolean()
-  .required()
-  .label("custom");
 
 const addWeek = Joi.object().keys({
   plan_id: planId,
@@ -150,7 +156,8 @@ const addExercise = Joi.object().keys({
   exerId,
   setId,
   reps,
-  custom
+  custom,
+  rpe
 });
 
 const reorderExercise = Joi.object().keys({
@@ -184,17 +191,21 @@ const addSet = Joi.object().keys({
   day_id: dayId,
   exercise_id: exerciseId,
   setId,
-  reps
+  reps,
+  rpe
 });
 
-const editSet = Joi.object().keys({
-  plan_id: planId,
-  week_id: weekId,
-  day_id: dayId,
-  exercise_id: exerciseId,
-  set_id: setId,
-  reps
-});
+const editSet = Joi.object()
+  .keys({
+    plan_id: planId,
+    week_id: weekId,
+    day_id: dayId,
+    exercise_id: exerciseId,
+    set_id: setId,
+    reps,
+    rpe
+  })
+  .or("reps", "rpe");
 
 const deleteSet = Joi.object().keys({
   plan_id: planId,

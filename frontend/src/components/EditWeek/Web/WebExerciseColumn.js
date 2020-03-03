@@ -11,31 +11,50 @@ const WebExerciseColumn = ({
   onAddSetRetry,
   onEditSetRetry
 }) => {
-  const { reps, _id: setId, request, isPending, isRejected } = set;
+  const { rpe, reps, _id: setId, request, isPending, isRejected } = set;
+  const [inputRpe, setInputRpe] = useState(rpe || 0);
   const [inputReps, setInputReps] = useState(reps || 0);
+  const rpeRef = useRef();
   const repsRef = useRef();
+  const lastRpeReqRef = useRef(rpe);
   const lastRepsReqRef = useRef(reps);
   const isDeleted = useRef(false);
   const isClosed = useRef(false);
 
   const onEditSet = useCallback(() => {
-    let reps;
+    let update = {};
 
+    const { current: currentRpe } = rpeRef;
     const { current: currentReps } = repsRef;
+
+    if (currentRpe && currentRpe !== lastRpeReqRef.current) {
+      if (currentRpe % 1 !== 0) {
+        return alert("RPE must be a whole number");
+      }
+
+      update.rpe = currentRpe;
+      lastRpeReqRef.current = currentRpe;
+
+      if (currentRpe === "") {
+        update.rpe = 0;
+      }
+    }
 
     if (currentReps && currentReps !== lastRepsReqRef.current) {
       if (currentReps % 1 !== 0) {
         return alert("Reps must be a whole number");
       }
 
-      if (reps !== currentReps && currentReps !== "") {
-        reps = currentReps;
-      }
-      if (currentReps === "") {
-        reps = 0;
-      }
+      update.reps = currentReps;
       lastRepsReqRef.current = currentReps;
-      handleEditSet(exerId, setId, reps);
+
+      if (currentReps === "") {
+        update.reps = 0;
+      }
+    }
+
+    if (Object.keys(update).length) {
+      handleEditSet(exerId, setId, update);
     }
   }, [setId, exerId, handleEditSet]);
 
@@ -43,7 +62,7 @@ const WebExerciseColumn = ({
     onEditSet();
   }
 
-  function onChange(e) {
+  function handleRepsChange(e) {
     const { target } = e;
     let { value } = target;
 
@@ -51,6 +70,20 @@ const WebExerciseColumn = ({
     repsRef.current = value;
     setTimeout(() => {
       const { current } = repsRef;
+      if (current === value && !isClosed.current) {
+        onEditSet();
+      }
+    }, 5000);
+  }
+
+  function handleRpeChange(e) {
+    const { target } = e;
+    let { value } = target;
+
+    setInputRpe(value);
+    rpeRef.current = value;
+    setTimeout(() => {
+      const { current } = rpeRef;
       if (current === value && !isClosed.current) {
         onEditSet();
       }
@@ -74,6 +107,7 @@ const WebExerciseColumn = ({
       onDeleteSet(exerId, setId);
     }
   }
+  const { rpeRow } = getDisplayUnits(unit);
 
   return (
     <div
@@ -105,13 +139,17 @@ const WebExerciseColumn = ({
         )}
       </div>
 
-      <span className="font-14 color-gray edit-week-card-rep-index">
-        {index + 1}
-      </span>
+      {!rpeRow && (
+        <span className="font-14 color-gray edit-week-card-rep-index">
+          {index + 1}
+        </span>
+      )}
 
       <ExerciseForm
         unit={unit}
-        onChange={onChange}
+        onRpeChange={handleRpeChange}
+        onRepsChange={handleRepsChange}
+        inputRpe={inputRpe}
         inputReps={inputReps}
         onInputBlur={onInputBlur}
         setId={setId}
@@ -121,39 +159,78 @@ const WebExerciseColumn = ({
   );
 };
 
-const ExerciseForm = ({ unit, setId, onChange, inputReps, onInputBlur }) => {
+const ExerciseForm = ({
+  unit,
+  setId,
+  inputRpe,
+  inputReps,
+  onRpeChange,
+  onRepsChange,
+  onInputBlur
+}) => {
   const inputEl = useRef(null);
 
-  const { lastRowUnit } = getDisplayUnits(unit);
+  const { lastRowUnit, rpeRow } = getDisplayUnits(unit);
 
   return (
-    <div className="edit-week-web-reps-wrapper flex-ai-center">
-      <form
-        onSubmit={e => {
-          e.preventDefault();
-          inputEl.current.blur();
-        }}
-        className="edit-week-mobile-reps-form"
-      >
-        <label
-          htmlFor={`reps-${setId}`}
-          className="flex-ai-center font-12 font-w-300 color-gray"
+    <>
+      <div className="edit-week-web-reps-wrapper flex-ai-center">
+        <form
+          onSubmit={e => {
+            e.preventDefault();
+            inputEl.current.blur();
+          }}
+          className="edit-week-mobile-reps-form"
         >
-          <input
-            name="reps"
-            id={`reps-${setId}`}
-            type="number"
-            ref={inputEl}
-            value={inputReps}
-            onChange={onChange}
-            onBlur={onInputBlur}
-            onFocus={e => e.target.select()}
-            className="black font-14 mr-1 web-card-input"
-          />
-          {lastRowUnit}
-        </label>
-      </form>
-    </div>
+          <label
+            htmlFor={`reps-${setId}`}
+            className="flex-ai-center font-12 font-w-300 color-gray"
+          >
+            <input
+              name="reps"
+              id={`reps-${setId}`}
+              type="number"
+              ref={inputEl}
+              value={inputReps}
+              onChange={onRepsChange}
+              onBlur={onInputBlur}
+              onFocus={e => e.target.select()}
+              className="black font-14 mr-1 web-card-input"
+            />
+            {lastRowUnit}
+          </label>
+        </form>
+      </div>
+      {rpeRow && (
+        <div className="edit-week-web-reps-wrapper flex-ai-center">
+          <form
+            onSubmit={e => {
+              e.preventDefault();
+              inputEl.current.blur();
+            }}
+            className="edit-week-mobile-reps-form"
+          >
+            <label
+              htmlFor={`rpe-${setId}`}
+              className="flex-ai-center font-12 font-w-300 color-gray"
+            >
+              <input
+                name="rpe"
+                id={`rpe-${setId}`}
+                type="number"
+                ref={inputEl}
+                value={inputRpe}
+                onChange={onRpeChange}
+                onBlur={onInputBlur}
+                onFocus={e => e.target.select()}
+                className="black font-14 mr-1 web-card-input"
+              />
+              RPE
+            </label>
+          </form>
+        </div>
+      )}
+    </>
   );
 };
 

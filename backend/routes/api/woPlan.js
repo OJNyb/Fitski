@@ -304,9 +304,9 @@ router.post(
         for (let i = 0; i < newSetIds.length; i++) {
           const oldSet = oldSets[i];
           const newSetId = newSetIds[i];
-          const { reps } = oldSet;
+          const { reps, rpe } = oldSet;
 
-          newSets.push({ reps, _id: newSetId });
+          newSets.push({ rpe, reps, _id: newSetId });
         }
         exercises.push({ onModel, exercise, _id: exerId, sets: newSets });
       }
@@ -379,9 +379,9 @@ router.post(
           for (let i = 0; i < newSetIds.length; i++) {
             const oldSet = oldSets[i];
             const newSetId = newSetIds[i];
-            const { reps } = oldSet;
+            const { rpe, reps } = oldSet;
 
-            newSets.push({ reps, _id: newSetId });
+            newSets.push({ rpe, reps, _id: newSetId });
           }
           exercises.push({ onModel, exercise, _id: exerId, sets: newSets });
         }
@@ -516,7 +516,7 @@ router.post(
     const { body, params } = req;
 
     const { week_id: weekId, day_id: dayId } = params;
-    const { woPlan, exerId, setId, reps, exerciseId, custom } = body;
+    const { woPlan, exerId, setId, reps, exerciseId, custom, rpe } = body;
 
     const onModel = custom ? "userExercise" : "exercise";
 
@@ -527,7 +527,8 @@ router.post(
       sets: [
         {
           _id: setId,
-          reps: reps || 0
+          reps: reps || 0,
+          rpe: rpe || 0
         }
       ]
     };
@@ -649,11 +650,12 @@ router.post(
 
     const { week_id: weekId, day_id: dayId, exercise_id: exerciseId } = params;
 
-    const { reps, setId, woPlan } = body;
+    const { rpe, reps, setId, woPlan } = body;
 
     const newSet = {
       reps: reps || 0,
-      _id: setId
+      _id: setId,
+      rpe: rpe || 0
     };
 
     woPlan
@@ -699,14 +701,20 @@ router.post(
       set_id: setId
     } = params;
 
-    const { reps, woPlan } = body;
+    const { reps, rpe, woPlan } = body;
+
+    let update = {};
+    if (reps) {
+      update["weeks.$[w].days.$[d].exercises.$[e].sets.$[s].reps"] = reps;
+    }
+    if (rpe) {
+      update["weeks.$[w].days.$[d].exercises.$[e].sets.$[s].rpe"] = rpe;
+    }
 
     woPlan
       .updateOne(
         {
-          $set: {
-            ["weeks.$[w].days.$[d].exercises.$[e].sets.$[s].reps"]: reps
-          }
+          $set: update
         },
         {
           arrayFilters: [

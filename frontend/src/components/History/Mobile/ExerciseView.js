@@ -25,7 +25,8 @@ const ExerciseView = ({
     showDehaze: false,
     text: name,
     onBackClick: () => setShowExercise(false),
-    onBackClickId: "exerciseView"
+    onBackClickId: "exerciseView",
+    buttons: null
   });
 
   let viewDisplay;

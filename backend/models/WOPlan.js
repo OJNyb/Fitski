@@ -45,7 +45,8 @@ const WOPlanSchema = new Schema(
                 sets: [
                   {
                     _id,
-                    reps: Number
+                    reps: Number,
+                    rpe: { type: Number, default: 0 }
                   }
                 ]
               }

@@ -36,9 +36,13 @@
 }
 
 .history-mobile-exercise-list-label-wrapper:first-child {
+  flex: 0.3 30%;
+}
+
+.history-mobile-exercise-list-label-wrapper {
   display: flex;
   align-items: center;
-  flex: 0.3 30%;
+  flex: 0.15 15%;
   justify-content: flex-end;
 }
 

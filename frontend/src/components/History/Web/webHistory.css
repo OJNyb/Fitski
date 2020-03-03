@@ -33,7 +33,7 @@
   flex: 0.45 45%;
 }
 
-.history-web-row:last-child {
+.history-web-row {
   flex: 0.55 55%;
 }
 
