@@ -105,7 +105,8 @@ const Exercise = ({ exercise, defaultUnit }) => {
     if (Math.max(...rpe) === Math.min(...rpe)) {
       rpeText = "@RPE " + rpe[0];
     } else {
-      let rpeStart = displayReps.length + name.length > 30 ? "\n@RPE" : "@RPE";
+      let rpeStart =
+        displayReps.length + name.length > 30 ? "\n@RPE " : "@RPE ";
       rpeText = rpe.reduce((accu, curr, i) => {
         accu += `${curr}`;
         if (i !== rpe.length - 1) {
