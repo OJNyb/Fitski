@@ -124,7 +124,6 @@ router.post(
           .then(checkoutSession => {
             const { id } = checkoutSession;
 
-            console.log(checkoutSession);
             return res.json({ message: "success", sessionId: id });
           })
           .catch(next);
@@ -209,7 +208,6 @@ router.post("/webhook", async (req, res, next) => {
       return res.status(400).end();
   }
 
-  console.log("success");
   // Return a 200 res to acknowledge receipt of the event
   res.json({ received: true });
 });

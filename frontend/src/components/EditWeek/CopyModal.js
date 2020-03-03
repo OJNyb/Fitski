@@ -115,7 +115,6 @@ const CopyWeekModal = ({
           }}
           disabled={isPending || selected - 1 === weekIndex}
         >
-          {console.log(selected)}
           Copy
         </button>
       </div>

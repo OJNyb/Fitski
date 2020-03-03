@@ -11,8 +11,6 @@ const StripeSuccess = () => {
   const urlParams = new URLSearchParams(window.location.search);
   const plan_id = urlParams.get("plan_id");
 
-  console.log(plan_id);
-  console.log(plan_id);
   return (
     <MainTile>
       <div className="pt-50 flex-col-cen">

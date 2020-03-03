@@ -8,8 +8,6 @@ const DeleteExerciseModal = ({ onSubmit, exercises, hideModal }) => {
     <ExerciseItem exercise={x} key={x._id} />
   ));
 
-  console.log(exercises);
-
   let children = (
     <div className="width-100p padding-s-10 border-box flex-col-cen relative">
       <div className="mb-30">{exerciseItems}</div>

@@ -408,7 +408,7 @@ router.post(
     const { userId } = session;
     const { oldPassword, newPassword } = body;
 
-    const user = await User.findById(userId).select("password");
+    const user = await User.findById(userId).select("email password");
 
     if (!user) {
       return next("No user");
@@ -422,7 +422,7 @@ router.post(
 
     user.password = newPassword;
 
-    user.save().then(() => {
+    user.save().then(user => {
       const smtpTransport = nodemailer.createTransport({
         port: 587,
         host: "smtp.eu.mailgun.org",
@@ -440,6 +440,7 @@ router.post(
       };
       smtpTransport.sendMail(mailOptions, function(err) {
         if (err) {
+          console.log(err);
           return res
             .status(500)
             .json(
