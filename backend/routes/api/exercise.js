@@ -122,15 +122,15 @@ router.patch(
   validateExercise,
   async (req, res, next) => {
     const { body } = req;
-    const { name, category, exercise, unit } = body;
+    const { name, muscleGroupId, exercise, unit } = body;
 
     let patch = {};
 
     if (name) {
       patch.name = name;
     }
-    if (category) {
-      patch.muscleGroup = category;
+    if (muscleGroupId) {
+      patch.muscleGroup = muscleGroupId;
     }
     if (unit) {
       patch.unit = unit;

@@ -32,8 +32,6 @@ async function validateExercise(req, res, next) {
   const { userId } = session;
   const { exercise_id: exerciseId } = params;
 
-  console.log(StandardExerciseIds);
-
   const exercise = await UserExercise.findById(exerciseId);
 
   if (!exercise) {

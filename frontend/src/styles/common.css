@@ -787,6 +787,14 @@
   position: relative;
 }
 
+.main-error-popup-text * {
+  font-size: 14px;
+}
+
+.main-error-popup-text span {
+  color: #1a1414;
+}
+
 .main-error-popup-close-btn {
   position: absolute;
   top: 0;
