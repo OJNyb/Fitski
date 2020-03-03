@@ -80,10 +80,10 @@ const EditWeek = () => {
 
   function handleAddSet(exerId, exerciseId, values = {}) {
     let { rpe, reps } = values;
-    if (!values.reps) {
+    if (isNaN(reps) || isNaN(rpe)) {
       let x = findLastOccurenceOfExercisePlan(weeks, exerciseId);
-      reps = x.reps;
-      rpe = x.rpe;
+      reps = x.reps || 0;
+      rpe = x.rpe || 0;
     }
 
     addSet(dispatch, { rpe, reps }, planId, weekId, dayId, exerId);

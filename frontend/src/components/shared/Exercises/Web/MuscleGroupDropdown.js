@@ -11,7 +11,8 @@ const MuscleGroupDropdown = ({
     e => {
       if (
         e.target.classList.contains("exercise-muscle-group-btn") ||
-        e.target.parentNode.classList.contains("exercise-muscle-group-btn")
+        (e.target.parentNode &&
+          e.target.parentNode.classList.contains("exercise-muscle-group-btn"))
       )
         return;
       else hideDropdown();
