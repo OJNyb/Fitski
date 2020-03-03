@@ -13,6 +13,7 @@ const MobileExercisesNav = ({
     onBackClick: onBackClick,
     onBackClickId: onBackClickId,
     text: header,
+    backLink: null,
     buttons: (
       <button onClick={() => setShowModal({ type: "add" })}>
         <Plus22 fill={"#fff"} />

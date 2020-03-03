@@ -246,12 +246,12 @@ function deleteDay(dispatch, dayId) {
     });
 }
 
-function addExercise(dispatch, dayId, exercise) {
+function addExercise(dispatch, dayId, exercise, values = {}) {
   const exerId = new ObjectId().toHexString();
   const setId = new ObjectId().toHexString();
 
   const custom = exercise.custom || false;
-  const payload = { dayId, exerId, exercise, setId };
+  const payload = { dayId, exerId, exercise, setId, ...values };
 
   dispatch({
     type: ADD_EXERCISE,
@@ -263,6 +263,7 @@ function addExercise(dispatch, dayId, exercise) {
       setId,
       exerId,
       custom,
+      ...values,
       exerciseId: exercise._id
     })
     .then(res => {

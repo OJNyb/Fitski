@@ -122,9 +122,12 @@ const MobileExerciseCard = ({
 };
 
 const SetColumn = ({ set, defaultUnit, unit }) => {
-  const { reps, weight } = set;
+  const { rpe, reps, weight } = set;
 
-  const { firstRowUnit, lastRowUnit } = getDisplayUnits(unit, defaultUnit);
+  const { firstRowUnit, lastRowUnit, rpeRow } = getDisplayUnits(
+    unit,
+    defaultUnit
+  );
 
   return (
     <div className="add-card-column flex-ai-center padding-4-20">
@@ -150,6 +153,18 @@ const SetColumn = ({ set, defaultUnit, unit }) => {
           </span>
         </span>
       </div>
+      {rpeRow && (
+        <div className="history-row">
+          <span>
+            <>
+              <span className="black mr-1 noselect">{rpe || "N/A"}</span>
+              <span className="color-gray font-12 font-w-300 noselect">
+                RPE
+              </span>
+            </>
+          </span>
+        </div>
+      )}
     </div>
   );
 };

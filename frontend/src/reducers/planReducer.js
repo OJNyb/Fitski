@@ -378,7 +378,7 @@ function planReducer(state, action) {
     }
 
     case ADD_EXERCISE: {
-      const { exerId, dayId, weekId, exercise, setId, reps } = payload;
+      const { exerId, dayId, weekId, exercise, setId, reps, rpe } = payload;
       const { woPlan } = state;
 
       const { weeks } = woPlan;
@@ -388,6 +388,7 @@ function planReducer(state, action) {
         exercise,
         sets: [
           {
+            rpe,
             reps,
             _id: setId
           }
@@ -561,13 +562,14 @@ function planReducer(state, action) {
     }
 
     case ADD_SET: {
-      const { dayId, weekId, exerId, setId, reps } = payload;
+      const { dayId, weekId, exerId, setId, reps, rpe } = payload;
       const { woPlan } = state;
       const { weeks } = woPlan;
 
       const newSet = {
         _id: setId,
         reps,
+        rpe,
         isPending: true
       };
 
@@ -685,7 +687,7 @@ function planReducer(state, action) {
     }
 
     case EDIT_SET: {
-      const { dayId, weekId, exerId, setId, reps } = payload;
+      const { dayId, weekId, exerId, setId, reps, rpe } = payload;
       const { woPlan } = state;
 
       const { weeks } = woPlan;
@@ -721,7 +723,7 @@ function planReducer(state, action) {
 
       let setIndex = sets.map(x => x._id).indexOf(setId);
 
-      sets[setIndex] = { ...sets[setIndex], reps, isPending: true };
+      sets[setIndex] = { ...sets[setIndex], reps, rpe, isPending: true };
 
       return {
         ...state,

@@ -1,6 +1,7 @@
 function getDisplayUnits(unit, defaultUnit, capitalize) {
   let firstRowUnit;
-  if (unit === "w+r" || unit === "w+s") {
+
+  if (unit === "w+r" || unit === "w+s" || unit === "w+r+rpe") {
     if (capitalize) {
       firstRowUnit = `WEIGHT (${defaultUnit})`;
     } else firstRowUnit = defaultUnit;
@@ -26,7 +27,12 @@ function getDisplayUnits(unit, defaultUnit, capitalize) {
     }
   }
 
-  return { firstRowUnit, lastRowUnit };
+  let rpeRow;
+  if (unit === "w+r+rpe") {
+    rpeRow = true;
+  }
+
+  return { firstRowUnit, lastRowUnit, rpeRow };
 }
 
 export { getDisplayUnits };

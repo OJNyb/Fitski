@@ -74,24 +74,16 @@ const History = () => {
 
   function handleAddExercise(exercise) {
     const { _id: exerciseId } = exercise;
+    let x = findLastOccurenceOfExercise(days, exerciseId);
+    let values = {};
+    if (x) {
+      const { rpe, reps, weight } = x;
+      values = { rpe, reps, weight };
+    }
     if (dayIndex === -1) {
-      let x = findLastOccurenceOfExercise(days, exerciseId);
-      let values = {};
-      if (x) {
-        const { weight, reps } = x;
-        values = { reps, weight };
-      }
       addDay(dispatch, date, exercise, values);
     } else {
-      let exerciski = currentDay.exercises.filter(
-        x => x.exercise._id === exerciseId
-      );
-
-      if (exerciski.length) {
-        handleAddSet(exerciski[0]._id, exerciseId);
-      } else {
-        addExercise(dispatch, dayId, exercise);
-      }
+      addExercise(dispatch, dayId, exercise, values);
     }
   }
 
@@ -125,8 +117,8 @@ const History = () => {
     if (!values) {
       let x = findLastOccurenceOfExercise(days, exerciseId);
       if (x) {
-        const { weight, reps } = x;
-        values = { reps, weight };
+        const { rpe, reps, weight } = x;
+        values = { rpe, reps, weight };
       }
     }
     addSet(dispatch, values, dayId, exerId);

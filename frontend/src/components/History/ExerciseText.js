@@ -25,9 +25,12 @@ const ExerciseText = ({ exercise }) => {
 };
 
 const Row = ({ set, defaultUnit, unit }) => {
-  const { reps, weight } = set;
+  const { rpe, reps, weight } = set;
 
-  const { firstRowUnit, lastRowUnit } = getDisplayUnits(unit, defaultUnit);
+  const { firstRowUnit, lastRowUnit, rpeRow } = getDisplayUnits(
+    unit,
+    defaultUnit
+  );
 
   return (
     <div className="history-exercise-text-row">
@@ -45,6 +48,14 @@ const Row = ({ set, defaultUnit, unit }) => {
         <span className="color-gray mr-1 font-14 font-w-500">{reps}</span>
         <span className="black font-12 font-w-300">{lastRowUnit}</span>
       </div>
+      {rpeRow && (
+        <div className="history-mobile-exercise-list-label-wrapper">
+          <>
+            <span className="color-gray mr-1 font-14 font-w-500">{rpe}</span>
+            <span className="black font-12 font-w-300">RPE</span>
+          </>
+        </div>
+      )}
     </div>
   );
 };

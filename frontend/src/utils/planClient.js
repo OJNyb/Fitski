@@ -206,11 +206,11 @@ function deleteWeek(dispatch, planId, weekId) {
   });
 }
 
-function addExercise(dispatch, planId, weekId, dayId, exercise, reps) {
+function addExercise(dispatch, planId, weekId, dayId, exercise, values) {
   const exerId = new ObjectId().toHexString();
   const setId = new ObjectId().toHexString();
   const custom = exercise.custom || false;
-  const payload = { exerId, weekId, dayId, exercise, setId, reps };
+  const payload = { exerId, weekId, dayId, exercise, setId, ...values };
 
   dispatch({
     type: ADD_EXERCISE,
@@ -222,7 +222,7 @@ function addExercise(dispatch, planId, weekId, dayId, exercise, reps) {
       exerciseId: exercise._id,
       exerId,
       setId,
-      reps,
+      ...values,
       custom
     })
     .then(res => {
@@ -249,9 +249,9 @@ function addExercise(dispatch, planId, weekId, dayId, exercise, reps) {
 
 function retryAddExercise(dispatch, planId, weekId, dayId, exer) {
   const { _id: exerId, sets, exercise } = exer;
-  const { reps, _id: setId } = sets[0];
+  const { rpe, reps, _id: setId } = sets[0];
   const custom = exercise.custom || false;
-  const payload = { exerId, weekId, dayId, exercise, setId, reps };
+  const payload = { exerId, weekId, dayId, exercise, setId, rpe, reps };
 
   dispatch({
     type: ADD_EXERCISE_RETRY,
@@ -263,6 +263,7 @@ function retryAddExercise(dispatch, planId, weekId, dayId, exer) {
       exerciseId: exercise._id,
       exerId,
       setId,
+      rpe,
       reps,
       custom
     })
@@ -356,9 +357,9 @@ function deleteExercise(dispatch, planId, weekId, dayId, exerId) {
     });
 }
 
-function addSet(dispatch, reps, planId, weekId, dayId, exerId) {
+function addSet(dispatch, values, planId, weekId, dayId, exerId) {
   const setId = new ObjectId().toHexString();
-  const payload = { weekId, dayId, exerId, setId, reps };
+  const payload = { weekId, dayId, exerId, setId, ...values };
 
   dispatch({
     type: ADD_SET,
@@ -367,7 +368,7 @@ function addSet(dispatch, reps, planId, weekId, dayId, exerId) {
 
   axios
     .post(`/api/plan/exercise/${planId}/${weekId}/${dayId}/${exerId}`, {
-      reps,
+      ...values,
       setId
     })
     .then(res => {
@@ -393,8 +394,8 @@ function addSet(dispatch, reps, planId, weekId, dayId, exerId) {
 }
 
 function retryAddSet(dispatch, planId, weekId, dayId, exerId, set) {
-  const { reps, _id: setId } = set;
-  const payload = { weekId, dayId, exerId, setId, reps };
+  const { rpe, reps, _id: setId } = set;
+  const payload = { weekId, dayId, exerId, setId, reps, rpe };
 
   dispatch({
     type: ADD_SET_RETRY,
@@ -404,6 +405,7 @@ function retryAddSet(dispatch, planId, weekId, dayId, exerId, set) {
   axios
     .post(`/api/plan/exercise/${planId}/${weekId}/${dayId}/${exerId}`, {
       reps,
+      rpe,
       setId
     })
     .then(res => {
@@ -428,8 +430,8 @@ function retryAddSet(dispatch, planId, weekId, dayId, exerId, set) {
     });
 }
 
-function editSet(dispatch, reps, planId, weekId, dayId, exerId, setId) {
-  const payload = { weekId, dayId, exerId, setId, reps };
+function editSet(dispatch, values, planId, weekId, dayId, exerId, setId) {
+  const payload = { weekId, dayId, exerId, setId, ...values };
   dispatch({
     type: EDIT_SET,
     payload
@@ -438,9 +440,7 @@ function editSet(dispatch, reps, planId, weekId, dayId, exerId, setId) {
   axios
     .post(
       `/api/plan/exercise/${planId}/${weekId}/${dayId}/${exerId}/${setId}`,
-      {
-        reps
-      }
+      values
     )
     .then(res => {
       let isSucc = isSuccessful(res);
@@ -465,8 +465,8 @@ function editSet(dispatch, reps, planId, weekId, dayId, exerId, setId) {
 }
 
 function retryEditSet(dispatch, planId, weekId, dayId, exerId, set) {
-  const { reps, _id: setId } = set;
-  const payload = { weekId, dayId, exerId, setId, reps };
+  const { rpe, reps, _id: setId } = set;
+  const payload = { weekId, dayId, exerId, setId, reps, rpe };
   dispatch({
     type: EDIT_SET_RETRY,
     payload
@@ -476,7 +476,8 @@ function retryEditSet(dispatch, planId, weekId, dayId, exerId, set) {
     .post(
       `/api/plan/exercise/${planId}/${weekId}/${dayId}/${exerId}/${setId}`,
       {
-        reps
+        reps,
+        rpe
       }
     )
     .then(res => {

@@ -12,19 +12,23 @@ const WebExerciseColumn = ({
   onAddSetRetry,
   onEditSetRetry
 }) => {
-  const { reps, weight, request, isPending, isRejected, _id: setId } = set;
+  const { rpe, reps, weight, request, isPending, isRejected, _id: setId } = set;
+  const [inputRpe, setInputRpe] = useState(rpe || 0);
   const [inputReps, setInputReps] = useState(reps || 0);
   const [inputWeight, setInputWeight] = useState(ensureDecimal(weight) || 0);
   const isDeleted = useRef(false);
 
+  const rpeRef = useRef(rpe);
   const repsRef = useRef(reps);
   const weightRef = useRef(weight);
+  const lastRpeReqRef = useRef(rpe);
   const lastRepsReqRef = useRef(reps);
   const lastWeightReqRef = useRef(weight);
 
   const onEditSet = useCallback(() => {
     let values = {};
 
+    const { current: currentRpe } = rpeRef;
     const { current: currentReps } = repsRef;
     const { current: currentWeight } = weightRef;
 
@@ -33,22 +37,23 @@ const WebExerciseColumn = ({
         return alert("Reps must be a whole number");
       }
       values.reps = currentReps;
+      lastRepsReqRef.current = currentReps;
+    }
+
+    if (currentRpe && currentRpe !== lastRpeReqRef.current) {
+      if (currentRpe % 1 !== 0) {
+        return alert("Reps must be a whole number");
+      }
+      values.rpe = currentRpe;
+      lastRpeReqRef.current = currentRpe;
     }
 
     if (currentWeight && currentWeight !== lastWeightReqRef.current) {
       values.weight = currentWeight;
+      lastWeightReqRef.current = currentWeight;
     }
 
     if (!Object.keys(values).length) return;
-    const { weight: vWeight, reps: vReps } = values;
-
-    if (vWeight) {
-      lastWeightReqRef.current = vWeight;
-    }
-
-    if (vReps) {
-      lastRepsReqRef.current = vReps;
-    }
 
     handleEditSet(values, exerId, setId);
   }, [setId, exerId, handleEditSet]);
@@ -75,6 +80,15 @@ const WebExerciseColumn = ({
       weightRef.current = value;
       setTimeout(() => {
         const { current } = weightRef;
+        if (current === value) {
+          onEditSet();
+        }
+      }, 5000);
+    } else if (name === "rpe") {
+      setInputRpe(value);
+      rpeRef.current = value;
+      setTimeout(() => {
+        const { current } = rpeRef;
         if (current === value) {
           onEditSet();
         }
@@ -132,6 +146,7 @@ const WebExerciseColumn = ({
       <ExerciseForm
         unit={unit}
         onChange={onChange}
+        inputRpe={inputRpe}
         inputReps={inputReps}
         defaultUnit={defaultUnit}
         inputWeight={inputWeight}
@@ -146,11 +161,13 @@ const ExerciseForm = ({
   unit,
   setId,
   onChange,
+  inputRpe,
   inputReps,
   inputWeight,
   onInputBlur,
   defaultUnit
 }) => {
+  const rpeInputEl = useRef(null);
   const repsInputEl = useRef(null);
   const weightInputEl = useRef(null);
 
@@ -160,7 +177,10 @@ const ExerciseForm = ({
     weightInputEl.current.blur();
   }
 
-  const { firstRowUnit, lastRowUnit } = getDisplayUnits(unit, defaultUnit);
+  const { firstRowUnit, lastRowUnit, rpeRow } = getDisplayUnits(
+    unit,
+    defaultUnit
+  );
 
   return (
     <form
@@ -208,6 +228,27 @@ const ExerciseForm = ({
           {lastRowUnit}
         </label>
       </div>
+      {rpeRow && (
+        <div className="history-web-row">
+          <label
+            htmlFor={`rpe-${setId}`}
+            className="padding-3 font-12 color-gray font-w-300"
+          >
+            <input
+              name="rpe"
+              id={`rpe-${setId}`}
+              type="number"
+              ref={rpeInputEl}
+              value={inputRpe}
+              onChange={onChange}
+              onBlur={onInputBlur}
+              onFocus={e => e.target.select()}
+              className="black font-14 mr-1 web-card-input"
+            />
+            RPE
+          </label>
+        </div>
+      )}
     </form>
   );
 };

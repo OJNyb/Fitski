@@ -60,11 +60,14 @@ const EditWeek = () => {
   const { _id: dayId } = currentDay;
 
   function handleAddExercise(exercise) {
-    let { reps } = findLastOccurenceOfExercisePlan(weeks, exercise._id);
+    let { rpe, reps } = findLastOccurenceOfExercisePlan(weeks, exercise._id);
     if (!reps) {
       reps = 0;
     }
-    addExercise(dispatch, planId, weekId, dayId, exercise, reps);
+    if (!rpe) {
+      rpe = 0;
+    }
+    addExercise(dispatch, planId, weekId, dayId, exercise, { rpe, reps });
   }
 
   function handleAddExerciseRetry(exer) {
@@ -75,20 +78,23 @@ const EditWeek = () => {
     deleteExercise(dispatch, planId, weekId, dayId, exerId);
   }
 
-  function handleAddSet(exerId, exerciseId, reps) {
-    if (!reps) {
-      reps = findLastOccurenceOfExercisePlan(weeks, exerciseId).reps;
+  function handleAddSet(exerId, exerciseId, values = {}) {
+    let { rpe, reps } = values;
+    if (!values.reps) {
+      let x = findLastOccurenceOfExercisePlan(weeks, exerciseId);
+      reps = x.reps;
+      rpe = x.rpe;
     }
 
-    addSet(dispatch, reps, planId, weekId, dayId, exerId);
+    addSet(dispatch, { rpe, reps }, planId, weekId, dayId, exerId);
   }
 
   function handleAddSetRetry(exerId, set) {
     retryAddSet(dispatch, planId, weekId, dayId, exerId, set);
   }
 
-  function handleEditSet(exerId, setId, reps) {
-    editSet(dispatch, reps, planId, weekId, dayId, exerId, setId);
+  function handleEditSet(exerId, setId, values) {
+    editSet(dispatch, values, planId, weekId, dayId, exerId, setId);
   }
 
   function handleEditSetRetry(exerId, set) {

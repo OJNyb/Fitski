@@ -140,3 +140,8 @@
   flex: 0.5 50%;
   justify-content: flex-end;
 }
+
+.edit-week-web-reps-wrapper:last-child {
+  flex: 0.7 70%;
+  justify-content: flex-end;
+}

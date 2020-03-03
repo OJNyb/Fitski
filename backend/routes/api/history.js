@@ -98,9 +98,9 @@ router.post(
           const { exercise: exerciseId, sets, onModel } = exercise;
           let setski = [];
           for (let i = 0; i < sets.length; i++) {
-            const { reps } = sets[i];
+            const { reps, rpe } = sets[i];
             let setId = new ObjectId();
-            setski.push({ _id: setId, reps, weight: 0 });
+            setski.push({ _id: setId, reps, rpe, weight: 0 });
           }
 
           let exerId = new ObjectId();
@@ -246,6 +246,7 @@ router.post("/", ensureSignedIn, validateRequest, async (req, res, next) => {
     note,
     setId,
     reps,
+    rpe,
     weight,
     custom
   } = body;
@@ -284,7 +285,8 @@ router.post("/", ensureSignedIn, validateRequest, async (req, res, next) => {
           {
             _id: setId,
             weight: weight ? weight : 0,
-            reps: reps ? reps : 0
+            reps: reps ? reps : 0,
+            rpe: rpe ? rpe : 0
           }
         ]
       }
@@ -420,7 +422,16 @@ router.post(
     const { body, params } = req;
     const { day_id: dayId } = params;
 
-    const { history, exerId, exerciseId, setId, reps, weight, custom } = body;
+    const {
+      history,
+      exerId,
+      exerciseId,
+      setId,
+      reps,
+      rpe,
+      weight,
+      custom
+    } = body;
 
     const onModel = custom ? "userExercise" : "exercise";
 
@@ -432,7 +443,8 @@ router.post(
         {
           _id: setId,
           reps: reps ? reps : 0,
-          weight: weight ? weight : 0
+          weight: weight ? weight : 0,
+          rpe: rpe ? rpe : 0
         }
       ]
     };
@@ -536,7 +548,7 @@ router.post(
     const { body, params } = req;
     const { day_id: dayId, exercise_id: exerciseId } = params;
 
-    const { setId, reps, weight, history } = body;
+    const { setId, reps, rpe, weight, history } = body;
 
     const newSet = {
       _id: setId
@@ -544,6 +556,7 @@ router.post(
 
     newSet.weight = weight ? weight : 0;
     newSet.reps = reps ? reps : 0;
+    newSet.rpe = rpe ? rpe : 0;
 
     history
       .updateOne(
@@ -574,7 +587,7 @@ router.post(
   async (req, res, next) => {
     const { body, params } = req;
 
-    const { reps, weight, history } = body;
+    const { rpe, reps, weight, history } = body;
     const { day_id: dayId, exercise_id: exerciseId, set_id: setId } = params;
 
     let update = {};
@@ -584,6 +597,9 @@ router.post(
     }
     if (reps || reps === 0) {
       update[`${base}reps`] = reps;
+    }
+    if (rpe || rpe === 0) {
+      update[`${base}rpe`] = rpe;
     }
 
     history

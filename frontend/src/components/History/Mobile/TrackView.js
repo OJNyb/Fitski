@@ -21,7 +21,9 @@ const TrackView = ({
   const [selectedSet, setSelectedSet] = useState({});
   const [weight, setWeight] = useState(ensureDecimal(0));
   const [initSetSet, setInitSetSet] = useState(false);
+  const [rpe, setRpe] = useState(0);
   const [reps, setReps] = useState(0);
+
   const user = useUser();
   const { defaultUnit } = user;
 
@@ -31,9 +33,10 @@ const TrackView = ({
         return setSelectedSet({});
       }
       const set = sets.filter(x => x._id === setId)[0];
-      const { reps, weight } = set;
+      const { rpe, reps, weight } = set;
 
       setReps(reps || 0);
+      setRpe(rpe || 0);
       setWeight(weight || 0);
       setSelectedSet(set);
     },
@@ -43,13 +46,17 @@ const TrackView = ({
   useEffect(() => {
     if (!initSetSet) {
       setInitialSet();
+      setInitialInput();
       setInitSetSet(true);
     }
     function setInitialInput() {
       if (sets.length) {
-        const { reps: dReps, weight: dWeight } = sets[sets.length - 1];
+        const { rpe: dRpe, reps: dReps, weight: dWeight } = sets[
+          sets.length - 1
+        ];
         setWeight(dWeight);
         setReps(dReps);
+        setRpe(dRpe);
       }
     }
     function setInitialSet() {
@@ -60,7 +67,6 @@ const TrackView = ({
         }
       }
     }
-    setInitialInput();
   }, [exerId, selectedSet, sets, onItemClick, initSetSet]);
 
   useSetLoading(false);
@@ -68,11 +74,11 @@ const TrackView = ({
   const { _id: setId } = selectedSet;
 
   function onSaveClick() {
-    onAddSet(exerId, exerciseId, { reps, weight });
+    onAddSet(exerId, exerciseId, { rpe, reps, weight });
   }
 
   function onUpdateClick() {
-    onEditSet({ reps, weight }, exerId, setId);
+    onEditSet({ rpe, reps, weight }, exerId, setId);
     let index = sets.map(x => x._id).indexOf(setId);
     if (index > -1) {
       const nextSet = sets[index + 1];
@@ -87,6 +93,7 @@ const TrackView = ({
   function onClearClick() {
     setReps(0);
     setWeight(0);
+    setRpe(0);
   }
 
   function onDeleteClick() {
@@ -124,7 +131,14 @@ const TrackView = ({
     }
   }
 
-  const { firstRowUnit, lastRowUnit } = getDisplayUnits(
+  function onRpeChange(e) {
+    const { value } = e.target;
+    if (value % 1 === 0) {
+      setRpe(value);
+    }
+  }
+
+  const { firstRowUnit, lastRowUnit, rpeRow } = getDisplayUnits(
     unit,
     defaultUnit,
     true
@@ -155,6 +169,21 @@ const TrackView = ({
         onChange={onRepsChange}
         value={reps}
       />
+
+      {rpeRow && (
+        <TrackInput
+          label={"RPE"}
+          onChange={onRpeChange}
+          onDecrement={() => {
+            if (rpe > 0) setRpe(Number(rpe) - 1);
+          }}
+          onIncrement={() => {
+            if (rpe < 10) setRpe(Number(rpe) + 1);
+          }}
+          value={rpe}
+        />
+      )}
+
       <div className="flex-center margin-top-20">
         <SUButton
           text={setId ? "UPDATE" : "SAVE"}
@@ -237,7 +266,7 @@ const TrackListItem = ({
   onAddSetRetry,
   onEditSetRetry
 }) => {
-  const { reps, weight, _id: setId, isRejected, isPending, request } = set;
+  const { rpe, reps, weight, _id: setId, isRejected, isPending, request } = set;
 
   function onRetryClick(e) {
     e.stopPropagation();
@@ -250,7 +279,10 @@ const TrackListItem = ({
     }
   }
 
-  const { firstRowUnit, lastRowUnit } = getDisplayUnits(unit, defaultUnit);
+  const { firstRowUnit, lastRowUnit, rpeRow } = getDisplayUnits(
+    unit,
+    defaultUnit
+  );
 
   return (
     <>
@@ -290,6 +322,16 @@ const TrackListItem = ({
               </span>
             </span>
           </div>
+          {rpeRow && (
+            <div className="history-mobile-exercise-list-label-wrapper">
+              <span>
+                <b className="mr-1">{rpe || "N/A"}</b>
+                <span className="font-12 color-gray font-w-400 color-light-gray">
+                  RPE
+                </span>
+              </span>
+            </div>
+          )}
         </div>
       </div>
       {isRejected && (

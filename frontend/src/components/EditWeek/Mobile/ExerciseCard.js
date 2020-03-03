@@ -174,7 +174,7 @@ const SetColumn = ({
   onAddSetRetry,
   onEditSetRetry
 }) => {
-  const { reps, request, isPending, isRejected, _id: setId } = set;
+  const { rpe, reps, request, isPending, isRejected, _id: setId } = set;
 
   function onRetryClick(e) {
     e.stopPropagation();
@@ -187,7 +187,7 @@ const SetColumn = ({
     }
   }
 
-  const { lastRowUnit } = getDisplayUnits(unit);
+  const { lastRowUnit, rpeRow } = getDisplayUnits(unit);
 
   return (
     <div
@@ -209,9 +209,12 @@ const SetColumn = ({
           </div>
         )}
       </div>
-      <span className="font-15 black edit-week-card-rep-index">
-        {index + 1}
-      </span>
+
+      {!rpeRow && (
+        <span className="font-15 black edit-week-card-rep-index">
+          {index + 1}
+        </span>
+      )}
       <div className="edit-week-mobile-reps-wrapper flex-ai-center">
         {lastRowUnit && (
           <>
@@ -222,12 +225,19 @@ const SetColumn = ({
           </>
         )}
       </div>
+      {rpeRow && (
+        <div className="edit-week-mobile-reps-wrapper flex-ai-center">
+          <span className="font-15 black mr-1 noselect">{rpe || 0}</span>
+          <span className="font-12 color-gray font-w-300 noselect">RPE</span>
+        </div>
+      )}
     </div>
   );
 };
 
 const EditColumn = ({
   set,
+  unit,
   index,
   exerId,
   onDeleteSet,
@@ -235,19 +245,35 @@ const EditColumn = ({
   onAddSetRetry,
   onEditSetRetry
 }) => {
-  const { reps, _id: setId, request, isPending, isRejected } = set;
+  const { rpe, reps, _id: setId, request, isPending, isRejected } = set;
+  const [inputRpe, setInputRpe] = useState(rpe || 0);
   const [inputReps, setInputReps] = useState(reps || 0);
   const isDeleted = useRef(false);
   const isClosed = useRef(false);
   const repsRef = useRef();
+  const rpeRef = useRef();
+  const lastRpeReqRef = useRef(rpe);
   const lastRepsReqRef = useRef(reps);
 
+  const { lastRowUnit, rpeRow } = getDisplayUnits(unit);
+
   const onExerciseEdit = useCallback(() => {
+    const { current: currentRpe } = rpeRef;
     const { current: currentReps } = repsRef;
 
+    let update = {};
     if (currentReps && currentReps !== lastRepsReqRef.current) {
-      handleEditSet(exerId, setId, currentReps);
+      update.reps = currentReps;
       lastRepsReqRef.current = currentReps;
+    }
+
+    if (currentRpe && currentRpe !== lastRpeReqRef.current) {
+      update.rpe = currentRpe;
+      lastRpeReqRef.current = currentRpe;
+    }
+
+    if (Object.keys(update).length) {
+      handleEditSet(exerId, setId, update);
     }
   }, [setId, exerId, repsRef, handleEditSet]);
 
@@ -267,6 +293,15 @@ const EditColumn = ({
     }
   }
 
+  function onRpeChange(e) {
+    const { target } = e;
+    const { value, validity } = target;
+
+    if (validity.valid) {
+      handleRpeChange(value);
+    }
+  }
+
   function onRetryClick(e) {
     e.stopPropagation();
     if (request === "add") {
@@ -283,6 +318,17 @@ const EditColumn = ({
     repsRef.current = value;
     setTimeout(() => {
       const { current } = repsRef;
+      if (current === value && !isClosed.current) {
+        onExerciseEdit();
+      }
+    }, 5000);
+  }
+
+  function handleRpeChange(value) {
+    setInputRpe(value);
+    rpeRef.current = value;
+    setTimeout(() => {
+      const { current } = rpeRef;
       if (current === value && !isClosed.current) {
         onExerciseEdit();
       }
@@ -322,10 +368,11 @@ const EditColumn = ({
           </button>
         )}
       </div>
-
-      <span className="font-w-500 color-gray edit-week-card-rep-index noselect">
-        {index + 1}
-      </span>
+      {!rpeRow && (
+        <span className="font-w-500 color-gray edit-week-card-rep-index noselect">
+          {index + 1}
+        </span>
+      )}
 
       <div className="flex-center edit-week-mobile-reps-wrapper">
         <div className="flex-center" onClick={e => e.stopPropagation()}>
@@ -341,8 +388,30 @@ const EditColumn = ({
             />
             <div className="border-with-sides" />
           </div>
+          <span className="font-12 color-gray font-w-300 noselect">
+            {lastRowUnit}
+          </span>
         </div>
       </div>
+      {rpeRow && (
+        <div className="flex-center edit-week-mobile-reps-wrapper">
+          <div className="flex-center" onClick={e => e.stopPropagation()}>
+            <div className="edit-week-mobile-reps-input-wrapper">
+              <input
+                type="tel"
+                value={inputRpe}
+                onChange={onRpeChange}
+                pattern="^[0-9]\d*\.?\d*$"
+                onBlur={onInputBlur}
+                onFocus={e => e.target.select()}
+                className="color-gray"
+              />
+              <div className="border-with-sides" />
+            </div>
+            <span className="font-12 color-gray font-w-300 noselect">RPE</span>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
