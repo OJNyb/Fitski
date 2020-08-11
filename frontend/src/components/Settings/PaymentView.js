@@ -9,9 +9,9 @@ const StripeView = () => {
     return (
       <div className="padding-10">
         <StripeConnect />
-        <p className="color-gray text-center">
+        {/* <p className="color-gray text-center">
           We take a 10% fee + $0.25 USD for each plan sold.
-        </p>
+        </p> */}
       </div>
     );
   }

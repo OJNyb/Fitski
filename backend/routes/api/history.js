@@ -5,7 +5,7 @@ const { ObjectId } = Types;
 
 const {
   formatHistoryDate,
-  reverseHistoryDate
+  reverseHistoryDate,
 } = require("../../utils/formatHistoryDate");
 
 // Models
@@ -27,16 +27,19 @@ const createErrorObject = require("../../utils/createErrorObject");
 // @route GET api/history
 // @desc Get current users history
 // @access Private
-router.get("/", ensureSignedIn, (req, res) => {
+router.get("/", ensureSignedIn, (req, res, next) => {
   const { session } = req;
   const { userId } = session;
 
   History.findOne({ user: userId })
     .populate({
       path: "days.exercises.exercise",
-      populate: { path: "muscleGroup" }
+      populate: { path: "muscleGroup" },
     })
-    .then(history => res.json(history));
+    .then((history) => {
+      res.json(history);
+    })
+    .catch(next);
 });
 
 // @route POST api/history/activate/:plan_id
@@ -66,7 +69,7 @@ router.post(
     if (user.toString() !== userId) {
       let planAccess = await PlanAccess.findOne({ woPlan: planId });
 
-      let userIndex = planAccess.whitelist.map(x => x.user).indexOf(userId);
+      let userIndex = planAccess.whitelist.map((x) => x.user).indexOf(userId);
 
       if (userIndex === -1) {
         return res
@@ -85,8 +88,8 @@ router.post(
       return res.status(200).json({ message: "success" });
     }
 
-    weeks.forEach(week =>
-      week.days.forEach(day => {
+    weeks.forEach((week) =>
+      week.days.forEach((day) => {
         const { exercises: dayExercises } = day;
         if (!dayExercises.length) {
           date.setDate(date.getDate() + 1);
@@ -94,7 +97,7 @@ router.post(
         }
 
         let exercises = [];
-        dayExercises.forEach(exercise => {
+        dayExercises.forEach((exercise) => {
           const { exercise: exerciseId, sets, onModel } = exercise;
           let setski = [];
           for (let i = 0; i < sets.length; i++) {
@@ -108,7 +111,7 @@ router.post(
             _id: exerId,
             exercise: exerciseId,
             sets: setski,
-            onModel
+            onModel,
           });
         });
 
@@ -119,7 +122,7 @@ router.post(
           exercises,
           _id: dayskiId,
           woPlan: planId,
-          date: formattedDate
+          date: formattedDate,
         });
 
         date.setDate(date.getDate() + 1);
@@ -134,7 +137,7 @@ router.post(
     const endDate = reverseHistoryDate(newDays[newDays.length - 1].date);
 
     if (days.length && days[days.length - 1].date >= formattedStartDate) {
-      let dates = days.map(x => x.date);
+      let dates = days.map((x) => x.date);
       for (let i = 0; i < dates.length; i++) {
         if (dates[i] >= formattedStartDate) {
           days = days.slice(0, i);
@@ -143,15 +146,15 @@ router.post(
       }
     }
 
-    newDays.forEach(x => days.push(x));
+    newDays.forEach((x) => days.push(x));
 
     // push each
     //
     history
       .updateOne({
         $set: {
-          days: days
-        }
+          days: days,
+        },
       })
       .then(() => {
         User.findByIdAndUpdate(userId, {
@@ -159,9 +162,9 @@ router.post(
             activeWOPlan: {
               woPlan: planId,
               startDate,
-              endDate
-            }
-          }
+              endDate,
+            },
+          },
         })
           .then(() => {
             res.json({ message: "success" });
@@ -191,19 +194,19 @@ router.post(
 
     const { days } = history;
     let dateFilter = {
-      $gte: formattedDate
+      $gte: formattedDate,
     };
-    let currentDayIndex = days.map(x => x.date).indexOf(formattedDate);
+    let currentDayIndex = days.map((x) => x.date).indexOf(formattedDate);
     if (currentDayIndex > -1) {
       let x = days[currentDayIndex].exercises
-        .map(x => x.sets)
-        .map(x => x.map(x => x.weight))
+        .map((x) => x.sets)
+        .map((x) => x.map((x) => x.weight))
         .reduce((acc, curr) => acc.concat(curr), [])
         .reduce((acc, curr) => (acc += curr), 0);
 
       if (x > 0) {
         dateFilter = {
-          $gt: formattedDate
+          $gt: formattedDate,
         };
       }
     }
@@ -211,17 +214,17 @@ router.post(
     history
       .updateOne({
         $pull: {
-          days: { date: dateFilter, woPlan: planId }
-        }
+          days: { date: dateFilter, woPlan: planId },
+        },
       })
       .then(() => {
         User.findByIdAndUpdate(userId, {
           $set: {
             activeWOPlan: {
               woPlan: planId,
-              endDate: yestarday
-            }
-          }
+              endDate: yestarday,
+            },
+          },
         })
           .then(() => {
             res.json({ message: "success" });
@@ -248,7 +251,7 @@ router.post("/", ensureSignedIn, validateRequest, async (req, res, next) => {
     reps,
     rpe,
     weight,
-    custom
+    custom,
   } = body;
 
   const history = await History.findOne({ user: userId });
@@ -259,7 +262,7 @@ router.post("/", ensureSignedIn, validateRequest, async (req, res, next) => {
 
   let formattedDate = formatHistoryDate(dateObject);
 
-  let dates = days.map(x => x.date);
+  let dates = days.map((x) => x.date);
 
   let insertIndex = -1;
 
@@ -286,17 +289,17 @@ router.post("/", ensureSignedIn, validateRequest, async (req, res, next) => {
             _id: setId,
             weight: weight ? weight : 0,
             reps: reps ? reps : 0,
-            rpe: rpe ? rpe : 0
-          }
-        ]
-      }
+            rpe: rpe ? rpe : 0,
+          },
+        ],
+      },
     ];
   } else {
     newDay.note = note;
   }
 
   let update = {
-    $each: [newDay]
+    $each: [newDay],
   };
 
   if (insertIndex !== -1) {
@@ -305,7 +308,7 @@ router.post("/", ensureSignedIn, validateRequest, async (req, res, next) => {
 
   history
     .updateOne({ $push: { days: update } })
-    .then(reski => {
+    .then((reski) => {
       if (reski.nModified) {
         res.json({ message: "success" });
       } else {
@@ -325,7 +328,7 @@ router.patch("/", ensureSignedIn, validateRequest, async (req, res, next) => {
 
   const history = await History.findOne({ user: userId });
   const { days } = history;
-  const dayIndex = days.map(x => x._id.toString()).indexOf(dayId);
+  const dayIndex = days.map((x) => x._id.toString()).indexOf(dayId);
 
   if (dayIndex === -1) {
     return res.status(404).json(createErrorObject["No day with this ID"]);
@@ -357,7 +360,7 @@ router.patch(
     const history = await History.findOne({ user: userId });
 
     const { days } = history;
-    const dayIndex = days.map(x => x._id).indexOf(dayId);
+    const dayIndex = days.map((x) => x._id).indexOf(dayId);
     if (dayIndex !== 0 && !dayIndex) return next();
     const day = days[dayIndex];
 
@@ -399,7 +402,7 @@ router.delete(
 
     history
       .updateOne({ $pull: { days: { _id: dayId } } })
-      .then(reski => {
+      .then((reski) => {
         if (reski.nModified) {
           res.json({ message: "success" });
         } else {
@@ -430,7 +433,7 @@ router.post(
       reps,
       rpe,
       weight,
-      custom
+      custom,
     } = body;
 
     const onModel = custom ? "userExercise" : "exercise";
@@ -444,19 +447,19 @@ router.post(
           _id: setId,
           reps: reps ? reps : 0,
           weight: weight ? weight : 0,
-          rpe: rpe ? rpe : 0
-        }
-      ]
+          rpe: rpe ? rpe : 0,
+        },
+      ],
     };
 
     history
       .updateOne(
         { $push: { "days.$[d].exercises": newExercise } },
         {
-          arrayFilters: [{ "d._id": dayId }]
+          arrayFilters: [{ "d._id": dayId }],
         }
       )
-      .then(reski => {
+      .then((reski) => {
         if (reski.nModified) {
           res.json({ message: "success" });
         } else {
@@ -485,12 +488,12 @@ router.delete(
         {
           $pull: {
             "days.$[d].exercises": {
-              _id: exerciseId
-            }
-          }
+              _id: exerciseId,
+            },
+          },
         },
         {
-          arrayFilters: [{ "d._id": dayId }]
+          arrayFilters: [{ "d._id": dayId }],
         }
       )
       .then(() => {
@@ -519,13 +522,13 @@ router.delete(
         {
           $pull: {
             "days.$[d].exercises": {
-              _id: { $in: exerciseIds }
-            }
-          }
+              _id: { $in: exerciseIds },
+            },
+          },
         },
         {
           arrayFilters: [{ "d._id": dayId }],
-          multi: true
+          multi: true,
         }
       )
       .then(() => {
@@ -551,7 +554,7 @@ router.post(
     const { setId, reps, rpe, weight, history } = body;
 
     const newSet = {
-      _id: setId
+      _id: setId,
     };
 
     newSet.weight = weight ? weight : 0;
@@ -562,10 +565,10 @@ router.post(
       .updateOne(
         { $push: { "days.$[d].exercises.$[e].sets": newSet } },
         {
-          arrayFilters: [{ "d._id": dayId }, { "e._id": exerciseId }]
+          arrayFilters: [{ "d._id": dayId }, { "e._id": exerciseId }],
         }
       )
-      .then(reski => {
+      .then((reski) => {
         if (reski.nModified) {
           res.json({ message: "success" });
         } else {
@@ -605,17 +608,17 @@ router.post(
     history
       .updateOne(
         {
-          $set: update
+          $set: update,
         },
         {
           arrayFilters: [
             { "d._id": dayId },
             { "e._id": exerciseId },
-            { "s._id": setId }
-          ]
+            { "s._id": setId },
+          ],
         }
       )
-      .then(reski => {
+      .then((reski) => {
         if (reski.nModified) {
           res.json({ message: "success" });
         } else {
@@ -644,12 +647,12 @@ router.delete(
         {
           $pull: {
             "days.$[d].exercises.$[e].sets": {
-              _id: setId
-            }
-          }
+              _id: setId,
+            },
+          },
         },
         {
-          arrayFilters: [{ "d._id": dayId }, { "e._id": exerciseId }]
+          arrayFilters: [{ "d._id": dayId }, { "e._id": exerciseId }],
         }
       )
       .then(() => {
@@ -674,7 +677,7 @@ router.post(
 
     const history = await History.findOne({ user: userId });
     const { days } = history;
-    let dates = days.map(x => x.date);
+    let dates = days.map((x) => x.date);
     let insertIndex = -1;
 
     for (let i = dates.length - 1; i >= 0; i--) {
@@ -686,7 +689,7 @@ router.post(
       }
     }
 
-    const dayToCopy = days[days.map(x => x._id).indexOf(dayToCopyId)];
+    const dayToCopy = days[days.map((x) => x._id).indexOf(dayToCopyId)];
 
     const { exercises } = dayToCopy;
 
@@ -703,14 +706,14 @@ router.post(
       newExercises.push({
         ...exercises[i],
         _id: exerId,
-        sets: newSets
+        sets: newSets,
       });
     }
 
     const newDay = { _id: newDayId, date: formattedDate, exercises };
 
     const update = {
-      $each: [newDay]
+      $each: [newDay],
     };
 
     if (insertIndex !== -1) {
@@ -719,7 +722,7 @@ router.post(
 
     history
       .updateOne({ $push: { days: update } })
-      .then(reski => {
+      .then((reski) => {
         if (reski.nModified) {
           res.json({ message: "success" });
         } else {

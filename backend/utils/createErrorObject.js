@@ -1,12 +1,12 @@
-const createErrorObject = messages => {
+const createErrorObject = (messages) => {
   let details = [];
-  messages.forEach(message => details.push({ message }));
+  messages.forEach((message) => details.push({ message }));
 
   return {
     isCustom: true,
     error: {
-      details
-    }
+      details,
+    },
   };
 };
 
