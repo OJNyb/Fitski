@@ -33,39 +33,33 @@ const router = express.Router();
 router.post("/register", ensureSignedOut, validateRequest, (req, res, next) => {
   const { body, session } = req;
 
-  if (body.password.substring(0, 4) !== "BeTA") {
-    return res.status(409).json(createErrorObject(["Registration is closed."]));
-  }
-
-  body.password = body.password.substring(4);
-
   const _id = Types.ObjectId();
 
   const newUser = new User({
     _id,
     avatar: "default",
-    ...body
+    ...body,
   });
 
   const newHistory = new History({
-    user: _id
+    user: _id,
   });
 
   const newDefaultExerciseDelete = new DefaultExerciseDelete({
-    user: _id
+    user: _id,
   });
 
   const newUserAccess = new UserAccess({
-    user: _id
+    user: _id,
   });
 
   const newMuscleGroupDelete = new DefaultMuscleGroupDelete({
-    user: _id
+    user: _id,
   });
 
   newUser
     .save()
-    .then(async user => {
+    .then(async (user) => {
       try {
         await newHistory.save();
         await newDefaultExerciseDelete.save();
@@ -84,7 +78,7 @@ router.post("/register", ensureSignedOut, validateRequest, (req, res, next) => {
       session.userId = user.id;
       return res.json({ message: "success" });
     })
-    .catch(err => {
+    .catch((err) => {
       const { name, error } = err;
 
       if (name === "ValidationError") {
@@ -117,13 +111,13 @@ router.post(
 
     const newUser = {
       ...user,
-      ...body
+      ...body,
     };
 
     newUser
       .save()
       .then(() => res.json({ message: "success" }))
-      .catch(err => {
+      .catch((err) => {
         const { name, error } = err;
         if (name === "ValidationError") {
           return res.status(400).json(createMongoError(err));
@@ -165,7 +159,7 @@ router.post(
     user
       .save()
       .then(() => res.json({ message: "success" }))
-      .catch(err => {
+      .catch((err) => {
         const { name, error } = err;
         if (name === "ValidationError") {
           return res.status(400).json(createMongoError(err));
@@ -187,18 +181,18 @@ router.delete("/", ensureSignedIn, async (req, res, next) => {
 
   // delete history/plans associated with user
   User.deleteOne({ _id: userId })
-    .then(reski => {
+    .then((reski) => {
       if (!reski.deletedCount) {
         return next(reski);
       }
-      History.deleteOne({ user: userId }).then(reski => {
+      History.deleteOne({ user: userId }).then((reski) => {
         if (!reski.deletedCount) {
           reski.noRes = true;
           return next(reski);
         }
       });
 
-      req.session.destroy(err => {
+      req.session.destroy((err) => {
         if (err) {
           return next(err);
         }
@@ -238,15 +232,12 @@ router.post("/login", ensureSignedOut, validateRequest, async (req, res) => {
 // @desc Logout User
 // @access Private
 router.get("/logout", ensureSignedIn, (req, res, next) => {
-  req.session.destroy(err => {
+  req.session.destroy((err) => {
     if (err) {
       return next(err);
     }
 
-    return res
-      .status(200)
-      .clearCookie(SESS_NAME)
-      .json({ message: "success" });
+    return res.status(200).clearCookie(SESS_NAME).json({ message: "success" });
   });
 });
 
@@ -299,15 +290,15 @@ router.post(
         );
     }
 
-    crypto.randomBytes(20, function(err, buf) {
+    crypto.randomBytes(20, function (err, buf) {
       let token = buf.toString("hex");
 
       user
         .updateOne({
           $set: {
             resetPasswordToken: token,
-            resetPasswordExpires: Date.now() + 3600000
-          }
+            resetPasswordExpires: Date.now() + 3600000,
+          },
         })
         .then(() => {
           const smtpTransport = nodemailer.createTransport({
@@ -316,16 +307,16 @@ router.post(
             secure: false,
             auth: {
               user: MAILGUN_EMAIL,
-              pass: MAILGUN_PASSWORD
-            }
+              pass: MAILGUN_PASSWORD,
+            },
           });
           const mailOptions = {
             to: user.email,
             from: "postmaster@mg.chadify.me",
             subject: "Chadify Password Reset",
-            text: `Hello,\n\nWe've recieved a request to reset your password\n\nIf you didn't make the request, just ignore this message.\n\nOtherwise, you can reset your password clicking this link:\n\nhttp://localhost:3000/reset/${token}\n\nThanks,\nChad\n`
+            text: `Hello,\n\nWe've recieved a request to reset your password\n\nIf you didn't make the request, just ignore this message.\n\nOtherwise, you can reset your password clicking this link:\n\nhttp://localhost:3000/reset/${token}\n\nThanks,\nChad\n`,
           };
-          smtpTransport.sendMail(mailOptions, function(err) {
+          smtpTransport.sendMail(mailOptions, function (err) {
             if (err) {
               return next(err);
             }
@@ -351,7 +342,7 @@ router.post(
 
     let user = await User.findOne({
       resetPasswordToken: token,
-      resetPasswordExpires: { $gt: Date.now() }
+      resetPasswordExpires: { $gt: Date.now() },
     });
 
     if (!user) {
@@ -373,16 +364,16 @@ router.post(
         secure: false,
         auth: {
           user: MAILGUN_EMAIL,
-          pass: MAILGUN_PASSWORD
-        }
+          pass: MAILGUN_PASSWORD,
+        },
       });
       const mailOptions = {
         to: user.email,
         from: "Chadify",
         subject: "Your password has been changed",
-        text: `Hello,\n\nThis is a confirmation that the password for your account ${user.email} has just been changed.\n`
+        text: `Hello,\n\nThis is a confirmation that the password for your account ${user.email} has just been changed.\n`,
       };
-      smtpTransport.sendMail(mailOptions, function(err) {
+      smtpTransport.sendMail(mailOptions, function (err) {
         if (err) {
           return res
             .status(500)
@@ -422,23 +413,23 @@ router.post(
 
     user.password = newPassword;
 
-    user.save().then(user => {
+    user.save().then((user) => {
       const smtpTransport = nodemailer.createTransport({
         port: 587,
         host: "smtp.eu.mailgun.org",
         secure: false,
         auth: {
           user: MAILGUN_EMAIL,
-          pass: MAILGUN_PASSWORD
-        }
+          pass: MAILGUN_PASSWORD,
+        },
       });
       const mailOptions = {
         to: user.email,
         from: "Chadify",
         subject: "Your password has been changed",
-        text: `Hello,\n\nThis is a confirmation that the password for your account ${user.email} has just been changed.\n`
+        text: `Hello,\n\nThis is a confirmation that the password for your account ${user.email} has just been changed.\n`,
       };
-      smtpTransport.sendMail(mailOptions, function(err) {
+      smtpTransport.sendMail(mailOptions, function (err) {
         if (err) {
           console.log(err);
           return res
@@ -460,7 +451,7 @@ router.get("/access", ensureSignedIn, async (req, res, next) => {
   const { session } = req;
   const { userId } = session;
   UserAccess.findOne({ user: userId })
-    .then(access => {
+    .then((access) => {
       res.json(access);
     })
     .catch(next);
@@ -479,7 +470,7 @@ router.post(
     const { userId } = session;
 
     WOPlan.findById(planId)
-      .then(async plan => {
+      .then(async (plan) => {
         if (!plan) {
           return res
             .status(404)
@@ -494,7 +485,7 @@ router.post(
         let newPlanTrend = new PlanTrend({
           woPlan: planId,
           date: formatHistoryDate(new Date()),
-          user: userId
+          user: userId,
         });
 
         try {
@@ -534,7 +525,7 @@ router.delete(
       await PlanAccess.updateOne(
         { woPlan: planId },
         {
-          $pull: { whitelist: { user: userId } }
+          $pull: { whitelist: { user: userId } },
         }
       );
       await UserAccess.updateOne(
