@@ -43,10 +43,14 @@ MAILGUN_PASSWORD=<YOUR MAILGUN PASSWORD>
 
 In top directory
 
-> Run npm run init
+```bash
+$ npm run init
+```
 
 ### Run
 
 In top directory
 
-> npm run dev in top directory
+```bash
+$ npm run dev in top directory
+```
