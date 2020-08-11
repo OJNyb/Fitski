@@ -16,7 +16,7 @@ const {
   validateExercise,
   validateDeleteExercises,
   validateMuscleGroup,
-  validateDeleteMuscleGroup
+  validateDeleteMuscleGroup,
 } = require("../../middlewares/validateExercise");
 
 const { ensureSignedIn } = require("../../middlewares/auth");
@@ -32,18 +32,19 @@ router.get("/", ensureSignedIn, async (req, res, next) => {
   try {
     // Muscle Group
     const deletedDefaultMuscleGroups = await DefaultMuscleGroupDelete.findOne({
-      user: userId
+      user: userId,
     });
     const muscleGroupskis = await MuscleGroup.find({
       $or: [{ custom: false }, { user: userId }],
-      isDeleted: false
+      isDeleted: false,
     });
 
-    const ddIds = deletedDefaultMuscleGroups.muscleGroups.map(x =>
+    console.log(deletedDefaultMuscleGroups);
+    const ddIds = deletedDefaultMuscleGroups.muscleGroups.map((x) =>
       x.muscleGroup.toString()
     );
     if (ddIds.length) {
-      muscleGroups = muscleGroupskis.filter(x => {
+      muscleGroups = muscleGroupskis.filter((x) => {
         return ddIds.indexOf(x._id.toString()) === -1;
       });
     } else {
@@ -52,19 +53,19 @@ router.get("/", ensureSignedIn, async (req, res, next) => {
 
     // Exercises
     const deletedDefaultExercises = await DefaultExerciseDelete.findOne({
-      user: userId
+      user: userId,
     });
     const defExercises = await Exercise.find({}).populate("muscleGroup");
     const ownExercises = await UserExercise.find({
       user: userId,
-      isDeleted: false
+      isDeleted: false,
     }).populate("muscleGroup");
 
     const { exercises: ddExercises } = deletedDefaultExercises;
-    const ddExerciseIds = ddExercises.map(x => x.exercise.toString());
+    const ddExerciseIds = ddExercises.map((x) => x.exercise.toString());
 
     let defExercisesFiltered = defExercises.filter(
-      x => !ddExerciseIds.includes(x._id.toString())
+      (x) => !ddExerciseIds.includes(x._id.toString())
     );
     exercises = [...defExercisesFiltered, ...ownExercises];
   } catch (e) {
@@ -79,7 +80,7 @@ router.get("/", ensureSignedIn, async (req, res, next) => {
 // @access Private
 router.get("/:id", validateRequest, async (req, res, next) => {
   Exercise.find({ _id: id })
-    .then(exercise => res.json(exercise))
+    .then((exercise) => res.json(exercise))
     .catch(next);
 });
 
@@ -100,7 +101,7 @@ router.post(
       name,
       unit,
       muscleGroup: muscleGroupId,
-      user: userId
+      user: userId,
     });
 
     newExercise
@@ -138,9 +139,9 @@ router.patch(
 
     exercise
       .updateOne({
-        $set: { ...patch }
+        $set: { ...patch },
       })
-      .then(reski => {
+      .then((reski) => {
         if (reski.nModified) {
           res.json({ message: "success" });
         } else {
@@ -165,18 +166,18 @@ router.delete(
     const { defaultExercisesToDelete, customExercisesToDelete } = body;
 
     if (defaultExercisesToDelete.length) {
-      const newExercisesToDelete = defaultExercisesToDelete.map(x => {
+      const newExercisesToDelete = defaultExercisesToDelete.map((x) => {
         return {
-          exercise: x
+          exercise: x,
         };
       });
       DefaultExerciseDelete.updateOne(
         { user: userId },
         {
-          $push: { exercises: { $each: newExercisesToDelete } }
+          $push: { exercises: { $each: newExercisesToDelete } },
         }
       )
-        .then(reski => {
+        .then((reski) => {
           if (!reski.nModified) {
             return res
               .status(404)
@@ -190,10 +191,10 @@ router.delete(
       UserExercise.updateOne(
         { _id: { $in: customExercisesToDelete } },
         {
-          $set: { isDeleted: true }
+          $set: { isDeleted: true },
         }
       )
-        .then(reski => {
+        .then((reski) => {
           if (!reski.nModified) {
             return res
               .status(404)
@@ -222,7 +223,7 @@ router.post(
       name,
       color,
       user: userId,
-      _id: muscleGroupId
+      _id: muscleGroupId,
     });
 
     newMuscleGroup
@@ -257,9 +258,9 @@ router.patch(
 
     muscleGroup
       .updateOne({
-        $set: { ...patch }
+        $set: { ...patch },
       })
-      .then(reski => {
+      .then((reski) => {
         if (reski.nModified) {
           res.json({ message: "success" });
         } else {
@@ -287,7 +288,7 @@ router.delete(
       DefaultMuscleGroupDelete.findOneAndUpdate(
         { user: userId },
         {
-          $push: { muscleGroups: { muscleGroup: defaultMuscleGroupToDelete } }
+          $push: { muscleGroups: { muscleGroup: defaultMuscleGroupToDelete } },
         }
       )
         .then(() => {
@@ -300,14 +301,14 @@ router.delete(
       MuscleGroup.updateOne(
         { _id: customMuscleGroupToDelete },
         {
-          $set: { isDeleted: true }
+          $set: { isDeleted: true },
         }
       )
-        .then(reski => {
+        .then((reski) => {
           UserExercise.updateMany(
             { muscleGroup: customMuscleGroupToDelete },
             {
-              isDeleted: true
+              isDeleted: true,
             }
           ).catch(next);
           if (!reski.nModified) {
