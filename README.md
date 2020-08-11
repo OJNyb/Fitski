@@ -10,9 +10,9 @@ Made for fun :)
 
 [Live version](https://chadify.herokuapp.com/).
 
-## If you want to run this locally
+## Run locally
 
-### Create an .env file in the backend directorya and fill it with
+### Create an .env file in the backend directory and fill it with
 
 ```
 AVATAR_FIELD=avatar
