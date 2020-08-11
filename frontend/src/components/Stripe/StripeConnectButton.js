@@ -12,7 +12,7 @@ const ConnectToStripeButton = ({ onClick }) => {
       onClick={onClick}
       target="_blank"
       rel="noopener noreferrer"
-      href={`https://connect.stripe.com/express/oauth/authorize?redirect_uri=https://fitnut.herokuapp.com/stripe/register&client_id=${clientId}&state=${uniqueId}&stripe_user[email]=${email}`}
+      href={`https://connect.stripe.com/express/oauth/authorize?redirect_uri=https://chadify.herokuapp.com/stripe/register&client_id=${clientId}&state=${uniqueId}&stripe_user[email]=${email}`}
     >
       <img
         src="/api/image/resources/stripeconnect.png"

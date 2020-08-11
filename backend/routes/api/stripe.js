@@ -29,9 +29,9 @@ router.post("/register/:code", ensureSignedIn, (req, res, next) => {
   stripe.oauth
     .token({
       grant_type: "authorization_code",
-      code
+      code,
     })
-    .then(async response => {
+    .then(async (response) => {
       const { error_description, stripe_user_id } = response;
       if (error_description) {
         return res.status(404).json(createErrorObject([error_description]));
@@ -64,7 +64,7 @@ router.post(
 
     WOPlan.findById(planId)
       .populate("user")
-      .then(async plan => {
+      .then(async (plan) => {
         if (!plan) {
           return res
             .status(404)
@@ -78,7 +78,8 @@ router.post(
         const planAccess = await PlanAccess.findOne({ woPlan: planId });
 
         if (
-          planAccess.whitelist.map(x => x._id.toString).indexOf(userId) > -1 ||
+          planAccess.whitelist.map((x) => x._id.toString).indexOf(userId) >
+            -1 ||
           userId === authorId.toString()
         ) {
           return res
@@ -104,24 +105,24 @@ router.post(
                 description: goal,
                 amount,
                 currency,
-                quantity: 1
-              }
+                quantity: 1,
+              },
             ],
             payment_intent_data: {
               application_fee_amount: amount / 10 + 25,
               transfer_data: {
-                destination: stripeId
-              }
+                destination: stripeId,
+              },
             },
-            success_url: `https://fitnut.herokuapp.com/stripe/success?session_id={CHECKOUT_SESSION_ID}&plan_id=${planId}`,
-            cancel_url: `https://fitnut.herokuapp.com/stripe/cancel?plan_id=${planId}`,
+            success_url: `https://chadify.herokuapp.com/stripe/success?session_id={CHECKOUT_SESSION_ID}&plan_id=${planId}`,
+            cancel_url: `https://chadify.herokuapp.com/stripe/cancel?plan_id=${planId}`,
             customer_email: customer.email,
             metadata: {
               planId,
-              userId
-            }
+              userId,
+            },
           })
-          .then(checkoutSession => {
+          .then((checkoutSession) => {
             const { id } = checkoutSession;
 
             return res.json({ message: "success", sessionId: id });
