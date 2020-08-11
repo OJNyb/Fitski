@@ -5,7 +5,6 @@ const ViewContext = createContext();
 
 function ViewProvider(props) {
   const width = useWindowWidth();
-
   const [isMobile, setIsMobile] = useState(true);
 
   useLayoutEffect(() => {
