@@ -52,5 +52,5 @@ $ npm run init
 In top directory
 
 ```bash
-$ npm run dev in top directory
+$ npm run dev
 ```
