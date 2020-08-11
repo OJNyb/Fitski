@@ -109,13 +109,10 @@ router.post(
       return next("No user");
     }
 
-    const newUser = {
-      ...user,
-      ...body,
-    };
-
-    newUser
-      .save()
+    user
+      .updateOne({
+        $set: { ...body },
+      })
       .then(() => res.json({ message: "success" }))
       .catch((err) => {
         const { name, error } = err;

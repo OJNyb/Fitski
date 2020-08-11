@@ -13,8 +13,7 @@
     "postbuild": "cd frontend && npm install && npm run build",
     "heroku-postbuild": "cd frontend && npm install && npm run build"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Ole Jacob Nyborg-Christensen",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
