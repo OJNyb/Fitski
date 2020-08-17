@@ -6,13 +6,11 @@ My first big project... Quite messy code base and not always the best practices.
 
 Created with the MERN stack
 
-Made for fun :)
-
 [Live version](https://chadify.herokuapp.com/).
 
 ## Run locally
 
-### Create an .env file in the backend directory and fill it with
+### Create a .env file in the backend directory and fill it with
 
 ```
 AVATAR_FIELD=avatar

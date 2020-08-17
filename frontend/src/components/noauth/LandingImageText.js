@@ -5,7 +5,7 @@ const LandingImageText = () => {
     <div className="color-white">
       <TextItem icon={"search"} text={"Get with a program"} />
       <TextItem icon={"show_chart"} text={"Keep tabs on your gains"} />
-      <TextItem icon={"fitness_center"} text={"Watch as you get shredded"} />
+      <TextItem icon={"fitness_center"} text={"Achieve your fitness goals"} />
     </div>
   );
 };
