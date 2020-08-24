@@ -19,7 +19,7 @@ const ExerciseCard = ({
   onDeleteExercise,
   onAddExerciseRetry,
   handleAddSetRetry,
-  handleEditSetRetry
+  handleEditSetRetry,
 }) => {
   const {
     sets,
@@ -27,7 +27,7 @@ const ExerciseCard = ({
     isPending,
     isRejected,
     _id: exerId,
-    exercise: { name, unit, _id: exerciseId }
+    exercise: { name, unit, _id: exerciseId },
   } = exercise;
 
   function onRetryClick(e) {
@@ -97,7 +97,7 @@ const ExerciseCard = ({
               (isRejected ? " exercise-card-rejected" : "") +
               (snapshot.isDragging ? " exercise-card-dragging" : "")
             }
-            onClick={e => {
+            onClick={(e) => {
               e.stopPropagation();
               onCardClick(exerId);
             }}
@@ -123,7 +123,7 @@ const ExerciseCard = ({
                   <>
                     <button
                       className="add-card-remove-btn theme-btn-no-border"
-                      onClick={e => {
+                      onClick={(e) => {
                         e.stopPropagation();
                         onDeleteExercise(exerId);
                       }}
@@ -134,7 +134,7 @@ const ExerciseCard = ({
                     <div
                       className="exercise-drag-handle padding-5"
                       {...provided.dragHandleProps}
-                      onTouchStart={e => e.stopPropagation()}
+                      onTouchStart={(e) => e.stopPropagation()}
                     >
                       <DragIconBig fill={"white"} />
                     </div>
@@ -144,7 +144,7 @@ const ExerciseCard = ({
                   <>
                     <button
                       className="theme-btn-no-border"
-                      onClick={e => {
+                      onClick={(e) => {
                         e.stopPropagation();
                         onAddSet(exerId, exerciseId);
                       }}
@@ -172,7 +172,7 @@ const SetColumn = ({
   exerId,
   onDeleteSet,
   onAddSetRetry,
-  onEditSetRetry
+  onEditSetRetry,
 }) => {
   const { rpe, reps, request, isPending, isRejected, _id: setId } = set;
 
@@ -188,6 +188,8 @@ const SetColumn = ({
   }
 
   const { lastRowUnit, rpeRow } = getDisplayUnits(unit);
+
+  console.log("ha");
 
   return (
     <div
@@ -243,7 +245,7 @@ const EditColumn = ({
   onDeleteSet,
   handleEditSet,
   onAddSetRetry,
-  onEditSetRetry
+  onEditSetRetry,
 }) => {
   const { rpe, reps, _id: setId, request, isPending, isRejected } = set;
   const [inputRpe, setInputRpe] = useState(rpe || 0);
@@ -358,7 +360,7 @@ const EditColumn = ({
         ) : (
           <button
             className="edit-week-mobile-set-delete-btn"
-            onClick={e => {
+            onClick={(e) => {
               e.stopPropagation();
               isDeleted.current = true;
               onDeleteSet(exerId, setId);
@@ -375,7 +377,7 @@ const EditColumn = ({
       )}
 
       <div className="flex-center edit-week-mobile-reps-wrapper">
-        <div className="flex-center" onClick={e => e.stopPropagation()}>
+        <div className="flex-center" onClick={(e) => e.stopPropagation()}>
           <div className="edit-week-mobile-reps-input-wrapper">
             <input
               type="tel"
@@ -383,7 +385,7 @@ const EditColumn = ({
               onChange={onRepsChange}
               pattern="^[0-9]\d*\.?\d*$"
               onBlur={onInputBlur}
-              onFocus={e => e.target.select()}
+              onFocus={(e) => e.target.select()}
               className="color-gray"
             />
             <div className="border-with-sides" />
@@ -395,7 +397,7 @@ const EditColumn = ({
       </div>
       {rpeRow && (
         <div className="flex-center edit-week-mobile-reps-wrapper">
-          <div className="flex-center" onClick={e => e.stopPropagation()}>
+          <div className="flex-center" onClick={(e) => e.stopPropagation()}>
             <div className="edit-week-mobile-reps-input-wrapper">
               <input
                 type="tel"
@@ -403,7 +405,7 @@ const EditColumn = ({
                 onChange={onRpeChange}
                 pattern="^[0-9]\d*\.?\d*$"
                 onBlur={onInputBlur}
-                onFocus={e => e.target.select()}
+                onFocus={(e) => e.target.select()}
                 className="color-gray"
               />
               <div className="border-with-sides" />

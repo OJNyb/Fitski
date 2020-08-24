@@ -1,7 +1,12 @@
 function getDisplayUnits(unit, defaultUnit, capitalize) {
   let firstRowUnit;
 
-  if (unit === "w+r" || unit === "w+s" || unit === "w+r+rpe") {
+  if (
+    unit === "w+r" ||
+    unit === "w+s" ||
+    unit === "w+r+rpe" ||
+    unit === "r+w"
+  ) {
     if (capitalize) {
       firstRowUnit = `WEIGHT (${defaultUnit})`;
     } else firstRowUnit = defaultUnit;
@@ -12,7 +17,7 @@ function getDisplayUnits(unit, defaultUnit, capitalize) {
   let lastRowUnit;
   if (unit === "s" || unit === "w+s") {
     lastRowUnit = "seconds";
-  } else if (unit === "r" || unit === "r+w") {
+  } else if (unit === "r" || unit === "r+w" || unit === "w+r") {
     lastRowUnit = "reps";
   } else if (unit === "w") {
     lastRowUnit = defaultUnit;
