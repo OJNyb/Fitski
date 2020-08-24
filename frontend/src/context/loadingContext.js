@@ -1,6 +1,5 @@
-import React, { createContext } from "react";
+import React, { useEffect, createContext } from "react";
 import useLoadingski from "../hooks/useLoading";
-import Loading from "../components/shared/SVGs/Loading";
 
 const LoadingContext = createContext();
 
@@ -9,13 +8,23 @@ function LoadingProvider({ children }) {
 
   const { isLoading } = state;
 
+  useEffect(() => {
+    const loader = document.getElementById("loader");
+    const showLoader = () => loader.classList.remove("loader--hide");
+    const hideLoader = () => loader.classList.add("loader--hide");
+    if (isLoading) {
+      showLoader();
+    } else {
+      hideLoader();
+    }
+  }, [isLoading]);
+
   return (
     <LoadingContext.Provider
       value={{ state, dispatch }}
       state={state}
       dispatch={dispatch}
     >
-      {isLoading && <Loading />}
       {children}
     </LoadingContext.Provider>
   );
